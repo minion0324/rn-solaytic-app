@@ -1,0 +1,1 @@
+# rn-solaytic-app
