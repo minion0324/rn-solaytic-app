@@ -1,6 +1,11 @@
 import { Navigation } from 'react-native-navigation';
 
 import {
+  IMAGES,
+  COLORS,
+} from 'src/constants';
+
+import {
   LOGIN_SCREEN,
   ALERT_SCREEN,
   JOBS_SCREEN,
@@ -25,8 +30,8 @@ export function pushSingleScreenApp() {
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
-      textColor: '#707070',
-      selectedTextColor: '#03A9F4',
+      textColor: COLORS.GRAY1,
+      selectedTextColor: COLORS.BLUE1,
       iconInsets: { top: 5 },
     },
     popGesture: false,
@@ -86,8 +91,8 @@ export function pushMultiScreensApp() {
                   options: {
                     bottomTab: {
                       text: 'Alert',
-                      icon: require('src/assets/images/first-tab.png'),
-                      selectedIcon: require('src/assets/images/first-tab-active.png'),
+                      icon: IMAGES.FIRST_TAB,
+                      selectedIcon: IMAGES.FIRST_TAB_ACTIVE,
                       testID: 'FIRST_TAB_BAR_BUTTON',
                     },
                   },
@@ -105,8 +110,8 @@ export function pushMultiScreensApp() {
                   options: {
                     bottomTab: {
                       text: 'Jobs',
-                      icon: require('src/assets/images/second-tab.png'),
-                      selectedIcon: require('src/assets/images/second-tab-active.png'),
+                      icon: IMAGES.SECOND_TAB,
+                      selectedIcon: IMAGES.SECOND_TAB_ACTIVE,
                       testID: 'SECOND_TAB_BAR_BUTTON',
                     },
                   },
@@ -124,8 +129,8 @@ export function pushMultiScreensApp() {
                   options: {
                     bottomTab: {
                       text: 'Profile',
-                      icon: require('src/assets/images/third-tab.png'),
-                      selectedIcon: require('src/assets/images/third-tab-active.png'),
+                      icon: IMAGES.THIRD_TAB,
+                      selectedIcon: IMAGES.THIRD_TAB_ACTIVE,
                       testID: 'THIRD_TAB_BAR_BUTTON',
                     },
                   },

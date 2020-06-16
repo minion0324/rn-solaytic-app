@@ -1,15 +1,82 @@
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
 import PropTypes from 'prop-types';
+
+import {
+  SVGS,
+  IMAGES,
+  COLORS,
+} from 'src/constants';
+
+import {
+  Container,
+  HeaderContainer,
+  ContentContainer,
+  ShadowContainer,
+} from 'src/styles/common.styles';
+
+import {
+  LogoContainer,
+  LogoImage,
+  LoginForm,
+  InputRow,
+  IconWrap,
+  InputWrap,
+  Input,
+  CheckRow,
+  Check,
+  RememberText,
+  ButtonRow,
+  LoginButton,
+  LoginText,
+} from './styled';
+
+const { UserIcon, LockIcon } = SVGS;
 
 const LoginScreen = ({ componentId }) => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Login Screen</Text>
-    </View>
+    <Container>
+      <ShadowContainer>
+        <HeaderContainer />
+      </ShadowContainer>
+
+      <ContentContainer>
+        <LogoContainer>
+          <LogoImage source={IMAGES.APP_LOGO} />
+        </LogoContainer>
+        <LoginForm>
+          <InputRow>
+            <IconWrap><UserIcon /></IconWrap>
+            <InputWrap>
+              <Input
+                underlineColorAndroid={COLORS.TRANSPARENT}
+              />
+            </InputWrap>
+          </InputRow>
+          <InputRow>
+            <IconWrap><LockIcon /></IconWrap>
+            <InputWrap>
+              <Input
+                secureTextEntry={true}
+                underlineColorAndroid={COLORS.TRANSPARENT}
+              />
+            </InputWrap>
+          </InputRow>
+          <CheckRow>
+            <Check
+              tintColors={{ true: COLORS.GRAY1, false: COLORS.GRAY1 }}
+            />
+            <RememberText>Remember me</RememberText>
+          </CheckRow>
+          <ButtonRow>
+            <ShadowContainer>
+              <LoginButton>
+                <LoginText>SIGN IN</LoginText>
+              </LoginButton>
+            </ShadowContainer>
+          </ButtonRow>
+        </LoginForm>
+      </ContentContainer>
+    </Container>
   );
 };
 
