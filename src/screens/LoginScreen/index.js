@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  pushMultiScreensApp,
+} from 'src/navigation';
+import {
   SVGS,
   IMAGES,
   COLORS,
@@ -33,6 +36,11 @@ import {
 const { UserIcon, LockIcon } = SVGS;
 
 const LoginScreen = ({ componentId }) => {
+
+  const toLogin = () => {
+    pushMultiScreensApp();
+  }
+
   return (
     <Container>
       <ShadowContainer>
@@ -69,7 +77,7 @@ const LoginScreen = ({ componentId }) => {
           </CheckRow>
           <ButtonRow>
             <ShadowContainer>
-              <LoginButton>
+              <LoginButton onPress={toLogin}>
                 <LoginText>SIGN IN</LoginText>
               </LoginButton>
             </ShadowContainer>
