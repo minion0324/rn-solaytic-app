@@ -30,9 +30,10 @@ export function pushSingleScreenApp() {
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
-      textColor: COLORS.GRAY1,
-      selectedTextColor: COLORS.BLUE1,
-      iconInsets: { top: 5 },
+      fontSize: 13,
+      textColor: '#707070',
+      selectedTextColor: '#03A9F4',
+      iconInsets: { top: 10, bottom: 5 },
     },
     popGesture: false,
   });
@@ -66,9 +67,10 @@ export function pushMultiScreensApp() {
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
+      fontSize: 13,
       textColor: '#707070',
       selectedTextColor: '#03A9F4',
-      iconInsets: { top: 5 },
+      iconInsets: { top: 10, bottom: 5 },
     },
     popGesture: false,
   });
