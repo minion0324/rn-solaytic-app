@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_HEIGHT1,
+  COMMON_SIZE,
 } from 'src/constants';
 
 const Container = styled.SafeAreaView`
@@ -12,7 +12,7 @@ const Container = styled.SafeAreaView`
 
 const HeaderContainer = styled.View`
   width: 100%;
-  height: ${COMMON_HEIGHT1}px;
+  height: ${COMMON_SIZE}px;
   background-color: ${COLORS.BLUE1};
 `;
 

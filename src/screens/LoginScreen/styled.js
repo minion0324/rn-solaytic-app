@@ -1,19 +1,18 @@
-import CheckBox from '@react-native-community/checkbox';
 import styled from 'styled-components';
 
 import {
   COLORS,
-  WIDTH,
-  COMMON_HEIGHT1,
+  COMMON_SIZE,
+  COMMON_PADDING,
 } from 'src/constants';
 
 const LogoContainer = styled.View`
   align-items: center;
   justify-content: center;
-  height: ${COMMON_HEIGHT1 * 2}px;
+  height: ${COMMON_SIZE * 2}px;
   aspect-ratio: 1;
-  margin-top: ${-COMMON_HEIGHT1 * 0.8}px;
-  border-radius: ${COMMON_HEIGHT1}px;
+  margin-top: -${COMMON_SIZE * 0.8}px;
+  border-radius: ${COMMON_SIZE}px;
   background-color: ${COLORS.WHITE1};
 `;
 
@@ -22,18 +21,18 @@ const LogoImage = styled.Image`
 `;
 
 const LoginForm = styled.View`
-  padding-vertical: 5px;
-  padding-horizontal: ${WIDTH * 0.12}px;
+  padding-vertical: ${COMMON_PADDING / 2}px;
+  padding-horizontal: ${COMMON_PADDING * 3}px;
 `;
 
 const InputRow = styled.View`
   width: 100%;
   flex-direction: row;
-  padding-vertical: 5px;
+  padding-vertical: ${COMMON_PADDING / 2}px;
 `;
 
 const IconWrap = styled.View`
-  height: ${COMMON_HEIGHT1 / 2}px;
+  height: ${COMMON_SIZE / 2}px;
   aspect-ratio: 1;
   align-items: center;
   justify-content: center;
@@ -43,13 +42,13 @@ const IconWrap = styled.View`
 
 const InputWrap = styled.View`
   flex: 1;
-  height: ${COMMON_HEIGHT1 / 2}px;
+  height: ${COMMON_SIZE / 2}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.WHITE1};
   border-radius: 3px;
-  margin-left: 5px;
+  margin-left: ${COMMON_PADDING / 2}px;
 `;
 
 const Input = styled.TextInput`
@@ -59,28 +58,28 @@ const Input = styled.TextInput`
   font-size: 15px;
 `;
 
-const CheckRow = styled.View`
+const CheckRow = styled.TouchableOpacity`
   width: 100%;
   flex-direction: row;
   align-items: center;
   padding-vertical: 5px;
-`;
-
-const Check = styled(CheckBox)`
-  margin-left: 20px;
-  margin-right: 5px;
+  margin-left: ${COMMON_PADDING * 2.5}px;
+  padding-vertical: ${COMMON_PADDING}px;
 `;
 
 const RememberText = styled.Text`
+  font-size: 14px;
   color: ${COLORS.BLACK2};
+  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  margin-left: ${COMMON_PADDING}px;
 `;
 
 const ButtonRow = styled.View`
-  margin-vertical: 15px;
+  margin-vertical: ${COMMON_PADDING * 2}px;
 `;
 
 const LoginButton = styled.TouchableOpacity`
-  height: ${COMMON_HEIGHT1 / 2}px;
+  height: ${COMMON_SIZE / 2}px;
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.BLUE1};
@@ -101,7 +100,6 @@ export {
   InputWrap,
   Input,
   CheckRow,
-  Check,
   RememberText,
   ButtonRow,
   LoginButton,

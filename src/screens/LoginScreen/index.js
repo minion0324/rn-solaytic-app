@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -26,16 +26,21 @@ import {
   InputWrap,
   Input,
   CheckRow,
-  Check,
   RememberText,
   ButtonRow,
   LoginButton,
   LoginText,
 } from './styled';
 
-const { UserIcon, LockIcon } = SVGS;
+const {
+  UserIcon,
+  LockIcon,
+  DeactiveCheckIcon,
+  GrayActiveCheckIcon,
+} = SVGS;
 
 const LoginScreen = ({ componentId }) => {
+  const [ rememberCheck, setRememberCheck ] = useState(false);
 
   const toLogin = () => {
     pushMultiScreensApp();
@@ -69,11 +74,13 @@ const LoginScreen = ({ componentId }) => {
               />
             </InputWrap>
           </InputRow>
-          <CheckRow>
-            <Check
-              tintColors={{ true: COLORS.GRAY1, false: COLORS.GRAY1 }}
-            />
-            <RememberText>Remember me</RememberText>
+          <CheckRow onPress={() => setRememberCheck(!rememberCheck)}>
+            {
+              rememberCheck
+              ? <GrayActiveCheckIcon />
+              : <DeactiveCheckIcon />
+            }
+            <RememberText active={rememberCheck}>Remember me</RememberText>
           </CheckRow>
           <ButtonRow>
             <ShadowContainer>
