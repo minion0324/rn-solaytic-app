@@ -10,11 +10,13 @@ const PLATFORM = Platform.OS;
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 //
-const MAIN_PADDING = WIDTH * 0.045;
+const COMMON_HEIGHT1 = HEIGHT * 0.156;
+const COMMON_PADDING1 = WIDTH * 0.028;
 
 export {
   PLATFORM,
   WIDTH,
   HEIGHT,
-  MAIN_PADDING,
+  COMMON_HEIGHT1,
+  COMMON_PADDING1,
 };
