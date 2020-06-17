@@ -1,15 +1,30 @@
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
 import PropTypes from 'prop-types';
+
+import {
+  Header,
+} from 'src/components';
+import {
+  SVGS,
+} from 'src/constants';
+
+import {
+  Container,
+  ShadowWrap,
+} from 'src/styles/common.styles';
+
+const { SideMenuIcon, SearchIcon } = SVGS;
 
 const JobsScreen = ({ componentId }) => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Jobs Screen</Text>
-    </View>
+    <Container>
+      <ShadowWrap>
+        <Header
+          leftIcon={<SideMenuIcon />}
+          rightIcon={<SearchIcon />}
+        />
+      </ShadowWrap>
+    </Container>
   );
 };
 

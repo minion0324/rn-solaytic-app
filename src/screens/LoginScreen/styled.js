@@ -4,6 +4,7 @@ import {
   COLORS,
   COMMON_SIZE,
   COMMON_PADDING,
+  FONT,
 } from 'src/constants';
 
 const Header = styled.View`
@@ -67,7 +68,8 @@ const Input = styled.TextInput`
   width: 80%;
   padding: 0px;
   color: ${COLORS.BLACK2};
-  font-size: 15px;
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
 `;
 
 const CheckRow = styled.TouchableOpacity`
@@ -80,7 +82,7 @@ const CheckRow = styled.TouchableOpacity`
 `;
 
 const RememberText = styled.Text`
-  font-size: 12px;
+  font-size: ${FONT(12)}px;
   color: ${COLORS.BLACK2};
   opacity: ${(props) => (props.active ? 1 : 0.5)};
   margin-left: ${COMMON_PADDING}px;
@@ -98,7 +100,7 @@ const LoginButton = styled.TouchableOpacity`
 `;
 
 const LoginText = styled.Text`
-  font-size: 18px;
+  font-size: ${FONT(18)}px;
   font-weight: 700;
   color: ${COLORS.WHITE1};
 `;

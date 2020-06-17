@@ -20,7 +20,9 @@ const Container = styled.View`
 `;
 
 const CenterIconWrap = styled.View`
-
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 const LeftIconWrap = styled.TouchableOpacity`

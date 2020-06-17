@@ -4,6 +4,7 @@ import {
   COLORS,
   COMMON_SIZE,
   COMMON_PADDING,
+  FONT,
 } from 'src/constants';
 
 const Content = styled.View`
@@ -23,7 +24,8 @@ const ItemRow = styled.View`
 
 const InfoText = styled.Text`
   color: ${COLORS.BLACK2};
-  font-size: 15px;
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
 `
 
 const Button = styled.TouchableOpacity`
@@ -38,12 +40,12 @@ const Button = styled.TouchableOpacity`
 
 const ButtonText = styled.Text`
   color: ${COLORS.BLUE1};
-  font-size: 12px;
+  font-size: ${FONT(12)}px;
   font-style: italic;
 `;
 
 const IconWrap = styled.View`
-  width: 20%;
+  width: 18%;
 `;
 
 const InfoRow = styled.View`

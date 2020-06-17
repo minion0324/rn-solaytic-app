@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 
 import {
   Header,
+  JobCard,
+  ListContainer,
+  ListItemWrap,
 } from 'src/components';
 import {
   SVGS,
@@ -28,6 +31,15 @@ const AlertScreen = ({ componentId }) => {
           rightIcon={<HelloText>Hello, William Tan</HelloText>}
         />
       </ShadowWrap>
+      <ListContainer
+        data={['job1']}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <ListItemWrap>
+            <JobCard />
+          </ListItemWrap>
+        )}
+      />
     </Container>
   );
 };
