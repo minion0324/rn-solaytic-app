@@ -7,6 +7,8 @@ import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import SideMenuIcon from 'src/assets/svgs/icon-side-menu.svg';
 import AccountIcon from 'src/assets/svgs/icon-account.svg';
 import KeyIcon from 'src/assets/svgs/icon-key.svg';
+import ArrowIcon from 'src/assets/svgs/icon-arrow.svg';
+import LocationIcon from 'src/assets/svgs/icon-location.svg';
 
 
 export default {
@@ -19,4 +21,6 @@ export default {
   SideMenuIcon,
   AccountIcon,
   KeyIcon,
+  ArrowIcon,
+  LocationIcon,
 };
