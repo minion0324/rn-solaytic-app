@@ -6,7 +6,19 @@ import {
   COMMON_PADDING,
 } from 'src/constants';
 
-const LogoContainer = styled.View`
+const Header = styled.View`
+  width: 100%;
+  height: ${COMMON_SIZE}px;
+  background-color: ${COLORS.BLUE1};
+`;
+
+const Content = styled.View`
+  align-items: center;
+  justify-content: center;
+  elevation: 12;
+`;
+
+const LogoWrap = styled.View`
   align-items: center;
   justify-content: center;
   height: ${COMMON_SIZE * 2}px;
@@ -16,7 +28,7 @@ const LogoContainer = styled.View`
   background-color: ${COLORS.WHITE1};
 `;
 
-const LogoImage = styled.Image`
+const Logo = styled.Image`
 
 `;
 
@@ -68,7 +80,7 @@ const CheckRow = styled.TouchableOpacity`
 `;
 
 const RememberText = styled.Text`
-  font-size: 14px;
+  font-size: 12px;
   color: ${COLORS.BLACK2};
   opacity: ${(props) => (props.active ? 1 : 0.5)};
   margin-left: ${COMMON_PADDING}px;
@@ -92,8 +104,10 @@ const LoginText = styled.Text`
 `;
 
 export {
-  LogoContainer,
-  LogoImage,
+  Header,
+  Content,
+  LogoWrap,
+  Logo,
   LoginForm,
   InputRow,
   IconWrap,

@@ -12,14 +12,14 @@ import {
 
 import {
   Container,
-  HeaderContainer,
-  ContentContainer,
-  ShadowContainer,
+  ShadowWrap,
 } from 'src/styles/common.styles';
 
 import {
-  LogoContainer,
-  LogoImage,
+  Header,
+  Content,
+  LogoWrap,
+  Logo,
   LoginForm,
   InputRow,
   IconWrap,
@@ -48,14 +48,14 @@ const LoginScreen = ({ componentId }) => {
 
   return (
     <Container>
-      <ShadowContainer>
-        <HeaderContainer />
-      </ShadowContainer>
+      <ShadowWrap>
+        <Header />
+      </ShadowWrap>
 
-      <ContentContainer>
-        <LogoContainer>
-          <LogoImage source={IMAGES.APP_LOGO} />
-        </LogoContainer>
+      <Content>
+        <LogoWrap>
+          <Logo source={IMAGES.APP_LOGO} />
+        </LogoWrap>
         <LoginForm>
           <InputRow>
             <IconWrap><UserIcon /></IconWrap>
@@ -83,14 +83,14 @@ const LoginScreen = ({ componentId }) => {
             <RememberText active={rememberCheck}>Remember me</RememberText>
           </CheckRow>
           <ButtonRow>
-            <ShadowContainer>
+            <ShadowWrap>
               <LoginButton onPress={toLogin}>
                 <LoginText>SIGN IN</LoginText>
               </LoginButton>
-            </ShadowContainer>
+            </ShadowWrap>
           </ButtonRow>
         </LoginForm>
-      </ContentContainer>
+      </Content>
     </Container>
   );
 };
