@@ -1,15 +1,61 @@
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
 import PropTypes from 'prop-types';
+
+import {
+  Header,
+} from 'src/components';
+import {
+  SVGS,
+} from 'src/constants';
+
+import {
+  Container,
+  ShadowWrap,
+  HeaderTitle,
+} from 'src/styles/common.styles';
+
+import {
+  Content,
+  ItemRow,
+  InfoText,
+  Button,
+  ButtonText,
+  IconWrap,
+  InfoRow,
+} from './styled';
+
+const { AccountIcon, KeyIcon } = SVGS;
 
 const ProfileScreen = ({ componentId }) => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile Screen</Text>
-    </View>
+    <Container>
+      <ShadowWrap>
+        <Header
+          centerIcon={<HeaderTitle>SETTINGS</HeaderTitle>}
+        />
+      </ShadowWrap>
+      <Content>
+        <ItemRow>
+          <InfoRow>
+            <IconWrap><AccountIcon /></IconWrap>
+            <InfoText>William Tan</InfoText>
+          </InfoRow>
+          <Button>
+            <ButtonText>Log Out</ButtonText>
+          </Button>
+        </ItemRow>
+
+        <ItemRow>
+          <InfoRow>
+            <IconWrap><KeyIcon /></IconWrap>
+            <InfoText>XB 1234 K</InfoText>
+          </InfoRow>
+          <Button>
+            <ButtonText>Change</ButtonText>
+          </Button>
+        </ItemRow>
+      </Content>
+    </Container>
   );
 };
 
