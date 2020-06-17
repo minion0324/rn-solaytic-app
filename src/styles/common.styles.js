@@ -10,19 +10,7 @@ const Container = styled.SafeAreaView`
   background-color: ${COLORS.WHITE2};
 `;
 
-const HeaderContainer = styled.View`
-  width: 100%;
-  height: ${COMMON_SIZE}px;
-  background-color: ${COLORS.BLUE1};
-`;
-
-const ContentContainer = styled.View`
-  align-items: center;
-  justify-content: center;
-  elevation: 12;
-`;
-
-const ShadowContainer = styled.View`
+const ShadowWrap = styled.View`
   elevation: 10;
   box-shadow: 0px 8px;
   shadow-color: ${COLORS.BLACK1};
@@ -31,9 +19,14 @@ const ShadowContainer = styled.View`
   background-color: ${COLORS.WHITE1};
 `;
 
+const HeaderTitle = styled.Text`
+  font-size: 15px;
+  color: ${COLORS.WHITE1};
+  text-transform: uppercase;
+`;
+
 export {
   Container,
-  HeaderContainer,
-  ContentContainer,
-  ShadowContainer,
+  ShadowWrap,
+  HeaderTitle,
 };
