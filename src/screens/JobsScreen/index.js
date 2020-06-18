@@ -26,6 +26,11 @@ import {
   TabBarInactiveColor,
 } from 'src/styles/tab.styles';
 
+import {
+  DateBar,
+  DateBarText,
+} from './styled';
+
 const { SideMenuIcon, SearchIcon } = SVGS;
 
 const JobsScreen = ({ componentId }) => {
@@ -58,10 +63,18 @@ const JobsScreen = ({ componentId }) => {
       <ListContainer
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <ListItemWrap>
-            <JobCard />
-          </ListItemWrap>
+        renderItem={({ item, index }) => (
+          <>
+            {
+              (index === 0 || index === 3) &&
+              <DateBar>
+                <DateBarText>{index === 0 ? 'TODAY' : 'TOMORROW'}</DateBarText>
+              </DateBar>
+            }
+            <ListItemWrap>
+              <JobCard />
+            </ListItemWrap>
+          </>
         )}
       />
     );
