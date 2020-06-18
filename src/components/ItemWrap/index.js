@@ -18,7 +18,7 @@ const Container = styled.TouchableOpacity`
   margin: ${COMMON_PADDING}px;
 `;
 
-const ListItemWrap = ({
+const ItemWrap = ({
   children,
   onPress,
 }) => {
@@ -34,13 +34,13 @@ const ListItemWrap = ({
   );
 };
 
-ListItemWrap.propTypes = {
+ItemWrap.propTypes = {
   children: PropTypes.node.isRequired,
   onPress: PropTypes.func,
 };
 
-ListItemWrap.defaultProps = {
+ItemWrap.defaultProps = {
   onPress: null,
 };
 
-export default ListItemWrap;
+export default ItemWrap;

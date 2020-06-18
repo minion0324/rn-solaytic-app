@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-const ListContainer = ({
+const ListWrap = ({
   data,
   keyExtractor,
   renderItem,
@@ -32,7 +32,7 @@ const ListContainer = ({
   );
 };
 
-ListContainer.propTypes = {
+ListWrap.propTypes = {
   data: PropTypes.array.isRequired,
   keyExtractor: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
@@ -40,9 +40,9 @@ ListContainer.propTypes = {
   refreshing: PropTypes.bool,
 };
 
-ListContainer.defaultProps = {
+ListWrap.defaultProps = {
   onRefreshProcess: null,
   refreshing: false,
 };
 
-export default ListContainer;
+export default ListWrap;
