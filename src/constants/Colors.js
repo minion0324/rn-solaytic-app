@@ -6,6 +6,7 @@ export default {
   BLACK2: '#484848',
   BLUE1: '#03A9F4',
   GRAY1: '#707070',
+  GRAY2: '#DADADA',
   RED1: '#EF476F',
   TRANSPARENT: 'transparent',
 };
