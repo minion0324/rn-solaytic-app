@@ -9,6 +9,7 @@ import AccountIcon from 'src/assets/svgs/icon-account.svg';
 import KeyIcon from 'src/assets/svgs/icon-key.svg';
 import ArrowIcon from 'src/assets/svgs/icon-arrow.svg';
 import LocationIcon from 'src/assets/svgs/icon-location.svg';
+import ArrowBackIcon from 'src/assets/svgs/icon-back-arrow.svg';
 
 
 export default {
@@ -23,4 +24,5 @@ export default {
   KeyIcon,
   ArrowIcon,
   LocationIcon,
+  ArrowBackIcon,
 };
