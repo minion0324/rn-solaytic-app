@@ -15,21 +15,44 @@ import {
 
 const Container = styled.TouchableOpacity`
   background-color: ${COLORS.WHITE1};
-  margin: ${COMMON_PADDING}px;
+  margin-left: ${props => props.mLeft}px;
+  margin-top: ${props => props.mTop}px;
+  margin-right: ${props => props.mRight}px;
+  margin-bottom: ${props => props.mBottom}px;
+  border-radius: 3px;
+  border-width: 1px;
+  border-color: ${(props) => (
+    props.activated ? COLORS.BLUE1 : COLORS.WHITE1
+  )};
 `;
 
 const ItemWrap = ({
   children,
   onPress,
+  activated,
+  deactivated,
+  mLeft,
+  mTop,
+  mRight,
+  mBottom,
 }) => {
   return (
     <Container
       onPress={onPress}
       disabled={!onPress}
+      activated={activated}
+      mLeft={mLeft}
+      mTop={mTop}
+      mRight={mRight}
+      mBottom={mBottom}
     >
-      <ShadowWrap>
-        {children}
-      </ShadowWrap>
+      {
+        deactivated
+        ? children
+        : <ShadowWrap>
+            {children}
+          </ShadowWrap>
+      }
     </Container>
   );
 };
@@ -37,10 +60,22 @@ const ItemWrap = ({
 ItemWrap.propTypes = {
   children: PropTypes.node.isRequired,
   onPress: PropTypes.func,
+  activated: PropTypes.bool,
+  deactivated: PropTypes.bool,
+  mLeft: PropTypes.number,
+  mTop: PropTypes.number,
+  mRight: PropTypes.number,
+  mBottom: PropTypes.number,
 };
 
 ItemWrap.defaultProps = {
   onPress: null,
+  activated: false,
+  deactivated: false,
+  mLeft: COMMON_PADDING,
+  mTop: COMMON_PADDING,
+  mRight: COMMON_PADDING,
+  mBottom: COMMON_PADDING,
 };
 
 export default ItemWrap;
