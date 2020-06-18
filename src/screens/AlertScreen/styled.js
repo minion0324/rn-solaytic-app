@@ -7,12 +7,6 @@ import {
   FONT,
 } from 'src/constants';
 
-const HelloText = styled.Text`
-  font-size: ${FONT(18)}px;
-  font-weight: 500;
-  color: ${COLORS.WHITE1};
-`;
-
 const ButtonWrap = styled.View`
   height: ${COMMON_SIZE * 0.4}px;
   flex-direction: row;
@@ -40,7 +34,6 @@ const ButtonText = styled.Text`
 `;
 
 export {
-  HelloText,
   ButtonWrap,
   Button,
   ButtonText,

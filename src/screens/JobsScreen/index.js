@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { TabView, TabBar } from 'react-native-tab-view';
 
 import {
   Header,
   JobCard,
-  ListContainer,
-  ListItemWrap,
+  ListWrap,
+  ItemWrap,
 } from 'src/components';
 import {
   SVGS,
   WIDTH,
   HEIGHT,
 } from 'src/constants';
+import {
+  pushScreen,
+  JOB_DETAILS_SCREEN,
+} from 'src/navigation';
 
 import {
   Container,
@@ -42,6 +47,10 @@ const JobsScreen = ({ componentId }) => {
     { key: 'fourth', title: 'Cancelled (1)' },
   ]);
 
+  const toJobDetails = () => {
+    pushScreen(componentId, JOB_DETAILS_SCREEN);
+  }
+
   const renderTabBar = (props) => {
     return (
       <TabBar
@@ -60,21 +69,23 @@ const JobsScreen = ({ componentId }) => {
 
   const renderScene = ({ route }) => {
     return (
-      <ListContainer
+      <ListWrap
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
         renderItem={({ item, index }) => (
-          <>
+          <View>
             {
               (index === 0 || index === 3) &&
               <DateBar>
                 <DateBarText>{index === 0 ? 'TODAY' : 'TOMORROW'}</DateBarText>
               </DateBar>
             }
-            <ListItemWrap>
+            <ItemWrap
+              onPress={toJobDetails}
+            >
               <JobCard />
-            </ListItemWrap>
-          </>
+            </ItemWrap>
+          </View>
         )}
       />
     );

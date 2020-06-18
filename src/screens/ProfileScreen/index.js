@@ -11,8 +11,11 @@ import {
 import {
   Container,
   ShadowWrap,
-  HeaderTitle,
 } from 'src/styles/common.styles';
+import {
+  ScreenText,
+} from 'src/styles/header.styles';
+
 
 import {
   Content,
@@ -31,7 +34,7 @@ const ProfileScreen = ({ componentId }) => {
     <Container>
       <ShadowWrap>
         <Header
-          centerIcon={<HeaderTitle>SETTINGS</HeaderTitle>}
+          centerIcon={<ScreenText>Settings</ScreenText>}
         />
       </ShadowWrap>
       <Content>

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import {
   Header,
   JobCard,
-  ListContainer,
-  ListItemWrap,
+  ListWrap,
+  ItemWrap,
 } from 'src/components';
 import {
   SVGS,
@@ -16,9 +16,11 @@ import {
   Container,
   ShadowWrap,
 } from 'src/styles/common.styles';
-
 import {
   HelloText,
+} from 'src/styles/header.styles';
+
+import {
   ButtonWrap,
   Button,
   ButtonText,
@@ -43,13 +45,13 @@ const AlertScreen = ({ componentId }) => {
           </Button>
         </ButtonWrap>
       </ShadowWrap>
-      <ListContainer
+      <ListWrap
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <ListItemWrap>
+          <ItemWrap>
             <JobCard />
-          </ListItemWrap>
+          </ItemWrap>
         )}
       />
     </Container>

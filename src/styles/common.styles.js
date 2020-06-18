@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_SIZE,
-  FONT,
 } from 'src/constants';
 
 const Container = styled.SafeAreaView`
@@ -20,15 +18,7 @@ const ShadowWrap = styled.View`
   background-color: ${COLORS.WHITE1};
 `;
 
-const HeaderTitle = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.WHITE1};
-  text-transform: uppercase;
-`;
-
 export {
   Container,
   ShadowWrap,
-  HeaderTitle,
 };
