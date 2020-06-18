@@ -1,6 +1,7 @@
 export * from './Screens';
 export {
-  hideBottomTabs,
+  showModal,
+  dismissModal,
   pushScreen,
   popScreen,
   pushMultiScreensApp,

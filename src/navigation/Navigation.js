@@ -16,12 +16,26 @@ import registerScreens from './registerScreens';
 
 registerScreens();
 
-export function hideBottomTabs(componentId) {
-  return Navigation.mergeOptions(componentId, {
-    bottomTabs: {
-      visible: false,
+export function showModal(modalName, passProps = {}, options = {}) {
+  Navigation.showModal({
+    stack: {
+      children: [{
+        component: {
+          name: modalName,
+          passProps: {
+            ...passProps,
+          },
+          options: {
+            ...options,
+          },
+        },
+      }],
     },
   });
+}
+
+export function dismissModal(componentId) {
+  return Navigation.dismissModal(componentId);
 }
 
 export function pushScreen(componentId, screenName, passProps = {}, options = {}) {
@@ -32,15 +46,10 @@ export function pushScreen(componentId, screenName, passProps = {}, options = {}
         ...passProps,
       },
       options: {
-        bottomTabs: {
-          visible: false,
-          drawBehind: false,
-          animate: false,
-        },
         ...options,
       },
     },
-  })
+  });
 }
 
 export function popScreen(componentId) {
