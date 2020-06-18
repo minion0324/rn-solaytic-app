@@ -5,6 +5,7 @@ import {
   AlertScreen,
   JobsScreen,
   ProfileScreen,
+  JobDetailsScreen,
 } from 'src/screens';
 
 import {
@@ -12,6 +13,7 @@ import {
   ALERT_SCREEN,
   JOBS_SCREEN,
   PROFILE_SCREEN,
+  JOB_DETAILS_SCREEN,
 } from './Screens';
 
 export default function () {
@@ -19,4 +21,5 @@ export default function () {
   Navigation.registerComponent(ALERT_SCREEN, () => AlertScreen);
   Navigation.registerComponent(JOBS_SCREEN, () => JobsScreen);
   Navigation.registerComponent(PROFILE_SCREEN, () => ProfileScreen);
+  Navigation.registerComponent(JOB_DETAILS_SCREEN, () => JobDetailsScreen);
 }
