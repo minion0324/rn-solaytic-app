@@ -10,6 +10,11 @@ import KeyIcon from 'src/assets/svgs/icon-key.svg';
 import ArrowIcon from 'src/assets/svgs/icon-arrow.svg';
 import LocationIcon from 'src/assets/svgs/icon-location.svg';
 import ArrowBackIcon from 'src/assets/svgs/icon-back-arrow.svg';
+import MessageIcon from 'src/assets/svgs/icon-message.svg';
+import CameraIcon from 'src/assets/svgs/icon-camera.svg';
+import PhoneIcon from 'src/assets/svgs/icon-phone.svg';
+import SmallLocationIcon from 'src/assets/svgs/icon-location-small.svg';
+import GroupIcon from 'src/assets/svgs/icon-group.svg';
 
 
 export default {
@@ -25,4 +30,9 @@ export default {
   ArrowIcon,
   LocationIcon,
   ArrowBackIcon,
+  MessageIcon,
+  CameraIcon,
+  PhoneIcon,
+  SmallLocationIcon,
+  GroupIcon,
 };
