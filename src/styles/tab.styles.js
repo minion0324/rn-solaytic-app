@@ -1,32 +1,42 @@
+import {
+  COLORS,
+  COMMON_SIZE,
+  COMMON_PADDING,
+  FONT,
+} from 'src/constants';
+
+const TAB_WIDTH = COMMON_SIZE * 1.2;
+const INDICATOR_WIDTH = COMMON_SIZE * 0.7;
+
 const TabBarStyle = {
+  height: COMMON_SIZE * 0.4,
   paddingTop: 0,
-  backgroundColor: 'red',
+  backgroundColor: COLORS.BLUE1,
   elevation: 0,
-  borderBottomWidth: 1,
-  borderBottomColor: '#f2f2f2',
 };
 
 const TabBarIndicatorStyle = {
-  backgroundColor: '#1da1f3',
+  width: INDICATOR_WIDTH,
   height: 3,
+  left: (TAB_WIDTH - INDICATOR_WIDTH) / 2,
+  backgroundColor: COLORS.WHITE1,
 };
 
 const TabBarLabelStyle = {
-  fontSize: 16,
+  fontSize: FONT(12),
 };
 
 const TabBarTabStyle = {
-  width: 'auto',
-  marginTop: -5,
+  width: TAB_WIDTH,
 };
 
 const TabBarTabFullWidthStyle = {
-  marginTop: -5,
+  //
 };
 
-const TabBarActiveColor = '#1da1f3';
+const TabBarActiveColor = COLORS.WHITE1;
 
-const TabBarInactiveColor = '#667683';
+const TabBarInactiveColor = COLORS.WHITE1;
 
 export {
   TabBarStyle,

@@ -16,7 +16,6 @@ import {
 
 import {
   Container,
-  ShadowWrap,
 } from 'src/styles/common.styles';
 import {
   TabBarStyle,
@@ -70,25 +69,23 @@ const JobsScreen = ({ componentId }) => {
 
   return (
     <Container>
-      <ShadowWrap>
-        <Header
-          leftIcon={<SideMenuIcon />}
-          rightIcon={<SearchIcon />}
-        />
+      <Header
+        leftIcon={<SideMenuIcon />}
+        rightIcon={<SearchIcon />}
+      />
 
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={idx => setIndex(idx)}
-          initialLayout={{
-            width: WIDTH,
-            height: HEIGHT,
-          }}
-          swipeEnabled
-          useNativeDriver
-        />
-      </ShadowWrap>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={idx => setIndex(idx)}
+        initialLayout={{
+          width: WIDTH,
+          height: HEIGHT,
+        }}
+        swipeEnabled
+        useNativeDriver
+      />
     </Container>
   );
 };
