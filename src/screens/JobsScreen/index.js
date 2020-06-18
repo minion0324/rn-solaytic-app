@@ -15,7 +15,7 @@ import {
   HEIGHT,
 } from 'src/constants';
 import {
-  pushScreen,
+  showModal,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 
@@ -48,7 +48,7 @@ const JobsScreen = ({ componentId }) => {
   ]);
 
   const toJobDetails = () => {
-    pushScreen(componentId, JOB_DETAILS_SCREEN);
+    showModal(JOB_DETAILS_SCREEN);
   }
 
   const renderTabBar = (props) => {
