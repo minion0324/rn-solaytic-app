@@ -18,6 +18,7 @@ const {
 
 const Container = styled.View`
   padding: ${COMMON_PADDING}px;
+  background-color: ${COLORS.WHITE1};
 `;
 
 const CheckRow = styled.View`
