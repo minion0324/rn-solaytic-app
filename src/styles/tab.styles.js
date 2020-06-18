@@ -13,6 +13,11 @@ const TabBarStyle = {
   paddingTop: 0,
   backgroundColor: COLORS.BLUE1,
   elevation: 0,
+
+  shadowColor: COLORS.BLACK1,
+  shadowOffset: { width: 0, height: 8 },
+  shadowRadius: 4,
+  shadowOpacity: 0.1,
 };
 
 const TabBarIndicatorStyle = {
@@ -23,7 +28,7 @@ const TabBarIndicatorStyle = {
 };
 
 const TabBarLabelStyle = {
-  fontSize: FONT(12),
+  fontSize: FONT(14),
 };
 
 const TabBarTabStyle = {
