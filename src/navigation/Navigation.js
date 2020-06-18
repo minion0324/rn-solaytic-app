@@ -16,6 +16,37 @@ import registerScreens from './registerScreens';
 
 registerScreens();
 
+export function hideBottomTabs(componentId) {
+  return Navigation.mergeOptions(componentId, {
+    bottomTabs: {
+      visible: false,
+    },
+  });
+}
+
+export function pushScreen(componentId, screenName, passProps = {}, options = {}) {
+  return Navigation.push(componentId, {
+    component: {
+      name: screenName,
+      passProps: {
+        ...passProps,
+      },
+      options: {
+        bottomTabs: {
+          visible: false,
+          drawBehind: false,
+          animate: false,
+        },
+        ...options,
+      },
+    },
+  })
+}
+
+export function popScreen(componentId) {
+  return Navigation.pop(componentId);
+}
+
 export function pushSingleScreenApp() {
   Navigation.setDefaultOptions({
     layout: {
