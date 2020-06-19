@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import {
   SVGS,
   COLORS,
-  COMMON_PADDING,
+  SIZE1,
+  SIZE2,
   FONT,
 } from 'src/constants';
 
@@ -33,7 +34,7 @@ const JobText = styled.Text`
 const BackButtonWrap = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-left: ${COMMON_PADDING}px;
+  margin-left: ${SIZE2}px;
 `;
 
 const BackButtonText = styled.Text`
@@ -41,7 +42,7 @@ const BackButtonText = styled.Text`
   font-weight: 600;
   color: ${COLORS.WHITE1};
   text-transform: uppercase;
-  margin-left: ${COMMON_PADDING / 2}px;
+  margin-left: ${SIZE1}px;
 `;
 
 const BackButton = () => (

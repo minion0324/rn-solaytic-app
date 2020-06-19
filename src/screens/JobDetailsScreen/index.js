@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
   SVGS,
   COLORS,
-  COMMON_PADDING,
+  SIZE1,
 } from 'src/constants';
 import {
   Header,
@@ -70,8 +70,8 @@ const JobDetailsScreen = ({ componentId }) => {
         onPress={() => setIndex(0)}
         activated={activated}
         deactivated={deactivated}
-        mTop={COMMON_PADDING / 2}
-        mBottom={COMMON_PADDING / 2}
+        mTop={SIZE1}
+        mBottom={SIZE1}
       >
         <ItemContent>
           <InfoView>
@@ -99,6 +99,7 @@ const JobDetailsScreen = ({ componentId }) => {
             ['5FT (5 * 8 * 16)', 'RUBBISH'].map(item => (
               <ItemRow
                 key={item}
+                activated={activated}
               >
                 <ItemText>{item}</ItemText>
               </ItemRow>
@@ -133,8 +134,8 @@ const JobDetailsScreen = ({ componentId }) => {
         onPress={() => setIndex(1)}
         activated={activated}
         deactivated={deactivated}
-        mTop={COMMON_PADDING / 2}
-        mBottom={COMMON_PADDING / 2}
+        mTop={SIZE1}
+        mBottom={SIZE1}
       >
         <ItemContent>
           <InfoView>

@@ -1,15 +1,17 @@
 import {
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE8,
+  SIZE12,
+  SIZE20,
+  SIZE24,
   FONT,
 } from 'src/constants';
 
-const TAB_WIDTH = COMMON_SIZE * 1.2;
-const INDICATOR_WIDTH = COMMON_SIZE * 0.7;
+const TAB_WIDTH = SIZE24;
+const INDICATOR_WIDTH = SIZE12;
 
 const TabBarStyle = {
-  height: COMMON_SIZE * 0.4,
+  height: SIZE8,
   paddingTop: 0,
   backgroundColor: COLORS.BLUE1,
   elevation: 0,

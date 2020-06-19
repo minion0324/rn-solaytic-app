@@ -2,24 +2,27 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE1,
+  SIZE4,
+  SIZE6,
+  SIZE8,
+  SIZE10,
   FONT,
 } from 'src/constants';
 
 const Content = styled.View`
-  margin-top: ${COMMON_PADDING * 2}px;
+  margin-top: ${SIZE4}px;
 `;
 
 const ItemRow = styled.View`
-  height: ${COMMON_SIZE / 2}px;
+  height: ${SIZE10}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin-vertical: 1px;
   background-color: ${COLORS.WHITE1};
-  padding-left: ${COMMON_PADDING * 3}px;
-  padding-right: ${COMMON_PADDING * 4}px;
+  padding-left: ${SIZE6}px;
+  padding-right: ${SIZE8}px;
 `;
 
 const InfoText = styled.Text`
@@ -35,7 +38,7 @@ const Button = styled.TouchableOpacity`
   border-width: 1px;
   border-color: ${COLORS.BLUE1};
   border-radius: 2px;
-  padding-vertical: ${COMMON_PADDING / 2}px;
+  padding-vertical: ${SIZE1}px;
 `;
 
 const ButtonText = styled.Text`

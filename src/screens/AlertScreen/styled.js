@@ -2,18 +2,19 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE1,
+  SIZE2,
+  SIZE8,
   FONT,
 } from 'src/constants';
 
 const ButtonWrap = styled.View`
-  height: ${COMMON_SIZE * 0.4}px;
+  height: ${SIZE8}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.BLUE1};
-  padding-horizontal: ${COMMON_PADDING}px;
+  padding-horizontal: ${SIZE2}px;
 `;
 
 const Button = styled.TouchableOpacity`
@@ -21,8 +22,8 @@ const Button = styled.TouchableOpacity`
   background-color: ${COLORS.WHITE1};
   align-items: center;
   justify-content: center;
-  margin-horizontal: ${COMMON_PADDING}px;
-  padding-vertical: ${COMMON_PADDING / 2}px;
+  margin-horizontal: ${SIZE2}px;
+  padding-vertical: ${SIZE1}px;
   border-radius: 3px;
 `;
 

@@ -4,19 +4,20 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE12,
+  SIZE2,
+  SIZE4,
 } from 'src/constants';
 
 const Container = styled.View`
   width: 100%;
-  height: ${COMMON_SIZE * 0.6}px;
+  height: ${SIZE12}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   background-color: ${COLORS.BLUE1};
-  padding-left: ${COMMON_PADDING}px;
-  padding-right: ${COMMON_PADDING * 2}px;
+  padding-left: ${SIZE2}px;
+  padding-right: ${SIZE4}px;
 `;
 
 const CenterIconWrap = styled.View`

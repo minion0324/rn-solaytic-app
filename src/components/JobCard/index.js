@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import {
   SVGS,
   COLORS,
-  COMMON_PADDING,
+  SIZE1,
+  SIZE2,
+  SIZE3,
   FONT,
 } from 'src/constants';
 
@@ -17,7 +19,7 @@ const {
 } = SVGS;
 
 const Container = styled.View`
-  padding: ${COMMON_PADDING}px;
+  padding: ${SIZE2}px;
   background-color: ${COLORS.WHITE1};
 `;
 
@@ -31,15 +33,15 @@ const CheckText = styled.Text`
   opacity: 0.7;
   color: ${COLORS.BLACK2};
   text-transform: uppercase;
-  margin-left: ${COMMON_PADDING}px;
+  margin-left: ${SIZE2}px;
 `;
 
 const TitleRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: ${COMMON_PADDING * 1.5}px;
-  margin-right: ${COMMON_PADDING}px;
+  margin-top: ${SIZE3}px;
+  margin-right: ${SIZE2}px;
 `;
 
 const TitleText = styled.Text`
@@ -51,7 +53,7 @@ const TitleText = styled.Text`
 const LocationRow = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: ${COMMON_PADDING / 2}px;
+  margin-top: ${SIZE1}px;
 `;
 
 const LocationText = styled.Text`
@@ -59,14 +61,14 @@ const LocationText = styled.Text`
   opacity: 0.7;
   font-weight: 600;
   color: ${COLORS.BLACK2};
-  margin-left: ${COMMON_PADDING / 2}px;
+  margin-left: ${SIZE1}px;
 `;
 
 const Border = styled.View`
   width: 100%;
   border-width: 1px;
   border-color: ${COLORS.WHITE3};
-  margin-vertical: ${COMMON_PADDING * 1.5}px;
+  margin-vertical: ${SIZE3}px;
 `;
 
 const DateTimeRow = styled.View`
@@ -85,8 +87,8 @@ const StatusRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-right: ${COMMON_PADDING}px;
-  margin-bottom: ${COMMON_PADDING * 0.5}px;
+  margin-right: ${SIZE2}px;
+  margin-bottom: ${SIZE1}px;
 `;
 
 const StatusText = styled.Text`

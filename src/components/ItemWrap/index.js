@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import {
   SVGS,
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE2,
 } from 'src/constants';
 
 import {
@@ -72,10 +71,10 @@ ItemWrap.defaultProps = {
   onPress: null,
   activated: false,
   deactivated: false,
-  mLeft: COMMON_PADDING,
-  mTop: COMMON_PADDING,
-  mRight: COMMON_PADDING,
-  mBottom: COMMON_PADDING,
+  mLeft: SIZE2,
+  mTop: SIZE2,
+  mRight: SIZE2,
+  mBottom: SIZE2,
 };
 
 export default ItemWrap;

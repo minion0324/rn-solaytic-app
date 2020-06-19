@@ -2,14 +2,21 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE1,
+  SIZE2,
+  SIZE4,
+  SIZE5,
+  SIZE6,
+  SIZE10,
+  SIZE16,
+  SIZE20,
+  SIZE40,
   FONT,
 } from 'src/constants';
 
 const Header = styled.View`
   width: 100%;
-  height: ${COMMON_SIZE}px;
+  height: ${SIZE20}px;
   background-color: ${COLORS.BLUE1};
 `;
 
@@ -22,10 +29,10 @@ const Content = styled.View`
 const LogoWrap = styled.View`
   align-items: center;
   justify-content: center;
-  height: ${COMMON_SIZE * 2}px;
+  height: ${SIZE40}px;
   aspect-ratio: 1;
-  margin-top: -${COMMON_SIZE * 0.8}px;
-  border-radius: ${COMMON_SIZE}px;
+  margin-top: -${SIZE16}px;
+  border-radius: ${SIZE20}px;
   background-color: ${COLORS.WHITE1};
 `;
 
@@ -34,18 +41,18 @@ const Logo = styled.Image`
 `;
 
 const LoginForm = styled.View`
-  padding-vertical: ${COMMON_PADDING / 2}px;
-  padding-horizontal: ${COMMON_PADDING * 3}px;
+  padding-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE6}px;
 `;
 
 const InputRow = styled.View`
   width: 100%;
   flex-direction: row;
-  padding-vertical: ${COMMON_PADDING / 2}px;
+  padding-vertical: ${SIZE1}px;
 `;
 
 const IconWrap = styled.View`
-  height: ${COMMON_SIZE / 2}px;
+  height: ${SIZE10}px;
   aspect-ratio: 1;
   align-items: center;
   justify-content: center;
@@ -55,13 +62,13 @@ const IconWrap = styled.View`
 
 const InputWrap = styled.View`
   flex: 1;
-  height: ${COMMON_SIZE / 2}px;
+  height: ${SIZE10}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.WHITE1};
   border-radius: 3px;
-  margin-left: ${COMMON_PADDING / 2}px;
+  margin-left: ${SIZE1}px;
 `;
 
 const Input = styled.TextInput`
@@ -77,23 +84,23 @@ const CheckRow = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding-vertical: 5px;
-  margin-left: ${COMMON_PADDING * 2.5}px;
-  padding-vertical: ${COMMON_PADDING}px;
+  margin-left: ${SIZE5}px;
+  padding-vertical: ${SIZE2}px;
 `;
 
 const RememberText = styled.Text`
   font-size: ${FONT(12)}px;
   color: ${COLORS.BLACK2};
   opacity: ${(props) => (props.active ? 1 : 0.5)};
-  margin-left: ${COMMON_PADDING}px;
+  margin-left: ${SIZE2}px;
 `;
 
 const ButtonRow = styled.View`
-  margin-vertical: ${COMMON_PADDING * 2}px;
+  margin-vertical: ${SIZE4}px;
 `;
 
 const LoginButton = styled.TouchableOpacity`
-  height: ${COMMON_SIZE / 2}px;
+  height: ${SIZE10}px;
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.BLUE1};

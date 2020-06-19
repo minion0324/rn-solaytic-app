@@ -2,20 +2,21 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  COMMON_SIZE,
-  COMMON_PADDING,
+  SIZE40,
+  SIZE2,
+  SIZE4,
   FONT,
 } from 'src/constants';
 
 const DateBar = styled.View`
-  width: ${COMMON_SIZE * 2}px;
+  width: ${SIZE40}px;
   align-self: center;
   justify-content: center;
   align-items: center;
   background-color: ${COLORS.WHITE1};
   padding-vertical: 3px;
-  margin-top: ${COMMON_PADDING * 2}px;
-  margin-bottom: ${COMMON_PADDING}px;
+  margin-top: ${SIZE4}px;
+  margin-bottom: ${SIZE2}px;
 `;
 
 const DateBarText = styled.Text`
