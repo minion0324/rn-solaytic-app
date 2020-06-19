@@ -16,7 +16,6 @@ const Container = styled.View`
 
 const TouchWrap = styled.TouchableOpacity`
   background-color: ${COLORS.WHITE1};
-  overflow: hidden;
   border-radius: 3px;
   border-width: 1px;
   border-color: ${(props) => (
@@ -27,7 +26,9 @@ const TouchWrap = styled.TouchableOpacity`
   )};
   box-shadow: 0px 8px;
   shadow-color: ${COLORS.BLACK1};
-  shadow-opacity: 0.1;
+  shadow-opacity: ${(props) => (
+    props.deactivated ? 0 : 0.1
+  )};
   shadow-radius: 4px;
 `;
 
