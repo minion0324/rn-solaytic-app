@@ -128,7 +128,6 @@ const ToolRow = styled.View`
 `;
 
 const ItemContent = styled.View`
-  background-color: ${COLORS.WHITE1};
   padding-top: ${SIZE1}px;
   padding-bottom: ${SIZE2}px;
   padding-horizontal: ${SIZE4}px;

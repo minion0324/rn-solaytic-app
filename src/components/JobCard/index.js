@@ -20,7 +20,6 @@ const {
 
 const Container = styled.View`
   padding: ${SIZE2}px;
-  background-color: ${COLORS.WHITE1};
 `;
 
 const CheckRow = styled.View`
