@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
   pushMultiScreensApp,
@@ -9,6 +11,7 @@ import {
   IMAGES,
   COLORS,
 } from 'src/constants';
+import { User } from 'src/redux';
 
 import {
   Container,
@@ -39,12 +42,52 @@ const {
   GrayActiveCheckIcon,
 } = SVGS;
 
-const LoginScreen = ({ componentId }) => {
-  const [ rememberCheck, setRememberCheck ] = useState(false);
+const LoginScreen = ({
+  token,
+  rememberedUser,
+  login,
+  setRememberedUser,
+}) => {
+  const inputUserName = useRef(null);
+  const inputPassword = useRef(null);
 
-  const toLogin = () => {
+  const [ loading, setLoading ] = useState(false);
+  const [ userName, setUserName ] = useState(rememberedUser);
+  const [ password, setPassword ] = useState('');
+  const [ rememberCheck, setRememberCheck ] = useState(rememberedUser ? true : false);
+
+  const onLoginSuccess = () => {
+    setLoading(false);
+
+    setRememberedUser(rememberCheck ? userName : '');
+
     pushMultiScreensApp();
-  }
+  };
+
+  const onLoginFailure = (error) => {
+    setLoading(false);
+  };
+
+  const onLogin = () => {
+    if (loading) return;
+
+    setLoading(true);
+
+    login({
+      userName,
+      password,
+      success: onLoginSuccess,
+      failure: onLoginFailure,
+    });
+  };
+
+  const onChangeUserName = (text) => {
+    setUserName(text);
+  };
+
+  const onChangePassword = (text) => {
+    setPassword(text);
+  };
 
   return (
     <Container>
@@ -61,7 +104,14 @@ const LoginScreen = ({ componentId }) => {
             <IconWrap><UserIcon /></IconWrap>
             <InputWrap>
               <Input
+                ref={inputUserName}
                 underlineColorAndroid={COLORS.TRANSPARENT}
+                returnKeyType={'next'}
+                onSubmitEditing={() => inputPassword.current.focus()}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => onChangeUserName(text)}
+                value={userName}
               />
             </InputWrap>
           </InputRow>
@@ -69,8 +119,15 @@ const LoginScreen = ({ componentId }) => {
             <IconWrap><LockIcon /></IconWrap>
             <InputWrap>
               <Input
+                ref={inputPassword}
                 secureTextEntry={true}
                 underlineColorAndroid={COLORS.TRANSPARENT}
+                returnKeyType={'go'}
+                onSubmitEditing={onLogin}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => onChangePassword(text)}
+                value={password}
               />
             </InputWrap>
           </InputRow>
@@ -84,8 +141,12 @@ const LoginScreen = ({ componentId }) => {
           </CheckRow>
           <ButtonRow>
             <ShadowWrap>
-              <LoginButton onPress={toLogin}>
-                <LoginText>SIGN IN</LoginText>
+              <LoginButton onPress={onLogin}>
+                {
+                  loading
+                  ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
+                  : <LoginText>SIGN IN</LoginText>
+                }
               </LoginButton>
             </ShadowWrap>
           </ButtonRow>
@@ -96,7 +157,26 @@ const LoginScreen = ({ componentId }) => {
 };
 
 LoginScreen.propTypes = {
+  token: PropTypes.string.isRequired,
+  rememberedUser: PropTypes.string.isRequired,
+  login: PropTypes.func.isRequired,
+  setRememberedUser: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+  return {
+    token: User.selectors.getToken(state),
+    rememberedUser: User.selectors.getRememberedUser(state),
+  };
+};
+
+const mapDispatchToProps = {
+  login: User.actionCreators.login,
+  setRememberedUser: User.actionCreators.setRememberedUser,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoginScreen);
