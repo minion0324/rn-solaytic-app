@@ -12,8 +12,8 @@ import {
 const { ArrowBackIcon } = SVGS;
 
 const HelloText = styled.Text`
-  font-size: ${FONT(18)}px;
-  font-weight: 500;
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
   color: ${COLORS.BLACK2};
 `;
 
