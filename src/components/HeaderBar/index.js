@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  SIZE12,
   SIZE2,
   SIZE4,
+  SIZE12,
 } from 'src/constants';
 
 const Container = styled.View`
