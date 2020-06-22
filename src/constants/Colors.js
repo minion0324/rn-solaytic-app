@@ -5,6 +5,7 @@ export default {
   BLACK1: '#000000',
   BLACK2: '#484848',
   BLUE1: '#03A9F4',
+  BLUE2: '#E5F6FE',
   GRAY1: '#707070',
   GRAY2: '#DADADA',
   RED1: '#EF476F',
