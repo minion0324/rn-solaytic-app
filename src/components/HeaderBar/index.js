@@ -34,7 +34,7 @@ const RightIconWrap = styled.TouchableOpacity`
 
 `;
 
-const Header = ({
+const HeaderBar = ({
   centerIcon,
   leftIcon,
   onPressLeft,
@@ -64,7 +64,7 @@ const Header = ({
   );
 }
 
-Header.propTypes = {
+HeaderBar.propTypes = {
   centerIcon: PropTypes.node,
   leftIcon: PropTypes.node,
   onPressLeft: PropTypes.func,
@@ -72,7 +72,7 @@ Header.propTypes = {
   onPressRight: PropTypes.func,
 }
 
-Header.defaultProps = {
+HeaderBar.defaultProps = {
   centerIcon: null,
   leftIcon: null,
   onPressLeft: null,
@@ -80,4 +80,4 @@ Header.defaultProps = {
   onPressRight: null,
 }
 
-export default Header;
+export default HeaderBar;
