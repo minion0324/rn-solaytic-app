@@ -25,6 +25,7 @@ const SIZE16 = SIZE1 * 16; // 80
 
 const SIZE20 = SIZE1 * 20; // 100
 const SIZE24 = SIZE1 * 24; // 120
+const SIZE30 = SIZE1 * 30; // 150
 const SIZE40 = SIZE1 * 40; // 200
 
 
@@ -49,6 +50,7 @@ export {
   SIZE16,
   SIZE20,
   SIZE24,
+  SIZE30,
   SIZE40,
   FONT,
 };

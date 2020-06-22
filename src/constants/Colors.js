@@ -9,6 +9,7 @@ export default {
   BLUE3: '#A1E2FF',
   GRAY1: '#707070',
   GRAY2: '#DADADA',
+  GRAY3: '#7F7F7F',
   RED1: '#EF476F',
   TRANSPARENT: 'transparent',
 };

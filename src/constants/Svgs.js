@@ -2,8 +2,6 @@ import ActiveCheckIcon from 'src/assets/svgs/icon-check-active.svg';
 import DeactiveCheckIcon from 'src/assets/svgs/icon-check-deactive.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import SideMenuIcon from 'src/assets/svgs/icon-side-menu.svg';
-import AccountIcon from 'src/assets/svgs/icon-account.svg';
-import KeyIcon from 'src/assets/svgs/icon-key.svg';
 import ArrowIcon from 'src/assets/svgs/icon-arrow.svg';
 import LocationIcon from 'src/assets/svgs/icon-location.svg';
 import ArrowBackIcon from 'src/assets/svgs/icon-back-arrow.svg';
@@ -20,14 +18,13 @@ import JobsIcon from 'src/assets/svgs/icon-jobs.svg';
 import ActiveJobsIcon from 'src/assets/svgs/icon-jobs-active.svg';
 import ProfileIcon from 'src/assets/svgs/icon-profile.svg';
 import ActiveProfileIcon from 'src/assets/svgs/icon-profile-active.svg';
+import AvatarIcon from 'src/assets/svgs/icon-avatar.svg';
 
 export default {
   ActiveCheckIcon,
   DeactiveCheckIcon,
   SearchIcon,
   SideMenuIcon,
-  AccountIcon,
-  KeyIcon,
   ArrowIcon,
   LocationIcon,
   ArrowBackIcon,
@@ -44,4 +41,5 @@ export default {
   ActiveJobsIcon,
   ProfileIcon,
   ActiveProfileIcon,
+  AvatarIcon,
 };
