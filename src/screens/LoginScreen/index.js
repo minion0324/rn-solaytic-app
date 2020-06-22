@@ -15,31 +15,26 @@ import { User } from 'src/redux';
 
 import {
   Container,
-  ShadowWrap,
 } from 'src/styles/common.styles';
 
 import {
-  Header,
   Content,
-  LogoWrap,
   Logo,
-  LoginForm,
-  InputRow,
-  IconWrap,
   InputWrap,
   Input,
-  CheckRow,
+  IconWrap,
+  RememberWrap,
   RememberText,
-  ButtonRow,
+  ButtonWrap,
   LoginButton,
   LoginText,
 } from './styled';
 
 const {
-  UserIcon,
-  LockIcon,
+  ActiveCheckIcon,
   DeactiveCheckIcon,
-  GrayActiveCheckIcon,
+  VisibilityOnIcon,
+  VisibilityOffIcon,
 } = SVGS;
 
 const LoginScreen = ({
@@ -56,6 +51,7 @@ const LoginScreen = ({
   const [ userName, setUserName ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ rememberCheck, setRememberCheck ] = useState(false);
+  const [ visibility, setVisibility ] = useState(false);
 
   useEffect(() => {
     if (rememberedUser) {
@@ -98,67 +94,63 @@ const LoginScreen = ({
   };
 
   return (
-    <Container>
-      <ShadowWrap>
-        <Header />
-      </ShadowWrap>
-
+    <Container color={COLORS.WHITE1}>
       <Content>
-        <LogoWrap>
-          <Logo source={IMAGES.APP_LOGO} />
-        </LogoWrap>
-        <LoginForm>
-          <InputRow>
-            <IconWrap><UserIcon /></IconWrap>
-            <InputWrap>
-              <Input
-                ref={inputUserName}
-                underlineColorAndroid={COLORS.TRANSPARENT}
-                returnKeyType={'next'}
-                onSubmitEditing={() => inputPassword.current.focus()}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                onChangeText={text => onChangeUserName(text)}
-                value={userName}
-              />
-            </InputWrap>
-          </InputRow>
-          <InputRow>
-            <IconWrap><LockIcon /></IconWrap>
-            <InputWrap>
-              <Input
-                ref={inputPassword}
-                secureTextEntry={true}
-                underlineColorAndroid={COLORS.TRANSPARENT}
-                returnKeyType={'go'}
-                onSubmitEditing={onLogin}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                onChangeText={text => onChangePassword(text)}
-                value={password}
-              />
-            </InputWrap>
-          </InputRow>
-          <CheckRow onPress={() => setRememberCheck(!rememberCheck)}>
+        <Logo source={IMAGES.APP_LOGO} />
+
+        <InputWrap>
+          <Input
+            ref={inputUserName}
+            underlineColorAndroid={COLORS.TRANSPARENT}
+            returnKeyType={'next'}
+            onSubmitEditing={() => inputPassword.current.focus()}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            onChangeText={text => onChangeUserName(text)}
+            value={userName}
+          />
+          <IconWrap />
+        </InputWrap>
+
+        <InputWrap>
+          <Input
+            ref={inputPassword}
+            secureTextEntry={!visibility}
+            underlineColorAndroid={COLORS.TRANSPARENT}
+            returnKeyType={'go'}
+            onSubmitEditing={onLogin}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            onChangeText={text => onChangePassword(text)}
+            value={password}
+          />
+          <IconWrap onPress={() => setVisibility(!visibility)}>
             {
-              rememberCheck
-              ? <GrayActiveCheckIcon />
-              : <DeactiveCheckIcon />
+              visibility
+              ? <VisibilityOnIcon />
+              : <VisibilityOffIcon />
             }
-            <RememberText active={rememberCheck}>Remember me</RememberText>
-          </CheckRow>
-          <ButtonRow>
-            <ShadowWrap>
-              <LoginButton onPress={onLogin}>
-                {
-                  loading
-                  ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
-                  : <LoginText>SIGN IN</LoginText>
-                }
-              </LoginButton>
-            </ShadowWrap>
-          </ButtonRow>
-        </LoginForm>
+          </IconWrap>
+        </InputWrap>
+
+        <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
+          {
+            rememberCheck
+            ? <ActiveCheckIcon />
+            : <DeactiveCheckIcon />
+          }
+          <RememberText>Remember me</RememberText>
+        </RememberWrap>
+
+        <ButtonWrap>
+          <LoginButton onPress={onLogin}>
+            {
+              loading
+              ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
+              : <LoginText>SIGN IN</LoginText>
+            }
+          </LoginButton>
+        </ButtonWrap>
       </Content>
     </Container>
   );

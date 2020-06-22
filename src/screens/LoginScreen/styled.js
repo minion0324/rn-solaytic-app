@@ -2,100 +2,68 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  SIZE1,
   SIZE2,
   SIZE4,
   SIZE5,
-  SIZE6,
+  SIZE8,
   SIZE10,
-  SIZE16,
-  SIZE20,
-  SIZE40,
+  SIZE12,
   FONT,
 } from 'src/constants';
 
-const Header = styled.View`
-  width: 100%;
-  height: ${SIZE20}px;
-  background-color: ${COLORS.BLUE1};
-`;
-
 const Content = styled.View`
+  flex: 1;
   align-items: center;
   justify-content: center;
-  elevation: 12;
-`;
-
-const LogoWrap = styled.View`
-  align-items: center;
-  justify-content: center;
-  height: ${SIZE40}px;
-  aspect-ratio: 1;
-  margin-top: -${SIZE16}px;
-  border-radius: ${SIZE20}px;
-  background-color: ${COLORS.WHITE1};
+  padding-horizontal: ${SIZE8}px;
 `;
 
 const Logo = styled.Image`
-
-`;
-
-const LoginForm = styled.View`
-  padding-vertical: ${SIZE1}px;
-  padding-horizontal: ${SIZE6}px;
-`;
-
-const InputRow = styled.View`
-  width: 100%;
-  flex-direction: row;
-  padding-vertical: ${SIZE1}px;
-`;
-
-const IconWrap = styled.View`
-  height: ${SIZE10}px;
-  aspect-ratio: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: ${COLORS.WHITE1};
-  border-radius: 3px;
+  margin-bottom: ${SIZE12}px;
 `;
 
 const InputWrap = styled.View`
-  flex: 1;
+  width: 100%;
   height: ${SIZE10}px;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  background-color: ${COLORS.WHITE1};
-  border-radius: 3px;
-  margin-left: ${SIZE1}px;
+  justify-content: space-between;
+  background-color: ${COLORS.BLUE2};
+  border-radius: ${SIZE5}px;
+  margin-vertical: ${SIZE2}px;
+  padding-horizontal: ${SIZE5}px;
 `;
 
 const Input = styled.TextInput`
-  width: 80%;
+  width: 85%;
   padding: 0px;
   color: ${COLORS.BLACK2};
   font-size: ${FONT(15)}px;
   font-weight: 500;
+  text-align: center;
 `;
 
-const CheckRow = styled.TouchableOpacity`
-  width: 100%;
+const IconWrap = styled.TouchableOpacity`
+  width: 15%;
+  align-items: flex-end;
+`;
+
+const RememberWrap = styled.TouchableOpacity`
+  align-self: flex-start;
   flex-direction: row;
   align-items: center;
-  padding-vertical: 5px;
   margin-left: ${SIZE5}px;
   padding-vertical: ${SIZE2}px;
 `;
 
 const RememberText = styled.Text`
   font-size: ${FONT(12)}px;
-  color: ${COLORS.BLACK2};
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  color: ${COLORS.BLUE1};
   margin-left: ${SIZE2}px;
 `;
 
-const ButtonRow = styled.View`
+const ButtonWrap = styled.View`
+  width: 100%;
   margin-vertical: ${SIZE4}px;
 `;
 
@@ -104,27 +72,24 @@ const LoginButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.BLUE1};
+  border-radius: ${SIZE5}px;
 `;
 
 const LoginText = styled.Text`
   font-size: ${FONT(18)}px;
-  font-weight: 700;
+  font-weight: 500;
   color: ${COLORS.WHITE1};
 `;
 
 export {
-  Header,
   Content,
-  LogoWrap,
   Logo,
-  LoginForm,
-  InputRow,
-  IconWrap,
   InputWrap,
   Input,
-  CheckRow,
+  IconWrap,
+  RememberWrap,
   RememberText,
-  ButtonRow,
+  ButtonWrap,
   LoginButton,
   LoginText,
 };
