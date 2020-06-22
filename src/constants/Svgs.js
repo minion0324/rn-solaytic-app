@@ -1,6 +1,5 @@
 import ActiveCheckIcon from 'src/assets/svgs/icon-check-active.svg';
 import DeactiveCheckIcon from 'src/assets/svgs/icon-check-deactive.svg';
-import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import SideMenuIcon from 'src/assets/svgs/icon-side-menu.svg';
 import ArrowIcon from 'src/assets/svgs/icon-arrow.svg';
 import LocationIcon from 'src/assets/svgs/icon-location.svg';
@@ -23,7 +22,6 @@ import AvatarIcon from 'src/assets/svgs/icon-avatar.svg';
 export default {
   ActiveCheckIcon,
   DeactiveCheckIcon,
-  SearchIcon,
   SideMenuIcon,
   ArrowIcon,
   LocationIcon,
