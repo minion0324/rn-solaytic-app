@@ -12,7 +12,6 @@ import {
 import {
   SVGS,
   COLORS,
-  SIZE1,
 } from 'src/constants';
 
 import {
@@ -41,7 +40,7 @@ const AlertScreen = ({ componentId }) => {
           <DefaultButton
             text={'Acknowledge'}
             color={COLORS.BLUE1}
-            mTop={-SIZE1}
+            mTop={-8}
           />
         </Wrap>
       </ShadowWrap>
