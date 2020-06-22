@@ -2,31 +2,29 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  SIZE40,
+  SIZE1,
   SIZE2,
-  SIZE4,
+  SIZE8,
   FONT,
 } from 'src/constants';
 
-const DateBar = styled.View`
-  width: ${SIZE40}px;
-  align-self: center;
-  justify-content: center;
+const Wrap = styled.View`
+  height: ${SIZE8}px;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  background-color: ${COLORS.WHITE1};
-  padding-vertical: 3px;
-  margin-top: ${SIZE4}px;
-  margin-bottom: ${SIZE2}px;
+  background-color: ${COLORS.WHITE2};
 `;
 
-const DateBarText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 500;
-  color: ${COLORS.BLACK2};
-  text-transform: uppercase;
+const Tab = styled.TouchableOpacity`
+  flex: 1;
+  height: ${SIZE2}px;
+  border-radius: ${SIZE1}px;
+  margin-horizontal: ${SIZE2}px;
+  background-color: ${props => props.color};
 `;
 
 export {
-  DateBar,
-  DateBarText,
+  Wrap,
+  Tab,
 };
