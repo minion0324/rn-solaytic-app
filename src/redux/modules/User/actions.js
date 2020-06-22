@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 
+export const PERSIST_REHYDRATED = 'PERSIST_REHYDRATED';
 export const LOGIN = 'USER/LOGIN';
 export const LOGIN_SUCCESS = 'USER/LOGIN_SUCCESS';
 export const SET_REMEMBERED_USER = 'USER/SET_REMEMBERED_USER';

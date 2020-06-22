@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import produce from 'immer';
 
 import {
+  PERSIST_REHYDRATED,
   LOGIN_SUCCESS,
   SET_REMEMBERED_USER,
 } from './actions';
@@ -25,6 +26,9 @@ function User(state = DEFAULT, action = {}) {
     const { type, payload } = action;
 
     switch (type) {
+      case PERSIST_REHYDRATED:
+        draft.isRehydrated = true;
+        break;
       case LOGIN_SUCCESS:
         draft.token = payload.token;
         draft.userInfo = payload.user;
