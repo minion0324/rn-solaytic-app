@@ -6,7 +6,7 @@ import {
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: ${COLORS.WHITE2};
+  background-color: ${props => props.color || COLORS.WHITE2};
 `;
 
 const ShadowWrap = styled.View`
