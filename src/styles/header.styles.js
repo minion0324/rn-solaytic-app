@@ -14,20 +14,19 @@ const { ArrowBackIcon } = SVGS;
 const HelloText = styled.Text`
   font-size: ${FONT(18)}px;
   font-weight: 500;
-  color: ${COLORS.WHITE1};
+  color: ${COLORS.BLACK2};
 `;
 
 const ScreenText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.WHITE1};
-  text-transform: uppercase;
+  font-weight: 700;
+  color: ${COLORS.BLACK2};
 `;
 
 const JobText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 600;
-  color: ${COLORS.WHITE1};
+  color: ${COLORS.BLACK2};
 `;
 
 //
@@ -40,7 +39,7 @@ const BackButtonWrap = styled.View`
 const BackButtonText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 600;
-  color: ${COLORS.WHITE1};
+  color: ${COLORS.BLACK2};
   text-transform: uppercase;
   margin-left: ${SIZE1}px;
 `;

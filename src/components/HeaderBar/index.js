@@ -15,7 +15,7 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${COLORS.BLUE1};
+  background-color: ${props => props.color || COLORS.WHITE2};
   padding-left: ${SIZE2}px;
   padding-right: ${SIZE4}px;
 `;
@@ -35,6 +35,7 @@ const RightIconWrap = styled.TouchableOpacity`
 `;
 
 const HeaderBar = ({
+  color,
   centerIcon,
   leftIcon,
   onPressLeft,
@@ -42,7 +43,7 @@ const HeaderBar = ({
   onPressRight,
 }) => {
   return (
-    <Container>
+    <Container color={color}>
       <LeftIconWrap
         onPress={onPressLeft}
         disabled={!onPressLeft}
@@ -65,6 +66,7 @@ const HeaderBar = ({
 }
 
 HeaderBar.propTypes = {
+  color: PropTypes.string,
   centerIcon: PropTypes.node,
   leftIcon: PropTypes.node,
   onPressLeft: PropTypes.func,
@@ -73,6 +75,7 @@ HeaderBar.propTypes = {
 }
 
 HeaderBar.defaultProps = {
+  color: '',
   centerIcon: null,
   leftIcon: null,
   onPressLeft: null,
