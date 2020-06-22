@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -43,6 +43,7 @@ const {
 } = SVGS;
 
 const LoginScreen = ({
+  isRehydrated,
   token,
   rememberedUser,
   login,
@@ -52,9 +53,16 @@ const LoginScreen = ({
   const inputPassword = useRef(null);
 
   const [ loading, setLoading ] = useState(false);
-  const [ userName, setUserName ] = useState(rememberedUser);
+  const [ userName, setUserName ] = useState('');
   const [ password, setPassword ] = useState('');
-  const [ rememberCheck, setRememberCheck ] = useState(rememberedUser ? true : false);
+  const [ rememberCheck, setRememberCheck ] = useState(false);
+
+  useEffect(() => {
+    if (rememberedUser) {
+      setRememberCheck(true);
+      setUserName(rememberedUser);
+    }
+  }, [isRehydrated]);
 
   const onLoginSuccess = () => {
     setLoading(false);
@@ -157,6 +165,7 @@ const LoginScreen = ({
 };
 
 LoginScreen.propTypes = {
+  isRehydrated: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
   rememberedUser: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
@@ -166,6 +175,7 @@ LoginScreen.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    isRehydrated: User.selectors.getIsRehydrated(state),
     token: User.selectors.getToken(state),
     rememberedUser: User.selectors.getRememberedUser(state),
   };
