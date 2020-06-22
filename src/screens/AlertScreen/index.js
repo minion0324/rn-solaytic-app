@@ -7,10 +7,12 @@ import {
   JobCard,
   ListWrap,
   ItemWrap,
+  DefaultButton,
 } from 'src/components';
 import {
   SVGS,
   COLORS,
+  SIZE1,
 } from 'src/constants';
 
 import {
@@ -22,9 +24,7 @@ import {
 } from 'src/styles/header.styles';
 
 import {
-  ButtonWrap,
-  Button,
-  ButtonText,
+  Wrap,
 } from './styled';
 
 const { SideMenuIcon } = SVGS;
@@ -37,15 +37,15 @@ const AlertScreen = ({ componentId }) => {
           leftIcon={<SideMenuIcon />}
           rightIcon={<HelloText>Hello, William Tan</HelloText>}
         />
-        <ButtonWrap>
-          <Button>
-            <ButtonText color={COLORS.RED1}>REJECT</ButtonText>
-          </Button>
-          <Button>
-            <ButtonText color={COLORS.BLUE1}>ACKNOWLEDGE (2)</ButtonText>
-          </Button>
-        </ButtonWrap>
+        <Wrap>
+          <DefaultButton
+            text={'Acknowledge'}
+            color={COLORS.BLUE1}
+            mTop={-SIZE1}
+          />
+        </Wrap>
       </ShadowWrap>
+
       <ListWrap
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
@@ -55,6 +55,7 @@ const AlertScreen = ({ componentId }) => {
           </ItemWrap>
         )}
       />
+
       <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
   );
