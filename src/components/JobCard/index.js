@@ -112,7 +112,7 @@ const JobCard = ({
     <Container>
       <CheckRow>
         {
-          checked ? <BlueActiveCheckIcon /> : <DeactiveCheckIcon />
+          // checked ? <BlueActiveCheckIcon /> : <DeactiveCheckIcon />
         }
         <CheckText>{checkText}</CheckText>
       </CheckRow>

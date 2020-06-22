@@ -8,7 +8,7 @@ import {
   SIZE1,
 } from 'src/constants';
 import {
-  Header,
+  HeaderBar,
   ItemWrap,
 } from 'src/components';
 import {
@@ -191,7 +191,7 @@ const JobDetailsScreen = ({ componentId }) => {
   return (
     <Container>
       <ShadowWrap>
-        <Header
+        <HeaderBar
           leftIcon={<BackButton />}
           onPressLeft={toBack}
           rightIcon={<JobText>#D918291979</JobText>}

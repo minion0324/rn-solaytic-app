@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Header,
+  HeaderBar,
+  BottomBar,
   JobCard,
   ListWrap,
   ItemWrap,
@@ -32,7 +33,7 @@ const AlertScreen = ({ componentId }) => {
   return (
     <Container>
       <ShadowWrap>
-        <Header
+        <HeaderBar
           leftIcon={<SideMenuIcon />}
           rightIcon={<HelloText>Hello, William Tan</HelloText>}
         />
@@ -54,6 +55,7 @@ const AlertScreen = ({ componentId }) => {
           </ItemWrap>
         )}
       />
+      <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
   );
 };

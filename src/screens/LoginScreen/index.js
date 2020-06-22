@@ -61,9 +61,9 @@ const LoginScreen = ({
   }, [isRehydrated]);
 
   const onLoginSuccess = () => {
-    setLoading(false);
+    // setLoading(false);
 
-    setRememberedUser(rememberCheck ? userName : '');
+    // setRememberedUser(rememberCheck ? userName : '');
 
     pushMultiScreensApp();
   };
@@ -77,12 +77,14 @@ const LoginScreen = ({
 
     setLoading(true);
 
-    login({
-      userName,
-      password,
-      success: onLoginSuccess,
-      failure: onLoginFailure,
-    });
+    onLoginSuccess();
+
+    // login({
+    //   userName,
+    //   password,
+    //   success: onLoginSuccess,
+    //   failure: onLoginFailure,
+    // });
   };
 
   const onChangeUserName = (text) => {

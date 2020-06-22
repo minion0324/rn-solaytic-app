@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Header,
+  HeaderBar,
+  BottomBar,
 } from 'src/components';
 import {
   SVGS,
@@ -33,7 +34,7 @@ const ProfileScreen = ({ componentId }) => {
   return (
     <Container>
       <ShadowWrap>
-        <Header
+        <HeaderBar
           centerIcon={<ScreenText>Settings</ScreenText>}
         />
       </ShadowWrap>
@@ -58,6 +59,7 @@ const ProfileScreen = ({ componentId }) => {
           </Button>
         </ItemRow>
       </Content>
+      <BottomBar componentId={componentId} activeIndex={2} />
     </Container>
   );
 };

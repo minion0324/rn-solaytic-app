@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { TabView, TabBar } from 'react-native-tab-view';
 
 import {
-  Header,
+  HeaderBar,
+  BottomBar,
   JobCard,
   ListWrap,
   ItemWrap,
@@ -93,7 +94,7 @@ const JobsScreen = ({ componentId }) => {
 
   return (
     <Container>
-      <Header
+      <HeaderBar
         leftIcon={<SideMenuIcon />}
         rightIcon={<SearchIcon />}
       />
@@ -110,6 +111,7 @@ const JobsScreen = ({ componentId }) => {
         swipeEnabled
         useNativeDriver
       />
+      <BottomBar componentId={componentId} activeIndex={1} />
     </Container>
   );
 };
