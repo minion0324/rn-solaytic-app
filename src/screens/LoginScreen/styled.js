@@ -35,7 +35,7 @@ const InputWrap = styled.View`
 `;
 
 const Input = styled.TextInput`
-  width: 85%;
+  width: 70%;
   padding: 0px;
   color: ${COLORS.BLACK2};
   font-size: ${FONT(15)}px;
@@ -43,7 +43,12 @@ const Input = styled.TextInput`
   text-align: center;
 `;
 
-const IconWrap = styled.TouchableOpacity`
+const LeftWrap = styled.View`
+  width: 15%;
+  align-items: flex-start;
+`;
+
+const RightWrap = styled.TouchableOpacity`
   width: 15%;
   align-items: flex-end;
 `;
@@ -86,7 +91,8 @@ export {
   Logo,
   InputWrap,
   Input,
-  IconWrap,
+  LeftWrap,
+  RightWrap,
   RememberWrap,
   RememberText,
   ButtonWrap,

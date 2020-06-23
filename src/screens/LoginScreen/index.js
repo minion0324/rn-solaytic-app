@@ -22,7 +22,8 @@ import {
   Logo,
   InputWrap,
   Input,
-  IconWrap,
+  LeftWrap,
+  RightWrap,
   RememberWrap,
   RememberText,
   ButtonWrap,
@@ -31,6 +32,8 @@ import {
 } from './styled';
 
 const {
+  UserIcon,
+  LockIcon,
   ActiveCheckIcon,
   DeactiveCheckIcon,
   VisibilityOnIcon,
@@ -101,6 +104,9 @@ const LoginScreen = ({
         <Logo source={IMAGES.APP_LOGO} />
 
         <InputWrap>
+          <LeftWrap>
+            <UserIcon />
+          </LeftWrap>
           <Input
             ref={inputUserName}
             underlineColorAndroid={COLORS.TRANSPARENT}
@@ -111,10 +117,13 @@ const LoginScreen = ({
             onChangeText={text => onChangeUserName(text)}
             value={userName}
           />
-          <IconWrap />
+          <RightWrap />
         </InputWrap>
 
         <InputWrap>
+          <LeftWrap>
+            <LockIcon />
+          </LeftWrap>
           <Input
             ref={inputPassword}
             secureTextEntry={!visibility}
@@ -126,13 +135,15 @@ const LoginScreen = ({
             onChangeText={text => onChangePassword(text)}
             value={password}
           />
-          <IconWrap onPress={() => setVisibility(!visibility)}>
+          <RightWrap
+            onPress={() => setVisibility(!visibility)}
+          >
             {
               visibility
               ? <VisibilityOnIcon />
               : <VisibilityOffIcon />
             }
-          </IconWrap>
+          </RightWrap>
         </InputWrap>
 
         <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
