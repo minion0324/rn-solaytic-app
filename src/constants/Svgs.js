@@ -15,6 +15,8 @@ import ActiveJobsIcon from 'src/assets/svgs/icon-jobs-active.svg';
 import ProfileIcon from 'src/assets/svgs/icon-profile.svg';
 import ActiveProfileIcon from 'src/assets/svgs/icon-profile-active.svg';
 import AvatarIcon from 'src/assets/svgs/icon-avatar.svg';
+import UserIcon from 'src/assets/svgs/icon-user.svg';
+import LockIcon from 'src/assets/svgs/icon-lock.svg';
 
 export default {
   ActiveCheckIcon,
@@ -34,4 +36,6 @@ export default {
   ProfileIcon,
   ActiveProfileIcon,
   AvatarIcon,
+  UserIcon,
+  LockIcon,
 };
