@@ -50,8 +50,6 @@ const {
   MessageIcon,
   CameraIcon,
   PhoneIcon,
-  SmallLocationIcon,
-  GroupIcon,
 } = SVGS;
 
 const JobDetailsScreen = ({ componentId }) => {
@@ -76,7 +74,6 @@ const JobDetailsScreen = ({ componentId }) => {
         <ItemContent>
           <InfoView>
             <LocationRow>
-              <SmallLocationIcon />
               <LocationText
                 opacity={activated ? 1 : 0.2}
               >
@@ -85,7 +82,6 @@ const JobDetailsScreen = ({ componentId }) => {
             </LocationRow>
 
             <NameRow>
-              <GroupIcon />
               <NameText
                 opacity={activated ? 1 : 0.2}
               >
@@ -140,7 +136,6 @@ const JobDetailsScreen = ({ componentId }) => {
         <ItemContent>
           <InfoView>
             <LocationRow>
-              <SmallLocationIcon />
               <LocationText
                 opacity={activated ? 1 : 0.7}
               >
