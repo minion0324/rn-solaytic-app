@@ -17,6 +17,8 @@ import LockIcon from 'src/assets/svgs/icon-lock.svg';
 import Location1Icon from 'src/assets/svgs/icon-location1.svg';
 import Location2Icon from 'src/assets/svgs/icon-location2.svg';
 import Location3Icon from 'src/assets/svgs/icon-location3.svg';
+import CameraIcon from 'src/assets/svgs/icon-camera.svg';
+import SignIcon from 'src/assets/svgs/icon-sign.svg';
 
 export default {
   ActiveCheckIcon,
@@ -38,4 +40,6 @@ export default {
   Location1Icon,
   Location2Icon,
   Location3Icon,
+  CameraIcon,
+  SignIcon,
 };
