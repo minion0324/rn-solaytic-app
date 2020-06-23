@@ -21,9 +21,15 @@ import {
 import {
   HelloText,
 } from 'src/styles/header.styles';
+import {
+  CardRow,
+  DateWrap,
+  DateText1,
+  DateText2,
+} from 'src/styles/card.styles';
 
 import {
-  Wrap,
+  ButtonWrap,
 } from './styled';
 
 const { SideMenuIcon } = SVGS;
@@ -36,22 +42,28 @@ const AlertScreen = ({ componentId }) => {
           leftIcon={<SideMenuIcon />}
           rightIcon={<HelloText>Hello, William Tan</HelloText>}
         />
-        <Wrap>
+        <ButtonWrap>
           <DefaultButton
             text={'Acknowledge'}
             color={COLORS.BLUE1}
             mTop={-8}
           />
-        </Wrap>
+        </ButtonWrap>
       </ShadowWrap>
 
       <ListWrap
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <ItemWrap>
-            <JobCard />
-          </ItemWrap>
+          <CardRow>
+            <DateWrap>
+              <DateText1>15</DateText1>
+              <DateText2>Mon</DateText2>
+            </DateWrap>
+            <ItemWrap>
+              <JobCard />
+            </ItemWrap>
+          </CardRow>
         )}
       />
 
