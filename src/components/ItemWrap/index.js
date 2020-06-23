@@ -4,10 +4,12 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  SIZE1,
   SIZE2,
 } from 'src/constants';
 
 const Container = styled.View`
+  flex: 1;
   margin-left: ${props => props.mLeft}px;
   margin-top: ${props => props.mTop}px;
   margin-right: ${props => props.mRight}px;
@@ -16,7 +18,7 @@ const Container = styled.View`
 
 const TouchWrap = styled.TouchableOpacity`
   background-color: ${COLORS.WHITE1};
-  border-radius: 3px;
+  border-radius: ${SIZE1}px;
   border-width: 1px;
   border-color: ${(props) => (
     props.activated ? COLORS.BLUE1 : COLORS.WHITE1
