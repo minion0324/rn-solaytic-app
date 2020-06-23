@@ -5,10 +5,9 @@ import {
   SIZE1,
   SIZE2,
   SIZE8,
-  FONT,
 } from 'src/constants';
 
-const Wrap = styled.View`
+const TabWrap = styled.View`
   height: ${SIZE8}px;
   flex-direction: row;
   justify-content: space-between;
@@ -16,7 +15,7 @@ const Wrap = styled.View`
   background-color: ${COLORS.WHITE2};
 `;
 
-const Tab = styled.TouchableOpacity`
+const TabItem = styled.TouchableOpacity`
   flex: 1;
   height: ${SIZE2}px;
   border-radius: ${SIZE1}px;
@@ -25,6 +24,6 @@ const Tab = styled.TouchableOpacity`
 `;
 
 export {
-  Wrap,
-  Tab,
+  TabWrap,
+  TabItem,
 };
