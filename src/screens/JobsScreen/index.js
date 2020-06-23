@@ -13,7 +13,7 @@ import {
   COLORS,
 } from 'src/constants';
 import {
-  showModal,
+  pushScreen,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 
@@ -45,7 +45,7 @@ const JobsScreen = ({ componentId }) => {
   ]);
 
   const toJobDetails = () => {
-    showModal(JOB_DETAILS_SCREEN);
+    pushScreen(componentId, JOB_DETAILS_SCREEN);
   }
 
   return (

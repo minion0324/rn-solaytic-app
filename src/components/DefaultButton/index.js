@@ -15,7 +15,7 @@ const Button = styled.TouchableOpacity`
   background-color: ${props => props.color};
   align-items: center;
   justify-content: center;
-  border-radius: 3px;
+  border-radius: ${SIZE1}px;
   margin-left: ${props => props.mLeft}px;
   margin-top: ${props => props.mTop}px;
   margin-right: ${props => props.mRight}px;

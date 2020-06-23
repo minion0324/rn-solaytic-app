@@ -23,12 +23,6 @@ const ScreenText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
-const JobText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK2};
-`;
-
 //
 const BackButtonWrap = styled.View`
   flex-direction: row;
@@ -40,7 +34,6 @@ const BackButtonText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 600;
   color: ${COLORS.BLACK2};
-  text-transform: uppercase;
   margin-left: ${SIZE1}px;
 `;
 
@@ -54,6 +47,5 @@ const BackButton = () => (
 export {
   HelloText,
   ScreenText,
-  JobText,
   BackButton,
 };
