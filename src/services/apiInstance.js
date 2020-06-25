@@ -18,9 +18,9 @@ function removeAuthToken() {
   delete apiInstance.defaults.headers.common.Authorization;
 }
 
-async function apiCall(url, method, { data }) {
+async function apiCall(url, method, { data, params }) {
   try {
-    return await apiInstance.request({ url, method, data });
+    return await apiInstance.request({ url, method, data, params });
   } catch (error) {
     return Promise.reject(error);
   }
