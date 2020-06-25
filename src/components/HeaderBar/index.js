@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  SIZE12,
   SIZE2,
   SIZE4,
+  SIZE12,
 } from 'src/constants';
 
 const Container = styled.View`
@@ -15,7 +15,7 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${COLORS.BLUE1};
+  background-color: ${props => props.color || COLORS.WHITE2};
   padding-left: ${SIZE2}px;
   padding-right: ${SIZE4}px;
 `;
@@ -34,7 +34,8 @@ const RightIconWrap = styled.TouchableOpacity`
 
 `;
 
-const Header = ({
+const HeaderBar = ({
+  color,
   centerIcon,
   leftIcon,
   onPressLeft,
@@ -42,7 +43,7 @@ const Header = ({
   onPressRight,
 }) => {
   return (
-    <Container>
+    <Container color={color}>
       <LeftIconWrap
         onPress={onPressLeft}
         disabled={!onPressLeft}
@@ -64,7 +65,8 @@ const Header = ({
   );
 }
 
-Header.propTypes = {
+HeaderBar.propTypes = {
+  color: PropTypes.string,
   centerIcon: PropTypes.node,
   leftIcon: PropTypes.node,
   onPressLeft: PropTypes.func,
@@ -72,7 +74,8 @@ Header.propTypes = {
   onPressRight: PropTypes.func,
 }
 
-Header.defaultProps = {
+HeaderBar.defaultProps = {
+  color: '',
   centerIcon: null,
   leftIcon: null,
   onPressLeft: null,
@@ -80,4 +83,4 @@ Header.defaultProps = {
   onPressRight: null,
 }
 
-export default Header;
+export default HeaderBar;

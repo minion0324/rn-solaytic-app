@@ -4,68 +4,48 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE3,
   SIZE4,
+  SIZE6,
   SIZE8,
+  SIZE12,
+  SIZE24,
   FONT,
 } from 'src/constants';
 
-const LabelText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 500;
-  opacity: 0.2;
-  color: ${COLORS.BLACK2};
-`;
-
-const ContentText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 500;
-  color: ${COLORS.BLACK2};
-  margin-top: ${SIZE1}px;
-`;
-
-const InfoRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: ${SIZE2}px;
-  padding-horizontal: ${SIZE4}px;
-`;
-
-const InfoWrap = styled.View`
-  align-items: ${(props) => (
-    props.forEnd ? 'flex-end' : 'flex-start'
-  )};
-`;
-
 const ButtonWrap = styled.View`
-  flex-direction: row;
+  height: ${SIZE12}px;
   align-items: center;
   justify-content: center;
+  padding-horizontal: ${SIZE6}px;
+  background-color: ${COLORS.WHITE2};
 `;
 
-const Button = styled.TouchableOpacity`
-  flex: 1;
-  height: ${SIZE8}px;
-  background-color: ${props => props.color};
-  align-items: center;
-  justify-content: center;
-  padding-vertical: ${SIZE1}px;
-`;
-
-const ButtonText = styled.Text`
-  font-size: ${props => FONT(props.font || 12)}px;
-  font-weight: 600;
-  color: ${props => props.color};
-  text-transform: uppercase;
+const JobDetails = styled.View`
+  margin: ${SIZE2}px;
 `;
 
 const Content = styled.View`
-  margin-bottom: ${SIZE2}px;
+  padding-vertical: ${SIZE3}px;
+  padding-horizontal: ${SIZE4}px;
+  background-color: ${COLORS.WHITE1};
 `;
 
-//
-const InfoView = styled.View`
-  margin-left: ${SIZE2}px;
+const LabelText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 500,
+  color: ${COLORS.GRAY3};
+`;
+
+const InfoText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700,
+  color: ${COLORS.BLACK2};
+`;
+
+const LocationInfo = styled.View`
+  margin-top: ${SIZE2}px;
+  margin-bottom: ${SIZE4}px;
 `;
 
 const LocationRow = styled.View`
@@ -73,84 +53,148 @@ const LocationRow = styled.View`
   align-items: center;
 `;
 
-const LocationText = styled.Text`
+const IconWrap = styled.View`
+  width: ${SIZE8}px;
+  align-items: center;
+`;
+
+const Border = styled.View`
+  width: 0px;
+  height: ${SIZE6}px;
+  margin-left: ${SIZE4 - 3}px;
+  border-right-width: 5px;
+  border-color: ${COLORS.GRAY2};
+`;
+
+const CustomerInfo = styled.View`
+  margin-vertical: ${SIZE4}px;
+`;
+
+const InfoWrap = styled.View`
+  margin-vertical: ${SIZE2}px;
+`;
+
+const IdWrap = styled.TouchableOpacity`
+
+`;
+
+const IdText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 600;
-  opacity: ${props => props.opacity || 1};
-  color: ${COLORS.BLACK2};
-  margin-left: ${SIZE1}px;
+  font-weight: 700,
+  color: ${COLORS.BLUE1};
+  text-decoration-line: underline;
 `;
 
-const Location2Text = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 500;
-  opacity: ${props => props.opacity || 1};
-  color: ${COLORS.BLACK2};
-  margin-top: ${SIZE1}px;
-  margin-left: ${SIZE2}px;
-`;
-
-const NameRow = styled.View`
+const RowWrap = styled.View`
   flex-direction: row;
   align-items: center;
 `;
 
-const NameText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  opacity: ${props => props.opacity || 1};
-  color: ${COLORS.BLACK2};
-  margin-left: ${SIZE1}px;
-`;
-
-const ItemRow = styled.View`
-  padding: ${SIZE2}px;
-  border-radius: 3px;
-  border-color: ${(props) => (
-    props.activated ? COLORS.BLUE1 : COLORS.GRAY2
-  )};
-  border-width: 1px;
-  margin-vertical: ${SIZE2}px;
-`;
-
-const ItemText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  opacity: ${props => props.opacity || 1};
-  color: ${COLORS.BLACK2};
-`;
-
-const ToolRow = styled.View`
+const BinButtonWrap = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  margin-vertical: ${SIZE2}px;
+  margin-vertical: ${SIZE4}px;
 `;
 
-const ItemContent = styled.View`
-  padding-top: ${SIZE1}px;
-  padding-bottom: ${SIZE2}px;
+const BinButton = styled.TouchableOpacity`
+  width: ${SIZE24}px;
+  height: ${SIZE8}px;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${SIZE1}px;
+  background-color: ${(props) => (
+    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT
+  )};
+`;
+
+const BinButtonText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${(props) => (
+    props.active ? COLORS.BLUE1 : COLORS.BLACK2
+  )};
+`;
+
+const BinInfoWrap = styled.View`
+
+`;
+
+const BinInfoRow = styled.View`
+  height: ${SIZE8}px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${COLORS.WHITE3};
+  margin-vertical: ${SIZE1}px;
+  border-radius: ${SIZE1}px;
+`;
+
+const BinText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLUE1};
+`;
+
+const InstructionsWrap = styled.View`
+  align-items: center;
+  margin-vertical: ${SIZE4}px;
+`;
+
+const InstructionsContent = styled.View`
+  width: 100%;
+  margin-top: ${SIZE2}px;
+  border-radius: ${SIZE1}px;
+  border-width: 1px;
+  border-color: ${COLORS.GRAY4};
   padding-horizontal: ${SIZE4}px;
+  padding-top: ${SIZE4}px;
+  padding-bottom: ${SIZE8}px;
+`;
+
+const InstructionsText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 600,
+  color: ${COLORS.BLACK1};
+`;
+
+const PhotoAndSignWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+const PhotoAndSignText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLACK2};
+  margin-left: ${SIZE1}px;
+  margin-vertical: ${SIZE4}px;
 `;
 
 export {
-  LabelText,
-  ContentText,
-  InfoRow,
-  InfoWrap,
   ButtonWrap,
-  Button,
-  ButtonText,
+  JobDetails,
   Content,
-
-  InfoView,
+  LabelText,
+  InfoText,
+  LocationInfo,
   LocationRow,
-  LocationText,
-  Location2Text,
-  NameRow,
-  NameText,
-  ItemRow,
-  ItemText,
-  ToolRow,
-  ItemContent,
+  IconWrap,
+  Border,
+  CustomerInfo,
+  InfoWrap,
+  IdWrap,
+  IdText,
+  RowWrap,
+  BinButtonWrap,
+  BinButton,
+  BinButtonText,
+  BinInfoWrap,
+  BinInfoRow,
+  BinText,
+  InstructionsWrap,
+  InstructionsContent,
+  InstructionsText,
+  PhotoAndSignWrap,
+  PhotoAndSignText,
 };

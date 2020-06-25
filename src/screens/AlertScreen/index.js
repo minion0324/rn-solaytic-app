@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Header,
+  HeaderBar,
+  BottomBar,
   JobCard,
   ListWrap,
   ItemWrap,
+  DefaultButton,
 } from 'src/components';
 import {
   SVGS,
@@ -19,11 +21,15 @@ import {
 import {
   HelloText,
 } from 'src/styles/header.styles';
+import {
+  CardRow,
+  DateWrap,
+  DateText1,
+  DateText2,
+} from 'src/styles/card.styles';
 
 import {
   ButtonWrap,
-  Button,
-  ButtonText,
 } from './styled';
 
 const { SideMenuIcon } = SVGS;
@@ -32,28 +38,36 @@ const AlertScreen = ({ componentId }) => {
   return (
     <Container>
       <ShadowWrap>
-        <Header
+        <HeaderBar
           leftIcon={<SideMenuIcon />}
           rightIcon={<HelloText>Hello, William Tan</HelloText>}
         />
         <ButtonWrap>
-          <Button>
-            <ButtonText color={COLORS.RED1}>REJECT</ButtonText>
-          </Button>
-          <Button>
-            <ButtonText color={COLORS.BLUE1}>ACKNOWLEDGE (2)</ButtonText>
-          </Button>
+          <DefaultButton
+            text={'Acknowledge'}
+            color={COLORS.BLUE1}
+            mTop={-8}
+          />
         </ButtonWrap>
       </ShadowWrap>
+
       <ListWrap
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <ItemWrap>
-            <JobCard />
-          </ItemWrap>
+          <CardRow>
+            <DateWrap>
+              <DateText1>15</DateText1>
+              <DateText2>Mon</DateText2>
+            </DateWrap>
+            <ItemWrap>
+              <JobCard />
+            </ItemWrap>
+          </CardRow>
         )}
       />
+
+      <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
   );
 };

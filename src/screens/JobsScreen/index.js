@@ -1,115 +1,90 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { TabView, TabBar } from 'react-native-tab-view';
 
 import {
-  Header,
+  HeaderBar,
+  BottomBar,
   JobCard,
   ListWrap,
   ItemWrap,
 } from 'src/components';
 import {
   SVGS,
-  WIDTH,
-  HEIGHT,
+  COLORS,
 } from 'src/constants';
 import {
-  showModal,
+  pushScreen,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 
 import {
   Container,
+  ShadowWrap,
 } from 'src/styles/common.styles';
 import {
-  TabBarStyle,
-  TabBarIndicatorStyle,
-  TabBarLabelStyle,
-  TabBarTabStyle,
-  TabBarActiveColor,
-  TabBarInactiveColor,
-} from 'src/styles/tab.styles';
+  CardRow,
+  DateWrap,
+  DateText1,
+  DateText2,
+} from 'src/styles/card.styles';
 
 import {
-  DateBar,
-  DateBarText,
+  TabWrap,
+  TabItem,
 } from './styled';
 
-const { SideMenuIcon, SearchIcon } = SVGS;
+const { SideMenuIcon } = SVGS;
 
 const JobsScreen = ({ componentId }) => {
   const [ index, setIndex ] = useState(0);
-  const [ routes ] = useState([
-    { key: 'first', title: 'All Jobs (2)' },
-    { key: 'second', title: 'In Progress (1)' },
-    { key: 'third', title: 'Completed (0)' },
-    { key: 'fourth', title: 'Cancelled (1)' },
+  const [ tabs ] = useState([
+    { key: 'first', color: COLORS.GRAY2 },
+    { key: 'second', color: COLORS.BLUE1 },
+    { key: 'third', color: COLORS.GREEN1 },
+    { key: 'fourth', color: COLORS.RED1 },
   ]);
 
   const toJobDetails = () => {
-    showModal(JOB_DETAILS_SCREEN);
+    pushScreen(componentId, JOB_DETAILS_SCREEN);
   }
 
-  const renderTabBar = (props) => {
-    return (
-      <TabBar
-        {...props}
-        getLabelText={({ route }) => route.title}
-        style={TabBarStyle}
-        indicatorStyle={TabBarIndicatorStyle}
-        labelStyle={TabBarLabelStyle}
-        tabStyle={TabBarTabStyle}
-        activeColor={TabBarActiveColor}
-        inactiveColor={TabBarInactiveColor}
-        scrollEnabled={true}
-      />
-    );
-  };
+  return (
+    <Container>
+      <ShadowWrap>
+        <HeaderBar
+          leftIcon={<SideMenuIcon />}
+        />
+        <TabWrap>
+          {
+            tabs.map((item) => (
+              <TabItem
+                key={item.key}
+                color={item.color}
+              />
+            ))
+          }
+        </TabWrap>
+      </ShadowWrap>
 
-  const renderScene = ({ route }) => {
-    return (
       <ListWrap
         data={['job1', 'job2', 'job3', 'job4', 'job5',]}
         keyExtractor={(item) => item}
         renderItem={({ item, index }) => (
-          <View>
-            {
-              (index === 0 || index === 3) &&
-              <DateBar>
-                <DateBarText>{index === 0 ? 'TODAY' : 'TOMORROW'}</DateBarText>
-              </DateBar>
-            }
+          <CardRow>
+            <DateWrap>
+              <DateText1>15</DateText1>
+              <DateText2>Mon</DateText2>
+            </DateWrap>
             <ItemWrap
               onPress={toJobDetails}
             >
               <JobCard />
             </ItemWrap>
-          </View>
+          </CardRow>
         )}
       />
-    );
-  };
 
-  return (
-    <Container>
-      <Header
-        leftIcon={<SideMenuIcon />}
-        rightIcon={<SearchIcon />}
-      />
-
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={idx => setIndex(idx)}
-        initialLayout={{
-          width: WIDTH,
-          height: HEIGHT,
-        }}
-        swipeEnabled
-        useNativeDriver
-      />
+      <BottomBar componentId={componentId} activeIndex={1} />
     </Container>
   );
 };

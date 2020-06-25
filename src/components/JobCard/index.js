@@ -8,156 +8,122 @@ import {
   SIZE1,
   SIZE2,
   SIZE3,
+  SIZE4,
+  SIZE20,
   FONT,
 } from 'src/constants';
 
 const {
-  DeactiveCheckIcon,
-  BlueActiveCheckIcon,
-  ArrowIcon,
   LocationIcon,
 } = SVGS;
 
 const Container = styled.View`
-  padding: ${SIZE2}px;
-`;
-
-const CheckRow = styled.View`
+  height: ${SIZE20}px;
   flex-direction: row;
-  align-items: center;
+
 `;
 
-const CheckText = styled.Text`
-  font-size: ${FONT(12)}px;
-  opacity: 0.7;
-  color: ${COLORS.BLACK2};
-  text-transform: uppercase;
-  margin-left: ${SIZE2}px;
+const Status = styled.View`
+  background-color: ${props => props.color || COLORS.BLUE1};
+  width: ${SIZE1}px;
+  height: 100%;
+  border-top-left-radius: ${SIZE2}px;
+  border-bottom-left-radius: ${SIZE2}px;
 `;
 
-const TitleRow = styled.View`
+const Content = styled.View`
+  flex: 1;
+  height: 100%;
+  justify-content: space-between;
+  padding-left: ${SIZE3}px;
+  padding-top: ${SIZE3}px;
+  padding-right: ${SIZE2}px;
+  padding-bottom: ${SIZE4}px;
+`;
+
+const TimeRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: ${SIZE3}px;
-  margin-right: ${SIZE2}px;
+`;
+
+const TimeText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700;
+  color: ${COLORS.BLUE1};
+`;
+
+const BinWrap = styled.View`
+  width: ${SIZE20}px;
+  height: ${SIZE4}px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${COLORS.BLUE2};
+  border-radius: ${SIZE1}px;
+`;
+
+const BinText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 500;
+  color: ${COLORS.BLUE1};
 `;
 
 const TitleText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600;
-  color: ${COLORS.BLACK2};
+  color: ${COLORS.BLACK1};
 `;
 
 const LocationRow = styled.View`
   flex-direction: row;
-  align-items: center;
-  margin-top: ${SIZE1}px;
 `;
 
 const LocationText = styled.Text`
   font-size: ${FONT(12)}px;
-  opacity: 0.7;
   font-weight: 600;
-  color: ${COLORS.BLACK2};
+  color: ${COLORS.GRAY3};
   margin-left: ${SIZE1}px;
 `;
 
-const Border = styled.View`
-  width: 100%;
-  border-width: 1px;
-  border-color: ${COLORS.WHITE3};
-  margin-vertical: ${SIZE3}px;
-`;
-
-const DateTimeRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const DateTimeText = styled.Text`
-  font-size: ${FONT(12)}px;
-  opacity: 0.2;
-  font-weight: 500;
-  color: ${COLORS.BLACK2};
-`;
-
-const StatusRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-right: ${SIZE2}px;
-  margin-bottom: ${SIZE1}px;
-`;
-
-const StatusText = styled.Text`
-  font-size: ${FONT(12)}px;
-  opacity: 0.7;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: ${COLORS.BLACK2};
-`;
-
 const JobCard = ({
-  checked,
-  checkText,
   title,
-  scope,
+  bin,
   location,
-  date,
   time,
   status,
 }) => {
   return (
     <Container>
-      <CheckRow>
-        {
-          checked ? <BlueActiveCheckIcon /> : <DeactiveCheckIcon />
-        }
-        <CheckText>{checkText}</CheckText>
-      </CheckRow>
-
-      <TitleRow>
+      <Status />
+      <Content>
+        <TimeRow>
+          <TimeText>{time}</TimeText>
+          <BinWrap>
+            <BinText>{bin}</BinText>
+          </BinWrap>
+        </TimeRow>
         <TitleText>{title}</TitleText>
-        { !!scope && <ArrowIcon /> }
-        <TitleText>{scope}</TitleText>
-      </TitleRow>
-
-      <LocationRow>
-        <LocationIcon />
-        <LocationText>{location}</LocationText>
-      </LocationRow>
-
-      <Border />
-
-      <StatusRow>
-        <DateTimeRow>
-          <DateTimeText>{`${date}  |  ${time}`}</DateTimeText>
-        </DateTimeRow>
-        <StatusText>{status}</StatusText>
-      </StatusRow>
+        <LocationRow>
+          <LocationIcon />
+          <LocationText>{location}</LocationText>
+        </LocationRow>
+      </Content>
     </Container>
   );
 }
 
 JobCard.propTypes = {
-  checked: PropTypes.bool,
-  checkText: PropTypes.string,
   title: PropTypes.string,
-  scope: PropTypes.string,
+  bin: PropTypes.string,
   location: PropTypes.string,
-  date: PropTypes.string,
   time: PropTypes.string,
   status: PropTypes.string,
 }
 
 JobCard.defaultProps = {
-  checked: true,
-  checkText: 'exchange bin',
   title: 'Heathcote and Sons',
-  scope: 'My Yard',
+  bin: 'exchange bin',
   location: 'LP 120 tanah Merah Coast Road',
-  date: 'SAT, 22 - JAN - 2020',
   time: '9:00 AM',
   status: 'completed'
 }

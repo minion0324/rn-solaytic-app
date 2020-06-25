@@ -1,5 +1,6 @@
 export * from './Screens';
 export {
+  changeTabIndex,
   showModal,
   dismissModal,
   pushScreen,

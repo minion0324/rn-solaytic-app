@@ -12,22 +12,15 @@ import {
 const { ArrowBackIcon } = SVGS;
 
 const HelloText = styled.Text`
-  font-size: ${FONT(18)}px;
-  font-weight: 500;
-  color: ${COLORS.WHITE1};
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
+  color: ${COLORS.BLACK2};
 `;
 
 const ScreenText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.WHITE1};
-  text-transform: uppercase;
-`;
-
-const JobText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 600;
-  color: ${COLORS.WHITE1};
+  font-weight: 700;
+  color: ${COLORS.BLACK2};
 `;
 
 //
@@ -40,8 +33,7 @@ const BackButtonWrap = styled.View`
 const BackButtonText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 600;
-  color: ${COLORS.WHITE1};
-  text-transform: uppercase;
+  color: ${COLORS.BLACK2};
   margin-left: ${SIZE1}px;
 `;
 
@@ -55,6 +47,5 @@ const BackButton = () => (
 export {
   HelloText,
   ScreenText,
-  JobText,
   BackButton,
 };

@@ -3,6 +3,7 @@ import { Navigation } from 'react-native-navigation';
 import {
   IMAGES,
   COLORS,
+  FONT,
 } from 'src/constants';
 
 import {
@@ -15,6 +16,14 @@ import {
 import registerScreens from './registerScreens';
 
 registerScreens();
+
+export function changeTabIndex(componentId, tabIndex) {
+  Navigation.mergeOptions(componentId, {
+    bottomTabs: {
+      currentTabIndex: tabIndex,
+    },
+  });
+}
 
 export function showModal(modalName, passProps = {}, options = {}) {
   Navigation.showModal({
@@ -67,10 +76,13 @@ export function pushSingleScreenApp() {
       animate: false,
     },
     bottomTabs: {
+      visible: false,
+      drawBehind: true,
+      animate: false,
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
-      fontSize: 13,
+      fontSize: FONT(13),
       textColor: '#707070',
       selectedTextColor: '#03A9F4',
       iconInsets: { top: 10, bottom: 5 },
@@ -104,10 +116,13 @@ export function pushMultiScreensApp() {
       animate: false,
     },
     bottomTabs: {
+      visible: false,
+      drawBehind: true,
+      animate: false,
       titleDisplayMode: 'alwaysShow',
     },
     bottomTab: {
-      fontSize: 13,
+      fontSize: FONT(13),
       textColor: '#707070',
       selectedTextColor: '#03A9F4',
       iconInsets: { top: 10, bottom: 5 },

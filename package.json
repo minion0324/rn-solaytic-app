@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "yarn eslint .",
+    "lint:staged": "git diff --cached --name-only | grep \".js$\" | xargs eslint"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
@@ -17,11 +18,8 @@
     "prop-types": "^15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-gesture-handler": "^1.6.1",
     "react-native-navigation": "^6.7.3",
-    "react-native-reanimated": "^1.9.0",
     "react-native-svg": "^12.1.0",
-    "react-native-tab-view": "^2.14.4",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
@@ -39,6 +37,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.0.1",
     "eslint": "^7.2.0",
+    "husky": "^4.2.5",
     "jest": "^26.0.1",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-native-svg-transformer": "^0.14.3",

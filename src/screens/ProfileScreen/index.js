@@ -1,8 +1,10 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
-  Header,
+  HeaderBar,
+  BottomBar,
 } from 'src/components';
 import {
   SVGS,
@@ -16,48 +18,45 @@ import {
   ScreenText,
 } from 'src/styles/header.styles';
 
-
 import {
+  Profile,
   Content,
-  ItemRow,
-  InfoText,
-  Button,
-  ButtonText,
-  IconWrap,
-  InfoRow,
+  UserNameWrap,
+  UserNameText,
+  UserName,
+  LogoutButton,
+  LogoutText,
 } from './styled';
 
-const { AccountIcon, KeyIcon } = SVGS;
+const { AvatarIcon } = SVGS;
 
 const ProfileScreen = ({ componentId }) => {
   return (
     <Container>
       <ShadowWrap>
-        <Header
+        <HeaderBar
           centerIcon={<ScreenText>Settings</ScreenText>}
         />
       </ShadowWrap>
-      <Content>
-        <ItemRow>
-          <InfoRow>
-            <IconWrap><AccountIcon /></IconWrap>
-            <InfoText>William Tan</InfoText>
-          </InfoRow>
-          <Button>
-            <ButtonText>Log Out</ButtonText>
-          </Button>
-        </ItemRow>
 
-        <ItemRow>
-          <InfoRow>
-            <IconWrap><KeyIcon /></IconWrap>
-            <InfoText>XB 1234 K</InfoText>
-          </InfoRow>
-          <Button>
-            <ButtonText>Change</ButtonText>
-          </Button>
-        </ItemRow>
-      </Content>
+      <ScrollView>
+        <Profile>
+          <ShadowWrap>
+            <Content>
+              <AvatarIcon />
+              <UserNameWrap>
+                <UserNameText>Username</UserNameText>
+                <UserName>Wayne</UserName>
+              </UserNameWrap>
+              <LogoutButton>
+                <LogoutText>Log Out</LogoutText>
+              </LogoutButton>
+            </Content>
+          </ShadowWrap>
+        </Profile>
+      </ScrollView>
+
+      <BottomBar componentId={componentId} activeIndex={2} />
     </Container>
   );
 };
