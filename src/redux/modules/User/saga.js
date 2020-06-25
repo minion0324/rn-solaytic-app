@@ -4,11 +4,14 @@ import {
 
 import {
   apiLogin,
+  apiAuthToken,
+  setAuthToken,
   removeAuthToken,
 } from 'src/services';
 
 import {
   LOGIN,
+  AUTH_TOKEN,
   actionCreators,
 } from './actions';
 
@@ -23,6 +26,8 @@ export function* asyncLogin({ payload }) {
     const { data } = yield call(apiLogin, userName, password);
     yield put(actionCreators.loginSuccess(data));
 
+    setAuthToken(data.token);
+
     success && success();
   } catch (error) {
     failure && failure();
@@ -33,6 +38,30 @@ export function* watchLogin() {
   while (true) {
     const action = yield take(LOGIN);
     yield* asyncLogin(action);
+  }
+}
+
+export function* asyncAuthToken({ payload }) {
+  const {
+    token, success, failure,
+  } = payload;
+
+  try {
+    setAuthToken(token);
+
+    const { data } = yield call(apiAuthToken, token);
+    yield put(actionCreators.authTokenSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchAuthToken() {
+  while (true) {
+    const action = yield take(AUTH_TOKEN);
+    yield* asyncAuthToken(action);
   }
 }
 
@@ -62,5 +91,6 @@ export function* fetchData() {
 export default function* () {
   yield all([
     fork(watchLogin),
+    fork(watchAuthToken),
   ]);
 }

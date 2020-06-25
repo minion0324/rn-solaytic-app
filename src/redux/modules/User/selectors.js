@@ -27,4 +27,4 @@ export default {
   getIsRehydrated,
   getToken,
   getRememberedUser,
-}
+};
