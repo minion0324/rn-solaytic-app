@@ -4,9 +4,11 @@ import {
 } from 'redux-saga/effects';
 
 import * as User from './User';
+import * as Jobs from './Jobs';
 
 const stores = {
   User,
+  Jobs,
 };
 
 const {
@@ -59,7 +61,9 @@ function* watchFetch() {
 }
 
 function* allFetch() {
-  yield all([fork(watchFetch)]);
+  yield all([
+    fork(watchFetch),
+  ]);
 }
 
 sagas.push(allFetch);
@@ -69,4 +73,5 @@ export {
   sagas,
 
   User,
+  Jobs,
 };
