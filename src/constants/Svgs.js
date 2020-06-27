@@ -19,6 +19,7 @@ import Location2Icon from 'src/assets/svgs/icon-location2.svg';
 import Location3Icon from 'src/assets/svgs/icon-location3.svg';
 import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
+import ArrowDateIcon from 'src/assets/svgs/icon-date-arrow.svg';
 
 export default {
   ActiveCheckIcon,
@@ -42,4 +43,5 @@ export default {
   Location3Icon,
   CameraIcon,
   SignIcon,
+  ArrowDateIcon,
 };
