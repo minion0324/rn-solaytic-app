@@ -7,6 +7,7 @@ import {
   LOGIN_SUCCESS,
   SET_REMEMBERED_USER,
   AUTH_TOKEN_SUCCESS,
+  LOGOUT,
 } from './actions';
 
 const DEFAULT = {
@@ -37,6 +38,9 @@ function User(state = DEFAULT, action = {}) {
       case AUTH_TOKEN_SUCCESS:
         draft.token = payload.token;
         draft.userInfo = payload.user;
+        break;
+      case LOGOUT:
+        draft.token = '';
         break;
     }
   });

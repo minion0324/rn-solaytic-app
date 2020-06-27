@@ -7,6 +7,7 @@ export const LOGIN_SUCCESS = 'USER/LOGIN_SUCCESS';
 export const SET_REMEMBERED_USER = 'USER/SET_REMEMBERED_USER';
 export const AUTH_TOKEN = 'USER/AUTH_TOKEN';
 export const AUTH_TOKEN_SUCCESS = 'USER/AUTH_TOKEN_SUCCESS';
+export const LOGOUT = 'USER/LOGOUT';
 
 export const actionCreators = {
   fetch: createAction(FETCH_DATA),
@@ -15,4 +16,5 @@ export const actionCreators = {
   setRememberedUser: createAction(SET_REMEMBERED_USER),
   authToken: createAction(AUTH_TOKEN),
   authTokenSuccess: createAction(AUTH_TOKEN_SUCCESS),
+  logout: createAction(LOGOUT),
 };
