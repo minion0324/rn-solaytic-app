@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
   HeaderBar,
@@ -13,6 +14,7 @@ import {
   SVGS,
   COLORS,
 } from 'src/constants';
+import { User } from 'src/redux';
 
 import {
   Container,
@@ -34,13 +36,16 @@ import {
 
 const { SideMenuIcon } = SVGS;
 
-const AlertScreen = ({ componentId }) => {
+const AlertScreen = ({
+  driverName,
+  componentId,
+}) => {
   return (
     <Container>
       <ShadowWrap>
         <HeaderBar
           leftIcon={<SideMenuIcon />}
-          rightIcon={<HelloText>Hello, William Tan</HelloText>}
+          rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
         <ButtonWrap>
           <DefaultButton
@@ -73,7 +78,21 @@ const AlertScreen = ({ componentId }) => {
 };
 
 AlertScreen.propTypes = {
+  driverName: PropTypes.string.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
-export default AlertScreen;
+const mapStateToProps = (state) => {
+  return {
+    driverName: User.selectors.getDriverName(state),
+  };
+};
+
+const mapDispatchToProps = {
+  //
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AlertScreen);
