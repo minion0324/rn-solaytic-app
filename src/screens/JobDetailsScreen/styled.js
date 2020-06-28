@@ -66,7 +66,7 @@ const Border = styled.View`
   border-color: ${COLORS.GRAY2};
 `;
 
-const CustomerInfo = styled.View`
+const ContractInfo = styled.View`
   margin-vertical: ${SIZE4}px;
 `;
 
@@ -181,7 +181,7 @@ export {
   LocationRow,
   IconWrap,
   Border,
-  CustomerInfo,
+  ContractInfo,
   InfoWrap,
   IdWrap,
   IdText,

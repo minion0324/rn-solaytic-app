@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   SVGS,
@@ -27,6 +29,9 @@ import {
   ScreenText,
   BackButton,
 } from 'src/styles/header.styles';
+import {
+  Jobs,
+} from 'src/redux';
 
 import {
   ButtonWrap,
@@ -38,7 +43,7 @@ import {
   LocationRow,
   IconWrap,
   Border,
-  CustomerInfo,
+  ContractInfo,
   InfoWrap,
   IdWrap,
   IdText,
@@ -65,6 +70,7 @@ const {
 } = SVGS;
 
 const JobDetailsScreen = ({
+  focusedJob,
   componentId,
   type,
 }) => {
@@ -104,27 +110,29 @@ const JobDetailsScreen = ({
     );
   };
 
-  const renderCustomerInfo = () => {
+  const renderContractInfo = () => {
+    const jobDate = moment(focusedJob.jobDate);
+
     return (
-      <CustomerInfo>
+      <ContractInfo>
         <InfoWrap>
           <LabelText>Customer</LabelText>
-          <InfoText>Cheetah projects Co.</InfoText>
+          <InfoText>{focusedJob.customerName}</InfoText>
         </InfoWrap>
         <InfoWrap>
           <LabelText>Contract</LabelText>
           <RowWrap>
-            <InfoText>Michael Tan  |  </InfoText>
+            <InfoText>{`${focusedJob.driverName}  |  `}</InfoText>
             <IdWrap>
-              <IdText>898981112</IdText>
+              <IdText>{focusedJob.jobNumber}</IdText>
             </IdWrap>
           </RowWrap>
         </InfoWrap>
         <InfoWrap>
           <LabelText>Date & Time</LabelText>
-          <InfoText>15 Jan | 3:30 PM</InfoText>
+          <InfoText>{`${jobDate.format('DD ddd')} | ${jobDate.format('hh:mm A')}`}</InfoText>
         </InfoWrap>
-      </CustomerInfo>
+      </ContractInfo>
     );
   };
 
@@ -215,17 +223,17 @@ const JobDetailsScreen = ({
           <ShadowWrap>
             <Content>
               { renderLocationInfo() }
-              { renderCustomerInfo() }
+              { renderContractInfo() }
               { renderBinInfo() }
               { renderInstructions() }
               { renderPhotoAndSign() }
+
               {
                 // <DefaultButton
                 //   color={COLORS.BLUE1}
                 //   text={'Acknowledge'}
                 // />
               }
-
             </Content>
           </ShadowWrap>
         </JobDetails>
@@ -235,6 +243,7 @@ const JobDetailsScreen = ({
 };
 
 JobDetailsScreen.propTypes = {
+  focusedJob: PropTypes.object.isRequired,
   componentId: PropTypes.string.isRequired,
   type: PropTypes.string,
 };
@@ -243,4 +252,17 @@ JobDetailsScreen.defaultProps = {
   type: '',
 };
 
-export default JobDetailsScreen;
+const mapStateToProps = (state) => {
+  return {
+    focusedJob: Jobs.selectors.getFocusedJob(state),
+  };
+};
+
+const mapDispatchToProps = {
+  //
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(JobDetailsScreen);
