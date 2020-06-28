@@ -23,8 +23,16 @@ const getPageIndex = createSelector(
   },
 );
 
+const getFocusedJob = createSelector(
+  getJobsStore,
+  (jobs) => {
+    return jobs.focusedJob || {};
+  },
+);
+
 export default {
   getAllJobs,
   getCountOfJobs,
   getPageIndex,
+  getFocusedJob,
 };

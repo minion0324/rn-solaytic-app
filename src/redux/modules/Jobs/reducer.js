@@ -6,6 +6,7 @@ import {
   GET_JOBS_SUCCESS,
   GET_JOBS_BY_DATE_SUCCESS,
   GET_JOBS_BY_PAGE_SUCCESS,
+  SET_FOCUSED_JOB,
 } from './actions';
 
 const DEFAULT = {
@@ -16,7 +17,10 @@ const jobsPersistConfig = {
   key: 'Jobs',
   storage: AsyncStorage,
   blacklist: [
-    //
+    'pageIndex',
+    'count',
+    'jobs',
+    'focusedJob',
   ],
 };
 
@@ -36,6 +40,9 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.pageIndex = state.pageIndex + 1;
         draft.count = state.counnt + payload.total;
         draft.jobs.push(payload.data);
+        break;
+      case SET_FOCUSED_JOB:
+        draft.focusedJob = payload;
         break;
     }
   });
