@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Picker from 'react-native-picker';
@@ -9,6 +9,7 @@ import {
   COLORS,
   SIZE2,
   FONT,
+  DATE_FORMAT,
 } from 'src/constants';
 
 const { ArrowDateIcon } = SVGS;
@@ -27,11 +28,9 @@ const DateText = styled.Text`
 `;
 
 const DatePicker = ({
+  date,
   onSelect,
 }) => {
-  const [ year, setYear ] = useState(moment().format('YYYY'));
-  const [ month, setMonth ] = useState(moment().format('MMM'));
-
   const onPicker = () => {
     Picker.isPickerShow((status) => {
       if (status) {
@@ -39,14 +38,13 @@ const DatePicker = ({
       } else {
         Picker.init({
           pickerData: moment.months(),
-          selectedValue: [moment(month, 'MMM').format('MMMM')],
+          selectedValue: [moment(date, DATE_FORMAT).format('MMMM')],
           pickerBg: [255, 255, 255, 1],
           pickerTitleText: 'Pick a Month',
           onPickerConfirm: (data) => {
-            const mid = moment(data[0], 'MMMM').format('MMM');
-
-            setMonth(mid);
-            onSelect(`${mid} ${year}`);
+            const month = moment(data[0], 'MMMM').format('MMM');
+            const year = moment(date, DATE_FORMAT).format('YYYY');
+            onSelect(`${month} ${year}`);
           },
           onPickerCancel: () => {
             Picker.hide();
@@ -60,13 +58,14 @@ const DatePicker = ({
 
   return (
     <Container onPress={onPicker}>
-      <DateText>{`${month} ${year}`}</DateText>
+      <DateText>{date}</DateText>
       <ArrowDateIcon />
     </Container>
   );
 }
 
 DatePicker.propTypes = {
+  date: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
 };
 

@@ -27,10 +27,10 @@ const ListWrap = ({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          onEndReached={onEndProcess}
-          onEndReachedThreshold={0.5}
         />
       }
+      onEndReached={onEndProcess}
+      onEndReachedThreshold={0.5}
     />
   );
 };
