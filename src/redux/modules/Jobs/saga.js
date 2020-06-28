@@ -6,10 +6,14 @@ import moment from 'moment';
 import {
   apiGetJobs,
 } from 'src/services';
+import {
+  DATE_FORMAT,
+} from 'src/constants';
 
 import {
   GET_JOBS,
   GET_JOBS_BY_DATE,
+  GET_JOBS_BY_PAGE,
   actionCreators,
 } from './actions';
 
@@ -38,11 +42,11 @@ export function* asyncGetJobsByDate({ payload }) {
   } = payload;
 
   try {
-    const fromDate = moment(date, 'MMM YYYY').startOf('month').format('YYYY-MM-DD');
-    const toDate = moment(date, 'MMM YYYY').endOf('month').format('YYYY-MM-DD');
+    const fromDate = moment(date, DATE_FORMAT).startOf('month').format('YYYY-MM-DD');
+    const toDate = moment(date, DATE_FORMAT).endOf('month').format('YYYY-MM-DD');
 
     const { data } = yield call(apiGetJobs, fromDate, toDate);
-    yield put(actionCreators.getJobsSuccess(data));
+    yield put(actionCreators.getJobsByDateSuccess(data));
 
     success && success();
   } catch (error) {
@@ -54,6 +58,31 @@ export function* watchGetJobsByDate() {
   while (true) {
     const action = yield take(GET_JOBS_BY_DATE);
     yield* asyncGetJobsByDate(action);
+  }
+}
+
+export function* asyncGetJobsByPage({ payload }) {
+  const {
+    date, pageIndex, success, failure,
+  } = payload;
+
+  try {
+    const fromDate = moment(date, DATE_FORMAT).startOf('month').format('YYYY-MM-DD');
+    const toDate = moment(date, DATE_FORMAT).endOf('month').format('YYYY-MM-DD');
+
+    const { data } = yield call(apiGetJobs, fromDate, toDate, pageIndex);
+    yield put(actionCreators.getJobsByPageSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetJobsByPage() {
+  while (true) {
+    const action = yield take(GET_JOBS_BY_PAGE);
+    yield* asyncGetJobsByPage(action);
   }
 }
 
@@ -82,5 +111,6 @@ export function* fetchData() {
 export default function* () {
   yield all([
     fork(watchGetJobsByDate),
+    fork(watchGetJobsByPage),
   ]);
 }

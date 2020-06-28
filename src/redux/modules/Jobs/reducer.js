@@ -5,6 +5,7 @@ import produce from 'immer';
 import {
   GET_JOBS_SUCCESS,
   GET_JOBS_BY_DATE_SUCCESS,
+  GET_JOBS_BY_PAGE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -30,6 +31,11 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.pageIndex = 1;
         draft.count = payload.total;
         draft.jobs = payload.data;
+        break;
+      case GET_JOBS_BY_PAGE_SUCCESS:
+        draft.pageIndex = state.pageIndex + 1;
+        draft.count = state.counnt + payload.total;
+        draft.jobs.push(payload.data);
         break;
     }
   });
