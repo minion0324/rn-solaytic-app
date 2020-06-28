@@ -18,7 +18,8 @@ const userPersistConfig = {
   key: 'User',
   storage: AsyncStorage,
   blacklist: [
-    //
+    'isRehydrated',
+    'userInfo',
   ],
 };
 
