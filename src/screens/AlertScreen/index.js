@@ -9,6 +9,7 @@ import {
   ListWrap,
   ItemWrap,
   DefaultButton,
+  DatePicker,
 } from 'src/components';
 import {
   SVGS,
@@ -40,11 +41,16 @@ const AlertScreen = ({
   driverName,
   componentId,
 }) => {
+  const onDateSelect = (date) => {
+    console.log(date);
+  };
+
   return (
     <Container>
       <ShadowWrap>
         <HeaderBar
           leftIcon={<SideMenuIcon />}
+          centerIcon={<DatePicker onSelect={onDateSelect} />}
           rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
         <ButtonWrap>

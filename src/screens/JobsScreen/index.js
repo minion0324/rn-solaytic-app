@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
   HeaderBar,
@@ -7,6 +8,7 @@ import {
   JobCard,
   ListWrap,
   ItemWrap,
+  DatePicker,
 } from 'src/components';
 import {
   SVGS,
@@ -16,11 +18,15 @@ import {
   pushScreen,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
+import { User } from 'src/redux';
 
 import {
   Container,
   ShadowWrap,
 } from 'src/styles/common.styles';
+import {
+  HelloText,
+} from 'src/styles/header.styles';
 import {
   CardRow,
   DateWrap,
@@ -35,7 +41,10 @@ import {
 
 const { SideMenuIcon } = SVGS;
 
-const JobsScreen = ({ componentId }) => {
+const JobsScreen = ({
+  driverName,
+  componentId,
+}) => {
   const [ index, setIndex ] = useState(0);
   const [ tabs ] = useState([
     { key: 'first', color: COLORS.GRAY2 },
@@ -48,11 +57,17 @@ const JobsScreen = ({ componentId }) => {
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   }
 
+  const onDateSelect = (date) => {
+    console.log(date);
+  };
+
   return (
     <Container>
       <ShadowWrap>
         <HeaderBar
           leftIcon={<SideMenuIcon />}
+          centerIcon={<DatePicker onSelect={onDateSelect} />}
+          rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
         <TabWrap>
           {
@@ -93,4 +108,17 @@ JobsScreen.propTypes = {
   componentId: PropTypes.string.isRequired,
 };
 
-export default JobsScreen;
+const mapStateToProps = (state) => {
+  return {
+    driverName: User.selectors.getDriverName(state),
+  };
+};
+
+const mapDispatchToProps = {
+  //
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(JobsScreen);
