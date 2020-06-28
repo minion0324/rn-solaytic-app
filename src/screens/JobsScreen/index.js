@@ -55,6 +55,7 @@ const JobsScreen = ({
   pageIndex,
   getJobsByDate,
   getJobsByPage,
+  setFocusedJob,
   componentId,
 }) => {
   const [ index, setIndex ] = useState(0);
@@ -67,10 +68,6 @@ const JobsScreen = ({
   const [ loading, setLoading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
   const [ date, setDate ] = useState(moment().format(DATE_FORMAT));
-
-  const toJobDetails = () => {
-    pushScreen(componentId, JOB_DETAILS_SCREEN);
-  };
 
   const onDateSelect = (selectedDate) => {
     setLoading(true);
@@ -104,6 +101,11 @@ const JobsScreen = ({
     });
   };
 
+  const onItemPress = (job) => {
+    setFocusedJob(job);
+    pushScreen(componentId, JOB_DETAILS_SCREEN);
+  };
+
   const renderItem = ({ item, index }) => {
     const jobDate = moment(item.jobDate);
 
@@ -121,7 +123,9 @@ const JobsScreen = ({
             </DateWrap>
           : <DateWrap />
         }
-        <ItemWrap onPress={toJobDetails}>
+        <ItemWrap
+          onPress={() => onItemPress(item)}
+        >
           <JobCard
             customer={item.customerName}
             type={item.jobTypeName}
@@ -183,6 +187,7 @@ JobsScreen.propTypes = {
   pageIndex: PropTypes.number.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
+  setFocusedJob: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -197,6 +202,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getJobsByDate: Jobs.actionCreators.getJobsByDate,
   getJobsByPage: Jobs.actionCreators.getJobsByPage,
+  setFocusedJob: Jobs.actionCreators.setFocusedJob,
 };
 
 export default connect(
