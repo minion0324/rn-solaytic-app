@@ -18,7 +18,15 @@ const ShadowWrap = styled.View`
   background-color: ${COLORS.WHITE1};
 `;
 
+const LoadingWrap = styled.View`
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
 export {
   Container,
   ShadowWrap,
+  LoadingWrap,
 };

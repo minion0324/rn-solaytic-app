@@ -87,7 +87,6 @@ export function* fetchData() {
   }
 }
 
-
 export default function* () {
   yield all([
     fork(watchLogin),

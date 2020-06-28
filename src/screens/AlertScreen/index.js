@@ -63,7 +63,7 @@ const AlertScreen = ({
       </ShadowWrap>
 
       <ListWrap
-        data={['job1', 'job2', 'job3', 'job4', 'job5',]}
+        data={[]}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <CardRow>
