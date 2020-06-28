@@ -4,6 +4,7 @@ import produce from 'immer';
 
 import {
   GET_JOBS_SUCCESS,
+  GET_JOBS_BY_DATE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -25,6 +26,9 @@ function Jobs(state = DEFAULT, action = {}) {
 
     switch (type) {
       case GET_JOBS_SUCCESS:
+      case GET_JOBS_BY_DATE_SUCCESS:
+        draft.pageIndex = 1;
+        draft.count = payload.total;
         draft.jobs = payload.data;
         break;
     }
