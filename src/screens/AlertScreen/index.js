@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   HeaderBar,
@@ -14,6 +15,7 @@ import {
 import {
   SVGS,
   COLORS,
+  DATE_FORMAT,
 } from 'src/constants';
 import { User } from 'src/redux';
 
@@ -41,8 +43,10 @@ const AlertScreen = ({
   driverName,
   componentId,
 }) => {
-  const onDateSelect = (date) => {
-    console.log(date);
+  const [ date, setDate ] = useState(moment().format(DATE_FORMAT));
+
+  const onDateSelect = (selectedDate) => {
+    setDate(selectedDate);
   };
 
   return (
@@ -50,7 +54,9 @@ const AlertScreen = ({
       <ShadowWrap>
         <HeaderBar
           leftIcon={<SideMenuIcon />}
-          centerIcon={<DatePicker onSelect={onDateSelect} />}
+          centerIcon={
+            <DatePicker date={date} onSelect={onDateSelect} />
+          }
           rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
         <ButtonWrap>

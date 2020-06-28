@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   HeaderBar,
@@ -14,6 +15,7 @@ import {
 import {
   SVGS,
   COLORS,
+  DATE_FORMAT,
 } from 'src/constants';
 import {
   pushScreen,
@@ -49,7 +51,10 @@ const { SideMenuIcon } = SVGS;
 const JobsScreen = ({
   driverName,
   allJobs,
+  countOfJobs,
+  pageIndex,
   getJobsByDate,
+  getJobsByPage,
   componentId,
 }) => {
   const [ index, setIndex ] = useState(0);
@@ -60,25 +65,42 @@ const JobsScreen = ({
     { key: 'fourth', color: COLORS.RED1 },
   ]);
   const [ loading, setLoading ] = useState(false);
+  const [ refreshing, setRefreshing ] = useState(false);
+  const [ date, setDate ] = useState(moment().format(DATE_FORMAT));
 
   const toJobDetails = () => {
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
 
-  const onSuccess = () => {
-    setLoading(false);
-  };
-
-  const onFailure = () => {
-    setLoading(false);
-  };
-
-  const onDateSelect = (date) => {
+  const onDateSelect = (selectedDate) => {
     setLoading(true);
+    setDate(selectedDate);
+
+    getJobsByDate({
+      date: selectedDate,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const onEnd = () => {
+    if (countOfJobs < pageIndex * 10) return;
+
+    getJobsByPage({
+      date,
+      pageIndex,
+      success: () => {},
+      failure: () => {},
+    });
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
     getJobsByDate({
       date,
-      success: onSuccess,
-      failure: onFailure,
+      success: () => setRefreshing(false),
+      failure: () => setRefreshing(false),
     });
   };
 
@@ -87,7 +109,9 @@ const JobsScreen = ({
       <ShadowWrap>
         <HeaderBar
           leftIcon={<SideMenuIcon />}
-          centerIcon={<DatePicker onSelect={onDateSelect} />}
+          centerIcon={
+            <DatePicker date={date} onSelect={onDateSelect} />
+          }
           rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
         <TabWrap>
@@ -123,7 +147,9 @@ const JobsScreen = ({
                 </ItemWrap>
               </CardRow>
             )}
-            onEndProcess={() => { console.log('------------- on end reached') }}
+            onEndProcess={onEnd}
+            onRefreshProcess={onRefresh}
+            refreshing={refreshing}
           />
       }
 
@@ -135,18 +161,24 @@ const JobsScreen = ({
 JobsScreen.propTypes = {
   componentId: PropTypes.string.isRequired,
   allJobs: PropTypes.array.isRequired,
+  countOfJobs: PropTypes.number.isRequired,
+  pageIndex: PropTypes.number.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
+  getJobsByPage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     driverName: User.selectors.getDriverName(state),
     allJobs: Jobs.selectors.getAllJobs(state),
+    countOfJobs: Jobs.selectors.getCountOfJobs(state),
+    pageIndex: Jobs.selectors.getPageIndex(state),
   };
 };
 
 const mapDispatchToProps = {
   getJobsByDate: Jobs.actionCreators.getJobsByDate,
+  getJobsByPage: Jobs.actionCreators.getJobsByPage,
 };
 
 export default connect(
