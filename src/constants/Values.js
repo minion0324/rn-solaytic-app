@@ -33,6 +33,9 @@ const SIZE40 = SIZE1 * 40; // 200
 const scale = size => WIDTH / 360 * size; // 360
 const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 
+//
+const DATE_FORMAT = 'MMM YYYY';
+
 export {
   PLATFORM,
   WIDTH,
@@ -53,4 +56,5 @@ export {
   SIZE30,
   SIZE40,
   FONT,
+  DATE_FORMAT,
 };
