@@ -104,6 +104,36 @@ const JobsScreen = ({
     });
   };
 
+  const renderItem = ({ item, index }) => {
+    const jobDate = moment(item.jobDate);
+
+    const showDate =
+      index === 0 ||
+      jobDate.format('DD ddd') !== moment(allJobs[index - 1].jobDate).format('DD ddd');
+
+    return (
+      <CardRow>
+        {
+          showDate
+          ? <DateWrap>
+              <DateText1>{jobDate.format('DD')}</DateText1>
+              <DateText2>{jobDate.format('ddd')}</DateText2>
+            </DateWrap>
+          : <DateWrap />
+        }
+        <ItemWrap onPress={toJobDetails}>
+          <JobCard
+            customer={item.customerName}
+            type={item.jobTypeName}
+            location={''}
+            time={jobDate.format('hh:mm A')}
+            status={item.statusName}
+          />
+        </ItemWrap>
+      </CardRow>
+    );
+  };
+
   return (
     <Container>
       <ShadowWrap>
@@ -134,19 +164,7 @@ const JobsScreen = ({
         : <ListWrap
             data={allJobs}
             keyExtractor={(item) => `${item.jobId}`}
-            renderItem={({ item, index }) => (
-              <CardRow>
-                <DateWrap>
-                  <DateText1>15</DateText1>
-                  <DateText2>Mon</DateText2>
-                </DateWrap>
-                <ItemWrap
-                  onPress={toJobDetails}
-                >
-                  <JobCard />
-                </ItemWrap>
-              </CardRow>
-            )}
+            renderItem={renderItem}
             onEndProcess={onEnd}
             onRefreshProcess={onRefresh}
             refreshing={refreshing}
