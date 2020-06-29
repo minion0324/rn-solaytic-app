@@ -52,7 +52,7 @@ const JobsScreen = ({
   driverName,
   allJobs,
   countOfJobs,
-  pageIndex,
+  pageOfJobs,
   getJobsByDate,
   getJobsByPage,
   setFocusedJob,
@@ -81,11 +81,11 @@ const JobsScreen = ({
   };
 
   const onEnd = () => {
-    if (countOfJobs < pageIndex * 10) return;
+    if (countOfJobs < pageOfJobs * 10) return;
 
     getJobsByPage({
       date,
-      pageIndex,
+      pageOfJobs,
       success: () => {},
       failure: () => {},
     });
@@ -181,13 +181,14 @@ const JobsScreen = ({
 };
 
 JobsScreen.propTypes = {
-  componentId: PropTypes.string.isRequired,
+  driverName: PropTypes.string.isRequired,
   allJobs: PropTypes.array.isRequired,
   countOfJobs: PropTypes.number.isRequired,
-  pageIndex: PropTypes.number.isRequired,
+  pageOfJobs: PropTypes.number.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
   setFocusedJob: PropTypes.func.isRequired,
+  componentId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -195,7 +196,7 @@ const mapStateToProps = (state) => {
     driverName: User.selectors.getDriverName(state),
     allJobs: Jobs.selectors.getAllJobs(state),
     countOfJobs: Jobs.selectors.getCountOfJobs(state),
-    pageIndex: Jobs.selectors.getPageIndex(state),
+    pageOfJobs: Jobs.selectors.getPageOfJobs(state),
   };
 };
 
