@@ -5,21 +5,42 @@ const getJobsStore = state => state.Jobs;
 const getAllJobs = createSelector(
   getJobsStore,
   (jobs) => {
-    return jobs.jobs || [];
+    return jobs.allJobs || [];
   },
 );
 
 const getCountOfJobs = createSelector(
   getJobsStore,
   (jobs) => {
-    return jobs.count || 0;
+    return jobs.countOfJobs || 0;
   },
 );
 
-const getPageIndex = createSelector(
+const getPageOfJobs = createSelector(
   getJobsStore,
   (jobs) => {
-    return jobs.pageIndex || 1;
+    return jobs.pageOfJobs || 1;
+  },
+);
+
+const getAllAlerts = createSelector(
+  getJobsStore,
+  (jobs) => {
+    return jobs.allAlerts || [];
+  },
+);
+
+const getCountOfAlerts = createSelector(
+  getJobsStore,
+  (jobs) => {
+    return jobs.countOfAlerts || 0;
+  },
+);
+
+const getPageOfAlerts = createSelector(
+  getJobsStore,
+  (jobs) => {
+    return jobs.pageOfAlerts || 1;
   },
 );
 
@@ -33,6 +54,9 @@ const getFocusedJob = createSelector(
 export default {
   getAllJobs,
   getCountOfJobs,
-  getPageIndex,
+  getPageOfJobs,
+  getAllAlerts,
+  getCountOfAlerts,
+  getPageOfAlerts,
   getFocusedJob,
 };
