@@ -53,8 +53,8 @@ const LoginScreen = ({
   const inputPassword = useRef(null);
 
   const [ loading, setLoading ] = useState(false);
-  const [ userName, setUserName ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const [ userName, setUserName ] = useState('suhk_deep');
+  const [ password, setPassword ] = useState('Xg@!#213567');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
 
@@ -96,7 +96,7 @@ const LoginScreen = ({
     authToken({
       token,
       success: onFetch,
-      faliure: onFailure,
+      failure: onFailure,
     });
   }
 
