@@ -15,7 +15,6 @@ import {
 import {
   SVGS,
   COLORS,
-  DATE_FORMAT,
 } from 'src/constants';
 import {
   pushScreen,
@@ -53,6 +52,7 @@ const JobsScreen = ({
   allJobs,
   countOfJobs,
   pageOfJobs,
+  dateForJobs,
   getJobsByDate,
   getJobsByPage,
   setFocusedJob,
@@ -67,14 +67,12 @@ const JobsScreen = ({
   ]);
   const [ loading, setLoading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
-  const [ date, setDate ] = useState(moment().format(DATE_FORMAT));
 
   const onDateSelect = (selectedDate) => {
     setLoading(true);
-    setDate(selectedDate);
 
     getJobsByDate({
-      date: selectedDate,
+      dateForJobs: selectedDate,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -84,7 +82,7 @@ const JobsScreen = ({
     if (countOfJobs < pageOfJobs * 10) return;
 
     getJobsByPage({
-      date,
+      dateForJobs,
       pageOfJobs,
       success: () => {},
       failure: () => {},
@@ -95,7 +93,7 @@ const JobsScreen = ({
     setRefreshing(true);
 
     getJobsByDate({
-      date,
+      dateForJobs,
       success: () => setRefreshing(false),
       failure: () => setRefreshing(false),
     });
@@ -144,7 +142,7 @@ const JobsScreen = ({
         <HeaderBar
           leftIcon={<SideMenuIcon />}
           centerIcon={
-            <DatePicker date={date} onSelect={onDateSelect} />
+            <DatePicker date={dateForJobs} onSelect={onDateSelect} />
           }
           rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
@@ -185,6 +183,7 @@ JobsScreen.propTypes = {
   allJobs: PropTypes.array.isRequired,
   countOfJobs: PropTypes.number.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
+  dateForJobs: PropTypes.string.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
   setFocusedJob: PropTypes.func.isRequired,
@@ -197,6 +196,7 @@ const mapStateToProps = (state) => {
     allJobs: Jobs.selectors.getAllJobs(state),
     countOfJobs: Jobs.selectors.getCountOfJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
+    dateForJobs: Jobs.selectors.getDateForJobs(state),
   };
 };
 

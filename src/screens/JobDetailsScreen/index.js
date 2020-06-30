@@ -71,12 +71,23 @@ const {
 
 const JobDetailsScreen = ({
   focusedJob,
+  acknowledgeJobs,
   componentId,
-  type,
 }) => {
   const [ index, setIndex ] = useState(0);
+  const [ loading, setLoading ] = useState(false);
 
-  const toBack = () => {
+  const onAcknowledge = () => {
+    setLoading(true);
+
+    acknowledgeJobs({
+      jobIds: focusedJob.jobId,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const onBack = () => {
     popScreen(componentId);
   };
 
@@ -197,12 +208,17 @@ const JobDetailsScreen = ({
   return (
     <Container>
       {
-        type
-        ? <ShadowWrap>
+        focusedJob.statusName === 'Assigned'
+        ? <HeaderBar
+            centerIcon={<ScreenText>Exchange Bin</ScreenText>}
+            leftIcon={<BackButton />}
+            onPressLeft={onBack}
+          />
+        : <ShadowWrap>
             <HeaderBar
               centerIcon={<ScreenText>Exchange Bin</ScreenText>}
               leftIcon={<BackButton />}
-              onPressLeft={toBack}
+              onPressLeft={onBack}
             />
             <ButtonWrap>
               <DefaultButton
@@ -211,14 +227,11 @@ const JobDetailsScreen = ({
               />
             </ButtonWrap>
           </ShadowWrap>
-        : <HeaderBar
-            centerIcon={<ScreenText>Exchange Bin</ScreenText>}
-            leftIcon={<BackButton />}
-            onPressLeft={toBack}
-          />
       }
 
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
         <JobDetails>
           <ShadowWrap>
             <Content>
@@ -226,13 +239,20 @@ const JobDetailsScreen = ({
               { renderContractInfo() }
               { renderBinInfo() }
               { renderInstructions() }
-              { renderPhotoAndSign() }
 
               {
-                // <DefaultButton
-                //   color={COLORS.BLUE1}
-                //   text={'Acknowledge'}
-                // />
+                focusedJob.statusName !== 'Assigned' &&
+                renderPhotoAndSign()
+              }
+
+              {
+                focusedJob.statusName === 'Assigned' &&
+                <DefaultButton
+                  text={'Acknowledge'}
+                  color={COLORS.BLUE1}
+                  onPress={onAcknowledge}
+                  loading={loading}
+                />
               }
             </Content>
           </ShadowWrap>
@@ -244,12 +264,12 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  acknowledgeJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
-  type: PropTypes.string,
 };
 
 JobDetailsScreen.defaultProps = {
-  type: '',
+  //
 };
 
 const mapStateToProps = (state) => {
@@ -259,7 +279,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  //
+  acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
 };
 
 export default connect(
