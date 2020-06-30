@@ -22,7 +22,7 @@ function apiGetJobs(
   currentPage = 1,
   pageSize = 10,
   sortColumn = 'JobDate',
-  sortDir = 'desc',
+  sortDir = 'asc',
   jobTypeFilter = '',
   jobStatusFilter = '',
 ) {
