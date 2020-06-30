@@ -31,6 +31,7 @@ const ListWrap = ({
       }
       onEndReached={onEndProcess}
       onEndReachedThreshold={0.5}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
