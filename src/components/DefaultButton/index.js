@@ -43,7 +43,7 @@ const DefaultButton = ({
   return (
     <Button
       onPress={onPress}
-      disabled={!onPress}
+      disabled={!onPress || loading}
 
       color={color}
       mLeft={mLeft}
