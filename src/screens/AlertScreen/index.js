@@ -53,9 +53,23 @@ const AlertScreen = ({
   getAlertsByDate,
   getAlertsByPage,
   setFocusedJob,
+  acknowledgeJobs,
   componentId,
 }) => {
+  const [ loading, setLoading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  const onAcknowledge = () => {
+    setLoading(true);
+
+    const jobIds = allAlerts.map(item => item.jobId).join();
+
+    acknowledgeJobs({
+      jobIds,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
 
   const onEnd = () => {
     if (countOfAlerts < pageOfAlerts * 10) return;
@@ -129,6 +143,8 @@ const AlertScreen = ({
             <DefaultButton
               text={`Acknowledge (${countOfAlerts})`}
               color={COLORS.BLUE1}
+              onPress={onAcknowledge}
+              loading={loading}
               mTop={-8}
             />
           </ButtonWrap>
@@ -158,6 +174,7 @@ AlertScreen.propTypes = {
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
   setFocusedJob: PropTypes.func.isRequired,
+  acknowledgeJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -175,6 +192,7 @@ const mapDispatchToProps = {
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
   setFocusedJob: Jobs.actionCreators.setFocusedJob,
+  acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
 };
 
 export default connect(

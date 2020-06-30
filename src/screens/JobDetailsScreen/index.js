@@ -81,7 +81,7 @@ const JobDetailsScreen = ({
     setLoading(true);
 
     acknowledgeJobs({
-      jobIds: focusedJob.jobId,
+      jobIds: `${focusedJob.jobId}`,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
