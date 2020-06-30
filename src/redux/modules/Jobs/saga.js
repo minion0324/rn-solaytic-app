@@ -1,32 +1,35 @@
 import {
   take, put, call, fork, all,
 } from 'redux-saga/effects';
-import moment from 'moment';
 
+import {
+  getFormattedDate,
+  getStartOfMonth,
+  getEndOfMonth,
+} from 'src/utils';
 import {
   apiGetJobs,
+  apiAcknowledgeJobs,
 } from 'src/services';
-import {
-  DATE_FORMAT,
-} from 'src/constants';
 
 import {
-  GET_JOBS,
   GET_JOBS_BY_DATE,
   GET_JOBS_BY_PAGE,
-  GET_ALERTS,
   GET_ALERTS_BY_DATE,
   GET_ALERTS_BY_PAGE,
+  ACKNOWLEDGE_JOBS,
   actionCreators,
 } from './actions';
 
 export function* asyncGetJobs() {
   try {
-    const fromDate = moment().startOf('month').format('YYYY-MM-DD');
-    const toDate = moment().endOf('month').format('YYYY-MM-DD');
+    const dateForJobs = getFormattedDate();
+
+    const fromDate = getStartOfMonth(dateForJobs);
+    const toDate = getEndOfMonth(dateForJobs);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, false);
-    yield put(actionCreators.getJobsSuccess(data));
+    yield put(actionCreators.getJobsSuccess({ dateForJobs, ...data }));
 
     return {
       type: 'success',
@@ -41,15 +44,15 @@ export function* asyncGetJobs() {
 
 export function* asyncGetJobsByDate({ payload }) {
   const {
-    date, success, failure,
+    dateForJobs, success, failure,
   } = payload;
 
   try {
-    const fromDate = moment(date, DATE_FORMAT).startOf('month').format('YYYY-MM-DD');
-    const toDate = moment(date, DATE_FORMAT).endOf('month').format('YYYY-MM-DD');
+    const fromDate = getStartOfMonth(dateForJobs);
+    const toDate = getEndOfMonth(dateForJobs);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, false);
-    yield put(actionCreators.getJobsByDateSuccess(data));
+    yield put(actionCreators.getJobsByDateSuccess({ dateForJobs, ...data }));
 
     success && success();
   } catch (error) {
@@ -66,12 +69,12 @@ export function* watchGetJobsByDate() {
 
 export function* asyncGetJobsByPage({ payload }) {
   const {
-    date, pageOfJobs, success, failure,
+    dateForJobs, pageOfJobs, success, failure,
   } = payload;
 
   try {
-    const fromDate = moment(date, DATE_FORMAT).startOf('month').format('YYYY-MM-DD');
-    const toDate = moment(date, DATE_FORMAT).endOf('month').format('YYYY-MM-DD');
+    const fromDate = getStartOfMonth(dateForJobs);
+    const toDate = getEndOfMonth(dateForJobs);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, false, pageOfJobs);
     yield put(actionCreators.getJobsByPageSuccess(data));
@@ -91,11 +94,13 @@ export function* watchGetJobsByPage() {
 
 export function* asyncGetAlerts() {
   try {
-    const fromDate = moment().startOf('month').format('YYYY-MM-DD');
-    const toDate = moment().endOf('month').format('YYYY-MM-DD');
+    const dateForAlerts = getFormattedDate();
+
+    const fromDate = getStartOfMonth(dateForAlerts);
+    const toDate = getEndOfMonth(dateForAlerts);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, true);
-    yield put(actionCreators.getAlertsSuccess(data));
+    yield put(actionCreators.getAlertsSuccess({ dateForAlerts, ...data }));
 
     return {
       type: 'success',
@@ -110,15 +115,15 @@ export function* asyncGetAlerts() {
 
 export function* asyncGetAlertsByDate({ payload }) {
   const {
-    date, success, failure,
+    dateForAlerts, success, failure,
   } = payload;
 
   try {
-    const fromDate = moment(date, DATE_FORMAT).startOf('month').format('YYYY-MM-DD');
-    const toDate = moment(date, DATE_FORMAT).endOf('month').format('YYYY-MM-DD');
+    const fromDate = getStartOfMonth(dateForAlerts);
+    const toDate = getEndOfMonth(dateForAlerts);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, true);
-    yield put(actionCreators.getAlertsByDateSuccess(data));
+    yield put(actionCreators.getAlertsByDateSuccess({ dateForAlerts, ...data }));
 
     success && success();
   } catch (error) {
@@ -135,12 +140,12 @@ export function* watchGetAlertsByDate() {
 
 export function* asyncGetAlertsByPage({ payload }) {
   const {
-    date, pageOfAlerts, success, failure,
+    dateForAlerts, pageOfAlerts, success, failure,
   } = payload;
 
   try {
-    const fromDate = moment(date, DATE_FORMAT).startOf('month').format('YYYY-MM-DD');
-    const toDate = moment(date, DATE_FORMAT).endOf('month').format('YYYY-MM-DD');
+    const fromDate = getStartOfMonth(dateForAlerts);
+    const toDate = getEndOfMonth(dateForAlerts);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, true, pageOfAlerts);
     yield put(actionCreators.getAlertsByPageSuccess(data));
@@ -155,6 +160,29 @@ export function* watchGetAlertsByPage() {
   while (true) {
     const action = yield take(GET_ALERTS_BY_PAGE);
     yield* asyncGetAlertsByPage(action);
+  }
+}
+
+export function* asyncAcknowledgeJobs({ payload }) {
+  const {
+    jobIds, success, failure,
+  } = payload;
+
+  try {
+
+    const { data } = yield call(apiAcknowledgeJobs, jobIds);
+    yield put(actionCreators.acknowledgeJobsSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchAcknowledgeJobs() {
+  while (true) {
+    const action = yield take(ACKNOWLEDGE_JOBS);
+    yield* asyncAcknowledgeJobs(action);
   }
 }
 
@@ -187,5 +215,6 @@ export default function* () {
     fork(watchGetJobsByPage),
     fork(watchGetAlertsByDate),
     fork(watchGetAlertsByPage),
+    fork(watchAcknowledgeJobs),
   ]);
 }

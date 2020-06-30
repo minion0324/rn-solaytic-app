@@ -23,6 +23,13 @@ const getPageOfJobs = createSelector(
   },
 );
 
+const getDateForJobs = createSelector(
+  getJobsStore,
+  (jobs) => {
+    return jobs.dateForJobs;
+  },
+);
+
 const getAllAlerts = createSelector(
   getJobsStore,
   (jobs) => {
@@ -44,6 +51,13 @@ const getPageOfAlerts = createSelector(
   },
 );
 
+const getDateForAlerts = createSelector(
+  getJobsStore,
+  (jobs) => {
+    return jobs.dateForAlerts;
+  },
+);
+
 const getFocusedJob = createSelector(
   getJobsStore,
   (jobs) => {
@@ -55,8 +69,10 @@ export default {
   getAllJobs,
   getCountOfJobs,
   getPageOfJobs,
+  getDateForJobs,
   getAllAlerts,
   getCountOfAlerts,
   getPageOfAlerts,
+  getDateForAlerts,
   getFocusedJob,
 };

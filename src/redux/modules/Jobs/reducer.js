@@ -23,9 +23,11 @@ const jobsPersistConfig = {
     'pageOfJobs',
     'countOfJobs',
     'allJobs',
+    'dateForJobs',
     'pageOfAlerts',
     'countOfAlerts',
     'allAlerts',
+    'dateForAlerts',
     'focusedJob',
   ],
 };
@@ -41,6 +43,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.pageOfJobs = 1;
         draft.countOfJobs = payload.total;
         draft.allJobs = payload.data;
+        draft.dateForJobs = payload.dateForJobs;
         break;
       case GET_JOBS_BY_PAGE_SUCCESS:
         draft.pageOfJobs = state.pageOfJobs + 1;
@@ -52,6 +55,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.pageOfAlerts = 1;
         draft.countOfAlerts = payload.total;
         draft.allAlerts = payload.data;
+        draft.dateForAlerts = payload.dateForAlerts;
         break;
       case GET_ALERTS_BY_PAGE_SUCCESS:
         draft.pageOfAlerts = state.pageOfAlerts + 1;
