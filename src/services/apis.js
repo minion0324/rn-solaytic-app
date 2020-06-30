@@ -18,10 +18,11 @@ function apiAuthToken(token) {
 function apiGetJobs(
   fromDate,
   toDate,
+  isAssigned,
   currentPage = 1,
   pageSize = 10,
-  sortColumn = 'JobNumber',
-  sortDir = 'as',
+  sortColumn = 'JobDate',
+  sortDir = 'desc',
   jobTypeFilter = '',
   jobStatusFilter = '',
 ) {
@@ -29,6 +30,7 @@ function apiGetJobs(
     params: {
       fromDate,
       toDate,
+      isAssigned,
       currentPage,
       pageSize,
       sortColumn,
