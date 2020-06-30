@@ -13,7 +13,7 @@ function apiLogin(userName, password) {
 
 function apiAuthToken(token) {
   return apiCall('api/mobile/driver/authenticate-token', 'post', {});
-}
+};
 
 function apiGetJobs(
   fromDate,
@@ -39,10 +39,28 @@ function apiGetJobs(
       jobStatusFilter,
     },
   });
-}
+};
+
+function apiAcknowledgeJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/acknowledge', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
+
+function apiStartJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/start', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
 
 export {
   apiLogin,
   apiAuthToken,
   apiGetJobs,
+  apiAcknowledgeJobs,
+  apiStartJobs,
 };
