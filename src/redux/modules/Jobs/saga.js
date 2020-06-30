@@ -1,6 +1,7 @@
 import {
-  take, put, call, fork, all,
+  take, put, call, fork, all, select,
 } from 'redux-saga/effects';
+import moment from 'moment';
 
 import {
   getFormattedDate,
@@ -11,6 +12,9 @@ import {
   apiGetJobs,
   apiAcknowledgeJobs,
 } from 'src/services';
+import {
+  Jobs,
+} from 'src/redux';
 
 import {
   GET_JOBS_BY_DATE,
@@ -169,9 +173,40 @@ export function* asyncAcknowledgeJobs({ payload }) {
   } = payload;
 
   try {
-
     const { data } = yield call(apiAcknowledgeJobs, jobIds);
-    yield put(actionCreators.acknowledgeJobsSuccess(data));
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+    const allAlerts = yield select(Jobs.selectors.getAllAlerts);
+
+    const dateForJobs = yield select(Jobs.selectors.getDateForJobs);
+    const dateForAlerts = yield select(Jobs.selectors.getDateForAlerts);
+
+    //
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newAlerts.findIndex(item => item.jobId === id);
+
+      if (dateForJobs === dateForAlerts) {
+        const idx = res.newJobs.findIndex((item) => {
+          return moment(item.jobDate).isAfter(res.newAlerts[index].jobDate);
+        });
+
+        res.newJobs.splice(idx, 0, {
+          jobStatusId: 4,
+          statusName: 'Acknowledge',
+          ...res.newAlerts[index],
+        });
+      }
+      res.newAlerts.splice(index, 1);
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+      newAlerts: allAlerts.slice(0),
+    });
+
+    yield put(actionCreators.acknowledgeJobsSuccess(result));
 
     success && success();
   } catch (error) {

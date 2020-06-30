@@ -10,6 +10,7 @@ import {
   GET_ALERTS_BY_DATE_SUCCESS,
   GET_ALERTS_BY_PAGE_SUCCESS,
   SET_FOCUSED_JOB,
+  ACKNOWLEDGE_JOBS_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -64,6 +65,10 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case SET_FOCUSED_JOB:
         draft.focusedJob = payload;
+        break;
+      case ACKNOWLEDGE_JOBS_SUCCESS:
+        draft.allJobs = payload.newJobs;
+        draft.allAlerts = payload.newAlerts;
         break;
     }
   });

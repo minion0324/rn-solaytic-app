@@ -14,7 +14,6 @@ import {
 } from 'src/constants';
 import {
   HeaderBar,
-  ItemWrap,
   DefaultButton,
 } from 'src/components';
 import {
@@ -74,7 +73,6 @@ const JobDetailsScreen = ({
   acknowledgeJobs,
   componentId,
 }) => {
-  const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
 
   const onAcknowledge = () => {
