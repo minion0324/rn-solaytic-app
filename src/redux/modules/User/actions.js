@@ -8,6 +8,8 @@ export const SET_REMEMBERED_USER = 'USER/SET_REMEMBERED_USER';
 export const AUTH_TOKEN = 'USER/AUTH_TOKEN';
 export const AUTH_TOKEN_SUCCESS = 'USER/AUTH_TOKEN_SUCCESS';
 export const LOGOUT = 'USER/LOGOUT';
+export const SET_FCM_TOKEN = 'USER/SET_FCM_TOKEN';
+export const SET_FCM_TOKEN_SUCCESS = 'USER/SET_FCM_TOKEN_SUCCESS';
 
 export const actionCreators = {
   fetch: createAction(FETCH_DATA),
@@ -17,4 +19,6 @@ export const actionCreators = {
   authToken: createAction(AUTH_TOKEN),
   authTokenSuccess: createAction(AUTH_TOKEN_SUCCESS),
   logout: createAction(LOGOUT),
+  setFCMToken: createAction(SET_FCM_TOKEN),
+  setFCMTokenSuccess: createAction(SET_FCM_TOKEN_SUCCESS),
 };
