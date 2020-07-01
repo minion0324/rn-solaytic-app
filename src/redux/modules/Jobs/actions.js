@@ -10,7 +10,7 @@ export const GET_ALERTS_BY_DATE = 'JOBS/GET_ALERTS_BY_DATE';
 export const GET_ALERTS_BY_DATE_SUCCESS = 'JOBS/GET_ALERTS_BY_DATE_SUCCESS';
 export const GET_ALERTS_BY_PAGE = 'JOBS/GET_ALERTS_BY_PAGE';
 export const GET_ALERTS_BY_PAGE_SUCCESS = 'JOBS/GET_ALERTS_BY_PAGE_SUCCESS';
-export const SET_FOCUSED_JOB = 'JOBS/SET_FOCUSED_JOB';
+export const SET_FOCUSED_JOB_ID = 'JOBS/SET_FOCUSED_JOB_ID';
 export const ACKNOWLEDGE_JOBS = 'JOBS/ACKNOWLEDGE_JOBS';
 export const ACKNOWLEDGE_JOBS_SUCCESS = 'JOBS/ACKNOWLEDGE_JOBS_SUCCESS';
 
@@ -25,7 +25,7 @@ export const actionCreators = {
   getAlertsByDateSuccess: createAction(GET_ALERTS_BY_DATE_SUCCESS),
   getAlertsByPage: createAction(GET_ALERTS_BY_PAGE),
   getAlertsByPageSuccess: createAction(GET_ALERTS_BY_PAGE_SUCCESS),
-  setFocusedJob: createAction(SET_FOCUSED_JOB),
+  setFocusedJobId: createAction(SET_FOCUSED_JOB_ID),
   acknowledgeJobs: createAction(ACKNOWLEDGE_JOBS),
   acknowledgeJobsSuccess: createAction(ACKNOWLEDGE_JOBS_SUCCESS),
 };

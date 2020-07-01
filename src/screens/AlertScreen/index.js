@@ -52,7 +52,7 @@ const AlertScreen = ({
   dateForAlerts,
   getAlertsByDate,
   getAlertsByPage,
-  setFocusedJob,
+  setFocusedJobId,
   acknowledgeJobs,
   componentId,
 }) => {
@@ -93,7 +93,7 @@ const AlertScreen = ({
   };
 
   const onItemPress = (job) => {
-    setFocusedJob(job);
+    setFocusedJobId(job.jobId);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
 
@@ -173,7 +173,7 @@ AlertScreen.propTypes = {
   dateForAlerts: PropTypes.string.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
-  setFocusedJob: PropTypes.func.isRequired,
+  setFocusedJobId: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -191,7 +191,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
-  setFocusedJob: Jobs.actionCreators.setFocusedJob,
+  setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
 };
 
