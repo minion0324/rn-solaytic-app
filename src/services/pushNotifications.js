@@ -40,7 +40,7 @@ class PushNotifications {
   }
 
   onNotification = (notification) => {
-    if (platform === 'android') {
+    if (PLATFORM === 'android') {
       notification.android.setChannelId(CHANNEL_ID);
     }
 
