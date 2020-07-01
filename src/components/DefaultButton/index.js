@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -32,6 +33,8 @@ const ButtonText = styled.Text`
 const DefaultButton = ({
   text,
   color,
+  onPress,
+  loading,
   mLeft,
   mTop,
   mRight,
@@ -39,13 +42,20 @@ const DefaultButton = ({
 }) => {
   return (
     <Button
+      onPress={onPress}
+      disabled={!onPress || loading}
+
       color={color}
       mLeft={mLeft}
       mTop={mTop}
       mRight={mRight}
       mBottom={mBottom}
     >
-      <ButtonText>{text}</ButtonText>
+      {
+        loading
+        ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
+        : <ButtonText>{text}</ButtonText>
+      }
     </Button>
   );
 }
@@ -53,6 +63,8 @@ const DefaultButton = ({
 DefaultButton.propTypes = {
   text: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
+  onPress: PropTypes.func,
+  loading: PropTypes.bool,
   mLeft: PropTypes.number,
   mTop: PropTypes.number,
   mRight: PropTypes.number,
@@ -60,6 +72,8 @@ DefaultButton.propTypes = {
 };
 
 DefaultButton.defaultProps = {
+  onPress: null,
+  loading: false,
   mLeft: 0,
   mTop: 0,
   mRight: 0,

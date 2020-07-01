@@ -1,7 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import {
+  pushSingleScreenApp,
+} from 'src/navigation';
 import {
   HeaderBar,
   BottomBar,
@@ -9,6 +13,7 @@ import {
 import {
   SVGS,
 } from 'src/constants';
+import { User } from 'src/redux';
 
 import {
   Container,
@@ -30,7 +35,16 @@ import {
 
 const { AvatarIcon } = SVGS;
 
-const ProfileScreen = ({ componentId }) => {
+const ProfileScreen = ({
+  driverName,
+  logout,
+  componentId,
+}) => {
+  const onLogout = () => {
+    logout();
+    pushSingleScreenApp();
+  };
+
   return (
     <Container>
       <ShadowWrap>
@@ -46,9 +60,9 @@ const ProfileScreen = ({ componentId }) => {
               <AvatarIcon />
               <UserNameWrap>
                 <UserNameText>Username</UserNameText>
-                <UserName>Wayne</UserName>
+                <UserName>{driverName}</UserName>
               </UserNameWrap>
-              <LogoutButton>
+              <LogoutButton onPress={onLogout}>
                 <LogoutText>Log Out</LogoutText>
               </LogoutButton>
             </Content>
@@ -62,7 +76,22 @@ const ProfileScreen = ({ componentId }) => {
 };
 
 ProfileScreen.propTypes = {
+  driverName: PropTypes.string.isRequired,
+  logout: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
-export default ProfileScreen;
+const mapStateToProps = (state) => {
+  return {
+    driverName: User.selectors.getDriverName(state),
+  };
+};
+
+const mapDispatchToProps = {
+  logout: User.actionCreators.logout,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ProfileScreen);

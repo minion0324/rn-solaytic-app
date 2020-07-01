@@ -11,6 +11,7 @@ const ListWrap = ({
   renderItem,
   onRefreshProcess,
   refreshing,
+  onEndProcess,
 }) => {
 
   const onRefresh = useCallback(() => {
@@ -28,6 +29,9 @@ const ListWrap = ({
           onRefresh={onRefresh}
         />
       }
+      onEndReached={onEndProcess}
+      onEndReachedThreshold={0.5}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
@@ -38,11 +42,13 @@ ListWrap.propTypes = {
   renderItem: PropTypes.func.isRequired,
   onRefreshProcess: PropTypes.func,
   refreshing: PropTypes.bool,
+  onEndProcess: PropTypes.func,
 };
 
 ListWrap.defaultProps = {
   onRefreshProcess: null,
   refreshing: false,
+  onEndProcess: null,
 };
 
 export default ListWrap;

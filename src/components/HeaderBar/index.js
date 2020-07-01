@@ -24,6 +24,7 @@ const CenterIconWrap = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
+  margin-horizontal: ${SIZE2}px;
 `;
 
 const LeftIconWrap = styled.TouchableOpacity`

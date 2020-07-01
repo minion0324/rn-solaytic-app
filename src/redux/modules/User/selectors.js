@@ -2,6 +2,13 @@ import { createSelector } from 'reselect';
 
 const getUserStore = state => state.User;
 
+const getUserInfo = createSelector(
+  getUserStore,
+  (user) => {
+    return user.userInfo || {};
+  },
+);
+
 const getIsRehydrated = createSelector(
   getUserStore,
   (user) => {
@@ -23,8 +30,16 @@ const getRememberedUser = createSelector(
   },
 );
 
+const getDriverName = createSelector(
+  getUserInfo,
+  (userInfo) => {
+    return userInfo.driverName || '';
+  },
+);
+
 export default {
   getIsRehydrated,
   getToken,
   getRememberedUser,
-}
+  getDriverName,
+};

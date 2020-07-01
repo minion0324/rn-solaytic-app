@@ -46,48 +46,71 @@ const LoginScreen = ({
   rememberedUser,
   login,
   setRememberedUser,
+  authToken,
+  fetch,
 }) => {
   const inputUserName = useRef(null);
   const inputPassword = useRef(null);
 
   const [ loading, setLoading ] = useState(false);
-  const [ userName, setUserName ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const [ userName, setUserName ] = useState('suhk_deep');
+  const [ password, setPassword ] = useState('Xg@!#213567');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
 
   useEffect(() => {
+    if (!isRehydrated) return;
+
     if (rememberedUser) {
       setRememberCheck(true);
       setUserName(rememberedUser);
     }
+
+    if (token) {
+      onAuthToken();
+    }
   }, [isRehydrated]);
 
-  const onLoginSuccess = () => {
-    // setLoading(false);
+  const onSuccess = () => {
+    setLoading(false);
 
-    // setRememberedUser(rememberCheck ? userName : '');
+    setRememberedUser(rememberCheck ? userName : '');
 
     pushMultiScreensApp();
   };
 
-  const onLoginFailure = (error) => {
+  const onFailure = (error) => {
     setLoading(false);
   };
+
+  const onFetch = () => {
+    fetch({
+      success: onSuccess,
+      failure: onFailure,
+    });
+  };
+
+  const onAuthToken = () => {
+    setLoading(true);
+
+    authToken({
+      token,
+      success: onFetch,
+      failure: onFailure,
+    });
+  }
 
   const onLogin = () => {
     if (loading) return;
 
     setLoading(true);
 
-    onLoginSuccess();
-
-    // login({
-    //   userName,
-    //   password,
-    //   success: onLoginSuccess,
-    //   failure: onLoginFailure,
-    // });
+    login({
+      userName,
+      password,
+      success: onFetch,
+      failure: onFailure,
+    });
   };
 
   const onChangeUserName = (text) => {
@@ -175,7 +198,8 @@ LoginScreen.propTypes = {
   rememberedUser: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   setRememberedUser: PropTypes.func.isRequired,
-  componentId: PropTypes.string.isRequired,
+  authToken: PropTypes.func.isRequired,
+  fetch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -189,6 +213,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   login: User.actionCreators.login,
   setRememberedUser: User.actionCreators.setRememberedUser,
+  authToken: User.actionCreators.authToken,
+  fetch: User.actionCreators.fetch,
 };
 
 export default connect(

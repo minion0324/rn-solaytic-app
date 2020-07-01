@@ -53,7 +53,7 @@ const TimeText = styled.Text`
   color: ${COLORS.BLUE1};
 `;
 
-const BinWrap = styled.View`
+const TypeWrap = styled.View`
   width: ${SIZE20}px;
   height: ${SIZE4}px;
   align-items: center;
@@ -62,13 +62,13 @@ const BinWrap = styled.View`
   border-radius: ${SIZE1}px;
 `;
 
-const BinText = styled.Text`
+const TypeText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 500;
   color: ${COLORS.BLUE1};
 `;
 
-const TitleText = styled.Text`
+const CustomerText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600;
   color: ${COLORS.BLACK1};
@@ -86,8 +86,8 @@ const LocationText = styled.Text`
 `;
 
 const JobCard = ({
-  title,
-  bin,
+  customer,
+  type,
   location,
   time,
   status,
@@ -98,11 +98,11 @@ const JobCard = ({
       <Content>
         <TimeRow>
           <TimeText>{time}</TimeText>
-          <BinWrap>
-            <BinText>{bin}</BinText>
-          </BinWrap>
+          <TypeWrap>
+            <TypeText>{type}</TypeText>
+          </TypeWrap>
         </TimeRow>
-        <TitleText>{title}</TitleText>
+        <CustomerText>{customer}</CustomerText>
         <LocationRow>
           <LocationIcon />
           <LocationText>{location}</LocationText>
@@ -113,19 +113,19 @@ const JobCard = ({
 }
 
 JobCard.propTypes = {
-  title: PropTypes.string,
-  bin: PropTypes.string,
+  customer: PropTypes.string,
+  type: PropTypes.string,
   location: PropTypes.string,
   time: PropTypes.string,
   status: PropTypes.string,
 }
 
 JobCard.defaultProps = {
-  title: 'Heathcote and Sons',
-  bin: 'exchange bin',
-  location: 'LP 120 tanah Merah Coast Road',
-  time: '9:00 AM',
-  status: 'completed'
+  customer: '',
+  type: '',
+  location: '',
+  time: '',
+  status: ''
 }
 
 export default JobCard;
