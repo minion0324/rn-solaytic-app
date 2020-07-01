@@ -57,10 +57,28 @@ function apiStartJobs(jobIds) {
   });
 };
 
+function apiExchangeJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/exchange', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
+
+function apiCompleteJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/Complete', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
   apiGetJobs,
   apiAcknowledgeJobs,
   apiStartJobs,
+  apiExchangeJobs,
+  apiCompleteJobs,
 };
