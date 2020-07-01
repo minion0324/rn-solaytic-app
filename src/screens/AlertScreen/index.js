@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -23,6 +23,9 @@ import {
   User,
   Jobs,
 } from 'src/redux';
+import {
+  pushNotifications,
+} from 'src/services';
 
 import {
   Container,
@@ -50,6 +53,7 @@ const AlertScreen = ({
   countOfAlerts,
   pageOfAlerts,
   dateForAlerts,
+  setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
   setFocusedJobId,
@@ -58,6 +62,14 @@ const AlertScreen = ({
 }) => {
   const [ loading, setLoading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  useEffect(() => {
+    pushNotifications.connect(setFCMToken);
+
+    return () => {
+      pushNotifications.disconnect();
+    };
+  }, []);
 
   const onAcknowledge = () => {
     setLoading(true);
@@ -171,6 +183,7 @@ AlertScreen.propTypes = {
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
+  setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
   setFocusedJobId: PropTypes.func.isRequired,
@@ -189,6 +202,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  setFCMToken: User.actionCreators.setFCMToken,
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
   setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
