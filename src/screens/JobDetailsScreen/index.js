@@ -72,9 +72,17 @@ const {
 const JobDetailsScreen = ({
   focusedJob,
   acknowledgeJobs,
+  startJobs,
+  exchangeJobs,
+  completeJobs,
   componentId,
 }) => {
+  const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
+
+  const onBack = () => {
+    popScreen(componentId);
+  };
 
   const onAcknowledge = () => {
     setLoading(true);
@@ -86,16 +94,34 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onBack = () => {
-    popScreen(componentId);
-  };
-
   const onStart = () => {
+    setLoading(true);
 
+    startJobs({
+      jobIds: `${focusedJob.jobId}`,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
   };
 
   const onExchange = () => {
+    setLoading(true);
 
+    exchangeJobs({
+      jobIds: `${focusedJob.jobId}`,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const onComplete = () => {
+    setLoading(true);
+
+    completeJobs({
+      jobIds: `${focusedJob.jobId}`,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
   };
 
   const renderButton = () => {
@@ -106,32 +132,39 @@ const JobDetailsScreen = ({
             color={COLORS.BLUE1}
             text={'Start'}
             onPress={onStart}
+            loading={loading}
           />
         </ButtonWrap>
       )
     }
 
-    if (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1
-      && focusedJob.steps.length === 3) {
+    if (
+      focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 &&
+      focusedJob.steps.length === 3
+    ) {
       return (
         <ButtonWrap>
           <DefaultButton
             color={COLORS.PURPLE1}
             text={'Exchange'}
             onPress={onExchange}
+            loading={loading}
           />
         </ButtonWrap>
       );
     }
 
-    if (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1
-      || focusedJob.statusName === JOB_STATUS.IN_PROGRESS2) {
+    if (
+      focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
+      focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+    ) {
       return (
         <ButtonWrap>
           <DefaultButton
             color={COLORS.GREEN1}
             text={'Complete'}
             onPress={onComplete}
+            loading={loading}
           />
         </ButtonWrap>
       );
@@ -208,22 +241,28 @@ const JobDetailsScreen = ({
     return (
       <View>
         <BinButtonWrap>
-          <BinButton active>
-            <BinButtonText active>Bin1</BinButtonText>
+          <BinButton
+            active={index === 0}
+            onPress={() => setIndex(0)}
+          >
+            <BinButtonText active={index === 0}>Bin1</BinButtonText>
           </BinButton>
-          <BinButton>
-            <BinButtonText>Bin2</BinButtonText>
+          <BinButton
+            active={index === 1}
+            onPress={() => setIndex(1)}
+          >
+            <BinButtonText active={index === 1}>Bin2</BinButtonText>
           </BinButton>
         </BinButtonWrap>
         <BinInfoWrap>
           <BinInfoRow>
-            <BinText>Paper disposal</BinText>
+            <BinText>{focusedJob.steps[index].wasteTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText>5 ft bin (5 * 8 * 16)</BinText>
+            <BinText>{focusedJob.steps[index].binTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText>Bin Number</BinText>
+            <BinText>{focusedJob.steps[index].binNumber}</BinText>
           </BinInfoRow>
         </BinInfoWrap>
       </View>
@@ -267,13 +306,13 @@ const JobDetailsScreen = ({
       {
         JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName)
         ? <HeaderBar
-            centerIcon={<ScreenText>Exchange Bin</ScreenText>}
+            centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
             leftIcon={<BackButton />}
             onPressLeft={onBack}
           />
         : <ShadowWrap>
             <HeaderBar
-              centerIcon={<ScreenText>Exchange Bin</ScreenText>}
+              centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
               leftIcon={<BackButton />}
               onPressLeft={onBack}
             />
@@ -317,6 +356,9 @@ const JobDetailsScreen = ({
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
+  startJobs: PropTypes.func.isRequired,
+  exchangeJobs: PropTypes.func.isRequired,
+  completeJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -332,6 +374,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
+  startJobs: Jobs.actionCreators.startJobs,
+  exchangeJobs: Jobs.actionCreators.exchangeJobs,
+  completeJobs: Jobs.actionCreators.completeJobs,
 };
 
 export default connect(
