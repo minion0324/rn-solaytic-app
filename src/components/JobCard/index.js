@@ -101,7 +101,7 @@ const JobCard = ({
         return COLORS.GRAY2;
 
       case JOB_STATUS.ASSIGNED:
-      case JOB_STATUS.ACKNOWLEDGE:
+      case JOB_STATUS.ACKNOWLEDGED:
       case JOB_STATUS.IN_PROGRESS1:
       case JOB_STATUS.IN_PROGRESS2:
         return COLORS.BLUE1;

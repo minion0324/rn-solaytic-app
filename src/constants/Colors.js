@@ -13,5 +13,6 @@ export default {
   GRAY4: '#C7C7C7',
   RED1: '#EF476F',
   GREEN1: '#06D6A0',
+  PURPLE1: '#8C03F4',
   TRANSPARENT: 'transparent',
 };

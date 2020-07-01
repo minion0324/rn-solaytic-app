@@ -196,7 +196,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
         res.newJobs.splice(idx, 1, {
           ...res.newJobs[idx],
           jobStatusId: 4,
-          statusName: JOB_STATUS.ACKNOWLEDGE,
+          statusName: JOB_STATUS.ACKNOWLEDGED,
         });
 
         return res;
@@ -210,7 +210,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
         res.newJobs.splice(idx, 0, {
           ...res.newAlerts[index],
           jobStatusId: 4,
-          statusName: JOB_STATUS.ACKNOWLEDGE,
+          statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
       res.newAlerts.splice(index, 1);

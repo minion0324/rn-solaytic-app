@@ -40,7 +40,7 @@ const JOB_STATUS = {
   UNASSIGNED: 'Unassigned',
   ASSIGNED: 'Assigned',
   DISPATCHED: 'Dispatched',
-  ACKNOWLEDGE: 'Acknowledge',
+  ACKNOWLEDGED: 'Acknowledged',
   IN_PROGRESS1: 'In Progress',
   IN_PROGRESS2: 'In Progress(1/2)',
   COMPLETED: 'Completed',

@@ -90,7 +90,59 @@ const JobDetailsScreen = ({
     popScreen(componentId);
   };
 
+  const onStart = () => {
+
+  };
+
+  const onExchange = () => {
+
+  };
+
+  const renderButton = () => {
+    if (focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.BLUE1}
+            text={'Start'}
+            onPress={onStart}
+          />
+        </ButtonWrap>
+      )
+    }
+
+    if (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1
+      && focusedJob.steps.length === 3) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.PURPLE1}
+            text={'Exchange'}
+            onPress={onExchange}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    if (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1
+      || focusedJob.statusName === JOB_STATUS.IN_PROGRESS2) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.GREEN1}
+            text={'Complete'}
+            onPress={onComplete}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    return null;
+  };
+
   const renderLocationInfo = () => {
+    const locations = focusedJob.steps.map(item => item.address);
+
     return (
       <View>
         <LabelText>Locations</LabelText>
@@ -99,21 +151,27 @@ const JobDetailsScreen = ({
             <IconWrap>
               <Location1Icon />
             </IconWrap>
-            <InfoText>My Yard</InfoText>
+            <InfoText numberOfLines={1}>
+              {locations[0]}
+            </InfoText>
           </LocationRow>
           <Border />
           <LocationRow>
             <IconWrap>
               <Location2Icon />
             </IconWrap>
-            <InfoText>Merdeka Ferry Terminal 3</InfoText>
+            <InfoText numberOfLines={1}>
+              {locations.length === 3 ? locations[1] : ''}
+            </InfoText>
           </LocationRow>
           <Border />
           <LocationRow>
             <IconWrap>
               <Location3Icon />
             </IconWrap>
-            <InfoText>My Yard</InfoText>
+            <InfoText numberOfLines={1}>
+              {locations.length === 3 ? locations[2] : locations[1]}
+            </InfoText>
           </LocationRow>
         </LocationInfo>
       </View>
@@ -219,12 +277,8 @@ const JobDetailsScreen = ({
               leftIcon={<BackButton />}
               onPressLeft={onBack}
             />
-            <ButtonWrap>
-              <DefaultButton
-                color={COLORS.BLUE1}
-                text={'Start'}
-              />
-            </ButtonWrap>
+
+            { renderButton() }
           </ShadowWrap>
       }
 
