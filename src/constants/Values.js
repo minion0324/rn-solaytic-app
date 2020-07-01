@@ -36,6 +36,20 @@ const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 //
 const DATE_FORMAT = 'MMM YYYY';
 
+const JOB_STATUS = {
+  UNASSIGNED: 'Unassigned',
+  ASSIGNED: 'Assigned',
+  DISPATCHED: 'Dispatched',
+  ACKNOWLEDGE: 'Acknowledge',
+  IN_PROGRESS1: 'In Progress',
+  IN_PROGRESS2: 'In Progress(1/2)',
+  COMPLETED: 'Completed',
+  FAILED: 'Failed',
+  CANCELLED: 'Cancelled',
+
+  FOR_ACKNOWLEDGE: ['Unassigned', 'Assigned', 'Dispatched'],
+};
+
 export {
   PLATFORM,
   WIDTH,
@@ -57,4 +71,5 @@ export {
   SIZE40,
   FONT,
   DATE_FORMAT,
+  JOB_STATUS,
 };

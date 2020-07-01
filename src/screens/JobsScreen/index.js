@@ -58,7 +58,6 @@ const JobsScreen = ({
   setFocusedJob,
   componentId,
 }) => {
-  const [ index, setIndex ] = useState(0);
   const [ tabs ] = useState([
     { key: 'first', color: COLORS.GRAY2 },
     { key: 'second', color: COLORS.BLUE1 },
@@ -127,7 +126,7 @@ const JobsScreen = ({
           <JobCard
             customer={item.customerName}
             type={item.jobTypeName}
-            location={''}
+            location={item.steps[item.steps.length - 1].address}
             time={jobDate.format('hh:mm A')}
             status={item.statusName}
           />

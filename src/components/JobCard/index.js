@@ -11,6 +11,7 @@ import {
   SIZE4,
   SIZE20,
   FONT,
+  JOB_STATUS,
 } from 'src/constants';
 
 const {
@@ -76,6 +77,7 @@ const CustomerText = styled.Text`
 
 const LocationRow = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const LocationText = styled.Text`
@@ -92,9 +94,33 @@ const JobCard = ({
   time,
   status,
 }) => {
+  const getColorByStatus = () => {
+    switch (status) {
+      case JOB_STATUS.UNASSIGNED:
+      case JOB_STATUS.DISPATCHED:
+        return COLORS.GRAY2;
+
+      case JOB_STATUS.ASSIGNED:
+      case JOB_STATUS.ACKNOWLEDGE:
+      case JOB_STATUS.IN_PROGRESS1:
+      case JOB_STATUS.IN_PROGRESS2:
+        return COLORS.BLUE1;
+
+      case JOB_STATUS.COMPLETED:
+        return COLORS.GREEN1;
+
+      case JOB_STATUS.FAILED:
+      case JOB_STATUS.CANCELLED:
+        return COLORS.RED1;
+
+      default:
+        return COLORS.BLUE1;
+    };
+  };
+
   return (
     <Container>
-      <Status />
+      <Status color={getColorByStatus()} />
       <Content>
         <TimeRow>
           <TimeText>{time}</TimeText>
@@ -125,7 +151,7 @@ JobCard.defaultProps = {
   type: '',
   location: '',
   time: '',
-  status: ''
+  status: '',
 }
 
 export default JobCard;

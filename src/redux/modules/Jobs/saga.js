@@ -15,6 +15,9 @@ import {
 import {
   Jobs,
 } from 'src/redux';
+import {
+  JOB_STATUS,
+} from 'src/constants';
 
 import {
   GET_JOBS_BY_DATE,
@@ -194,7 +197,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
         res.newJobs.splice(idx, 0, {
           jobStatusId: 4,
-          statusName: 'Acknowledge',
+          statusName: JOB_STATUS.ACKNOWLEDGE,
           ...res.newAlerts[index],
         });
       }

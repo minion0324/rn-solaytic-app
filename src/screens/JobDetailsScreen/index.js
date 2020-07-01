@@ -11,6 +11,7 @@ import moment from 'moment';
 import {
   SVGS,
   COLORS,
+  JOB_STATUS,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -206,7 +207,7 @@ const JobDetailsScreen = ({
   return (
     <Container>
       {
-        focusedJob.statusName === 'Assigned'
+        JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName)
         ? <HeaderBar
             centerIcon={<ScreenText>Exchange Bin</ScreenText>}
             leftIcon={<BackButton />}
@@ -239,12 +240,11 @@ const JobDetailsScreen = ({
               { renderInstructions() }
 
               {
-                focusedJob.statusName !== 'Assigned' &&
-                renderPhotoAndSign()
+                // renderPhotoAndSign()
               }
 
               {
-                focusedJob.statusName === 'Assigned' &&
+                JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName) &&
                 <DefaultButton
                   text={'Acknowledge'}
                   color={COLORS.BLUE1}
