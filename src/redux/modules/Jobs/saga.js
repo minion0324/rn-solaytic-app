@@ -190,15 +190,27 @@ export function* asyncAcknowledgeJobs({ payload }) {
     const result = successJobIds.reduce((res, id) => {
       const index = res.newAlerts.findIndex(item => item.jobId === id);
 
+      if (index === -1) {
+        const idx = res.newJobs.findIndex(item => item.jobId === id);
+
+        res.newJobs.splice(idx, 1, {
+          ...res.newJobs[idx],
+          jobStatusId: 4,
+          statusName: JOB_STATUS.ACKNOWLEDGE,
+        });
+
+        return res;
+      }
+
       if (dateForJobs === dateForAlerts) {
         const idx = res.newJobs.findIndex((item) => {
           return moment(item.jobDate).isAfter(res.newAlerts[index].jobDate);
         });
 
         res.newJobs.splice(idx, 0, {
+          ...res.newAlerts[index],
           jobStatusId: 4,
           statusName: JOB_STATUS.ACKNOWLEDGE,
-          ...res.newAlerts[index],
         });
       }
       res.newAlerts.splice(index, 1);
