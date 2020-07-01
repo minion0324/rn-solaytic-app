@@ -11,6 +11,9 @@ import {
   GET_ALERTS_BY_PAGE_SUCCESS,
   SET_FOCUSED_JOB_ID,
   ACKNOWLEDGE_JOBS_SUCCESS,
+  START_JOBS_SUCCESS,
+  EXCHANGE_JOBS_SUCCESS,
+  COMPLETE_JOBS_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -69,6 +72,11 @@ function Jobs(state = DEFAULT, action = {}) {
       case ACKNOWLEDGE_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
         draft.allAlerts = payload.newAlerts;
+        break;
+      case START_JOBS_SUCCESS:
+      case EXCHANGE_JOBS_SUCCESS:
+      case COMPLETE_JOBS_SUCCESS:
+        draft.allJobs = payload.newJobs;
         break;
     }
   });
