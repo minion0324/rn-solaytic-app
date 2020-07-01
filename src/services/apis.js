@@ -11,9 +11,17 @@ function apiLogin(userName, password) {
   });
 };
 
-function apiAuthToken(token) {
+function apiAuthToken() {
   return apiCall('api/mobile/driver/authenticate-token', 'post', {});
 };
+
+function apiSetFCMToken(deviceToken) {
+  return apiCall('api/mobile/driver/authenticate-token', 'post', {
+    data: {
+      deviceToken,
+    },
+  });
+}
 
 function apiGetJobs(
   fromDate,
@@ -76,6 +84,7 @@ function apiCompleteJobs(jobIds) {
 export {
   apiLogin,
   apiAuthToken,
+  apiSetFCMToken,
   apiGetJobs,
   apiAcknowledgeJobs,
   apiStartJobs,
