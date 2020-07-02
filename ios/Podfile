@@ -77,8 +77,7 @@ target 'Wasteporter' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'Firebase/Core'
-  pod 'Firebase/Messaging'
+  pod 'Firebase/Messaging', '~> 6.4.0'
 
   target 'WasteporterTests' do
     inherit! :complete
