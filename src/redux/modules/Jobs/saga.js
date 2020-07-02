@@ -11,10 +11,16 @@ import {
 import {
   apiGetJobs,
   apiAcknowledgeJobs,
+  apiStartJobs,
+  apiExchangeJobs,
+  apiCompleteJobs,
 } from 'src/services';
 import {
   Jobs,
 } from 'src/redux';
+import {
+  JOB_STATUS,
+} from 'src/constants';
 
 import {
   GET_JOBS_BY_DATE,
@@ -22,6 +28,9 @@ import {
   GET_ALERTS_BY_DATE,
   GET_ALERTS_BY_PAGE,
   ACKNOWLEDGE_JOBS,
+  START_JOBS,
+  EXCHANGE_JOBS,
+  COMPLETE_JOBS,
   actionCreators,
 } from './actions';
 
@@ -187,15 +196,27 @@ export function* asyncAcknowledgeJobs({ payload }) {
     const result = successJobIds.reduce((res, id) => {
       const index = res.newAlerts.findIndex(item => item.jobId === id);
 
+      if (index === -1) {
+        const idx = res.newJobs.findIndex(item => item.jobId === id);
+
+        res.newJobs.splice(idx, 1, {
+          ...res.newJobs[idx],
+          jobStatusId: 4,
+          statusName: JOB_STATUS.ACKNOWLEDGED,
+        });
+
+        return res;
+      }
+
       if (dateForJobs === dateForAlerts) {
         const idx = res.newJobs.findIndex((item) => {
           return moment(item.jobDate).isAfter(res.newAlerts[index].jobDate);
         });
 
         res.newJobs.splice(idx, 0, {
-          jobStatusId: 4,
-          statusName: 'Acknowledge',
           ...res.newAlerts[index],
+          jobStatusId: 4,
+          statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
       res.newAlerts.splice(index, 1);
@@ -218,6 +239,133 @@ export function* watchAcknowledgeJobs() {
   while (true) {
     const action = yield take(ACKNOWLEDGE_JOBS);
     yield* asyncAcknowledgeJobs(action);
+  }
+}
+
+export function* asyncStartJobs({ payload }) {
+  const {
+    jobIds, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiStartJobs, jobIds);
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      res.newJobs.splice(index, 1, {
+        ...res.newJobs[index],
+        jobStatusId: 5,
+        statusName: JOB_STATUS.IN_PROGRESS1,
+      });
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.startJobsSuccess(result));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchStartJobs() {
+  while (true) {
+    const action = yield take(START_JOBS);
+    yield* asyncStartJobs(action);
+  }
+}
+
+export function* asyncExchangeJobs({ payload }) {
+  const {
+    jobIds, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiExchangeJobs, jobIds);
+
+    console.log(data);
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      res.newJobs.splice(index, 1, {
+        ...res.newJobs[index],
+        jobStatusId: 6,
+        statusName: JOB_STATUS.IN_PROGRESS2,
+      });
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.exchangeJobsSuccess(result));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchExchangeJobs() {
+  while (true) {
+    const action = yield take(EXCHANGE_JOBS);
+    yield* asyncExchangeJobs(action);
+  }
+}
+
+export function* asyncCompleteJobs({ payload }) {
+  const {
+    jobIds, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiCompleteJobs, jobIds);
+
+    console.log(data);
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      res.newJobs.splice(index, 1, {
+        ...res.newJobs[index],
+        jobStatusId: 7,
+        statusName: JOB_STATUS.COMPLETED,
+      });
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.completeJobsSuccess(result));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchCompleteJobs() {
+  while (true) {
+    const action = yield take(COMPLETE_JOBS);
+    yield* asyncCompleteJobs(action);
   }
 }
 
@@ -251,5 +399,8 @@ export default function* () {
     fork(watchGetAlertsByDate),
     fork(watchGetAlertsByPage),
     fork(watchAcknowledgeJobs),
+    fork(watchStartJobs),
+    fork(watchExchangeJobs),
+    fork(watchCompleteJobs),
   ]);
 }

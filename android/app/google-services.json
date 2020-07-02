@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "539258548030",
+    "firebase_url": "https://wasteporter-64774.firebaseio.com",
+    "project_id": "wasteporter-64774",
+    "storage_bucket": "wasteporter-64774.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539258548030:android:dc7bff6c635a1952f8866f",
+        "android_client_info": {
+          "package_name": "com.logisfleet.wasteporter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539258548030-sckbfrqj5o3trmctgo3s3ps3v53squc2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.logisfleet.wasteporter",
+            "certificate_hash": "b18516a46f314586b1e4e86cec9eb399cff6f7d9"
+          }
+        },
+        {
+          "client_id": "539258548030-0t9j1v0pv95q7uev5dehdujuam5pbl36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD33N-R4r85pszkbHzwVxVOl3hOZ3XBCeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "539258548030-0t9j1v0pv95q7uev5dehdujuam5pbl36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

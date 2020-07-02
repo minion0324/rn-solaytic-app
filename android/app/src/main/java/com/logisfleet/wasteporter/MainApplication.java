@@ -1,4 +1,4 @@
-package com.rnsolayticapp;
+package com.logisfleet.wasteporter;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,6 +12,9 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 
 public class MainApplication extends NavigationApplication {
 
@@ -28,6 +31,8 @@ public class MainApplication extends NavigationApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new RNFirebaseMessagingPackage());
+          packages.add(new RNFirebaseNotificationsPackage());
           return packages;
         }
 
@@ -45,7 +50,7 @@ public class MainApplication extends NavigationApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    
+
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
@@ -64,7 +69,7 @@ public class MainApplication extends NavigationApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.rnsolayticapp.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.logisfleet.wasteporter.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

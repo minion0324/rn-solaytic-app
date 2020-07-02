@@ -5,6 +5,7 @@ import {
 import {
   apiLogin,
   apiAuthToken,
+  apiSetFCMToken,
   setAuthToken,
   removeAuthToken,
 } from 'src/services';
@@ -12,6 +13,7 @@ import {
 import {
   LOGIN,
   AUTH_TOKEN,
+  SET_FCM_TOKEN,
   actionCreators,
 } from './actions';
 
@@ -49,7 +51,7 @@ export function* asyncAuthToken({ payload }) {
   try {
     setAuthToken(token);
 
-    const { data } = yield call(apiAuthToken, token);
+    const { data } = yield call(apiAuthToken);
     yield put(actionCreators.authTokenSuccess(data));
 
     success && success();
@@ -62,6 +64,28 @@ export function* watchAuthToken() {
   while (true) {
     const action = yield take(AUTH_TOKEN);
     yield* asyncAuthToken(action);
+  }
+}
+
+export function* asyncSetFCMToken({ payload }) {
+  const {
+    token, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiSetFCMToken, token);
+    yield put(actionCreators.setFCMTokenSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchSetFCMToken() {
+  while (true) {
+    const action = yield take(SET_FCM_TOKEN);
+    yield* asyncSetFCMToken(action);
   }
 }
 
@@ -91,5 +115,6 @@ export default function* () {
   yield all([
     fork(watchLogin),
     fork(watchAuthToken),
+    fork(watchSetFCMToken),
   ]);
 }

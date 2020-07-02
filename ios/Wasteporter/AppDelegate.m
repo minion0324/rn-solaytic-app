@@ -3,6 +3,10 @@
 
 #import <React/RCTBundleURLProvider.h>
 
+#import <Firebase.h>
+#import "RNFirebaseMessaging.h"
+#import "RNFirebaseNotifications.h"
+
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -31,6 +35,11 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 
   [ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];
+
+  [FIRApp configure];
+
+  [RNFirebaseNotifications configure];
+
   return YES;
 }
 
@@ -41,6 +50,19 @@ static void InitializeFlipper(UIApplication *application) {
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
+                                                       fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler {
+  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
 }
 
 @end

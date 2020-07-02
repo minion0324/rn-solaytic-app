@@ -58,10 +58,25 @@ const getDateForAlerts = createSelector(
   },
 );
 
-const getFocusedJob = createSelector(
+const getFocusedJobId = createSelector(
   getJobsStore,
   (jobs) => {
-    return jobs.focusedJob || {};
+    return jobs.focusedJobId;
+  },
+);
+
+const getFocusedJob = createSelector(
+  getFocusedJobId,
+  getAllJobs,
+  getAllAlerts,
+  (focusedJobId, allJobs, allAlerts) => {
+    const focusedJob =
+      allAlerts.find(item => item.jobId === focusedJobId) || allJobs.find(item => item.jobId === focusedJobId);
+
+    console.log('focusedJob ------');
+    console.log(focusedJob);
+
+    return focusedJob;
   },
 );
 

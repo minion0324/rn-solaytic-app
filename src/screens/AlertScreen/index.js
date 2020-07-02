@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -23,6 +23,9 @@ import {
   User,
   Jobs,
 } from 'src/redux';
+import {
+  pushNotifications,
+} from 'src/services';
 
 import {
   Container,
@@ -50,14 +53,23 @@ const AlertScreen = ({
   countOfAlerts,
   pageOfAlerts,
   dateForAlerts,
+  setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
-  setFocusedJob,
+  setFocusedJobId,
   acknowledgeJobs,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  useEffect(() => {
+    pushNotifications.connect(setFCMToken);
+
+    return () => {
+      pushNotifications.disconnect();
+    };
+  }, []);
 
   const onAcknowledge = () => {
     setLoading(true);
@@ -93,7 +105,7 @@ const AlertScreen = ({
   };
 
   const onItemPress = (job) => {
-    setFocusedJob(job);
+    setFocusedJobId(job.jobId);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
 
@@ -171,9 +183,10 @@ AlertScreen.propTypes = {
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
+  setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
-  setFocusedJob: PropTypes.func.isRequired,
+  setFocusedJobId: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -189,9 +202,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  setFCMToken: User.actionCreators.setFCMToken,
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
-  setFocusedJob: Jobs.actionCreators.setFocusedJob,
+  setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
 };
 

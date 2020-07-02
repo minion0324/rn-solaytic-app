@@ -11,6 +11,7 @@ import moment from 'moment';
 import {
   SVGS,
   COLORS,
+  JOB_STATUS,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -71,9 +72,17 @@ const {
 const JobDetailsScreen = ({
   focusedJob,
   acknowledgeJobs,
+  startJobs,
+  exchangeJobs,
+  completeJobs,
   componentId,
 }) => {
+  const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
+
+  const onBack = () => {
+    popScreen(componentId);
+  };
 
   const onAcknowledge = () => {
     setLoading(true);
@@ -85,11 +94,88 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onBack = () => {
-    popScreen(componentId);
+  const onStart = () => {
+    setLoading(true);
+
+    startJobs({
+      jobIds: `${focusedJob.jobId}`,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const onExchange = () => {
+    setLoading(true);
+
+    exchangeJobs({
+      jobIds: `${focusedJob.jobId}`,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const onComplete = () => {
+    setLoading(true);
+
+    completeJobs({
+      jobIds: `${focusedJob.jobId}`,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const renderButton = () => {
+    if (focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.BLUE1}
+            text={'Start'}
+            onPress={onStart}
+            loading={loading}
+          />
+        </ButtonWrap>
+      )
+    }
+
+    if (
+      focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 &&
+      focusedJob.steps.length === 3
+    ) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.PURPLE1}
+            text={'Exchange'}
+            onPress={onExchange}
+            loading={loading}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    if (
+      focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
+      focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+    ) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.GREEN1}
+            text={'Complete'}
+            onPress={onComplete}
+            loading={loading}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    return null;
   };
 
   const renderLocationInfo = () => {
+    const locations = focusedJob.steps.map(item => item.address);
+
     return (
       <View>
         <LabelText>Locations</LabelText>
@@ -98,21 +184,27 @@ const JobDetailsScreen = ({
             <IconWrap>
               <Location1Icon />
             </IconWrap>
-            <InfoText>My Yard</InfoText>
+            <InfoText numberOfLines={1}>
+              {locations[0]}
+            </InfoText>
           </LocationRow>
           <Border />
           <LocationRow>
             <IconWrap>
               <Location2Icon />
             </IconWrap>
-            <InfoText>Merdeka Ferry Terminal 3</InfoText>
+            <InfoText numberOfLines={1}>
+              {locations.length === 3 ? locations[1] : ''}
+            </InfoText>
           </LocationRow>
           <Border />
           <LocationRow>
             <IconWrap>
               <Location3Icon />
             </IconWrap>
-            <InfoText>My Yard</InfoText>
+            <InfoText numberOfLines={1}>
+              {locations.length === 3 ? locations[2] : locations[1]}
+            </InfoText>
           </LocationRow>
         </LocationInfo>
       </View>
@@ -149,22 +241,28 @@ const JobDetailsScreen = ({
     return (
       <View>
         <BinButtonWrap>
-          <BinButton active>
-            <BinButtonText active>Bin1</BinButtonText>
+          <BinButton
+            active={index === 0}
+            onPress={() => setIndex(0)}
+          >
+            <BinButtonText active={index === 0}>Bin1</BinButtonText>
           </BinButton>
-          <BinButton>
-            <BinButtonText>Bin2</BinButtonText>
+          <BinButton
+            active={index === 1}
+            onPress={() => setIndex(1)}
+          >
+            <BinButtonText active={index === 1}>Bin2</BinButtonText>
           </BinButton>
         </BinButtonWrap>
         <BinInfoWrap>
           <BinInfoRow>
-            <BinText>Paper disposal</BinText>
+            <BinText>{focusedJob.steps[index].wasteTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText>5 ft bin (5 * 8 * 16)</BinText>
+            <BinText>{focusedJob.steps[index].binTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText>Bin Number</BinText>
+            <BinText>{focusedJob.steps[index].binNumber}</BinText>
           </BinInfoRow>
         </BinInfoWrap>
       </View>
@@ -206,24 +304,20 @@ const JobDetailsScreen = ({
   return (
     <Container>
       {
-        focusedJob.statusName === 'Assigned'
+        JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName)
         ? <HeaderBar
-            centerIcon={<ScreenText>Exchange Bin</ScreenText>}
+            centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
             leftIcon={<BackButton />}
             onPressLeft={onBack}
           />
         : <ShadowWrap>
             <HeaderBar
-              centerIcon={<ScreenText>Exchange Bin</ScreenText>}
+              centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
               leftIcon={<BackButton />}
               onPressLeft={onBack}
             />
-            <ButtonWrap>
-              <DefaultButton
-                color={COLORS.BLUE1}
-                text={'Start'}
-              />
-            </ButtonWrap>
+
+            { renderButton() }
           </ShadowWrap>
       }
 
@@ -239,12 +333,11 @@ const JobDetailsScreen = ({
               { renderInstructions() }
 
               {
-                focusedJob.statusName !== 'Assigned' &&
-                renderPhotoAndSign()
+                // renderPhotoAndSign()
               }
 
               {
-                focusedJob.statusName === 'Assigned' &&
+                JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName) &&
                 <DefaultButton
                   text={'Acknowledge'}
                   color={COLORS.BLUE1}
@@ -263,6 +356,9 @@ const JobDetailsScreen = ({
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
+  startJobs: PropTypes.func.isRequired,
+  exchangeJobs: PropTypes.func.isRequired,
+  completeJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -278,6 +374,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
+  startJobs: Jobs.actionCreators.startJobs,
+  exchangeJobs: Jobs.actionCreators.exchangeJobs,
+  completeJobs: Jobs.actionCreators.completeJobs,
 };
 
 export default connect(

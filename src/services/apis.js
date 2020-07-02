@@ -11,9 +11,17 @@ function apiLogin(userName, password) {
   });
 };
 
-function apiAuthToken(token) {
+function apiAuthToken() {
   return apiCall('api/mobile/driver/authenticate-token', 'post', {});
 };
+
+function apiSetFCMToken(deviceToken) {
+  return apiCall('api/mobile/driver/authenticate-token', 'post', {
+    data: {
+      deviceToken,
+    },
+  });
+}
 
 function apiGetJobs(
   fromDate,
@@ -57,10 +65,29 @@ function apiStartJobs(jobIds) {
   });
 };
 
+function apiExchangeJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/exchange', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
+
+function apiCompleteJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/Complete', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
+  apiSetFCMToken,
   apiGetJobs,
   apiAcknowledgeJobs,
   apiStartJobs,
+  apiExchangeJobs,
+  apiCompleteJobs,
 };

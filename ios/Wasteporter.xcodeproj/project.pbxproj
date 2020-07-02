@@ -7,19 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* rnSolayticAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* rnSolayticAppTests.m */; };
-		0154DA737850266BA4958491 /* libPods-rnSolayticApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B125054425EFA2B4EF9273 /* libPods-rnSolayticApp-tvOS.a */; };
+		00E356F31AD99517003FC87E /* WasteporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WasteporterTests.m */; };
+		0154DA737850266BA4958491 /* libPods-Wasteporter-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B125054425EFA2B4EF9273 /* libPods-Wasteporter-tvOS.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1DB5EE87346851AE948E0CA0 /* libPods-rnSolayticApp-rnSolayticAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 829E802F84A645307D2553D5 /* libPods-rnSolayticApp-rnSolayticAppTests.a */; };
+		188FD8CB24ADD3C2004B3CDF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 188FD8CA24ADD3BF004B3CDF /* GoogleService-Info.plist */; };
+		1DB5EE87346851AE948E0CA0 /* libPods-Wasteporter-WasteporterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 829E802F84A645307D2553D5 /* libPods-Wasteporter-WasteporterTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* rnSolayticAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* rnSolayticAppTests.m */; };
-		38E09B92A178C948362E81B9 /* libPods-rnSolayticApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F75C20F58EF35B537572637 /* libPods-rnSolayticApp-tvOSTests.a */; };
-		3C734ECE3D82AC1BB02A8A01 /* libPods-rnSolayticApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E11D92CD8462504071B52A6 /* libPods-rnSolayticApp.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* WasteporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WasteporterTests.m */; };
+		38E09B92A178C948362E81B9 /* libPods-Wasteporter-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F75C20F58EF35B537572637 /* libPods-Wasteporter-tvOSTests.a */; };
+		3C734ECE3D82AC1BB02A8A01 /* libPods-Wasteporter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E11D92CD8462504071B52A6 /* libPods-Wasteporter.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,43 +29,45 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = rnSolayticApp;
+			remoteInfo = Wasteporter;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "rnSolayticApp-tvOS";
+			remoteInfo = "Wasteporter-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* rnSolayticAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rnSolayticAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* WasteporterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WasteporterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* rnSolayticAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rnSolayticAppTests.m; sourceTree = "<group>"; };
-		0E11D92CD8462504071B52A6 /* libPods-rnSolayticApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSolayticApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E7F8353EC1665070DB47C23 /* Pods-rnSolayticApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp.release.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp/Pods-rnSolayticApp.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* rnSolayticApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rnSolayticApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = rnSolayticApp/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = rnSolayticApp/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* WasteporterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WasteporterTests.m; sourceTree = "<group>"; };
+		0E11D92CD8462504071B52A6 /* libPods-Wasteporter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wasteporter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E7F8353EC1665070DB47C23 /* Pods-Wasteporter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter.release.xcconfig"; path = "Target Support Files/Pods-Wasteporter/Pods-Wasteporter.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Wasteporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wasteporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Wasteporter/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Wasteporter/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = rnSolayticApp/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = rnSolayticApp/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = rnSolayticApp/main.m; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* rnSolayticApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rnSolayticApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* rnSolayticApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "rnSolayticApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F75C20F58EF35B537572637 /* libPods-rnSolayticApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSolayticApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5692D7F9219CC54CC2E4D2F3 /* Pods-rnSolayticApp-rnSolayticAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp-rnSolayticAppTests.release.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp-rnSolayticAppTests/Pods-rnSolayticApp-rnSolayticAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		5F454965F3851E265E6C84DE /* Pods-rnSolayticApp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp-tvOS/Pods-rnSolayticApp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		5FAA7ED2B20C4E0F38180ED1 /* Pods-rnSolayticApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp.debug.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp/Pods-rnSolayticApp.debug.xcconfig"; sourceTree = "<group>"; };
-		75B125054425EFA2B4EF9273 /* libPods-rnSolayticApp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSolayticApp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7F11C59C78975ADE70680AD3 /* Pods-rnSolayticApp-rnSolayticAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp-rnSolayticAppTests.debug.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp-rnSolayticAppTests/Pods-rnSolayticApp-rnSolayticAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		829E802F84A645307D2553D5 /* libPods-rnSolayticApp-rnSolayticAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSolayticApp-rnSolayticAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		97DC1C5DD1461D630CEA4DF9 /* Pods-rnSolayticApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp-tvOSTests/Pods-rnSolayticApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A7D9695CEF73DEB987A8D0E5 /* Pods-rnSolayticApp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp-tvOSTests/Pods-rnSolayticApp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		AF92CB6F4E9D75523EE28774 /* Pods-rnSolayticApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSolayticApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-rnSolayticApp-tvOS/Pods-rnSolayticApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Wasteporter/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Wasteporter/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Wasteporter/main.m; sourceTree = "<group>"; };
+		1857C41E24ADDC1200205B82 /* Wasteporter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Wasteporter.entitlements; path = Wasteporter/Wasteporter.entitlements; sourceTree = "<group>"; };
+		188FD8CA24ADD3BF004B3CDF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Wasteporter/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* Wasteporter-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wasteporter-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* Wasteporter-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wasteporter-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F75C20F58EF35B537572637 /* libPods-Wasteporter-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wasteporter-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5692D7F9219CC54CC2E4D2F3 /* Pods-Wasteporter-WasteporterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter-WasteporterTests.release.xcconfig"; path = "Target Support Files/Pods-Wasteporter-WasteporterTests/Pods-Wasteporter-WasteporterTests.release.xcconfig"; sourceTree = "<group>"; };
+		5F454965F3851E265E6C84DE /* Pods-Wasteporter-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Wasteporter-tvOS/Pods-Wasteporter-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		5FAA7ED2B20C4E0F38180ED1 /* Pods-Wasteporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter.debug.xcconfig"; path = "Target Support Files/Pods-Wasteporter/Pods-Wasteporter.debug.xcconfig"; sourceTree = "<group>"; };
+		75B125054425EFA2B4EF9273 /* libPods-Wasteporter-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wasteporter-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F11C59C78975ADE70680AD3 /* Pods-Wasteporter-WasteporterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter-WasteporterTests.debug.xcconfig"; path = "Target Support Files/Pods-Wasteporter-WasteporterTests/Pods-Wasteporter-WasteporterTests.debug.xcconfig"; sourceTree = "<group>"; };
+		829E802F84A645307D2553D5 /* libPods-Wasteporter-WasteporterTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wasteporter-WasteporterTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97DC1C5DD1461D630CEA4DF9 /* Pods-Wasteporter-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Wasteporter-tvOSTests/Pods-Wasteporter-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A7D9695CEF73DEB987A8D0E5 /* Pods-Wasteporter-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Wasteporter-tvOSTests/Pods-Wasteporter-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		AF92CB6F4E9D75523EE28774 /* Pods-Wasteporter-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wasteporter-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Wasteporter-tvOS/Pods-Wasteporter-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -74,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DB5EE87346851AE948E0CA0 /* libPods-rnSolayticApp-rnSolayticAppTests.a in Frameworks */,
+				1DB5EE87346851AE948E0CA0 /* libPods-Wasteporter-WasteporterTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C734ECE3D82AC1BB02A8A01 /* libPods-rnSolayticApp.a in Frameworks */,
+				3C734ECE3D82AC1BB02A8A01 /* libPods-Wasteporter.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0154DA737850266BA4958491 /* libPods-rnSolayticApp-tvOS.a in Frameworks */,
+				0154DA737850266BA4958491 /* libPods-Wasteporter-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,20 +101,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38E09B92A178C948362E81B9 /* libPods-rnSolayticApp-tvOSTests.a in Frameworks */,
+				38E09B92A178C948362E81B9 /* libPods-Wasteporter-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* rnSolayticAppTests */ = {
+		00E356EF1AD99517003FC87E /* WasteporterTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* rnSolayticAppTests.m */,
+				00E356F21AD99517003FC87E /* WasteporterTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = rnSolayticAppTests;
+			path = WasteporterTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -122,9 +125,11 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* rnSolayticApp */ = {
+		13B07FAE1A68108700A75B9A /* Wasteporter */ = {
 			isa = PBXGroup;
 			children = (
+				1857C41E24ADDC1200205B82 /* Wasteporter.entitlements */,
+				188FD8CA24ADD3BF004B3CDF /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -133,7 +138,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = rnSolayticApp;
+			name = Wasteporter;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -141,10 +146,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				0E11D92CD8462504071B52A6 /* libPods-rnSolayticApp.a */,
-				829E802F84A645307D2553D5 /* libPods-rnSolayticApp-rnSolayticAppTests.a */,
-				75B125054425EFA2B4EF9273 /* libPods-rnSolayticApp-tvOS.a */,
-				2F75C20F58EF35B537572637 /* libPods-rnSolayticApp-tvOSTests.a */,
+				0E11D92CD8462504071B52A6 /* libPods-Wasteporter.a */,
+				829E802F84A645307D2553D5 /* libPods-Wasteporter-WasteporterTests.a */,
+				75B125054425EFA2B4EF9273 /* libPods-Wasteporter-tvOS.a */,
+				2F75C20F58EF35B537572637 /* libPods-Wasteporter-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,16 +157,15 @@
 		56FC0A7E41A021256E7A564A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5FAA7ED2B20C4E0F38180ED1 /* Pods-rnSolayticApp.debug.xcconfig */,
-				0E7F8353EC1665070DB47C23 /* Pods-rnSolayticApp.release.xcconfig */,
-				7F11C59C78975ADE70680AD3 /* Pods-rnSolayticApp-rnSolayticAppTests.debug.xcconfig */,
-				5692D7F9219CC54CC2E4D2F3 /* Pods-rnSolayticApp-rnSolayticAppTests.release.xcconfig */,
-				AF92CB6F4E9D75523EE28774 /* Pods-rnSolayticApp-tvOS.debug.xcconfig */,
-				5F454965F3851E265E6C84DE /* Pods-rnSolayticApp-tvOS.release.xcconfig */,
-				97DC1C5DD1461D630CEA4DF9 /* Pods-rnSolayticApp-tvOSTests.debug.xcconfig */,
-				A7D9695CEF73DEB987A8D0E5 /* Pods-rnSolayticApp-tvOSTests.release.xcconfig */,
+				5FAA7ED2B20C4E0F38180ED1 /* Pods-Wasteporter.debug.xcconfig */,
+				0E7F8353EC1665070DB47C23 /* Pods-Wasteporter.release.xcconfig */,
+				7F11C59C78975ADE70680AD3 /* Pods-Wasteporter-WasteporterTests.debug.xcconfig */,
+				5692D7F9219CC54CC2E4D2F3 /* Pods-Wasteporter-WasteporterTests.release.xcconfig */,
+				AF92CB6F4E9D75523EE28774 /* Pods-Wasteporter-tvOS.debug.xcconfig */,
+				5F454965F3851E265E6C84DE /* Pods-Wasteporter-tvOS.release.xcconfig */,
+				97DC1C5DD1461D630CEA4DF9 /* Pods-Wasteporter-tvOSTests.debug.xcconfig */,
+				A7D9695CEF73DEB987A8D0E5 /* Pods-Wasteporter-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -175,9 +179,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* rnSolayticApp */,
+				13B07FAE1A68108700A75B9A /* Wasteporter */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* rnSolayticAppTests */,
+				00E356EF1AD99517003FC87E /* WasteporterTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				56FC0A7E41A021256E7A564A /* Pods */,
@@ -190,10 +194,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* rnSolayticApp.app */,
-				00E356EE1AD99517003FC87E /* rnSolayticAppTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* rnSolayticApp-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* rnSolayticApp-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Wasteporter.app */,
+				00E356EE1AD99517003FC87E /* WasteporterTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* Wasteporter-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* Wasteporter-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,9 +205,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* rnSolayticAppTests */ = {
+		00E356ED1AD99517003FC87E /* WasteporterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "rnSolayticAppTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WasteporterTests" */;
 			buildPhases = (
 				49DE236A6E53DE6A2F42939E /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -215,14 +219,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = rnSolayticAppTests;
-			productName = rnSolayticAppTests;
-			productReference = 00E356EE1AD99517003FC87E /* rnSolayticAppTests.xctest */;
+			name = WasteporterTests;
+			productName = WasteporterTests;
+			productReference = 00E356EE1AD99517003FC87E /* WasteporterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* rnSolayticApp */ = {
+		13B07F861A680F5B00A75B9A /* Wasteporter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "rnSolayticApp" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Wasteporter" */;
 			buildPhases = (
 				33E32D8E571C4436DCE2825C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -235,14 +239,14 @@
 			);
 			dependencies = (
 			);
-			name = rnSolayticApp;
-			productName = rnSolayticApp;
-			productReference = 13B07F961A680F5B00A75B9A /* rnSolayticApp.app */;
+			name = Wasteporter;
+			productName = Wasteporter;
+			productReference = 13B07F961A680F5B00A75B9A /* Wasteporter.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* rnSolayticApp-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* Wasteporter-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "rnSolayticApp-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Wasteporter-tvOS" */;
 			buildPhases = (
 				ED3EC6CA72C2475855BB13EF /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -255,14 +259,14 @@
 			);
 			dependencies = (
 			);
-			name = "rnSolayticApp-tvOS";
-			productName = "rnSolayticApp-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* rnSolayticApp-tvOS.app */;
+			name = "Wasteporter-tvOS";
+			productName = "Wasteporter-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* Wasteporter-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* rnSolayticApp-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* Wasteporter-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "rnSolayticApp-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Wasteporter-tvOSTests" */;
 			buildPhases = (
 				9171E3E124EC8F64DB3F29B2 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -274,9 +278,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "rnSolayticApp-tvOSTests";
-			productName = "rnSolayticApp-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* rnSolayticApp-tvOSTests.xctest */;
+			name = "Wasteporter-tvOSTests";
+			productName = "Wasteporter-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* Wasteporter-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -305,7 +309,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "rnSolayticApp" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Wasteporter" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -318,10 +322,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* rnSolayticApp */,
-				00E356ED1AD99517003FC87E /* rnSolayticAppTests */,
-				2D02E47A1E0B4A5D006451C7 /* rnSolayticApp-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* rnSolayticApp-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* Wasteporter */,
+				00E356ED1AD99517003FC87E /* WasteporterTests */,
+				2D02E47A1E0B4A5D006451C7 /* Wasteporter-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* Wasteporter-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -340,6 +344,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				188FD8CB24ADD3C2004B3CDF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,7 +409,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-rnSolayticApp-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Wasteporter-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -426,7 +431,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-rnSolayticApp-rnSolayticAppTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Wasteporter-WasteporterTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -448,7 +453,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-rnSolayticApp-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Wasteporter-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -470,7 +475,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-rnSolayticApp-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Wasteporter-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -522,7 +527,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* rnSolayticAppTests.m in Sources */,
+				00E356F31AD99517003FC87E /* WasteporterTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +553,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* rnSolayticAppTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* WasteporterTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,12 +562,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* rnSolayticApp */;
+			target = 13B07F861A680F5B00A75B9A /* Wasteporter */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* rnSolayticApp-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* Wasteporter-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -574,7 +579,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = rnSolayticApp;
+			path = Wasteporter;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -582,14 +587,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7F11C59C78975ADE70680AD3 /* Pods-rnSolayticApp-rnSolayticAppTests.debug.xcconfig */;
+			baseConfigurationReference = 7F11C59C78975ADE70680AD3 /* Pods-Wasteporter-WasteporterTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = rnSolayticAppTests/Info.plist;
+				INFOPLIST_FILE = WasteporterTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -597,19 +602,19 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/rnSolayticApp.app/rnSolayticApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wasteporter.app/Wasteporter";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5692D7F9219CC54CC2E4D2F3 /* Pods-rnSolayticApp-rnSolayticAppTests.release.xcconfig */;
+			baseConfigurationReference = 5692D7F9219CC54CC2E4D2F3 /* Pods-Wasteporter-WasteporterTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = rnSolayticAppTests/Info.plist;
+				INFOPLIST_FILE = WasteporterTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -617,33 +622,34 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/rnSolayticApp.app/rnSolayticApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wasteporter.app/Wasteporter";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FAA7ED2B20C4E0F38180ED1 /* Pods-rnSolayticApp.debug.xcconfig */;
+			baseConfigurationReference = 5FAA7ED2B20C4E0F38180ED1 /* Pods-Wasteporter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Wasteporter/Wasteporter.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = rnSolayticApp/Info.plist;
+				INFOPLIST_FILE = Wasteporter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = rnSolayticApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
+				PRODUCT_NAME = Wasteporter;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -652,20 +658,21 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E7F8353EC1665070DB47C23 /* Pods-rnSolayticApp.release.xcconfig */;
+			baseConfigurationReference = 0E7F8353EC1665070DB47C23 /* Pods-Wasteporter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Wasteporter/Wasteporter.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = rnSolayticApp/Info.plist;
+				INFOPLIST_FILE = Wasteporter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = rnSolayticApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
+				PRODUCT_NAME = Wasteporter;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -673,7 +680,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF92CB6F4E9D75523EE28774 /* Pods-rnSolayticApp-tvOS.debug.xcconfig */;
+			baseConfigurationReference = AF92CB6F4E9D75523EE28774 /* Pods-Wasteporter-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -684,14 +691,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "rnSolayticApp-tvOS/Info.plist";
+				INFOPLIST_FILE = "Wasteporter-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rnSolayticApp-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -701,7 +708,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F454965F3851E265E6C84DE /* Pods-rnSolayticApp-tvOS.release.xcconfig */;
+			baseConfigurationReference = 5F454965F3851E265E6C84DE /* Pods-Wasteporter-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -712,14 +719,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "rnSolayticApp-tvOS/Info.plist";
+				INFOPLIST_FILE = "Wasteporter-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rnSolayticApp-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -729,7 +736,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97DC1C5DD1461D630CEA4DF9 /* Pods-rnSolayticApp-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 97DC1C5DD1461D630CEA4DF9 /* Pods-Wasteporter-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -739,24 +746,24 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "rnSolayticApp-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Wasteporter-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rnSolayticApp-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/rnSolayticApp-tvOS.app/rnSolayticApp-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wasteporter-tvOS.app/Wasteporter-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7D9695CEF73DEB987A8D0E5 /* Pods-rnSolayticApp-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = A7D9695CEF73DEB987A8D0E5 /* Pods-Wasteporter-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -766,17 +773,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "rnSolayticApp-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Wasteporter-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.rnSolayticApp-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.logisfleet.wasteporter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/rnSolayticApp-tvOS.app/rnSolayticApp-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wasteporter-tvOS.app/Wasteporter-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -897,7 +904,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "rnSolayticAppTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WasteporterTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -906,7 +913,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "rnSolayticApp" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Wasteporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -915,7 +922,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "rnSolayticApp-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Wasteporter-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -924,7 +931,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "rnSolayticApp-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Wasteporter-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -933,7 +940,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "rnSolayticApp" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Wasteporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

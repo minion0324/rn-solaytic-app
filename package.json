@@ -1,5 +1,5 @@
 {
-  "name": "rnSolayticApp",
+  "name": "Wasteporter",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -19,6 +19,7 @@
     "prop-types": "^15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-firebase": "^5.6.0",
     "react-native-navigation": "^6.7.3",
     "react-native-picker": "^4.3.7",
     "react-native-svg": "^12.1.0",
