@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface rnSolayticAppTests : XCTestCase
+@interface WasteporterTests : XCTestCase
 
 @end
 
-@implementation rnSolayticAppTests
+@implementation WasteporterTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

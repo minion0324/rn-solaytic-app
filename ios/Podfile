@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'rnSolayticApp' do
-  # Pods for rnSolayticApp
+target 'Wasteporter' do
+  # Pods for Wasteporter
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -77,7 +77,10 @@ target 'rnSolayticApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'rnSolayticAppTests' do
+  pod 'Firebase/Core'
+  pod 'Firebase/Messaging'
+
+  target 'WasteporterTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -94,10 +97,10 @@ target 'rnSolayticApp' do
   end
 end
 
-target 'rnSolayticApp-tvOS' do
-  # Pods for rnSolayticApp-tvOS
+target 'Wasteporter-tvOS' do
+  # Pods for Wasteporter-tvOS
 
-  target 'rnSolayticApp-tvOSTests' do
+  target 'Wasteporter-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
