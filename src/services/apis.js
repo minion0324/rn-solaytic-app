@@ -12,7 +12,9 @@ function apiLogin(userName, password) {
 };
 
 function apiAuthToken() {
-  return apiCall('api/mobile/driver/authenticate-token', 'post', {});
+  return apiCall('api/mobile/driver/authenticate-token', 'post', {
+    data: {},
+  });
 };
 
 function apiSetFCMToken(deviceToken) {
