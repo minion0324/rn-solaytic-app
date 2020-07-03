@@ -333,7 +333,9 @@ const JobDetailsScreen = ({
               { renderInstructions() }
 
               {
-                // renderPhotoAndSign()
+                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
+                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+                renderPhotoAndSign()
               }
 
               {
