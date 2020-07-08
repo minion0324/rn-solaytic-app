@@ -27,6 +27,7 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
+  EmptyWrap,
   BackButton,
 } from 'src/styles/header.styles';
 import {
@@ -319,12 +320,14 @@ const JobDetailsScreen = ({
         ? <HeaderBar
             centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
             leftIcon={<BackButton />}
+            rightIcon={<EmptyWrap />}
             onPressLeft={onBack}
           />
         : <ShadowWrap>
             <HeaderBar
               centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
               leftIcon={<BackButton />}
+              rightIcon={<EmptyWrap />}
               onPressLeft={onBack}
             />
 
