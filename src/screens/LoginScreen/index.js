@@ -54,7 +54,7 @@ const LoginScreen = ({
 
   const [ loading, setLoading ] = useState(false);
   const [ userName, setUserName ] = useState('suhk_deep');
-  const [ password, setPassword ] = useState('Xg@!#213567');
+  const [ password, setPassword ] = useState('Xg213567');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
 
