@@ -128,10 +128,10 @@ const JobCard = ({
             <TypeText>{type}</TypeText>
           </TypeWrap>
         </TimeRow>
-        <CustomerText>{customer}</CustomerText>
+        <CustomerText numberOfLines={1}>{customer}</CustomerText>
         <LocationRow>
           <LocationIcon />
-          <LocationText>{location}</LocationText>
+          <LocationText numberOfLines={1}>{location}</LocationText>
         </LocationRow>
       </Content>
     </Container>
