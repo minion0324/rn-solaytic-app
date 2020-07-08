@@ -27,6 +27,7 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
+  EmptyWrap,
   BackButton,
 } from 'src/styles/header.styles';
 import {
@@ -188,24 +189,35 @@ const JobDetailsScreen = ({
               {locations[0]}
             </InfoText>
           </LocationRow>
-          <Border />
-          <LocationRow>
-            <IconWrap>
-              <Location2Icon />
-            </IconWrap>
-            <InfoText numberOfLines={1}>
-              {locations.length === 3 ? locations[1] : ''}
-            </InfoText>
-          </LocationRow>
-          <Border />
-          <LocationRow>
-            <IconWrap>
-              <Location3Icon />
-            </IconWrap>
-            <InfoText numberOfLines={1}>
-              {locations.length === 3 ? locations[2] : locations[1]}
-            </InfoText>
-          </LocationRow>
+
+          {
+            locations.length === 3 &&
+            <View>
+              <Border />
+              <LocationRow>
+                <IconWrap>
+                  <Location2Icon />
+                </IconWrap>
+                <InfoText numberOfLines={1}>
+                  {locations[1]}
+                </InfoText>
+              </LocationRow>
+            </View>
+          }
+
+          {
+            <View>
+              <Border />
+              <LocationRow>
+                <IconWrap>
+                  <Location3Icon />
+                </IconWrap>
+                <InfoText numberOfLines={1}>
+                  {locations.length === 3 ? locations[2] : locations[1]}
+                </InfoText>
+              </LocationRow>
+            </View>
+          }
         </LocationInfo>
       </View>
     );
@@ -238,22 +250,36 @@ const JobDetailsScreen = ({
   };
 
   const renderBinInfo = () => {
+
     return (
       <View>
-        <BinButtonWrap>
-          <BinButton
-            active={index === 0}
-            onPress={() => setIndex(0)}
-          >
-            <BinButtonText active={index === 0}>Bin1</BinButtonText>
-          </BinButton>
-          <BinButton
-            active={index === 1}
-            onPress={() => setIndex(1)}
-          >
-            <BinButtonText active={index === 1}>Bin2</BinButtonText>
-          </BinButton>
-        </BinButtonWrap>
+        {
+          focusedJob.steps[1].wasteTypeName ||
+          focusedJob.steps[1].binTypeName ||
+          focusedJob.steps[1].binNumber
+          ? <BinButtonWrap>
+              <BinButton
+                active={index === 0}
+                onPress={() => setIndex(0)}
+              >
+                <BinButtonText active={index === 0}>Bin1</BinButtonText>
+              </BinButton>
+              <BinButton
+                active={index === 1}
+                onPress={() => setIndex(1)}
+              >
+                <BinButtonText active={index === 1}>Bin2</BinButtonText>
+              </BinButton>
+            </BinButtonWrap>
+          : <BinButtonWrap>
+              <BinButton
+                active={index === 0}
+                onPress={() => setIndex(0)}
+              >
+                <BinButtonText active={index === 0}>Bin</BinButtonText>
+              </BinButton>
+            </BinButtonWrap>
+        }
         <BinInfoWrap>
           <BinInfoRow>
             <BinText>{focusedJob.steps[index].wasteTypeName}</BinText>
@@ -308,12 +334,14 @@ const JobDetailsScreen = ({
         ? <HeaderBar
             centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
             leftIcon={<BackButton />}
+            rightIcon={<EmptyWrap />}
             onPressLeft={onBack}
           />
         : <ShadowWrap>
             <HeaderBar
               centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
               leftIcon={<BackButton />}
+              rightIcon={<EmptyWrap />}
               onPressLeft={onBack}
             />
 
