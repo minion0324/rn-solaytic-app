@@ -250,22 +250,36 @@ const JobDetailsScreen = ({
   };
 
   const renderBinInfo = () => {
+
     return (
       <View>
-        <BinButtonWrap>
-          <BinButton
-            active={index === 0}
-            onPress={() => setIndex(0)}
-          >
-            <BinButtonText active={index === 0}>Bin1</BinButtonText>
-          </BinButton>
-          <BinButton
-            active={index === 1}
-            onPress={() => setIndex(1)}
-          >
-            <BinButtonText active={index === 1}>Bin2</BinButtonText>
-          </BinButton>
-        </BinButtonWrap>
+        {
+          focusedJob.steps[1].wasteTypeName ||
+          focusedJob.steps[1].binTypeName ||
+          focusedJob.steps[1].binNumber
+          ? <BinButtonWrap>
+              <BinButton
+                active={index === 0}
+                onPress={() => setIndex(0)}
+              >
+                <BinButtonText active={index === 0}>Bin1</BinButtonText>
+              </BinButton>
+              <BinButton
+                active={index === 1}
+                onPress={() => setIndex(1)}
+              >
+                <BinButtonText active={index === 1}>Bin2</BinButtonText>
+              </BinButton>
+            </BinButtonWrap>
+          : <BinButtonWrap>
+              <BinButton
+                active={index === 0}
+                onPress={() => setIndex(0)}
+              >
+                <BinButtonText active={index === 0}>Bin</BinButtonText>
+              </BinButton>
+            </BinButtonWrap>
+        }
         <BinInfoWrap>
           <BinInfoRow>
             <BinText>{focusedJob.steps[index].wasteTypeName}</BinText>
