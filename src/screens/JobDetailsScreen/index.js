@@ -188,24 +188,35 @@ const JobDetailsScreen = ({
               {locations[0]}
             </InfoText>
           </LocationRow>
-          <Border />
-          <LocationRow>
-            <IconWrap>
-              <Location2Icon />
-            </IconWrap>
-            <InfoText numberOfLines={1}>
-              {locations.length === 3 ? locations[1] : ''}
-            </InfoText>
-          </LocationRow>
-          <Border />
-          <LocationRow>
-            <IconWrap>
-              <Location3Icon />
-            </IconWrap>
-            <InfoText numberOfLines={1}>
-              {locations.length === 3 ? locations[2] : locations[1]}
-            </InfoText>
-          </LocationRow>
+
+          {
+            locations.length === 3 &&
+            <View>
+              <Border />
+              <LocationRow>
+                <IconWrap>
+                  <Location2Icon />
+                </IconWrap>
+                <InfoText numberOfLines={1}>
+                  {locations[1]}
+                </InfoText>
+              </LocationRow>
+            </View>
+          }
+
+          {
+            <View>
+              <Border />
+              <LocationRow>
+                <IconWrap>
+                  <Location3Icon />
+                </IconWrap>
+                <InfoText numberOfLines={1}>
+                  {locations.length === 3 ? locations[2] : locations[1]}
+                </InfoText>
+              </LocationRow>
+            </View>
+          }
         </LocationInfo>
       </View>
     );
