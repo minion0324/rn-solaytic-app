@@ -81,6 +81,7 @@ const LocationRow = styled.View`
 `;
 
 const LocationText = styled.Text`
+  width: 93%;
   font-size: ${FONT(12)}px;
   font-weight: 600;
   color: ${COLORS.GRAY3};
