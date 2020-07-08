@@ -11,6 +11,7 @@ import moment from 'moment';
 import {
   SVGS,
   COLORS,
+  JOB_DATE,
   JOB_STATUS,
 } from 'src/constants';
 import {
@@ -224,7 +225,7 @@ const JobDetailsScreen = ({
   };
 
   const renderContractInfo = () => {
-    const jobDate = moment(focusedJob.jobDate);
+    const jobDate = moment(focusedJob[JOB_DATE]);
 
     return (
       <ContractInfo>
@@ -235,9 +236,13 @@ const JobDetailsScreen = ({
         <InfoWrap>
           <LabelText>Contract</LabelText>
           <RowWrap>
-            <InfoText>{`${focusedJob.driverName}  |  `}</InfoText>
+            <InfoText>
+              {`${focusedJob.steps[0].contactPersonOne}  |  `}
+            </InfoText>
             <IdWrap>
-              <IdText>{focusedJob.jobNumber}</IdText>
+              <IdText>
+                {focusedJob.steps[0].contactNumberOne}
+              </IdText>
             </IdWrap>
           </RowWrap>
         </InfoWrap>

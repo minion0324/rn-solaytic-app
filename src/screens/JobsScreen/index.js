@@ -15,6 +15,7 @@ import {
 import {
   SVGS,
   COLORS,
+  JOB_DATE,
 } from 'src/constants';
 import {
   pushScreen,
@@ -104,11 +105,11 @@ const JobsScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    const jobDate = moment(item.jobDate);
+    const jobDate = moment(item[JOB_DATE]);
 
     const showDate =
       index === 0 ||
-      jobDate.format('DD ddd') !== moment(allJobs[index - 1].jobDate).format('DD ddd');
+      jobDate.format('DD ddd') !== moment(allJobs[index - 1][JOB_DATE]).format('DD ddd');
 
     return (
       <CardRow>
