@@ -7,6 +7,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  SIZE12,
   FONT,
 } from 'src/constants';
 
@@ -25,11 +26,16 @@ const ScreenText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const EmptyWrap = styled.View`
+  width: ${SIZE12}px;
+`;
+
 //
 const BackButtonWrap = styled.View`
+  width: ${SIZE12}px;
   flex-direction: row;
   align-items: center;
-  margin-left: ${SIZE2}px;
+  padding-left: ${SIZE2}px;
 `;
 
 const BackButtonText = styled.Text`
@@ -49,5 +55,6 @@ const BackButton = () => (
 export {
   HelloText,
   ScreenText,
+  EmptyWrap,
   BackButton,
 };
