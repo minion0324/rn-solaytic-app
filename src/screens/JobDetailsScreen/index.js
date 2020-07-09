@@ -45,7 +45,7 @@ import {
   LocationRow,
   IconWrap,
   Border,
-  ContractInfo,
+  ContactInfo,
   InfoWrap,
   IdWrap,
   IdText,
@@ -224,17 +224,17 @@ const JobDetailsScreen = ({
     );
   };
 
-  const renderContractInfo = () => {
+  const renderContactInfo = () => {
     const jobDate = moment(focusedJob[JOB_DATE]);
 
     return (
-      <ContractInfo>
+      <ContactInfo>
         <InfoWrap>
           <LabelText>Customer</LabelText>
           <InfoText>{focusedJob.customerName}</InfoText>
         </InfoWrap>
         <InfoWrap>
-          <LabelText>Contract</LabelText>
+          <LabelText>Contact</LabelText>
           <RowWrap>
             <InfoText>
               {`${focusedJob.steps[0].contactPersonOne}  |  `}
@@ -250,7 +250,7 @@ const JobDetailsScreen = ({
           <LabelText>Date & Time</LabelText>
           <InfoText>{`${jobDate.format('DD ddd')} | ${jobDate.format('hh:mm A')}`}</InfoText>
         </InfoWrap>
-      </ContractInfo>
+      </ContactInfo>
     );
   };
 
@@ -361,7 +361,7 @@ const JobDetailsScreen = ({
           <ShadowWrap>
             <Content>
               { renderLocationInfo() }
-              { renderContractInfo() }
+              { renderContactInfo() }
               { renderBinInfo() }
               { renderInstructions() }
 
