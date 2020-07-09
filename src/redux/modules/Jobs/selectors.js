@@ -10,16 +10,16 @@ const getAllJobs = createSelector(
 );
 
 const getCountOfJobs = createSelector(
-  getJobsStore,
-  (jobs) => {
-    return jobs.countOfJobs || 0;
+  getAllJobs,
+  (allJobs) => {
+    return allJobs.length;
   },
 );
 
 const getPageOfJobs = createSelector(
-  getJobsStore,
-  (jobs) => {
-    return jobs.pageOfJobs || 1;
+  getCountOfJobs,
+  (countOfJobs) => {
+    return countOfJobs / 10 + 1;
   },
 );
 
@@ -38,16 +38,16 @@ const getAllAlerts = createSelector(
 );
 
 const getCountOfAlerts = createSelector(
-  getJobsStore,
-  (jobs) => {
-    return jobs.countOfAlerts || 0;
+  getAllAlerts,
+  (allAlerts) => {
+    return allAlerts.length;
   },
 );
 
 const getPageOfAlerts = createSelector(
-  getJobsStore,
-  (jobs) => {
-    return jobs.pageOfAlerts || 1;
+  getCountOfAlerts,
+  (countOfAlerts) => {
+    return countOfAlerts / 10 + 1;
   },
 );
 
