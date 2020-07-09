@@ -79,8 +79,6 @@ const JobsScreen = ({
   };
 
   const onEnd = () => {
-    if (countOfJobs < pageOfJobs * 10) return;
-
     getJobsByPage({
       dateForJobs,
       pageOfJobs,

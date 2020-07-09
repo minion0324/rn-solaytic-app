@@ -85,8 +85,6 @@ const AlertScreen = ({
   };
 
   const onEnd = () => {
-    if (countOfAlerts < pageOfAlerts * 10) return;
-
     getAlertsByPage({
       dateForAlerts,
       pageOfAlerts,
