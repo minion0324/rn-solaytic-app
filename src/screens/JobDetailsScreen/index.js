@@ -234,7 +234,7 @@ const JobDetailsScreen = ({
           <InfoText>{focusedJob.customerName}</InfoText>
         </InfoWrap>
         <InfoWrap>
-          <LabelText>Contact</LabelText>
+          <LabelText>Customer Contact & Phone Number</LabelText>
           <RowWrap>
             <InfoText>
               {`${focusedJob.steps[0].contactPersonOne}  |  `}
