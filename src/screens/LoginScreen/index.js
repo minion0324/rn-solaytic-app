@@ -53,8 +53,8 @@ const LoginScreen = ({
   const inputPassword = useRef(null);
 
   const [ loading, setLoading ] = useState(false);
-  const [ userName, setUserName ] = useState('tommy');
-  const [ password, setPassword ] = useState('123456');
+  const [ userName, setUserName ] = useState('');
+  const [ password, setPassword ] = useState('');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
 
