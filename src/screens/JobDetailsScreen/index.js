@@ -250,11 +250,11 @@ const JobDetailsScreen = ({
           <LabelText>Customer Contact & Phone Number</LabelText>
           <RowWrap>
             <InfoText>
-              {`${focusedJob.steps[0].contactPersonOne}  |  `}
+              {`${focusedJob.steps[0].contactPersonOne || focusedJob.steps[1].contactPersonOne}  |  `}
             </InfoText>
             <IdWrap>
               <IdText>
-                {focusedJob.steps[0].contactNumberOne}
+                {focusedJob.steps[0].contactNumberOne || focusedJob.steps[1].contactNumberOne}
               </IdText>
             </IdWrap>
           </RowWrap>
@@ -319,7 +319,7 @@ const JobDetailsScreen = ({
         <InfoText>Instructions</InfoText>
         <InstructionsContent>
           <InstructionsText>
-            Look out for bombs. if discovered, please contact the admin or the police.
+            {focusedJob.instructionToDrivers || ''}
           </InstructionsText>
         </InstructionsContent>
       </InstructionsWrap>
