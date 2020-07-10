@@ -134,6 +134,7 @@ const BinText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
+  text-align: center;
 `;
 
 const InstructionsWrap = styled.View`

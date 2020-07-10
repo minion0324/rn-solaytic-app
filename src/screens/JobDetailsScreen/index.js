@@ -300,13 +300,13 @@ const JobDetailsScreen = ({
         }
         <BinInfoWrap>
           <BinInfoRow>
-            <BinText>{focusedJob.steps[index].wasteTypeName}</BinText>
+            <BinText numberOfLines={2}>{focusedJob.steps[index].wasteTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText>{focusedJob.steps[index].binTypeName}</BinText>
+            <BinText numberOfLines={2}>{focusedJob.steps[index].binTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText>{focusedJob.steps[index].binNumber}</BinText>
+            <BinText numberOfLines={2}>{focusedJob.steps[index].binNumber}</BinText>
           </BinInfoRow>
         </BinInfoWrap>
       </View>
