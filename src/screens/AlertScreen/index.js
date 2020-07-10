@@ -26,6 +26,7 @@ import {
 import {
   User,
   Jobs,
+  ViewStore,
 } from 'src/redux';
 import {
   pushNotifications,
@@ -61,6 +62,7 @@ const AlertScreen = ({
   countOfAlerts,
   pageOfAlerts,
   dateForAlerts,
+  currentScreenInfo,
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
@@ -74,17 +76,22 @@ const AlertScreen = ({
 
   useEffect(() => {
     pushNotifications.connect(setFCMToken);
-    pushNotifications.setNotificationOpenedHandler(onNotification);
 
     return () => {
       pushNotifications.disconnect();
     };
   }, []);
 
+  useEffect(() => {
+    pushNotifications.setNotificationOpenedHandler(onNotification);
+  }, [currentScreenInfo]);
+
   const onNotification = async () => {
     try {
-      popToRootScreen(componentId);
-      await delay(100);
+      if (currentScreenInfo.componentType === 'push') {
+        popToRootScreen(currentScreenInfo.componentId);
+        await delay(100);
+      }
 
       changeTabIndex(componentId, 0);
       await delay(100);
@@ -221,6 +228,7 @@ AlertScreen.propTypes = {
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
+  currentScreenInfo: PropTypes.object.isRequired,
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
@@ -236,6 +244,7 @@ const mapStateToProps = (state) => {
     countOfAlerts: Jobs.selectors.getCountOfAlerts(state),
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
     dateForAlerts: Jobs.selectors.getDateForAlerts(state),
+    currentScreenInfo: ViewStore.selectors.getCurrentScreenInfo(state),
   };
 };
 
