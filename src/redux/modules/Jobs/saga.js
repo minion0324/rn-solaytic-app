@@ -292,8 +292,6 @@ export function* asyncExchangeJobs({ payload }) {
   try {
     const { data } = yield call(apiExchangeJobs, jobIds);
 
-    console.log(data);
-
     const successJobIds = data.successJobs.map(item => item.jobId);
 
     const allJobs = yield select(Jobs.selectors.getAllJobs);
@@ -334,8 +332,6 @@ export function* asyncCompleteJobs({ payload }) {
 
   try {
     const { data } = yield call(apiCompleteJobs, jobIds);
-
-    console.log(data);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 

@@ -73,9 +73,6 @@ const getFocusedJob = createSelector(
     const focusedJob =
       allAlerts.find(item => item.jobId === focusedJobId) || allJobs.find(item => item.jobId === focusedJobId);
 
-    console.log('focusedJob ------');
-    console.log(focusedJob);
-
     return focusedJob;
   },
 );
