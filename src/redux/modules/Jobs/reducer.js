@@ -44,7 +44,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.dateForJobs = payload.dateForJobs;
         break;
       case GET_JOBS_BY_PAGE_SUCCESS:
-        draft.allJobs.push(payload.data);
+        draft.allJobs.concat(payload.data);
         break;
       case GET_ALERTS_SUCCESS:
       case GET_ALERTS_BY_DATE_SUCCESS:
@@ -52,7 +52,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.dateForAlerts = payload.dateForAlerts;
         break;
       case GET_ALERTS_BY_PAGE_SUCCESS:
-        draft.allAlerts.push(payload.data);
+        draft.allAlerts.concat(payload.data);
         break;
       case SET_FOCUSED_JOB_ID:
         draft.focusedJobId = payload;

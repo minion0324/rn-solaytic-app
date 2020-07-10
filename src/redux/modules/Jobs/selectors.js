@@ -19,7 +19,7 @@ const getCountOfJobs = createSelector(
 const getPageOfJobs = createSelector(
   getCountOfJobs,
   (countOfJobs) => {
-    return countOfJobs / 10 + 1;
+    return Math.floor(countOfJobs / 10 + 1);
   },
 );
 
@@ -47,7 +47,7 @@ const getCountOfAlerts = createSelector(
 const getPageOfAlerts = createSelector(
   getCountOfAlerts,
   (countOfAlerts) => {
-    return countOfAlerts / 10 + 1;
+    return Math.floor(countOfAlerts / 10 + 1);
   },
 );
 
