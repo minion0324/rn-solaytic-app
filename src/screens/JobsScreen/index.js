@@ -16,7 +16,6 @@ import {
   SVGS,
   COLORS,
   JOB_DATE,
-  JOB_TYPE,
 } from 'src/constants';
 import {
   pushScreen,
@@ -26,6 +25,9 @@ import {
   User,
   Jobs,
 } from 'src/redux';
+import {
+  getJobCustomerAddress,
+} from 'src/utils';
 
 import {
   Container,
@@ -102,26 +104,6 @@ const JobsScreen = ({
     setFocusedJobId(job.jobId);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
-
-  const getJobCustomerAddress = (job) => {
-    switch (job.jobTypeName) {
-      case JOB_TYPE.PULL:
-        return job.steps[0].address || job.steps[1].address;
-
-      case JOB_TYPE.PUT:
-      case JOB_TYPE.EXCHANGE:
-      case JOB_TYPE.ON_THE_SPOT:
-        return job.steps[1].address || job.steps[0].address;
-
-      case JOB_TYPE.OUT:
-      case JOB_TYPE.SHIFT:
-      case JOB_TYPE.THROW_AT_CUSTOMER:
-        return job.steps[2].address || job.steps[1].address || job.steps[0].address;
-
-      default:
-        return job.steps[2].address || job.steps[1].address || job.steps[0].address;
-    };
-  }
 
   const renderItem = ({ item, index }) => {
     const jobDate = moment(item[JOB_DATE]);

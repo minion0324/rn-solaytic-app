@@ -33,6 +33,7 @@ import {
 } from 'src/services';
 import {
   delay,
+  getJobCustomerAddress,
 } from 'src/utils';
 
 import {
@@ -171,7 +172,7 @@ const AlertScreen = ({
           <JobCard
             customer={item.customerName}
             type={item.jobTypeName}
-            location={''}
+            location={getJobCustomerAddress(item)}
             time={jobDate.format('hh:mm A')}
             status={item.statusName}
           />
