@@ -52,6 +52,16 @@ const JOB_STATUS = {
   FOR_ACKNOWLEDGE: ['Unassigned', 'Assigned', 'Dispatched'],
 };
 
+const JOB_TYPE = {
+  PULL: 'Pull',
+  PUT: 'Put',
+  EXCHANGE: 'Exchange',
+  ON_THE_SPOT: 'OnTheSpot',
+  OUT: 'Out',
+  SHIFT: 'Shift',
+  THROW_AT_CUSTOMER: 'ThrowAtCustomer',
+};
+
 export {
   PLATFORM,
   WIDTH,
@@ -75,4 +85,5 @@ export {
   DATE_FORMAT,
   JOB_DATE,
   JOB_STATUS,
+  JOB_TYPE,
 };
