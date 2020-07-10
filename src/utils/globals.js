@@ -4,6 +4,10 @@ import {
   DATE_FORMAT,
 } from 'src/constants';
 
+function delay(milliseconds) {
+  return new Promise((rs) => setTimeout(rs, milliseconds));
+}
+
 function getFormattedDate(date) {
   return moment(date).format(DATE_FORMAT);
 };
@@ -19,6 +23,7 @@ function getEndOfMonth(date, format = DATE_FORMAT) {
 };
 
 export {
+  delay,
   getFormattedDate,
   getStartOfMonth,
   getEndOfMonth,
