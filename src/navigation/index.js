@@ -5,6 +5,7 @@ export {
   dismissModal,
   pushScreen,
   popScreen,
+  popToRootScreen,
   pushMultiScreensApp,
   pushSingleScreenApp,
 } from './Navigation';
