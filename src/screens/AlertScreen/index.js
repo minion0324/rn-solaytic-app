@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -17,7 +18,9 @@ import {
   JOB_DATE,
 } from 'src/constants';
 import {
+  changeTabIndex,
   pushScreen,
+  popToRootScreen,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 import {
@@ -27,10 +30,14 @@ import {
 import {
   pushNotifications,
 } from 'src/services';
+import {
+  delay,
+} from 'src/utils';
 
 import {
   Container,
   ShadowWrap,
+  LoadingWrap,
 } from 'src/styles/common.styles';
 import {
   HelloText,
@@ -62,15 +69,31 @@ const AlertScreen = ({
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
   useEffect(() => {
     pushNotifications.connect(setFCMToken);
+    pushNotifications.setNotificationOpenedHandler(onNotification);
 
     return () => {
       pushNotifications.disconnect();
     };
   }, []);
+
+  const onNotification = async () => {
+    try {
+      popToRootScreen(componentId);
+      await delay(100);
+
+      changeTabIndex(componentId, 0);
+      await delay(100);
+
+      onReloading();
+    } catch (error) {
+      //
+    }
+  }
 
   const onAcknowledge = () => {
     setLoading(true);
@@ -81,6 +104,16 @@ const AlertScreen = ({
       jobIds,
       success: () => setLoading(false),
       failure: () => setLoading(false),
+    });
+  };
+
+  const onReloading = () => {
+    setReloading(true);
+
+    getAlertsByDate({
+      dateForAlerts,
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
     });
   };
 
@@ -162,14 +195,20 @@ const AlertScreen = ({
         }
       </ShadowWrap>
 
-      <ListWrap
-        data={allAlerts}
-        keyExtractor={(item) => `${item.jobId}`}
-        renderItem={renderItem}
-        onEndProcess={onEnd}
-        onRefreshProcess={onRefresh}
-        refreshing={refreshing}
-      />
+      {
+        reloading
+        ? <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        : <ListWrap
+            data={allAlerts}
+            keyExtractor={(item) => `${item.jobId}`}
+            renderItem={renderItem}
+            onEndProcess={onEnd}
+            onRefreshProcess={onRefresh}
+            refreshing={refreshing}
+          />
+      }
 
       <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
