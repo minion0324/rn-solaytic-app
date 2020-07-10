@@ -81,6 +81,7 @@ const LocationRow = styled.View`
 `;
 
 const LocationText = styled.Text`
+  width: 93%;
   font-size: ${FONT(12)}px;
   font-weight: 600;
   color: ${COLORS.GRAY3};
@@ -128,10 +129,10 @@ const JobCard = ({
             <TypeText>{type}</TypeText>
           </TypeWrap>
         </TimeRow>
-        <CustomerText>{customer}</CustomerText>
+        <CustomerText numberOfLines={1}>{customer}</CustomerText>
         <LocationRow>
           <LocationIcon />
-          <LocationText>{location}</LocationText>
+          <LocationText numberOfLines={1}>{location}</LocationText>
         </LocationRow>
       </Content>
     </Container>

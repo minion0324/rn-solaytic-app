@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -14,22 +15,30 @@ import {
 import {
   SVGS,
   COLORS,
+  JOB_DATE,
 } from 'src/constants';
 import {
+  changeTabIndex,
   pushScreen,
+  popToRootScreen,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 import {
   User,
   Jobs,
+  ViewStore,
 } from 'src/redux';
 import {
   pushNotifications,
 } from 'src/services';
+import {
+  delay,
+} from 'src/utils';
 
 import {
   Container,
   ShadowWrap,
+  LoadingWrap,
 } from 'src/styles/common.styles';
 import {
   HelloText,
@@ -53,6 +62,7 @@ const AlertScreen = ({
   countOfAlerts,
   pageOfAlerts,
   dateForAlerts,
+  currentScreenInfo,
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
@@ -61,6 +71,7 @@ const AlertScreen = ({
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
   useEffect(() => {
@@ -70,6 +81,26 @@ const AlertScreen = ({
       pushNotifications.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    pushNotifications.setNotificationOpenedHandler(onNotification);
+  }, [currentScreenInfo]);
+
+  const onNotification = async () => {
+    try {
+      if (currentScreenInfo.componentType === 'push') {
+        popToRootScreen(currentScreenInfo.componentId);
+        await delay(100);
+      }
+
+      changeTabIndex(componentId, 0);
+      await delay(100);
+
+      onReloading();
+    } catch (error) {
+      //
+    }
+  }
 
   const onAcknowledge = () => {
     setLoading(true);
@@ -83,9 +114,17 @@ const AlertScreen = ({
     });
   };
 
-  const onEnd = () => {
-    if (countOfAlerts < pageOfAlerts * 10) return;
+  const onReloading = () => {
+    setReloading(true);
 
+    getAlertsByDate({
+      dateForAlerts,
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
+    });
+  };
+
+  const onEnd = () => {
     getAlertsByPage({
       dateForAlerts,
       pageOfAlerts,
@@ -110,11 +149,11 @@ const AlertScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    const jobDate = moment(item.jobDate);
+    const jobDate = moment(item[JOB_DATE]);
 
     const showDate =
       index === 0 ||
-      jobDate.format('DD ddd') !== moment(allAlerts[index - 1].jobDate).format('DD ddd');
+      jobDate.format('DD ddd') !== moment(allAlerts[index - 1][JOB_DATE]).format('DD ddd');
 
     return (
       <CardRow>
@@ -163,14 +202,20 @@ const AlertScreen = ({
         }
       </ShadowWrap>
 
-      <ListWrap
-        data={allAlerts}
-        keyExtractor={(item) => `${item.jobId}`}
-        renderItem={renderItem}
-        onEndProcess={onEnd}
-        onRefreshProcess={onRefresh}
-        refreshing={refreshing}
-      />
+      {
+        reloading
+        ? <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        : <ListWrap
+            data={allAlerts}
+            keyExtractor={(item) => `${item.jobId}`}
+            renderItem={renderItem}
+            onEndProcess={onEnd}
+            onRefreshProcess={onRefresh}
+            refreshing={refreshing}
+          />
+      }
 
       <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
@@ -183,6 +228,7 @@ AlertScreen.propTypes = {
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
+  currentScreenInfo: PropTypes.object.isRequired,
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
@@ -198,6 +244,7 @@ const mapStateToProps = (state) => {
     countOfAlerts: Jobs.selectors.getCountOfAlerts(state),
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
     dateForAlerts: Jobs.selectors.getDateForAlerts(state),
+    currentScreenInfo: ViewStore.selectors.getCurrentScreenInfo(state),
   };
 };
 

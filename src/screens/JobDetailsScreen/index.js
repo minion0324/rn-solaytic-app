@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -11,6 +11,7 @@ import moment from 'moment';
 import {
   SVGS,
   COLORS,
+  JOB_DATE,
   JOB_STATUS,
 } from 'src/constants';
 import {
@@ -32,6 +33,7 @@ import {
 } from 'src/styles/header.styles';
 import {
   Jobs,
+  ViewStore,
 } from 'src/redux';
 
 import {
@@ -44,7 +46,7 @@ import {
   LocationRow,
   IconWrap,
   Border,
-  ContractInfo,
+  ContactInfo,
   InfoWrap,
   IdWrap,
   IdText,
@@ -76,10 +78,22 @@ const JobDetailsScreen = ({
   startJobs,
   exchangeJobs,
   completeJobs,
+  setCurrentScreenInfo,
   componentId,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
+
+  useEffect(() => {
+    setCurrentScreenInfo({
+      componentId,
+      componentType: 'push',
+    });
+
+    return () => {
+      setCurrentScreenInfo({});
+    };
+  }, []);
 
   const onBack = () => {
     popScreen(componentId);
@@ -223,21 +237,25 @@ const JobDetailsScreen = ({
     );
   };
 
-  const renderContractInfo = () => {
-    const jobDate = moment(focusedJob.jobDate);
+  const renderContactInfo = () => {
+    const jobDate = moment(focusedJob[JOB_DATE]);
 
     return (
-      <ContractInfo>
+      <ContactInfo>
         <InfoWrap>
           <LabelText>Customer</LabelText>
           <InfoText>{focusedJob.customerName}</InfoText>
         </InfoWrap>
         <InfoWrap>
-          <LabelText>Contract</LabelText>
+          <LabelText>Customer Contact & Phone Number</LabelText>
           <RowWrap>
-            <InfoText>{`${focusedJob.driverName}  |  `}</InfoText>
+            <InfoText>
+              {`${focusedJob.steps[0].contactPersonOne}  |  `}
+            </InfoText>
             <IdWrap>
-              <IdText>{focusedJob.jobNumber}</IdText>
+              <IdText>
+                {focusedJob.steps[0].contactNumberOne}
+              </IdText>
             </IdWrap>
           </RowWrap>
         </InfoWrap>
@@ -245,7 +263,7 @@ const JobDetailsScreen = ({
           <LabelText>Date & Time</LabelText>
           <InfoText>{`${jobDate.format('DD ddd')} | ${jobDate.format('hh:mm A')}`}</InfoText>
         </InfoWrap>
-      </ContractInfo>
+      </ContactInfo>
     );
   };
 
@@ -356,7 +374,7 @@ const JobDetailsScreen = ({
           <ShadowWrap>
             <Content>
               { renderLocationInfo() }
-              { renderContractInfo() }
+              { renderContactInfo() }
               { renderBinInfo() }
               { renderInstructions() }
 
@@ -389,6 +407,7 @@ JobDetailsScreen.propTypes = {
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
+  setCurrentScreenInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -407,6 +426,7 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
+  setCurrentScreenInfo: ViewStore.actionCreators.setCurrentScreenInfo,
 };
 
 export default connect(
