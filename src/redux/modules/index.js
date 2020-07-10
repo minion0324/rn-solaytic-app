@@ -76,5 +76,5 @@ export {
 
   User,
   Jobs,
-  View,
+  View as ViewStore,
 };
