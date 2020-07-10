@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -33,6 +33,7 @@ import {
 } from 'src/styles/header.styles';
 import {
   Jobs,
+  ViewStore,
 } from 'src/redux';
 
 import {
@@ -77,10 +78,22 @@ const JobDetailsScreen = ({
   startJobs,
   exchangeJobs,
   completeJobs,
+  setCurrentScreenInfo,
   componentId,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
+
+  useEffect(() => {
+    setCurrentScreenInfo({
+      componentId,
+      componentType: 'push',
+    });
+
+    return () => {
+      setCurrentScreenInfo({});
+    };
+  }, []);
 
   const onBack = () => {
     popScreen(componentId);
@@ -394,6 +407,7 @@ JobDetailsScreen.propTypes = {
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
+  setCurrentScreenInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -412,6 +426,7 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
+  setCurrentScreenInfo: ViewStore.actionCreators.setCurrentScreenInfo,
 };
 
 export default connect(
