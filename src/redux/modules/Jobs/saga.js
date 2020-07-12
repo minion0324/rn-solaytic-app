@@ -19,6 +19,7 @@ import {
   Jobs,
 } from 'src/redux';
 import {
+  JOB_DATE,
   JOB_STATUS,
 } from 'src/constants';
 
@@ -210,7 +211,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
       if (dateForJobs === dateForAlerts) {
         const idx = res.newJobs.findIndex((item) => {
-          return moment(item.jobDate).isAfter(res.newAlerts[index].jobDate);
+          return moment(item[JOB_DATE]).isAfter(res.newAlerts[index][JOB_DATE]);
         });
 
         res.newJobs.splice(idx, 0, {
@@ -291,8 +292,6 @@ export function* asyncExchangeJobs({ payload }) {
   try {
     const { data } = yield call(apiExchangeJobs, jobIds);
 
-    console.log(data);
-
     const successJobIds = data.successJobs.map(item => item.jobId);
 
     const allJobs = yield select(Jobs.selectors.getAllJobs);
@@ -333,8 +332,6 @@ export function* asyncCompleteJobs({ payload }) {
 
   try {
     const { data } = yield call(apiCompleteJobs, jobIds);
-
-    console.log(data);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 

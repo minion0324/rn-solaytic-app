@@ -67,7 +67,7 @@ const Border = styled.View`
   border-color: ${COLORS.GRAY2};
 `;
 
-const ContractInfo = styled.View`
+const ContactInfo = styled.View`
   margin-vertical: ${SIZE4}px;
 `;
 
@@ -134,6 +134,7 @@ const BinText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
+  text-align: center;
 `;
 
 const InstructionsWrap = styled.View`
@@ -182,7 +183,7 @@ export {
   LocationRow,
   IconWrap,
   Border,
-  ContractInfo,
+  ContactInfo,
   InfoWrap,
   IdWrap,
   IdText,

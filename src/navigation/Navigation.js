@@ -65,6 +65,10 @@ export function popScreen(componentId) {
   return Navigation.pop(componentId);
 }
 
+export function popToRootScreen(componentId) {
+  return Navigation.popToRoot(componentId);
+}
+
 export function pushSingleScreenApp() {
   Navigation.setDefaultOptions({
     layout: {
@@ -83,8 +87,8 @@ export function pushSingleScreenApp() {
     },
     bottomTab: {
       fontSize: FONT(13),
-      textColor: '#707070',
-      selectedTextColor: '#03A9F4',
+      textColor: COLORS.GRAY1,
+      selectedTextColor: COLORS.BLUE1,
       iconInsets: { top: 10, bottom: 5 },
     },
     popGesture: false,
@@ -123,8 +127,8 @@ export function pushMultiScreensApp() {
     },
     bottomTab: {
       fontSize: FONT(13),
-      textColor: '#707070',
-      selectedTextColor: '#03A9F4',
+      textColor: COLORS.GRAY1,
+      selectedTextColor: COLORS.BLUE1,
       iconInsets: { top: 10, bottom: 5 },
     },
     popGesture: false,

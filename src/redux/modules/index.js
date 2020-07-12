@@ -5,10 +5,12 @@ import {
 
 import * as User from './User';
 import * as Jobs from './Jobs';
+import * as View from './View';
 
 const stores = {
   User,
   Jobs,
+  View,
 };
 
 const {
@@ -74,4 +76,5 @@ export {
 
   User,
   Jobs,
+  View as ViewStore,
 };

@@ -15,6 +15,7 @@ import {
 import {
   SVGS,
   COLORS,
+  JOB_DATE,
 } from 'src/constants';
 import {
   pushScreen,
@@ -24,6 +25,9 @@ import {
   User,
   Jobs,
 } from 'src/redux';
+import {
+  getJobCustomerAddress,
+} from 'src/utils';
 
 import {
   Container,
@@ -78,8 +82,6 @@ const JobsScreen = ({
   };
 
   const onEnd = () => {
-    if (countOfJobs < pageOfJobs * 10) return;
-
     getJobsByPage({
       dateForJobs,
       pageOfJobs,
@@ -104,11 +106,11 @@ const JobsScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    const jobDate = moment(item.jobDate);
+    const jobDate = moment(item[JOB_DATE]);
 
     const showDate =
       index === 0 ||
-      jobDate.format('DD ddd') !== moment(allJobs[index - 1].jobDate).format('DD ddd');
+      jobDate.format('DD ddd') !== moment(allJobs[index - 1][JOB_DATE]).format('DD ddd');
 
     return (
       <CardRow>
@@ -126,7 +128,7 @@ const JobsScreen = ({
           <JobCard
             customer={item.customerName}
             type={item.jobTypeName}
-            location={item.steps[item.steps.length - 1].address}
+            location={getJobCustomerAddress(item)}
             time={jobDate.format('hh:mm A')}
             status={item.statusName}
           />

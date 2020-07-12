@@ -36,6 +36,8 @@ const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 //
 const DATE_FORMAT = 'MMM YYYY';
 
+const JOB_DATE = 'jobTimeSpecific';
+
 const JOB_STATUS = {
   UNASSIGNED: 'Unassigned',
   ASSIGNED: 'Assigned',
@@ -48,6 +50,16 @@ const JOB_STATUS = {
   CANCELLED: 'Cancelled',
 
   FOR_ACKNOWLEDGE: ['Unassigned', 'Assigned', 'Dispatched'],
+};
+
+const JOB_TYPE = {
+  PULL: 'Pull',
+  PUT: 'Put',
+  EXCHANGE: 'Exchange',
+  ON_THE_SPOT: 'OnTheSpot',
+  OUT: 'Out',
+  SHIFT: 'Shift',
+  THROW_AT_CUSTOMER: 'ThrowAtCustomer',
 };
 
 export {
@@ -71,5 +83,7 @@ export {
   SIZE40,
   FONT,
   DATE_FORMAT,
+  JOB_DATE,
   JOB_STATUS,
+  JOB_TYPE,
 };

@@ -1,4 +1,8 @@
 import {
+  JOB_DATE,
+} from 'src/constants';
+
+import {
   apiCall,
 } from './apiInstance';
 
@@ -31,7 +35,7 @@ function apiGetJobs(
   isAssigned,
   currentPage = 1,
   pageSize = 10,
-  sortColumn = 'JobDate',
+  sortColumn = JOB_DATE,
   sortDir = 'asc',
   jobTypeFilter = '',
   jobStatusFilter = '',

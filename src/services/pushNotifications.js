@@ -51,7 +51,8 @@ class PushNotifications {
   }
 
   onNotificationOpened = ({ notification }) => {
-    this.processNotificationOpened(notification);
+    this.notificationOpenedHandler && // eslint-disable-line
+    this.notificationOpenedHandler(notification);
   }
 
   onTokenRefresh = (registrationToken) => {
@@ -88,14 +89,11 @@ class PushNotifications {
   getInitialNotification = async () => {
     try {
       const { notification } = await firebase.notifications().getInitialNotification();
-      this.processNotificationOpened(notification);
+      this.notificationOpenedHandler && // eslint-disable-line
+      this.notificationOpenedHandler(notification);
     } catch (error) {
       //
     }
-  }
-
-  processNotificationOpened = (notification) => {
-
   }
 
   createNotificationChannel = () => {
@@ -131,6 +129,10 @@ class PushNotifications {
     } catch (error) {
       return Promise.reject(error);
     }
+  }
+
+  setNotificationOpenedHandler = (handler) => {
+    this.notificationOpenedHandler = handler;
   }
 }
 
