@@ -20,7 +20,9 @@ import {
   DefaultButton,
 } from 'src/components';
 import {
+  pushScreen,
   popScreen,
+  SIGNATURE_SCREEN,
 } from 'src/navigation';
 
 import {
@@ -163,7 +165,7 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-
+    pushScreen(componentId, SIGNATURE_SCREEN);
   };
 
   const renderButton = () => {
