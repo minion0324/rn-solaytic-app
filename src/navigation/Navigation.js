@@ -17,6 +17,14 @@ import registerScreens from './registerScreens';
 
 registerScreens();
 
+export function changeOrientation(componentId, orientation = 'landscape') {
+  Navigation.mergeOptions(componentId, {
+    layout: {
+      orientation: [orientation],
+    },
+  });
+}
+
 export function changeTabIndex(componentId, tabIndex) {
   Navigation.mergeOptions(componentId, {
     bottomTabs: {
