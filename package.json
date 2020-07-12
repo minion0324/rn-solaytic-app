@@ -24,6 +24,7 @@
     "react-native-image-picker": "^2.3.2",
     "react-native-navigation": "^6.7.3",
     "react-native-picker": "^4.3.7",
+    "react-native-signature-canvas": "^2.7.0",
     "react-native-svg": "^12.1.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
