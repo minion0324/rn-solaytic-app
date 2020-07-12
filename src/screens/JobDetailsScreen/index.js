@@ -7,6 +7,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import ImagePicker from 'react-native-image-picker';
 
 import {
   SVGS,
@@ -139,6 +140,32 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onPhoto = () => {
+    const options = {
+      title: 'Select Your Photo',
+      storageOptions: {
+        skipBackup: true,
+      },
+      // quality: 0.5,
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log(response);
+
+      if (response.didCancel) {
+        //
+      } else if (response.error) {
+        //
+      } else {
+        //
+      }
+    });
+  };
+
+  const onSign = () => {
+
+  };
+
   const renderButton = () => {
     if (focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED) {
       return (
@@ -268,7 +295,6 @@ const JobDetailsScreen = ({
   };
 
   const renderBinInfo = () => {
-
     return (
       <View>
         {
@@ -329,13 +355,13 @@ const JobDetailsScreen = ({
   const renderPhotoAndSign = () => {
     return (
       <PhotoAndSignWrap>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPhoto}>
           <RowWrap>
             <CameraIcon />
             <PhotoAndSignText>Photo</PhotoAndSignText>
           </RowWrap>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onSign}>
           <RowWrap>
             <SignIcon />
             <PhotoAndSignText>Sign</PhotoAndSignText>
@@ -379,8 +405,8 @@ const JobDetailsScreen = ({
               { renderInstructions() }
 
               {
-                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
-                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+                // (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
+                // (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
                 renderPhotoAndSign()
               }
 
