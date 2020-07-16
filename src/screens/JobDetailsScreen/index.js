@@ -386,7 +386,7 @@ const JobDetailsScreen = ({
       <View>
         {
           photos.map(imageUri =>
-            <ItemWrap mLeft={0} mRight={0}>
+            <ItemWrap key={imageUri} mLeft={0} mRight={0}>
               <Photo source={{ uri: imageUri }} />
             </ItemWrap>
           )
