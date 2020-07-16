@@ -173,6 +173,11 @@ const PhotoAndSignText = styled.Text`
   margin-vertical: ${SIZE4}px;
 `;
 
+const Photo = styled.Image`
+  width: 100%;
+  aspect-ratio: 1;
+`;
+
 export {
   ButtonWrap,
   JobDetails,
@@ -199,4 +204,5 @@ export {
   InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
+  Photo,
 };

@@ -18,6 +18,7 @@ import {
 import {
   HeaderBar,
   DefaultButton,
+  ItemWrap,
 } from 'src/components';
 import {
   pushScreen,
@@ -65,6 +66,7 @@ import {
   InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
+  Photo,
 } from './styled';
 
 const {
@@ -86,6 +88,9 @@ const JobDetailsScreen = ({
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
+
+  const [ photos, setPhotos ] = useState([]);
+  const [ sign, setSign ] = useState(null);
 
   useEffect(() => {
     setCurrentScreenInfo({
@@ -159,13 +164,13 @@ const JobDetailsScreen = ({
       } else if (response.error) {
         //
       } else {
-        //
+        setPhotos([ ...photos, response.uri ]);
       }
     });
   };
 
   const onSign = () => {
-    pushScreen(componentId, SIGNATURE_SCREEN);
+    pushScreen(componentId, SIGNATURE_SCREEN, { setSign });
   };
 
   const renderButton = () => {
@@ -373,6 +378,29 @@ const JobDetailsScreen = ({
     );
   }
 
+  const renderAttachments = () => {
+    console.log(photos);
+    console.log(sign);
+
+    return (
+      <View>
+        {
+          photos.map(imageUri =>
+            <ItemWrap mLeft={0} mRight={0}>
+              <Photo source={{ uri: imageUri }} />
+            </ItemWrap>
+          )
+        }
+        {
+          !!sign &&
+          <ItemWrap mLeft={0} mRight={0}>
+            <Photo source={{ uri: sign }} />
+          </ItemWrap>
+        }
+      </View>
+    )
+  }
+
   return (
     <Container>
       {
@@ -405,10 +433,11 @@ const JobDetailsScreen = ({
               { renderContactInfo() }
               { renderBinInfo() }
               { renderInstructions() }
+              { renderAttachments() }
 
               {
-                // (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
-                // (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
+                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
                 renderPhotoAndSign()
               }
 
