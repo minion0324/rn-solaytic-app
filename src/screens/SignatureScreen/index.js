@@ -43,9 +43,8 @@ const SignatureScreen = ({
 
   const onSign = async (base64) => {
     try {
-      const path = RNFS.DocumentDirectoryPath + '/sign.jpg';
-
-      await RNFS.writeFile(path, base64, 'base64')
+      const path = RNFS.DocumentDirectoryPath + '/sign.png';
+      await RNFS.writeFile(path, base64.replace('data:image/png;base64,', ''), 'base64')
 
       setSign(path);
       onBack();
@@ -66,7 +65,6 @@ const SignatureScreen = ({
       </ShadowWrap>
       <Signature
         onOK={onSign}
-        imageType={'image/jpeg'}
       />
     </Container>
   );
