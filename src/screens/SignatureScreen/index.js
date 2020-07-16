@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Signature from 'react-native-signature-canvas';
+import RNFS from 'react-native-fs';
 
 import {
   changeOrientation,
@@ -29,6 +30,7 @@ import {
 } from './styled';
 
 const SignatureScreen = ({
+  setSign,
   componentId,
 }) => {
   useEffect(() => {
@@ -39,8 +41,17 @@ const SignatureScreen = ({
     popScreen(componentId);
   };
 
-  const onSign = (image) => {
-    console.log(image);
+  const onSign = async (base64) => {
+    try {
+      const path = RNFS.DocumentDirectoryPath + '/sign.jpg';
+
+      await RNFS.writeFile(path, base64, 'base64')
+
+      setSign(path);
+      onBack();
+    } catch (error) {
+      //
+    }
   };
 
   return (
@@ -55,12 +66,14 @@ const SignatureScreen = ({
       </ShadowWrap>
       <Signature
         onOK={onSign}
+        imageType={'image/jpeg'}
       />
     </Container>
   );
 };
 
 SignatureScreen.propTypes = {
+  setSign: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
