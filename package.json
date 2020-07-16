@@ -21,6 +21,7 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-firebase": "^5.6.0",
+    "react-native-fs": "^2.16.6",
     "react-native-image-picker": "^2.3.2",
     "react-native-navigation": "^6.7.3",
     "react-native-picker": "^4.3.7",
