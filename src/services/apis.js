@@ -79,10 +79,11 @@ function apiExchangeJobs(jobIds) {
   });
 };
 
-function apiCompleteJobs(jobIds) {
+function apiCompleteJobs(jobIds, attempt) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
+      attempt,
     },
   });
 };
