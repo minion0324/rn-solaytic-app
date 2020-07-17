@@ -35,7 +35,7 @@ function apiGetJobs(
   isAssigned,
   currentPage = 1,
   pageSize = 10,
-  sortColumn = JOB_DATE,
+  sortColumn = JOB_DATE[0],
   sortDir = 'asc',
   jobTypeFilter = '',
   jobStatusFilter = '',
@@ -79,10 +79,11 @@ function apiExchangeJobs(jobIds) {
   });
 };
 
-function apiCompleteJobs(jobIds) {
+function apiCompleteJobs(jobIds, attempt) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
+      attempt,
     },
   });
 };

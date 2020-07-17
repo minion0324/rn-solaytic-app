@@ -3,7 +3,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import produce from 'immer';
 
 import {
-  SET_CURRENT_SCREEN_INFO,
+  SET_CORE_SCREEN_INFO,
+  UPLOAD_PHOTOS_SUCCESS,
+  UPLOAD_SIGN_SUCCESS,
+  INIT_JOB_PHOTOS_AND_SIGN,
 } from './actions';
 
 const DEFAULT = {
@@ -14,7 +17,9 @@ const viewPersistConfig = {
   key: 'View',
   storage: AsyncStorage,
   blacklist: [
-    'currentScreenInfo',
+    'coreScreenInfo',
+    'jobPhotos',
+    'jobSign',
   ],
 };
 
@@ -24,8 +29,18 @@ function View(state = DEFAULT, action = {}) {
     const { type, payload } = action;
 
     switch (type) {
-      case SET_CURRENT_SCREEN_INFO:
-        draft.currentScreenInfo = payload;
+      case SET_CORE_SCREEN_INFO:
+        draft.coreScreenInfo = payload;
+        break;
+      case UPLOAD_PHOTOS_SUCCESS:
+        draft.jobPhotos = payload;
+        break;
+      case UPLOAD_SIGN_SUCCESS:
+        draft.jobSign = payload;
+        break;
+      case INIT_JOB_PHOTOS_AND_SIGN:
+        draft.jobPhotos = [];
+        draft.jobSign = '';
         break;
     }
   });

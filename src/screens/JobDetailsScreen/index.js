@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Alert,
   View,
   ScrollView,
   TouchableOpacity,
@@ -7,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import ImagePicker from 'react-native-image-picker';
 
 import {
   SVGS,
@@ -17,14 +19,18 @@ import {
 import {
   HeaderBar,
   DefaultButton,
+  ItemWrap,
 } from 'src/components';
 import {
+  pushScreen,
   popScreen,
+  SIGNATURE_SCREEN,
 } from 'src/navigation';
 
 import {
   Container,
   ShadowWrap,
+  FullImage,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -62,6 +68,10 @@ import {
   InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
+  AttachmentWrap,
+  HalfWrap,
+  SignInfo,
+  SignInfoText,
 } from './styled';
 
 const {
@@ -74,24 +84,34 @@ const {
 
 const JobDetailsScreen = ({
   focusedJob,
+  jobPhotos,
+  jobSign,
   acknowledgeJobs,
   startJobs,
   exchangeJobs,
   completeJobs,
-  setCurrentScreenInfo,
+  setCoreScreenInfo,
+  uploadPhotos,
+  uploadSign,
+  initJobPhotosAndSign,
   componentId,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
 
+  const [ photos, setPhotos ] = useState([]);
+  const [ sign, setSign ] = useState(null);
+
   useEffect(() => {
-    setCurrentScreenInfo({
+    setCoreScreenInfo({
       componentId,
       componentType: 'push',
     });
 
+    initJobPhotosAndSign();
+
     return () => {
-      setCurrentScreenInfo({});
+      setCoreScreenInfo({});
     };
   }, []);
 
@@ -129,14 +149,67 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onComplete = () => {
-    setLoading(true);
+  const onFailure = () => {
+    setLoading(false);
+    initJobPhotosAndSign();
+  }
 
+  const onUploadPhotos = () => {
+    uploadPhotos({
+      photos,
+      success: onUploadSign,
+      failure: onFailure,
+    });
+  }
+
+  const onUploadSign = () => {
+    uploadSign({
+      sign,
+      success: onCompleteJob,
+      failure: onFailure,
+    })
+  }
+
+  const onCompleteJob = () => {
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
-      success: () => setLoading(false),
-      failure: () => setLoading(false),
+      success: onBack,
+      failure: onFailure,
     });
+  }
+
+  const onComplete = () => {
+    if (!photos.length || !sign) {
+      Alert.alert('Warning', 'Please upload photos & sign.');
+      return;
+    }
+
+    setLoading(true);
+    onUploadPhotos();
+  };
+
+  const onPhoto = () => {
+    const options = {
+      title: 'Select Your Photo',
+      storageOptions: {
+        skipBackup: true,
+      },
+      quality: 0.5,
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        //
+      } else if (response.error) {
+        //
+      } else {
+        setPhotos([ ...photos, response.uri ]);
+      }
+    });
+  };
+
+  const onSign = () => {
+    pushScreen(componentId, SIGNATURE_SCREEN, { setSign });
   };
 
   const renderButton = () => {
@@ -238,7 +311,7 @@ const JobDetailsScreen = ({
   };
 
   const renderContactInfo = () => {
-    const jobDate = moment(focusedJob[JOB_DATE]);
+    const jobDate = moment(focusedJob[JOB_DATE[0]] || focusedJob[JOB_DATE[1]]);
 
     return (
       <ContactInfo>
@@ -268,7 +341,6 @@ const JobDetailsScreen = ({
   };
 
   const renderBinInfo = () => {
-
     return (
       <View>
         {
@@ -329,13 +401,13 @@ const JobDetailsScreen = ({
   const renderPhotoAndSign = () => {
     return (
       <PhotoAndSignWrap>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPhoto}>
           <RowWrap>
             <CameraIcon />
             <PhotoAndSignText>Photo</PhotoAndSignText>
           </RowWrap>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onSign}>
           <RowWrap>
             <SignIcon />
             <PhotoAndSignText>Sign</PhotoAndSignText>
@@ -343,6 +415,40 @@ const JobDetailsScreen = ({
         </TouchableOpacity>
       </PhotoAndSignWrap>
     );
+  }
+
+  const renderAttachments = () => {
+    return (
+      <View>
+        {
+          photos.map(imageUri =>
+            <ItemWrap key={imageUri} mLeft={0} mRight={0}>
+              <AttachmentWrap>
+                <FullImage source={{ uri: imageUri }} />
+              </AttachmentWrap>
+            </ItemWrap>
+          )
+        }
+        {
+          !!sign &&
+          <ItemWrap mLeft={0} mRight={0}>
+            <AttachmentWrap>
+              <HalfWrap>
+                <FullImage source={{ uri: sign }} />
+              </HalfWrap>
+              <HalfWrap>
+                <SignInfo>
+                  <SignInfoText numberOfLines={1}>{focusedJob.driverName}</SignInfoText>
+                </SignInfo>
+                <SignInfo>
+                  <SignInfoText numberOfLines={1}>{''}</SignInfoText>
+                </SignInfo>
+              </HalfWrap>
+            </AttachmentWrap>
+          </ItemWrap>
+        }
+      </View>
+    )
   }
 
   return (
@@ -376,14 +482,16 @@ const JobDetailsScreen = ({
               { renderLocationInfo() }
               { renderContactInfo() }
               { renderBinInfo() }
-              { renderInstructions() }
-
+              {
+                !!focusedJob.instructionToDrivers &&
+                renderInstructions()
+              }
+              { renderAttachments() }
               {
                 (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
                 (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
                 renderPhotoAndSign()
               }
-
               {
                 JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName) &&
                 <DefaultButton
@@ -403,11 +511,15 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  jobPhotos: PropTypes.array.isRequired,
+  jobSign: PropTypes.string.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  setCurrentScreenInfo: PropTypes.func.isRequired,
+  setCoreScreenInfo: PropTypes.func.isRequired,
+  uploadPhotos: PropTypes.func.isRequired,
+  uploadSign: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -418,6 +530,8 @@ JobDetailsScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    jobPhotos: ViewStore.selectors.getJobPhotos(state),
+    jobSign: ViewStore.selectors.getJobSign(state),
   };
 };
 
@@ -426,7 +540,10 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  setCurrentScreenInfo: ViewStore.actionCreators.setCurrentScreenInfo,
+  setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
+  uploadPhotos: ViewStore.actionCreators.uploadPhotos,
+  uploadSign: ViewStore.actionCreators.uploadSign,
+  initJobPhotosAndSign: ViewStore.actionCreators.initJobPhotosAndSign,
 };
 
 export default connect(

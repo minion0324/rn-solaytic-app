@@ -21,7 +21,7 @@ const TouchWrap = styled.TouchableOpacity`
   border-radius: ${SIZE1}px;
   border-width: 1px;
   border-color: ${(props) => (
-    props.activated ? COLORS.BLUE1 : COLORS.WHITE1
+    props.activated ? COLORS.BLUE1 : COLORS.TRANSPARENT
   )};
   elevation: ${(props) => (
     props.deactivated ? 0 : 10

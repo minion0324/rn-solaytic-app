@@ -25,8 +25,14 @@ const LoadingWrap = styled.View`
   justify-content: center;
 `;
 
+const FullImage = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
 export {
   Container,
   ShadowWrap,
   LoadingWrap,
+  FullImage,
 };

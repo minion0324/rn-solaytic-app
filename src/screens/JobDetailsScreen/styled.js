@@ -111,7 +111,7 @@ const BinButton = styled.TouchableOpacity`
 
 const BinButtonText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 600,
+  font-weight: 600;
   color: ${(props) => (
     props.active ? COLORS.BLUE1 : COLORS.BLACK2
   )};
@@ -173,6 +173,35 @@ const PhotoAndSignText = styled.Text`
   margin-vertical: ${SIZE4}px;
 `;
 
+const AttachmentWrap = styled.View`
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: ${SIZE1}px;
+  overflow: hidden;
+`;
+
+const HalfWrap = styled.View`
+  width: 100%;
+  aspect-ratio: 2;
+  justify-content: center;
+  padding: ${SIZE4}px;
+`;
+
+const SignInfo = styled.View`
+  height: ${SIZE8}px;
+  justify-content: center;
+  margin-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE4}px;
+  background-color: ${COLORS.WHITE3};
+  border-radius: ${SIZE1}px;
+`;
+
+const SignInfoText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+`;
+
 export {
   ButtonWrap,
   JobDetails,
@@ -199,4 +228,8 @@ export {
   InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
+  AttachmentWrap,
+  HalfWrap,
+  SignInfo,
+  SignInfoText,
 };

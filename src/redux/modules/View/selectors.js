@@ -2,13 +2,29 @@ import { createSelector } from 'reselect';
 
 const getViewStore = state => state.View;
 
-const getCurrentScreenInfo = createSelector(
+const getCoreScreenInfo = createSelector(
   getViewStore,
   (view) => {
-    return view.currentScreenInfo || {};
+    return view.coreScreenInfo || {};
+  },
+);
+
+const getJobPhotos = createSelector(
+  getViewStore,
+  (view) => {
+    return view.jobPhotos || [];
+  },
+);
+
+const getJobSign = createSelector(
+  getViewStore,
+  (view) => {
+    return view.jobSign || '';
   },
 );
 
 export default {
-  getCurrentScreenInfo,
+  getCoreScreenInfo,
+  getJobPhotos,
+  getJobSign,
 };

@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Orientation from 'react-native-orientation-locker';
 
 import {
   HeaderBar,
@@ -63,7 +64,7 @@ const AlertScreen = ({
   countOfAlerts,
   pageOfAlerts,
   dateForAlerts,
-  currentScreenInfo,
+  coreScreenInfo,
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
@@ -76,6 +77,7 @@ const AlertScreen = ({
   const [ refreshing, setRefreshing ] = useState(false);
 
   useEffect(() => {
+    Orientation.lockToPortrait();
     pushNotifications.connect(setFCMToken);
 
     return () => {
@@ -85,12 +87,12 @@ const AlertScreen = ({
 
   useEffect(() => {
     pushNotifications.setNotificationOpenedHandler(onNotification);
-  }, [currentScreenInfo]);
+  }, [coreScreenInfo]);
 
   const onNotification = async () => {
     try {
-      if (currentScreenInfo.componentType === 'push') {
-        popToRootScreen(currentScreenInfo.componentId);
+      if (coreScreenInfo.componentType === 'push') {
+        popToRootScreen(coreScreenInfo.componentId);
         await delay(100);
       }
 
@@ -150,11 +152,11 @@ const AlertScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    const jobDate = moment(item[JOB_DATE]);
+    const jobDate = moment(item[JOB_DATE[0]] || item[JOB_DATE[1]]);
 
     const showDate =
       index === 0 ||
-      jobDate.format('DD ddd') !== moment(allAlerts[index - 1][JOB_DATE]).format('DD ddd');
+      jobDate.format('DD ddd') !== moment(allAlerts[index - 1][JOB_DATE[0]]).format('DD ddd');
 
     return (
       <CardRow>
@@ -229,7 +231,7 @@ AlertScreen.propTypes = {
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
-  currentScreenInfo: PropTypes.object.isRequired,
+  coreScreenInfo: PropTypes.object.isRequired,
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
@@ -245,7 +247,7 @@ const mapStateToProps = (state) => {
     countOfAlerts: Jobs.selectors.getCountOfAlerts(state),
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
     dateForAlerts: Jobs.selectors.getDateForAlerts(state),
-    currentScreenInfo: ViewStore.selectors.getCurrentScreenInfo(state),
+    coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
 };
 

@@ -17,6 +17,7 @@ import {
 } from 'src/services';
 import {
   Jobs,
+  ViewStore,
 } from 'src/redux';
 import {
   JOB_DATE,
@@ -211,7 +212,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
       if (dateForJobs === dateForAlerts) {
         const idx = res.newJobs.findIndex((item) => {
-          return moment(item[JOB_DATE]).isAfter(res.newAlerts[index][JOB_DATE]);
+          return moment(item[JOB_DATE[0]]).isAfter(res.newAlerts[index][JOB_DATE[0]]);
         });
 
         res.newJobs.splice(idx, 0, {
@@ -331,7 +332,48 @@ export function* asyncCompleteJobs({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiCompleteJobs, jobIds);
+    //
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    const jobPhotos = yield select(ViewStore.selectors.getJobPhotos);
+    const jobSign = yield select(ViewStore.selectors.getJobSign);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customerName,
+      amountCollected: 0, //
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypeId: lastJobStep.wasteTypeId,
+      binTypeId: lastJobStep.binTypeId,
+      binNumber: lastJobStep.binNumber,
+      binWeight: lastJobStep.binNumber,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      signatureUrl: jobSign,
+      signedUserName: focusedJob.driverName,
+      signedUserContact: lastJobStep.contactPersonOne || lastJobStep.contactPersonTwo,
+      driverName: focusedJob.driverName,
+      vehicleName: focusedJob.vehicleName,
+      remarks: focusedJob.remarks,
+      wasteType: {
+        wasteTypeId: lastJobStep.wasteTypeId || 0,
+      },
+      binType: {
+        binTypeId: lastJobStep.binTypeId || 0,
+      },
+      jobPhotos: jobPhotos.map((photo) => {
+        return {
+          jobStepId: lastJobStep.jobStepId,
+          photoUrl: photo,
+          photoCaption: '', //
+        }
+      }),
+    };
+
+    const { data } = yield call(apiCompleteJobs, jobIds, attempt);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
