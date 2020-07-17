@@ -7,6 +7,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  SIZE6,
   SIZE8,
   SIZE12,
   SIZE20,
@@ -30,6 +31,19 @@ const ScreenText = styled.Text`
 
 const EmptyWrap = styled.View`
   width: ${SIZE12}px;
+`;
+
+const IconsWrap = styled.View`
+  width: ${SIZE12}px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const IconButton = styled.TouchableOpacity`
+  width: ${SIZE6}px;
+  height: ${SIZE6}px;
+  align-items: center;
+  justify-content: center;
 `;
 
 //
@@ -81,6 +95,8 @@ export {
   HelloText,
   ScreenText,
   EmptyWrap,
+  IconsWrap,
+  IconButton,
   BackButton,
   FailJob,
 };
