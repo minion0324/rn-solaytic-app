@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Orientation from 'react-native-orientation-locker';
 
 import {
   pushMultiScreensApp,
@@ -57,6 +58,10 @@ const LoginScreen = ({
   const [ password, setPassword ] = useState('Xg213567');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
+
+  useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
 
   useEffect(() => {
     if (!isRehydrated) return;
