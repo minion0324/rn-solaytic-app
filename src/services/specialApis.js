@@ -4,12 +4,13 @@ import { v4 as uuid } from 'uuid';
 
 const API_URL = 'https://staging-docgen-api.travelop.co/';
 
-async function apiUploadFile(imageUri, imageName) {
+async function apiUploadFile(imageUri) {
   try {
     const formData = new FormData();
     formData.append('file', {
       uri: imageUri,
-      name: imageName,
+      type: 'image/jpeg',
+      name: 'image',
     });
 
     return await axios.post(
