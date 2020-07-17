@@ -63,7 +63,7 @@ const AlertScreen = ({
   countOfAlerts,
   pageOfAlerts,
   dateForAlerts,
-  currentScreenInfo,
+  coreScreenInfo,
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
@@ -85,12 +85,12 @@ const AlertScreen = ({
 
   useEffect(() => {
     pushNotifications.setNotificationOpenedHandler(onNotification);
-  }, [currentScreenInfo]);
+  }, [coreScreenInfo]);
 
   const onNotification = async () => {
     try {
-      if (currentScreenInfo.componentType === 'push') {
-        popToRootScreen(currentScreenInfo.componentId);
+      if (coreScreenInfo.componentType === 'push') {
+        popToRootScreen(coreScreenInfo.componentId);
         await delay(100);
       }
 
@@ -229,7 +229,7 @@ AlertScreen.propTypes = {
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
-  currentScreenInfo: PropTypes.object.isRequired,
+  coreScreenInfo: PropTypes.object.isRequired,
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
@@ -245,7 +245,7 @@ const mapStateToProps = (state) => {
     countOfAlerts: Jobs.selectors.getCountOfAlerts(state),
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
     dateForAlerts: Jobs.selectors.getDateForAlerts(state),
-    currentScreenInfo: ViewStore.selectors.getCurrentScreenInfo(state),
+    coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
 };
 
