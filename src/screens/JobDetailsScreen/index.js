@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Alert,
   View,
   ScrollView,
   TouchableOpacity,
@@ -79,11 +80,16 @@ const {
 
 const JobDetailsScreen = ({
   focusedJob,
+  jobPhotos,
+  jobSign,
   acknowledgeJobs,
   startJobs,
   exchangeJobs,
   completeJobs,
-  setCurrentScreenInfo,
+  setCoreScreenInfo,
+  uploadPhotos,
+  uploadSign,
+  initJobPhotosAndSign,
   componentId,
 }) => {
   const [ index, setIndex ] = useState(0);
@@ -93,13 +99,15 @@ const JobDetailsScreen = ({
   const [ sign, setSign ] = useState(null);
 
   useEffect(() => {
-    setCurrentScreenInfo({
+    setCoreScreenInfo({
       componentId,
       componentType: 'push',
     });
 
+    initJobPhotosAndSign();
+
     return () => {
-      setCurrentScreenInfo({});
+      setCoreScreenInfo({});
     };
   }, []);
 
@@ -137,14 +145,44 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onComplete = () => {
-    setLoading(true);
+  const onUploadPhotos = () => {
+    if (!photos.length) {
+      Alert.alert('Warning', 'Please upload photos');
+      return;
+    }
 
+    uploadPhotos({
+      photos,
+      success: onUploadSign,
+      failure: () => setLoading(false),
+    });
+  }
+
+  const onUploadSign = () => {
+    if (!sign) {
+      Alert.alert('Warning', 'Please upload sign');
+      return;
+    }
+
+    uploadSign({
+      sign,
+      success: onCompleteJob,
+      failure: () => setLoading(false),
+    })
+  }
+
+  const onCompleteJob = () => {
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
+  }
+
+  const onComplete = () => {
+    setLoading(true);
+
+    onUploadPhotos();
   };
 
   const onPhoto = () => {
@@ -157,8 +195,6 @@ const JobDetailsScreen = ({
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-      console.log(response);
-
       if (response.didCancel) {
         //
       } else if (response.error) {
@@ -379,22 +415,19 @@ const JobDetailsScreen = ({
   }
 
   const renderAttachments = () => {
-    console.log(photos);
-    console.log(sign);
-
     return (
       <View>
         {
-          photos.map(imageUri =>
+          (jobPhotos.length > 0 ? jobPhotos : photos).map(imageUri =>
             <ItemWrap key={imageUri} mLeft={0} mRight={0}>
               <Photo source={{ uri: imageUri }} />
             </ItemWrap>
           )
         }
         {
-          !!sign &&
+          (!!jobSign || !!sign) &&
           <ItemWrap mLeft={0} mRight={0}>
-            <Photo source={{ uri: sign }} />
+            <Photo source={{ uri: (jobSign || sign) }} />
           </ItemWrap>
         }
       </View>
@@ -460,11 +493,15 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  jobPhotos: PropTypes.array.isRequired,
+  jobSign: PropTypes.string.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  setCurrentScreenInfo: PropTypes.func.isRequired,
+  setCoreScreenInfo: PropTypes.func.isRequired,
+  uploadPhotos: PropTypes.func.isRequired,
+  uploadSign: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -475,6 +512,8 @@ JobDetailsScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    jobPhotos: ViewStore.selectors.getJobPhotos(state),
+    jobSign: ViewStore.selectors.getJobSign(state),
   };
 };
 
@@ -483,7 +522,10 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  setCurrentScreenInfo: ViewStore.actionCreators.setCurrentScreenInfo,
+  setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
+  uploadPhotos: ViewStore.actionCreators.uploadPhotos,
+  uploadSign: ViewStore.actionCreators.uploadSign,
+  initJobPhotosAndSign: ViewStore.actionCreators.initJobPhotosAndSign,
 };
 
 export default connect(
