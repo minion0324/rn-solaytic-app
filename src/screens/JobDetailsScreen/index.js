@@ -30,6 +30,7 @@ import {
 import {
   Container,
   ShadowWrap,
+  FullImage,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -67,7 +68,8 @@ import {
   InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
-  Photo,
+  AttachmentWrap,
+  HalfWrap,
 } from './styled';
 
 const {
@@ -432,14 +434,20 @@ const JobDetailsScreen = ({
         {
           (jobPhotos.length > 0 ? jobPhotos : photos).map(imageUri =>
             <ItemWrap key={imageUri} mLeft={0} mRight={0}>
-              <Photo source={{ uri: imageUri }} />
+              <AttachmentWrap>
+                <FullImage source={{ uri: imageUri }} />
+              </AttachmentWrap>
             </ItemWrap>
           )
         }
         {
           (!!jobSign || !!sign) &&
           <ItemWrap mLeft={0} mRight={0}>
-            <Photo source={{ uri: (jobSign || sign) }} />
+            <AttachmentWrap>
+              <HalfWrap>
+                <FullImage source={{ uri: (jobSign || sign) }} />
+              </HalfWrap>
+              </AttachmentWrap>
           </ItemWrap>
         }
       </View>

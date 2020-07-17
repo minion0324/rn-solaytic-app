@@ -173,9 +173,16 @@ const PhotoAndSignText = styled.Text`
   margin-vertical: ${SIZE4}px;
 `;
 
-const Photo = styled.Image`
+const AttachmentWrap = styled.View`
   width: 100%;
   aspect-ratio: 1;
+  border-radius: ${SIZE1}px;
+  overflow: hidden;
+`;
+
+const HalfWrap = styled.View`
+  width: 100%;
+  aspect-ratio: 2;
 `;
 
 export {
@@ -204,5 +211,6 @@ export {
   InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
-  Photo,
+  AttachmentWrap,
+  HalfWrap,
 };
