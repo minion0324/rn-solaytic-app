@@ -19,7 +19,7 @@ export function* asyncUploadPhotos({ payload }) {
 
   try {
     const response = yield all(
-      photos.map(photo => call(apiUploadFile, photo, 'photo.jpg'))
+      photos.map(photo => call(apiUploadFile, photo))
     );
     const data = response.map(item => item.data);
     yield put(actionCreators.uploadPhotosSuccess(data));
@@ -43,7 +43,7 @@ export function* asyncUploadSign({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiUploadFile, sign, 'sign.png');
+    const { data } = yield call(apiUploadFile, sign);
     yield put(actionCreators.uploadSignSuccess(data));
 
     success && success();
