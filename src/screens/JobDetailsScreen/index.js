@@ -146,6 +146,11 @@ const JobDetailsScreen = ({
   };
 
   const onUploadPhotos = () => {
+    if (jobPhotos.length > 0) {
+      onUploadSign();
+      return;
+    }
+
     if (!photos.length) {
       Alert.alert('Warning', 'Please upload photos.');
       setLoading(false);
@@ -160,6 +165,11 @@ const JobDetailsScreen = ({
   }
 
   const onUploadSign = () => {
+    if (jobSign) {
+      onCompleteJob();
+      return;
+    }
+
     if (!sign) {
       Alert.alert('Warning', 'Please upload sign.');
       setLoading(false);
