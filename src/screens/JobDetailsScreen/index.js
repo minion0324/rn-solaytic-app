@@ -149,55 +149,42 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onFailure = () => {
+    setLoading(false);
+    initJobPhotosAndSign();
+  }
+
   const onUploadPhotos = () => {
-    if (jobPhotos.length > 0) {
-      onUploadSign();
-      return;
-    }
-
-    if (!photos.length) {
-      Alert.alert('Warning', 'Please upload photos.');
-      setLoading(false);
-      return;
-    }
-
     uploadPhotos({
       photos,
       success: onUploadSign,
-      failure: () => setLoading(false),
+      failure: onFailure,
     });
   }
 
   const onUploadSign = () => {
-    if (jobSign) {
-      onCompleteJob();
-      return;
-    }
-
-    if (!sign) {
-      Alert.alert('Warning', 'Please upload sign.');
-      setLoading(false);
-      return;
-    }
-
     uploadSign({
       sign,
       success: onCompleteJob,
-      failure: () => setLoading(false),
+      failure: onFailure,
     })
   }
 
   const onCompleteJob = () => {
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
-      success: () => setLoading(false),
-      failure: () => setLoading(false),
+      success: onBack,
+      failure: onFailure,
     });
   }
 
   const onComplete = () => {
-    setLoading(true);
+    if (!photos.length || !sign) {
+      Alert.alert('Warning', 'Please upload photos & sign.');
+      return;
+    }
 
+    setLoading(true);
     onUploadPhotos();
   };
 
@@ -434,7 +421,7 @@ const JobDetailsScreen = ({
     return (
       <View>
         {
-          (jobPhotos.length > 0 ? jobPhotos : photos).map(imageUri =>
+          photos.map(imageUri =>
             <ItemWrap key={imageUri} mLeft={0} mRight={0}>
               <AttachmentWrap>
                 <FullImage source={{ uri: imageUri }} />
@@ -443,11 +430,11 @@ const JobDetailsScreen = ({
           )
         }
         {
-          (!!jobSign || !!sign) &&
+          !!sign &&
           <ItemWrap mLeft={0} mRight={0}>
             <AttachmentWrap>
               <HalfWrap>
-                <FullImage source={{ uri: (jobSign || sign) }} />
+                <FullImage source={{ uri: sign }} />
               </HalfWrap>
               <HalfWrap>
                 <SignInfo>
