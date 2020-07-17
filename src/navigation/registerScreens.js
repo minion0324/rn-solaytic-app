@@ -10,6 +10,7 @@ import {
   ProfileScreen,
   JobDetailsScreen,
   SignatureScreen,
+  FailJobScreen,
 } from 'src/screens';
 
 import {
@@ -19,6 +20,7 @@ import {
   PROFILE_SCREEN,
   JOB_DETAILS_SCREEN,
   SIGNATURE_SCREEN,
+  FAIL_JOB_SCREEN,
 } from './Screens';
 
 function WrappedComponent(Component) {
@@ -40,4 +42,5 @@ export default function () {
   Navigation.registerComponent(PROFILE_SCREEN, () => WrappedComponent(ProfileScreen));
   Navigation.registerComponent(JOB_DETAILS_SCREEN, () => WrappedComponent(JobDetailsScreen));
   Navigation.registerComponent(SIGNATURE_SCREEN, () => WrappedComponent(SignatureScreen));
+  Navigation.registerComponent(FAIL_JOB_SCREEN, () => WrappedComponent(FailJobScreen));
 }
