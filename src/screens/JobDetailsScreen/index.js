@@ -70,6 +70,8 @@ import {
   PhotoAndSignText,
   AttachmentWrap,
   HalfWrap,
+  SignInfo,
+  SignInfoText,
 } from './styled';
 
 const {
@@ -447,7 +449,15 @@ const JobDetailsScreen = ({
               <HalfWrap>
                 <FullImage source={{ uri: (jobSign || sign) }} />
               </HalfWrap>
-              </AttachmentWrap>
+              <HalfWrap>
+                <SignInfo>
+                  <SignInfoText numberOfLines={1}>{focusedJob.driverName}</SignInfoText>
+                </SignInfo>
+                <SignInfo>
+                  <SignInfoText numberOfLines={1}>{''}</SignInfoText>
+                </SignInfo>
+              </HalfWrap>
+            </AttachmentWrap>
           </ItemWrap>
         }
       </View>
@@ -485,7 +495,10 @@ const JobDetailsScreen = ({
               { renderLocationInfo() }
               { renderContactInfo() }
               { renderBinInfo() }
-              { renderInstructions() }
+              {
+                !!focusedJob.instructionToDrivers &&
+                renderInstructions()
+              }
               { renderAttachments() }
 
               {
