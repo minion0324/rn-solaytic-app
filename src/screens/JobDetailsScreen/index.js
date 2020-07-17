@@ -25,6 +25,7 @@ import {
   pushScreen,
   popScreen,
   SIGNATURE_SCREEN,
+  FAIL_JOB_SCREEN,
 } from 'src/navigation';
 
 import {
@@ -35,6 +36,8 @@ import {
 import {
   ScreenText,
   EmptyWrap,
+  IconsWrap,
+  IconButton,
   BackButton,
 } from 'src/styles/header.styles';
 import {
@@ -80,6 +83,8 @@ const {
   Location3Icon,
   CameraIcon,
   SignIcon,
+  MessageIcon,
+  PlusIcon,
 } = SVGS;
 
 const JobDetailsScreen = ({
@@ -210,6 +215,14 @@ const JobDetailsScreen = ({
 
   const onSign = () => {
     pushScreen(componentId, SIGNATURE_SCREEN, { setSign });
+  };
+
+  const onMessage = () => {
+    pushScreen(componentId, FAIL_JOB_SCREEN);
+  };
+
+  const onService = () => {
+
   };
 
   const renderButton = () => {
@@ -465,7 +478,15 @@ const JobDetailsScreen = ({
             <HeaderBar
               centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
               leftIcon={<BackButton />}
-              rightIcon={<EmptyWrap />}
+              rightIcon={
+                focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
+                focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+                ? <IconsWrap>
+                    <IconButton onPress={onMessage}><MessageIcon /></IconButton>
+                    <IconButton onPress={onService}><PlusIcon /></IconButton>
+                  </IconsWrap>
+                : <EmptyWrap />
+              }
               onPressLeft={onBack}
             />
 
