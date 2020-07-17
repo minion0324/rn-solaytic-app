@@ -7,7 +7,9 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  SIZE8,
   SIZE12,
+  SIZE20,
   FONT,
 } from 'src/constants';
 
@@ -35,7 +37,7 @@ const BackButtonWrap = styled.View`
   width: ${SIZE12}px;
   flex-direction: row;
   align-items: center;
-  padding-left: ${SIZE2}px;
+  margin-left: ${SIZE2}px;
 `;
 
 const BackButtonText = styled.Text`
@@ -52,9 +54,33 @@ const BackButton = () => (
   </BackButtonWrap>
 )
 
+//
+const FailJobWrap = styled.View`
+  width: ${SIZE20}px;
+  height: ${SIZE8}px;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${SIZE4}px;
+  border-width: 1px;
+  border-color: ${COLORS.RED1};
+`;
+
+const FailJobText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700;
+  color: ${COLORS.RED1};
+`;
+
+const FailJob = () => (
+  <FailJobWrap>
+    <FailJobText>Fail Job</FailJobText>
+  </FailJobWrap>
+)
+
 export {
   HelloText,
   ScreenText,
   EmptyWrap,
   BackButton,
+  FailJob,
 };
