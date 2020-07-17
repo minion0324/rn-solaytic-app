@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
+import moment from 'moment';
 
 import {
   changeOrientation,
@@ -43,7 +44,7 @@ const SignatureScreen = ({
 
   const onSign = async (base64) => {
     try {
-      const path = RNFS.DocumentDirectoryPath + '/sign.jpg';
+      const path = RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
       await RNFS.writeFile(path, base64.replace('data:image/png;base64,', ''), 'base64')
 
       setSign(path);
