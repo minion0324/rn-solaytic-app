@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
@@ -13,8 +12,8 @@ import {
   HeaderBar,
 } from 'src/components';
 import {
-  //
-} from 'src/redux';
+  PLATFORM,
+} from 'src/constants';
 
 import {
   Container,
@@ -35,7 +34,9 @@ const SignatureScreen = ({
   componentId,
 }) => {
   useEffect(() => {
-    Orientation.lockToLandscape();
+    setTimeout(() => {
+      Orientation.lockToLandscape();
+    }, PLATFORM === 'ios' ? 1000 : 0);
 
     return () => {
       Orientation.lockToPortrait();
@@ -80,17 +81,4 @@ SignatureScreen.propTypes = {
   componentId: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    //
-  };
-};
-
-const mapDispatchToProps = {
-  //
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SignatureScreen);
+export default SignatureScreen;
