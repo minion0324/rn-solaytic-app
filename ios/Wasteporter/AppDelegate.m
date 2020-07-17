@@ -67,7 +67,7 @@ static void InitializeFlipper(UIApplication *application) {
   [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
 }
 
-- (UIInterfaceOrientationMask)application:(UIApplication )application supportedInterfaceOrientationsForWindow:(UIWindow )window {
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
   return [Orientation getOrientation];
 }
 
