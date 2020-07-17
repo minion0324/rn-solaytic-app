@@ -311,7 +311,7 @@ const JobDetailsScreen = ({
   };
 
   const renderContactInfo = () => {
-    const jobDate = moment(focusedJob[JOB_DATE]);
+    const jobDate = moment(focusedJob[JOB_DATE[0]] || focusedJob[JOB_DATE[1]]);
 
     return (
       <ContactInfo>

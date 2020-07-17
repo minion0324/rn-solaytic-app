@@ -212,7 +212,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
       if (dateForJobs === dateForAlerts) {
         const idx = res.newJobs.findIndex((item) => {
-          return moment(item[JOB_DATE]).isAfter(res.newAlerts[index][JOB_DATE]);
+          return moment(item[JOB_DATE[0]]).isAfter(res.newAlerts[index][JOB_DATE[0]]);
         });
 
         res.newJobs.splice(idx, 0, {

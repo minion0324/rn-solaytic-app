@@ -106,11 +106,11 @@ const JobsScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    const jobDate = moment(item[JOB_DATE]);
+    const jobDate = moment(item[JOB_DATE[0]] || item[JOB_DATE[1]]);
 
     const showDate =
       index === 0 ||
-      jobDate.format('DD ddd') !== moment(allJobs[index - 1][JOB_DATE]).format('DD ddd');
+      jobDate.format('DD ddd') !== moment(allJobs[index - 1][JOB_DATE[0]]).format('DD ddd');
 
     return (
       <CardRow>

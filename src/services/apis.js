@@ -35,7 +35,7 @@ function apiGetJobs(
   isAssigned,
   currentPage = 1,
   pageSize = 10,
-  sortColumn = JOB_DATE,
+  sortColumn = JOB_DATE[0],
   sortDir = 'asc',
   jobTypeFilter = '',
   jobStatusFilter = '',

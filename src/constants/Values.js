@@ -36,7 +36,7 @@ const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 //
 const DATE_FORMAT = 'MMM YYYY';
 
-const JOB_DATE = 'jobTimeSpecific';
+const JOB_DATE = ['jobTimeSpecific', 'jobDate'];
 
 const JOB_STATUS = {
   UNASSIGNED: 'Unassigned',
