@@ -203,7 +203,7 @@ const JobDetailsScreen = ({
       storageOptions: {
         skipBackup: true,
       },
-      // quality: 0.5,
+      quality: 0.5,
     };
 
     ImagePicker.showImagePicker(options, (response) => {
