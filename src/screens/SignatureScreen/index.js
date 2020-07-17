@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
+import Orientation from 'react-native-orientation-locker';
 
 import {
-  changeOrientation,
   popScreen,
 } from 'src/navigation';
 import {
@@ -35,7 +35,11 @@ const SignatureScreen = ({
   componentId,
 }) => {
   useEffect(() => {
-    changeOrientation(componentId);
+    Orientation.lockToLandscape();
+
+    return () => {
+      Orientation.lockToPortrait();
+    };
   }, []);
 
   const onBack = () => {
