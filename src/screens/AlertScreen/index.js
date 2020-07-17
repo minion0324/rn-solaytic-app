@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Orientation from 'react-native-orientation-locker';
 
 import {
   HeaderBar,
@@ -76,6 +77,7 @@ const AlertScreen = ({
   const [ refreshing, setRefreshing ] = useState(false);
 
   useEffect(() => {
+    Orientation.lockToPortrait();
     pushNotifications.connect(setFCMToken);
 
     return () => {
