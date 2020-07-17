@@ -500,13 +500,11 @@ const JobDetailsScreen = ({
                 renderInstructions()
               }
               { renderAttachments() }
-
               {
                 (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
                 (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
                 renderPhotoAndSign()
               }
-
               {
                 JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName) &&
                 <DefaultButton
