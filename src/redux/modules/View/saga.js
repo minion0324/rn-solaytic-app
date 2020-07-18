@@ -6,9 +6,6 @@ import {
   apiUploadFile,
   apiGetDriverNotes,
 } from 'src/services';
-import {
-  PLATFORM,
-} from 'src/constants';
 
 import {
   UPLOAD_PHOTOS,
@@ -49,7 +46,7 @@ export function* asyncUploadSign({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiUploadFile, PLATFORM === 'ios' ? sign : 'file://' + sign);
+    const { data } = yield call(apiUploadFile, sign);
     yield put(actionCreators.uploadSignSuccess(data));
 
     success && success();
