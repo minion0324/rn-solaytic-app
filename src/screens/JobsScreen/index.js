@@ -54,7 +54,6 @@ const { SideMenuIcon } = SVGS;
 const JobsScreen = ({
   driverName,
   allJobs,
-  countOfJobs,
   pageOfJobs,
   dateForJobs,
   getJobsByDate,
@@ -182,7 +181,6 @@ const JobsScreen = ({
 JobsScreen.propTypes = {
   driverName: PropTypes.string.isRequired,
   allJobs: PropTypes.array.isRequired,
-  countOfJobs: PropTypes.number.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
@@ -195,7 +193,6 @@ const mapStateToProps = (state) => {
   return {
     driverName: User.selectors.getDriverName(state),
     allJobs: Jobs.selectors.getAllJobs(state),
-    countOfJobs: Jobs.selectors.getCountOfJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
   };

@@ -37,7 +37,6 @@ import {
 const FailJobScreen = ({
   focusedJob,
   driverNotes,
-  countOfdriverNotes,
   pageOfdriverNotes,
   failJobs,
   getDriverNotes,
@@ -138,7 +137,6 @@ const FailJobScreen = ({
 FailJobScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   driverNotes: PropTypes.array.isRequired,
-  countOfdriverNotes: PropTypes.number.isRequired,
   pageOfdriverNotes: PropTypes.number.isRequired,
   failJobs: PropTypes.func.isRequired,
   getDriverNotes: PropTypes.func.isRequired,
@@ -149,7 +147,6 @@ const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
     driverNotes: ViewStore.selectors.getDriverNotes(state),
-    countOfdriverNotes: ViewStore.selectors.getCountOfDriverNotes(state),
     pageOfdriverNotes: ViewStore.selectors.getPageOfDriverNotes(state),
   };
 };
