@@ -75,6 +75,7 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
+  SignInfoInput,
 } from './styled';
 
 const {
@@ -104,6 +105,9 @@ const JobDetailsScreen = ({
 
   const [ photos, setPhotos ] = useState([]);
   const [ sign, setSign ] = useState(null);
+
+  const [ signedUserName, setSignedUserName ] = useState('');
+  const [ signedUserContact, setSignedUserContact ] = useState('');
 
   useEffect(() => {
     setCoreScreenInfo({
@@ -176,6 +180,8 @@ const JobDetailsScreen = ({
   const onCompleteJob = () => {
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
+      signedUserName,
+      signedUserContact,
       success: onBack,
       failure: onFailure,
     });
@@ -184,6 +190,11 @@ const JobDetailsScreen = ({
   const onComplete = () => {
     if (!photos.length || !sign) {
       Alert.alert('Warning', 'Please upload photos & sign.');
+      return;
+    }
+
+    if (!signedUserName || !signedUserContact) {
+      Alert.alert('Warning', 'Please type signed user name & contact.');
       return;
     }
 
@@ -449,10 +460,34 @@ const JobDetailsScreen = ({
               </HalfWrap>
               <HalfWrap>
                 <SignInfo>
-                  <SignInfoText numberOfLines={1}>{focusedJob.driverName}</SignInfoText>
+                  {
+                    true
+                    ? <SignInfoInput
+                        underlineColorAndroid={COLORS.TRANSPARENT}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        onChangeText={text => setSignedUserName(text)}
+                        value={signedUserName}
+                      />
+                    : <SignInfoText numberOfLines={1}>
+                        {focusedJob.driverName}
+                      </SignInfoText>
+                  }
                 </SignInfo>
                 <SignInfo>
-                  <SignInfoText numberOfLines={1}>{''}</SignInfoText>
+                  {
+                    true
+                    ? <SignInfoInput
+                        underlineColorAndroid={COLORS.TRANSPARENT}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        onChangeText={text => setSignedUserContact(text)}
+                        value={signedUserContact}
+                      />
+                    : <SignInfoText numberOfLines={1}>
+                        {''}
+                      </SignInfoText>
+                  }
                 </SignInfo>
               </HalfWrap>
             </AttachmentWrap>
