@@ -30,9 +30,25 @@ const getDriverNotes = createSelector(
   },
 );
 
+const getCountOfDriverNotes = createSelector(
+  getDriverNotes,
+  (driverNotes) => {
+    return driverNotes.length;
+  },
+);
+
+const getPageOfDriverNotes = createSelector(
+  getCountOfDriverNotes,
+  (countOfDriverNotes) => {
+    return Math.floor(countOfDriverNotes / 10 + 1);
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getJobPhotos,
   getJobSign,
   getDriverNotes,
+  getCountOfDriverNotes,
+  getPageOfDriverNotes,
 };

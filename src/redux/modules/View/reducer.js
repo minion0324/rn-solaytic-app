@@ -8,6 +8,7 @@ import {
   UPLOAD_SIGN_SUCCESS,
   INIT_JOB_PHOTOS_AND_SIGN,
   GET_DRIVER_NOTES_SUCCESS,
+  GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -45,7 +46,10 @@ function View(state = DEFAULT, action = {}) {
         draft.jobSign = '';
         break;
       case GET_DRIVER_NOTES_SUCCESS:
-        draft.driverNotes = payload;
+        draft.driverNotes = payload.data;
+        break;
+      case GET_DRIVER_NOTES_BY_PAGE_SUCCESS:
+        draft.driverNotes.concat(payload.data);
         break;
     }
   });

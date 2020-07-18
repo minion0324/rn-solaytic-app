@@ -14,6 +14,7 @@ import {
   UPLOAD_PHOTOS,
   UPLOAD_SIGN,
   GET_DRIVER_NOTES,
+  GET_DRIVER_NOTES_BY_PAGE,
   actionCreators,
 } from './actions';
 
@@ -66,14 +67,11 @@ export function* watchUploadSign() {
 
 export function* asyncGetDriverNotes({ payload }) {
   const {
-    success, failure,
+    search, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiGetDriverNotes);
-
-    console.log(data);
-
+    const { data } = yield call(apiGetDriverNotes, search);
     yield put(actionCreators.getDriverNotesSuccess(data));
 
     success && success();
@@ -86,6 +84,28 @@ export function* watchGetDriverNotes() {
   while (true) {
     const action = yield take(GET_DRIVER_NOTES);
     yield* asyncGetDriverNotes(action);
+  }
+}
+
+export function* asyncGetDriverNotesByPage({ payload }) {
+  const {
+    search, page, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetDriverNotes, search, page);
+    yield put(actionCreators.getDriverNotesByPageSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetDriverNotesByPage() {
+  while (true) {
+    const action = yield take(GET_DRIVER_NOTES_BY_PAGE);
+    yield* asyncGetDriverNotesByPage(action);
   }
 }
 
@@ -116,5 +136,6 @@ export default function* () {
     fork(watchUploadPhotos),
     fork(watchUploadSign),
     fork(watchGetDriverNotes),
+    fork(watchGetDriverNotesByPage),
   ]);
 }
