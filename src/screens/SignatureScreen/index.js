@@ -49,8 +49,9 @@ const SignatureScreen = ({
 
   const onSign = async (base64) => {
     try {
-      const path = RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
-      await RNFS.writeFile(path, base64.replace('data:image/png;base64,', ''), 'base64')
+      const path = PLATFORM === 'ios' ? '' : 'file://' +
+        RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
+      await RNFS.writeFile(path, base64.replace('data:image/png;base64,', ''), 'base64');
 
       setSign(path);
       onBack();
