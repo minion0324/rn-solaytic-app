@@ -114,7 +114,7 @@ const FailJobScreen = ({
           </LoadingWrap>
         : <ListWrap
             data={driverNotes}
-            keyExtractor={(item) => `${item}`}
+            keyExtractor={(item) => `${item.driverNoteId}`}
             renderItem={renderItem}
             onEndProcess={onEnd}
             onRefreshProcess={onRefresh}
