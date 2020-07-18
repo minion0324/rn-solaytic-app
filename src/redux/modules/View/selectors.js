@@ -23,8 +23,16 @@ const getJobSign = createSelector(
   },
 );
 
+const getDriverNotes = createSelector(
+  getViewStore,
+  (view) => {
+    return view.driverNotes || [];
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getJobPhotos,
   getJobSign,
+  getDriverNotes,
 };

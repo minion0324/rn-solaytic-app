@@ -4,6 +4,7 @@ import {
 
 import {
   apiUploadFile,
+  apiGetDriverNotes,
 } from 'src/services';
 import {
   PLATFORM,
@@ -12,6 +13,7 @@ import {
 import {
   UPLOAD_PHOTOS,
   UPLOAD_SIGN,
+  GET_DRIVER_NOTES,
   actionCreators,
 } from './actions';
 
@@ -62,6 +64,31 @@ export function* watchUploadSign() {
   }
 }
 
+export function* asyncGetDriverNotes({ payload }) {
+  const {
+    success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetDriverNotes);
+
+    console.log(data);
+
+    yield put(actionCreators.getDriverNotesSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetDriverNotes() {
+  while (true) {
+    const action = yield take(GET_DRIVER_NOTES);
+    yield* asyncGetDriverNotes(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -88,5 +115,6 @@ export default function* () {
   yield all([
     fork(watchUploadPhotos),
     fork(watchUploadSign),
+    fork(watchGetDriverNotes),
   ]);
 }
