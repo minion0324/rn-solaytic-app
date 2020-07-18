@@ -89,8 +89,6 @@ const {
 
 const JobDetailsScreen = ({
   focusedJob,
-  jobPhotos,
-  jobSign,
   acknowledgeJobs,
   startJobs,
   exchangeJobs,
@@ -532,8 +530,6 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
-  jobPhotos: PropTypes.array.isRequired,
-  jobSign: PropTypes.string.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
@@ -551,8 +547,6 @@ JobDetailsScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
-    jobPhotos: ViewStore.selectors.getJobPhotos(state),
-    jobSign: ViewStore.selectors.getJobSign(state),
   };
 };
 
