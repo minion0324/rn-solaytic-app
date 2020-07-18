@@ -14,6 +14,7 @@ import {
   apiStartJobs,
   apiExchangeJobs,
   apiCompleteJobs,
+  apiFailJobs,
 } from 'src/services';
 import {
   Jobs,
@@ -33,6 +34,7 @@ import {
   START_JOBS,
   EXCHANGE_JOBS,
   COMPLETE_JOBS,
+  FAIL_JOBS,
   actionCreators,
 } from './actions';
 
@@ -408,6 +410,47 @@ export function* watchCompleteJobs() {
   }
 }
 
+export function* asyncFailJobs({ payload }) {
+  const {
+    jobIds, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiFailJobs, jobIds);
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      res.newJobs.splice(index, 1, {
+        ...res.newJobs[index],
+        jobStatusId: 8,
+        statusName: JOB_STATUS.FAILED,
+      });
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.failJobsSuccess(result));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchFailJobs() {
+  while (true) {
+    const action = yield take(FAIL_JOBS);
+    yield* asyncFailJobs(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -441,5 +484,6 @@ export default function* () {
     fork(watchStartJobs),
     fork(watchExchangeJobs),
     fork(watchCompleteJobs),
+    fork(watchFailJobs),
   ]);
 }

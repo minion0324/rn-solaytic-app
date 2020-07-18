@@ -14,6 +14,7 @@ import {
   START_JOBS_SUCCESS,
   EXCHANGE_JOBS_SUCCESS,
   COMPLETE_JOBS_SUCCESS,
+  FAIL_JOBS_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -64,6 +65,7 @@ function Jobs(state = DEFAULT, action = {}) {
       case START_JOBS_SUCCESS:
       case EXCHANGE_JOBS_SUCCESS:
       case COMPLETE_JOBS_SUCCESS:
+      case FAIL_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
         break;
     }

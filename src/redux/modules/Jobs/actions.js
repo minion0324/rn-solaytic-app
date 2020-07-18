@@ -19,6 +19,8 @@ export const EXCHANGE_JOBS = 'JOBS/EXCHANGE_JOBS';
 export const EXCHANGE_JOBS_SUCCESS = 'JOBS/EXCHANGE_JOBS_SUCCESS';
 export const COMPLETE_JOBS = 'JOBS/COMPLETE_JOBS';
 export const COMPLETE_JOBS_SUCCESS = 'JOBS/COMPLETE_JOBS_SUCCESS';
+export const FAIL_JOBS = 'JOBS/FAIL_JOBS';
+export const FAIL_JOBS_SUCCESS = 'JOBS/FAIL_JOBS_SUCCESS';
 
 export const actionCreators = {
   getJobsSuccess: createAction(GET_JOBS_SUCCESS),
@@ -40,4 +42,6 @@ export const actionCreators = {
   exchangeJobsSuccess: createAction(EXCHANGE_JOBS_SUCCESS),
   completeJobs: createAction(COMPLETE_JOBS),
   completeJobsSuccess: createAction(COMPLETE_JOBS_SUCCESS),
+  failJobs: createAction(FAIL_JOBS),
+  failJobsSuccess: createAction(FAIL_JOBS_SUCCESS),
 };
