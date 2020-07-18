@@ -88,8 +88,22 @@ function apiCompleteJobs(jobIds, attempt) {
   });
 };
 
-function apiGetDriverNotes() {
-  return apiCall('api/mobile/driver/notes', 'get', {});
+function apiGetDriverNotes(
+  searchQuery = '',
+  currentPage = 1,
+  pageSize = 10,
+  sortColumn = '', // 'driverNoteId',
+  sortDir = 'asc',
+) {
+  return apiCall('api/mobile/driver/notes', 'get', {
+    params: {
+      searchQuery,
+      currentPage,
+      pageSize,
+      sortColumn,
+      sortDir,
+    },
+  });
 };
 
 function apiFailJobs(jobIds) {
