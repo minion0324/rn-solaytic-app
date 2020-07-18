@@ -88,6 +88,18 @@ function apiCompleteJobs(jobIds, attempt) {
   });
 };
 
+function apiGetDriverNotes() {
+  return apiCall('api/mobile/driver/notes', 'get', {});
+};
+
+function apiFailJobs(jobIds) {
+  return apiCall('api/mobile/driver/jobs/fail', 'post', {
+    data: {
+      jobIds,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -97,4 +109,6 @@ export {
   apiStartJobs,
   apiExchangeJobs,
   apiCompleteJobs,
+  apiGetDriverNotes,
+  apiFailJobs,
 };
