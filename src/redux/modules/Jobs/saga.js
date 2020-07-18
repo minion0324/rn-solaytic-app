@@ -330,7 +330,11 @@ export function* watchExchangeJobs() {
 
 export function* asyncCompleteJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds,
+    signedUserName,
+    signedUserContact,
+    success,
+    failure,
   } = payload;
 
   try {
@@ -355,8 +359,8 @@ export function* asyncCompleteJobs({ payload }) {
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
       signatureUrl: jobSign,
-      signedUserName: focusedJob.driverName,
-      signedUserContact: lastJobStep.contactPersonOne || lastJobStep.contactPersonTwo,
+      signedUserName,
+      signedUserContact,
       driverName: focusedJob.driverName,
       vehicleName: focusedJob.vehicleName,
       remarks: focusedJob.remarks,
