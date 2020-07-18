@@ -37,19 +37,25 @@ import {
 const FailJobScreen = ({
   focusedJob,
   driverNotes,
+  countOfdriverNotes,
+  pageOfdriverNotes,
   failJobs,
   getDriverNotes,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+  const [ searchText, setSearchText ] = useState('');
 
   useEffect(() => {
-    getDriverNotes({
-      success: () => {},
-      failure: () => {},
-    });
+    setReloading(true);
 
+    getDriverNotes({
+      search: searchText,
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
+    });
   }, []);
 
   const onBack = () => {
@@ -67,11 +73,22 @@ const FailJobScreen = ({
   }
 
   const onEnd = () => {
-
+    getDriverNotes({
+      search: searchText,
+      page: pageOfdriverNotes,
+      success: () => {},
+      failure: () => {},
+    });
   };
 
   const onRefresh = () => {
     setRefreshing(true);
+
+    getDriverNotes({
+      search: searchText,
+      success: () => setRefreshing(false),
+      failure: () => setRefreshing(false),
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -92,7 +109,7 @@ const FailJobScreen = ({
       </ShadowWrap>
 
       {
-        false
+        reloading
         ? <LoadingWrap>
             <ActivityIndicator size={'large'} />
           </LoadingWrap>
@@ -121,6 +138,8 @@ const FailJobScreen = ({
 FailJobScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   driverNotes: PropTypes.array.isRequired,
+  countOfdriverNotes: PropTypes.number.isRequired,
+  pageOfdriverNotes: PropTypes.number.isRequired,
   failJobs: PropTypes.func.isRequired,
   getDriverNotes: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
@@ -130,6 +149,8 @@ const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
     driverNotes: ViewStore.selectors.getDriverNotes(state),
+    countOfdriverNotes: ViewStore.selectors.getCountOfDriverNotes(state),
+    pageOfdriverNotes: ViewStore.selectors.getPageOfDriverNotes(state),
   };
 };
 
