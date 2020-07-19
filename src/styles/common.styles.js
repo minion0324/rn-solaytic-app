@@ -55,6 +55,10 @@ const SearchInput = styled.TextInput`
   color: ${COLORS.BLACK2};
 `;
 
+const FlexWrap = styled.View`
+  flex: ${props => props.flex || 1};
+`;
+
 export {
   Container,
   ShadowWrap,
@@ -63,4 +67,5 @@ export {
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
+  FlexWrap,
 };
