@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
+  SVGS,
   COLORS,
+  SIZE1,
 } from 'src/constants';
 import {
   popScreen,
@@ -12,6 +14,7 @@ import {
 import {
   HeaderBar,
   ListWrap,
+  ItemWrap,
   DefaultButton,
 } from 'src/components';
 import {
@@ -23,6 +26,9 @@ import {
   Container,
   ShadowWrap,
   LoadingWrap,
+  SearchBarWrap,
+  SearchIconWrap,
+  SearchInput,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -32,7 +38,11 @@ import {
 
 import {
   ButtonWrap,
+  DriverNoteItem,
+  DriverNoteText,
 } from './styled';
+
+const { SearchIcon } = SVGS;
 
 const FailJobScreen = ({
   focusedJob,
@@ -46,6 +56,7 @@ const FailJobScreen = ({
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
   const [ searchText, setSearchText ] = useState('');
+  const [ selectedIndex, setSelectedIndex ] = useState(-1);
 
   useEffect(() => {
     setReloading(true);
@@ -90,9 +101,42 @@ const FailJobScreen = ({
     });
   };
 
+  const onSearch = () => {
+    setReloading(true);
+
+    getDriverNotes({
+      search: searchText,
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
+    });
+  };
+
+  const onChangeSearchText = (text) => {
+    setSearchText(text);
+  };
+
+  const onItemPress = (index) => {
+    if (index === selectedIndex) {
+      setSelectedIndex(-1);
+    } else {
+      setSelectedIndex(index);
+    }
+  };
+
   const renderItem = ({ item, index }) => {
     return (
-      <View />
+      <ItemWrap
+        activated={index === selectedIndex}
+        deactivated
+        activeColor={COLORS.RED1}
+        onPress={() => onItemPress(index)}
+        mTop={SIZE1 / 2}
+        mBottom={SIZE1 / 2}
+      >
+        <DriverNoteItem>
+          <DriverNoteText>{item.note}</DriverNoteText>
+        </DriverNoteItem>
+      </ItemWrap>
     );
   };
 
@@ -106,6 +150,22 @@ const FailJobScreen = ({
           onPressLeft={onBack}
         />
       </ShadowWrap>
+
+      <SearchBarWrap>
+        <SearchIconWrap>
+          <SearchIcon />
+        </SearchIconWrap>
+        <SearchInput
+          placeholder={'Search ...'}
+          underlineColorAndroid={COLORS.TRANSPARENT}
+          returnKeyType={'go'}
+          onSubmitEditing={onSearch}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          onChangeText={text => onChangeSearchText(text)}
+          value={searchText}
+        />
+      </SearchBarWrap>
 
       {
         reloading
