@@ -137,6 +137,15 @@ const BinText = styled.Text`
   text-align: center;
 `;
 
+const BinInput = styled.TextInput`
+  width: 100%;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLUE1};
+  text-align: center;
+`;
+
 const InstructionsWrap = styled.View`
   align-items: center;
   margin-vertical: ${SIZE4}px;
@@ -223,6 +232,7 @@ export {
   BinInfoWrap,
   BinInfoRow,
   BinText,
+  BinInput,
   InstructionsWrap,
   InstructionsContent,
   InstructionsText,

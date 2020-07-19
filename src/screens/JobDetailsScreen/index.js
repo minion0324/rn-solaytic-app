@@ -66,6 +66,7 @@ import {
   BinInfoWrap,
   BinInfoRow,
   BinText,
+  BinInput,
   InstructionsWrap,
   InstructionsContent,
   InstructionsText,
@@ -107,6 +108,9 @@ const JobDetailsScreen = ({
 
   const [ signedUserName, setSignedUserName ] = useState('');
   const [ signedUserContact, setSignedUserContact ] = useState('');
+
+  const [ binNumber1, setBinNumber1 ] = useState(focusedJob.steps[0].binNumber);
+  const [ binNumber2, setBinNumber2 ] = useState(focusedJob.steps[1].binNumber);
 
   useEffect(() => {
     setCoreScreenInfo({
@@ -405,7 +409,23 @@ const JobDetailsScreen = ({
             <BinText numberOfLines={2}>{focusedJob.steps[index].binTypeName}</BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText numberOfLines={2}>{focusedJob.steps[index].binNumber}</BinText>
+            {
+              index === 0
+              ? <BinInput
+                  underlineColorAndroid={COLORS.TRANSPARENT}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  onChangeText={text => setBinNumber1(text)}
+                  value={binNumber1}
+                />
+              : <BinInput
+                  underlineColorAndroid={COLORS.TRANSPARENT}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  onChangeText={text => setBinNumber2(text)}
+                  value={binNumber2}
+                />
+            }
           </BinInfoRow>
         </BinInfoWrap>
       </View>
