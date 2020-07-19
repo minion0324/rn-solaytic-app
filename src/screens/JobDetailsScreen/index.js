@@ -222,7 +222,13 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-    pushScreen(componentId, SIGNATURE_SCREEN, { setSign, setSignedUserName, setSignedUserContact });
+    pushScreen(componentId, SIGNATURE_SCREEN, {
+      setSign,
+      signedUserName,
+      setSignedUserName,
+      signedUserContact,
+      setSignedUserContact
+    });
   };
 
   const onMessage = () => {
