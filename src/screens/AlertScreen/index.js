@@ -41,6 +41,7 @@ import {
   Container,
   ShadowWrap,
   LoadingWrap,
+  FlexWrap,
 } from 'src/styles/common.styles';
 import {
   HelloText,
@@ -168,17 +169,19 @@ const AlertScreen = ({
             </DateWrap>
           : <DateWrap />
         }
-        <ItemWrap
-          onPress={() => onItemPress(item)}
-        >
-          <JobCard
-            customer={item.customerName}
-            type={item.jobTypeName}
-            location={getJobCustomerAddress(item)}
-            time={jobDate.format('hh:mm A')}
-            status={item.statusName}
-          />
-        </ItemWrap>
+        <FlexWrap>
+          <ItemWrap
+            onPress={() => onItemPress(item)}
+          >
+            <JobCard
+              customer={item.customerName}
+              type={item.jobTypeName}
+              location={getJobCustomerAddress(item)}
+              time={jobDate.format('hh:mm A')}
+              status={item.statusName}
+            />
+          </ItemWrap>
+        </FlexWrap>
       </CardRow>
     );
   };
