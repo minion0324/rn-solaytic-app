@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { ActivityIndicator, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -58,6 +58,8 @@ const FailJobScreen = ({
   const [ searchText, setSearchText ] = useState('');
   const [ selectedIndex, setSelectedIndex ] = useState(-1);
 
+  const timerId = useRef(null);
+
   useEffect(() => {
     setReloading(true);
 
@@ -102,7 +104,10 @@ const FailJobScreen = ({
   };
 
   const onSearch = () => {
+    Keyboard.dismiss();
+
     setReloading(true);
+    setSelectedIndex(-1);
 
     getDriverNotes({
       search: searchText,
@@ -113,6 +118,16 @@ const FailJobScreen = ({
 
   const onChangeSearchText = (text) => {
     setSearchText(text);
+
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+
+    timerId.current = setTimeout(() => {
+      timerId.current = null;
+      onSearch();
+    }, 2500);
   };
 
   const onItemPress = (index) => {
