@@ -21,7 +21,7 @@ const TouchWrap = styled.TouchableOpacity`
   border-radius: ${SIZE1}px;
   border-width: 1px;
   border-color: ${(props) => (
-    props.activated ? COLORS.BLUE1 : COLORS.TRANSPARENT
+    props.activated ? props.activeColor : COLORS.TRANSPARENT
   )};
   elevation: ${(props) => (
     props.deactivated ? 0 : 10
@@ -43,6 +43,7 @@ const ItemWrap = ({
   mTop,
   mRight,
   mBottom,
+  activeColor,
 }) => {
   return (
     <Container
@@ -54,6 +55,7 @@ const ItemWrap = ({
       <TouchWrap
         activated={activated}
         deactivated={deactivated}
+        activeColor={activeColor}
         onPress={onPress}
         disabled={!onPress}
       >
@@ -72,6 +74,7 @@ ItemWrap.propTypes = {
   mTop: PropTypes.number,
   mRight: PropTypes.number,
   mBottom: PropTypes.number,
+  activeColor: PropTypes.string,
 };
 
 ItemWrap.defaultProps = {
@@ -82,6 +85,7 @@ ItemWrap.defaultProps = {
   mTop: SIZE2,
   mRight: SIZE2,
   mBottom: SIZE2,
+  activeColor: COLORS.BLUE1,
 };
 
 export default ItemWrap;
