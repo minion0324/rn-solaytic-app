@@ -75,7 +75,6 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
-  SignInfoInput,
 } from './styled';
 
 const {
@@ -223,7 +222,7 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-    pushScreen(componentId, SIGNATURE_SCREEN, { setSign });
+    pushScreen(componentId, SIGNATURE_SCREEN, { setSign, setSignedUserName, setSignedUserContact });
   };
 
   const onMessage = () => {
@@ -460,34 +459,14 @@ const JobDetailsScreen = ({
               </HalfWrap>
               <HalfWrap>
                 <SignInfo>
-                  {
-                    true
-                    ? <SignInfoInput
-                        underlineColorAndroid={COLORS.TRANSPARENT}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        onChangeText={text => setSignedUserName(text)}
-                        value={signedUserName}
-                      />
-                    : <SignInfoText numberOfLines={1}>
-                        {focusedJob.driverName}
-                      </SignInfoText>
-                  }
+                  <SignInfoText numberOfLines={1}>
+                    {signedUserName}
+                  </SignInfoText>
                 </SignInfo>
                 <SignInfo>
-                  {
-                    true
-                    ? <SignInfoInput
-                        underlineColorAndroid={COLORS.TRANSPARENT}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        onChangeText={text => setSignedUserContact(text)}
-                        value={signedUserContact}
-                      />
-                    : <SignInfoText numberOfLines={1}>
-                        {''}
-                      </SignInfoText>
-                  }
+                  <SignInfoText numberOfLines={1}>
+                    {signedUserContact}
+                  </SignInfoText>
                 </SignInfo>
               </HalfWrap>
             </AttachmentWrap>

@@ -202,13 +202,6 @@ const SignInfoText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
-const SignInfoInput = styled.TextInput`
-  padding: 0px;
-  font-size: ${FONT(15)}px;
-  font-weight: 500;
-  color: ${COLORS.BLACK2};
-`;
-
 export {
   ButtonWrap,
   JobDetails,
@@ -239,5 +232,4 @@ export {
   HalfWrap,
   SignInfo,
   SignInfoText,
-  SignInfoInput,
 };
