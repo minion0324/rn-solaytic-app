@@ -9,11 +9,11 @@ import {
 } from 'src/constants';
 
 const Container = styled.View`
-  flex: 1;
-  margin-left: ${props => props.mLeft}px;
-  margin-top: ${props => props.mTop}px;
-  margin-right: ${props => props.mRight}px;
-  margin-bottom: ${props => props.mBottom}px;
+  width: 100%;
+  padding-left: ${props => props.mLeft}px;
+  padding-top: ${props => props.mTop}px;
+  padding-right: ${props => props.mRight}px;
+  padding-bottom: ${props => props.mBottom}px;
 `;
 
 const TouchWrap = styled.TouchableOpacity`
