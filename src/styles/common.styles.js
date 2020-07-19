@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  SIZE1,
+  SIZE2,
+  SIZE12,
+  FONT,
 } from 'src/constants';
 
 const Container = styled.SafeAreaView`
@@ -30,9 +34,33 @@ const FullImage = styled.Image`
   height: 100%;
 `;
 
+//
+const SearchBarWrap = styled.View`
+  width: 100%;
+  height: ${SIZE12}px;
+  padding: ${SIZE1}px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const SearchIconWrap = styled.View`
+  padding-horizontal: ${SIZE2}px;
+`;
+
+const SearchInput = styled.TextInput`
+  flex: 1;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+`;
+
 export {
   Container,
   ShadowWrap,
   LoadingWrap,
   FullImage,
+  SearchBarWrap,
+  SearchIconWrap,
+  SearchInput,
 };
