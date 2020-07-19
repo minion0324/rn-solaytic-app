@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  HEIGHT,
   SIZE1,
   SIZE2,
   SIZE8,
@@ -18,20 +17,20 @@ const InfoWrap = styled.View`
 `;
 
 const NameWrap = styled.View`
+  flex: 3;
   height: ${SIZE8}px;
   justify-content: center;
   padding-horizontal: ${SIZE2}px;
   background-color: ${COLORS.WHITE1};
-  width: ${HEIGHT * 0.6 - SIZE1 * 2}px;
 `;
 
 const ContactWrap = styled.View`
+  flex: 2;
   height: ${SIZE8}px;
   justify-content: center;
   padding-horizontal: ${SIZE2}px;
   background-color: ${COLORS.WHITE1};
   margin-left: ${SIZE1}px;
-  width: ${HEIGHT * 0.4 - SIZE1 * 1}px;
 `;
 
 const SignatureWrap = styled.View`

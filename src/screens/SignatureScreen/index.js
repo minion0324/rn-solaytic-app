@@ -49,7 +49,7 @@ const SignatureScreen = ({
   useEffect(() => {
     setTimeout(() => {
       Orientation.lockToLandscape();
-    }, PLATFORM === 'ios' ? 1000 : 0);
+    }, 1000);
 
     return () => {
       Orientation.lockToPortrait();
