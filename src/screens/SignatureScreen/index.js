@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, View, TouchableWithoutFeedback } from 'react-native';
+import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
@@ -18,13 +18,10 @@ import {
 } from 'src/constants';
 
 import {
-  Container,
   ShadowWrap,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
-  EmptyWrap,
-  BackButton,
 } from 'src/styles/header.styles';
 
 import {
@@ -103,18 +100,6 @@ const SignatureScreen = ({
       <SignatureWrap>
         <Signature
           onOK={onSign}
-          webStyle={
-            `.m-signature-pad {
-              width: auto;
-              height: auto;
-              left: 0px;
-              top: 0px;
-              right: 0px;
-              bottom: 0px;
-              margin-left: 0px;
-              margin-top: 0px;
-            }`
-          }
         />
       </SignatureWrap>
     </OverlayWrap>
