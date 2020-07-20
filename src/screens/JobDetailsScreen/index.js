@@ -419,6 +419,11 @@ const JobDetailsScreen = ({
                   autoCorrect={false}
                   onChangeText={text => setBinNumber1(text)}
                   value={binNumber1}
+                  editable={
+                    focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED ||
+                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
+                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+                  }
                 />
               : <BinInput
                   underlineColorAndroid={COLORS.TRANSPARENT1}
@@ -426,6 +431,11 @@ const JobDetailsScreen = ({
                   autoCorrect={false}
                   onChangeText={text => setBinNumber2(text)}
                   value={binNumber2}
+                  editable={
+                    focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED ||
+                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
+                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+                  }
                 />
             }
           </BinInfoRow>
