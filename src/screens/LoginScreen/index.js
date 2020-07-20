@@ -132,7 +132,7 @@ const LoginScreen = ({
           </LeftWrap>
           <Input
             ref={inputUserName}
-            underlineColorAndroid={COLORS.TRANSPARENT}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
             returnKeyType={'next'}
             onSubmitEditing={() => inputPassword.current.focus()}
             autoCapitalize={'none'}
@@ -150,7 +150,7 @@ const LoginScreen = ({
           <Input
             ref={inputPassword}
             secureTextEntry={!visibility}
-            underlineColorAndroid={COLORS.TRANSPARENT}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
             returnKeyType={'go'}
             onSubmitEditing={onLogin}
             autoCapitalize={'none'}

@@ -9,32 +9,31 @@ import {
 } from 'src/constants';
 
 const InfoWrap = styled.View`
-  padding-top: ${SIZE1}px;
   padding-horizontal: ${SIZE1}px;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const NameWrap = styled.View`
-  flex: 3;
+  width: 100%;
   height: ${SIZE8}px;
   justify-content: center;
+  margin-top: ${SIZE1}px;
   padding-horizontal: ${SIZE2}px;
   background-color: ${COLORS.WHITE1};
 `;
 
 const ContactWrap = styled.View`
-  flex: 2;
+  width: 100%;
   height: ${SIZE8}px;
   justify-content: center;
+  margin-top: ${SIZE1}px;
   padding-horizontal: ${SIZE2}px;
   background-color: ${COLORS.WHITE1};
-  margin-left: ${SIZE1}px;
 `;
 
 const SignatureWrap = styled.View`
-  flex: 1;
+  width: 100%;
+  aspect-ratio: 1.8;
   padding: ${SIZE1}px;
 `;
 

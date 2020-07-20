@@ -105,7 +105,7 @@ const BinButton = styled.TouchableOpacity`
   justify-content: center;
   border-radius: ${SIZE1}px;
   background-color: ${(props) => (
-    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT
+    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT1
   )};
 `;
 

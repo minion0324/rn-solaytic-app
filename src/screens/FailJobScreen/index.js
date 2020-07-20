@@ -172,7 +172,7 @@ const FailJobScreen = ({
         </SearchIconWrap>
         <SearchInput
           placeholder={'Search ...'}
-          underlineColorAndroid={COLORS.TRANSPARENT}
+          underlineColorAndroid={COLORS.TRANSPARENT1}
           returnKeyType={'go'}
           onSubmitEditing={onSearch}
           autoCapitalize={'none'}

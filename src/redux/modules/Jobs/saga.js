@@ -338,7 +338,6 @@ export function* asyncCompleteJobs({ payload }) {
   } = payload;
 
   try {
-    //
     const focusedJob = yield select(Jobs.selectors.getFocusedJob);
     const jobPhotos = yield select(ViewStore.selectors.getJobPhotos);
     const jobSign = yield select(ViewStore.selectors.getJobSign);
@@ -364,12 +363,6 @@ export function* asyncCompleteJobs({ payload }) {
       driverName: focusedJob.driverName,
       vehicleName: focusedJob.vehicleName,
       remarks: focusedJob.remarks,
-      // wasteType: {
-      //   wasteTypeId: lastJobStep.wasteTypeId || 0,
-      // },
-      // binType: {
-      //   binTypeId: lastJobStep.binTypeId || 0,
-      // },
       jobPhotos: jobPhotos.map((photo) => {
         return {
           jobStepId: lastJobStep.jobStepId,

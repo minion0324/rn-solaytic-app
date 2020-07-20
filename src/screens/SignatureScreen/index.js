@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, View, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
 
 import {
-  popScreen,
+  dismissOverlay,
 } from 'src/navigation';
 import {
   HeaderBar,
+  OverlayWrap,
 } from 'src/components';
 import {
   PLATFORM,
@@ -46,7 +47,7 @@ const SignatureScreen = ({
   const [ contact, setContact ] = useState(signedUserContact);
 
   const onBack = () => {
-    popScreen(componentId);
+    dismissOverlay(componentId);
   };
 
   const onSign = async (base64) => {
@@ -71,20 +72,17 @@ const SignatureScreen = ({
   };
 
   return (
-    <Container>
+    <OverlayWrap dismissOverlay={onBack}>
       <ShadowWrap>
         <HeaderBar
           centerIcon={<ScreenText>Signature</ScreenText>}
-          leftIcon={<BackButton />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
         />
       </ShadowWrap>
       <InfoWrap>
         <NameWrap>
           <Input
             placeholder={'Name'}
-            underlineColorAndroid={COLORS.TRANSPARENT}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
             autoCapitalize={'none'}
             autoCorrect={false}
             onChangeText={text => setName(text)}
@@ -94,7 +92,7 @@ const SignatureScreen = ({
         <ContactWrap>
           <Input
             placeholder={'Contact'}
-            underlineColorAndroid={COLORS.TRANSPARENT}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
             autoCapitalize={'none'}
             autoCorrect={false}
             onChangeText={text => setContact(text)}
@@ -119,7 +117,7 @@ const SignatureScreen = ({
           }
         />
       </SignatureWrap>
-    </Container>
+    </OverlayWrap>
   );
 };
 

@@ -22,6 +22,7 @@ import {
   ItemWrap,
 } from 'src/components';
 import {
+  showOverlay,
   pushScreen,
   popScreen,
   SIGNATURE_SCREEN,
@@ -226,7 +227,7 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-    pushScreen(componentId, SIGNATURE_SCREEN, {
+    showOverlay(SIGNATURE_SCREEN, {
       setSign,
       signedUserName,
       setSignedUserName,
@@ -412,14 +413,14 @@ const JobDetailsScreen = ({
             {
               index === 0
               ? <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT}
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   onChangeText={text => setBinNumber1(text)}
                   value={binNumber1}
                 />
               : <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT}
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   onChangeText={text => setBinNumber2(text)}
