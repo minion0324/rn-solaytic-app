@@ -4,7 +4,6 @@ import {
   IMAGES,
   COLORS,
   FONT,
-  PLATFORM,
 } from 'src/constants';
 
 import {
@@ -73,7 +72,7 @@ export function popToRootScreen(componentId) {
 export function pushSingleScreenApp() {
   Navigation.setDefaultOptions({
     layout: {
-      orientation: PLATFORM === 'ios' ? ['portrait', 'landscape'] : ['portrait'],
+      orientation: ['portrait'],
     },
     topBar: {
       visible: false,
@@ -113,7 +112,7 @@ export function pushSingleScreenApp() {
 export function pushMultiScreensApp() {
   Navigation.setDefaultOptions({
     layout: {
-      orientation: PLATFORM === 'ios' ? ['portrait', 'landscape'] : ['portrait'],
+      orientation: ['portrait'],
     },
     topBar: {
       visible: false,

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
 import moment from 'moment';
-import Orientation from 'react-native-orientation-locker';
 
 import {
   popScreen,
@@ -45,16 +44,6 @@ const SignatureScreen = ({
 }) => {
   const [ name, setName ] = useState(signedUserName);
   const [ contact, setContact ] = useState(signedUserContact);
-
-  useEffect(() => {
-    setTimeout(() => {
-      Orientation.lockToLandscape();
-    }, 1000);
-
-    return () => {
-      Orientation.lockToPortrait();
-    };
-  }, []);
 
   const onBack = () => {
     popScreen(componentId);
