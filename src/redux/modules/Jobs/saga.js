@@ -385,6 +385,7 @@ export function* asyncCompleteJobs({ payload }) {
         ...res.newJobs[index],
         jobStatusId: 7,
         statusName: JOB_STATUS.COMPLETED,
+        attempts: [ attempt ],
       });
 
       return res;
