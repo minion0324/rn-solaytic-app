@@ -77,6 +77,29 @@ const getFocusedJob = createSelector(
   },
 );
 
+const getPhotosAndSign = createSelector(
+  getFocusedJob,
+  (focusedJob) => {
+    try {
+      const lastAttempt = focusedJob.attempts[focusedJob.attempts.length - 1];
+
+      return {
+        photos: lastAttempt.jobPhotos.map(item => item.photoUrl),
+        sign: lastAttempt.signatureUrl,
+        signedUserName: lastAttempt.signedUserName,
+        signedUserContact: lastAttempt.signedUserContact,
+      };
+    } catch (error) {
+      return {
+        photos: [],
+        sign: '',
+        signedUserName: '',
+        signedUserContact: '',
+      };
+    }
+  },
+);
+
 export default {
   getAllJobs,
   getCountOfJobs,
@@ -87,4 +110,5 @@ export default {
   getPageOfAlerts,
   getDateForAlerts,
   getFocusedJob,
+  getPhotosAndSign,
 };
