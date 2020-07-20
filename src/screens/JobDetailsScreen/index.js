@@ -91,6 +91,7 @@ const {
 
 const JobDetailsScreen = ({
   focusedJob,
+  photosAndSign,
   acknowledgeJobs,
   startJobs,
   exchangeJobs,
@@ -104,11 +105,11 @@ const JobDetailsScreen = ({
   const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
 
-  const [ photos, setPhotos ] = useState([]);
-  const [ sign, setSign ] = useState(null);
+  const [ photos, setPhotos ] = useState(photosAndSign.photos);
+  const [ sign, setSign ] = useState(photosAndSign.sign);
 
-  const [ signedUserName, setSignedUserName ] = useState('');
-  const [ signedUserContact, setSignedUserContact ] = useState('');
+  const [ signedUserName, setSignedUserName ] = useState(photosAndSign.signedUserName);
+  const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
 
   const [ binNumber1, setBinNumber1 ] = useState(focusedJob.steps[0].binNumber);
   const [ binNumber2, setBinNumber2 ] = useState(focusedJob.steps[1].binNumber);
@@ -571,6 +572,7 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  photosAndSign: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
@@ -588,6 +590,7 @@ JobDetailsScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    photosAndSign: Jobs.selectors.getPhotosAndSign(state),
   };
 };
 
