@@ -364,12 +364,12 @@ export function* asyncCompleteJobs({ payload }) {
       driverName: focusedJob.driverName,
       vehicleName: focusedJob.vehicleName,
       remarks: focusedJob.remarks,
-      wasteType: {
-        wasteTypeId: lastJobStep.wasteTypeId || 0,
-      },
-      binType: {
-        binTypeId: lastJobStep.binTypeId || 0,
-      },
+      // wasteType: {
+      //   wasteTypeId: lastJobStep.wasteTypeId || 0,
+      // },
+      // binType: {
+      //   binTypeId: lastJobStep.binTypeId || 0,
+      // },
       jobPhotos: jobPhotos.map((photo) => {
         return {
           jobStepId: lastJobStep.jobStepId,
