@@ -146,11 +146,25 @@ const JobDetailsScreen = ({
     });
   };
 
+  const getUpdatedBinInfo = () => {
+    return [
+      {
+        jobStepId: focusedJob.steps[0].jobStepId,
+        binNumber: binNumber1,
+      },
+      {
+        jobStepId: focusedJob.steps[1].jobStepId,
+        binNumber: binNumber2,
+      }
+    ];
+  };
+
   const onStart = () => {
     setLoading(true);
 
     startJobs({
       jobIds: `${focusedJob.jobId}`,
+      stepBinUpdate: getUpdatedBinInfo(),
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.IN_PROGRESS1);
@@ -164,6 +178,7 @@ const JobDetailsScreen = ({
 
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
+      stepBinUpdate: getUpdatedBinInfo(),
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.IN_PROGRESS2);
@@ -196,6 +211,7 @@ const JobDetailsScreen = ({
   const onCompleteJob = () => {
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
+      stepBinUpdate: getUpdatedBinInfo(),
       signedUserName,
       signedUserContact,
       success: onBack,
