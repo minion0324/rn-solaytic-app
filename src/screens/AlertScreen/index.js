@@ -68,8 +68,8 @@ const AlertScreen = ({
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
-  setFocusedJobId,
   acknowledgeJobs,
+  getJobById,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -145,9 +145,23 @@ const AlertScreen = ({
     });
   };
 
-  const onItemPress = (job) => {
-    setFocusedJobId(job.jobId);
+  const onSuccess = () => {
+    setLoading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
+  const onItemPress = (job) => {
+    setReloading(true);
+
+    getJobById({
+      jobId: job.jobId,
+      success: onSuccess,
+      failure: onFailure,
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -236,8 +250,8 @@ AlertScreen.propTypes = {
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
-  setFocusedJobId: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
+  getJobById: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -256,8 +270,8 @@ const mapDispatchToProps = {
   setFCMToken: User.actionCreators.setFCMToken,
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
-  setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
+  getJobById: Jobs.actionCreators.getJobById,
 };
 
 export default connect(
