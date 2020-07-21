@@ -21,6 +21,8 @@ export const COMPLETE_JOBS = 'JOBS/COMPLETE_JOBS';
 export const COMPLETE_JOBS_SUCCESS = 'JOBS/COMPLETE_JOBS_SUCCESS';
 export const FAIL_JOBS = 'JOBS/FAIL_JOBS';
 export const FAIL_JOBS_SUCCESS = 'JOBS/FAIL_JOBS_SUCCESS';
+export const GET_JOB_BY_ID = 'JOBS/GET_JOB_BY_ID';
+export const GET_JOB_BY_ID_SUCCESS = 'JOBS/GET_JOB_BY_ID_SUCCESS';
 
 export const actionCreators = {
   getJobsSuccess: createAction(GET_JOBS_SUCCESS),
@@ -33,7 +35,6 @@ export const actionCreators = {
   getAlertsByDateSuccess: createAction(GET_ALERTS_BY_DATE_SUCCESS),
   getAlertsByPage: createAction(GET_ALERTS_BY_PAGE),
   getAlertsByPageSuccess: createAction(GET_ALERTS_BY_PAGE_SUCCESS),
-  setFocusedJobId: createAction(SET_FOCUSED_JOB_ID),
   acknowledgeJobs: createAction(ACKNOWLEDGE_JOBS),
   acknowledgeJobsSuccess: createAction(ACKNOWLEDGE_JOBS_SUCCESS),
   startJobs: createAction(START_JOBS),
@@ -44,4 +45,6 @@ export const actionCreators = {
   completeJobsSuccess: createAction(COMPLETE_JOBS_SUCCESS),
   failJobs: createAction(FAIL_JOBS),
   failJobsSuccess: createAction(FAIL_JOBS_SUCCESS),
+  getJobById: createAction(GET_JOB_BY_ID),
+  getJobByIdSuccess: createAction(GET_JOB_BY_ID_SUCCESS),
 };

@@ -15,6 +15,7 @@ import {
   apiExchangeJobs,
   apiCompleteJobs,
   apiFailJobs,
+  apiGetJobById,
 } from 'src/services';
 import {
   Jobs,
@@ -35,6 +36,7 @@ import {
   EXCHANGE_JOBS,
   COMPLETE_JOBS,
   FAIL_JOBS,
+  GET_JOB_BY_ID,
   actionCreators,
 } from './actions';
 
@@ -449,6 +451,28 @@ export function* watchFailJobs() {
   }
 }
 
+export function* asyncGetJobById({ payload }) {
+  const {
+    jobId, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetJobById, jobId);
+    yield put(actionCreators.getJobByIdSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetJobById() {
+  while (true) {
+    const action = yield take(GET_JOB_BY_ID);
+    yield* asyncGetJobById(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -483,5 +507,6 @@ export default function* () {
     fork(watchExchangeJobs),
     fork(watchCompleteJobs),
     fork(watchFailJobs),
+    fork(watchGetJobById),
   ]);
 }

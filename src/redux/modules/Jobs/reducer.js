@@ -9,12 +9,12 @@ import {
   GET_ALERTS_SUCCESS,
   GET_ALERTS_BY_DATE_SUCCESS,
   GET_ALERTS_BY_PAGE_SUCCESS,
-  SET_FOCUSED_JOB_ID,
   ACKNOWLEDGE_JOBS_SUCCESS,
   START_JOBS_SUCCESS,
   EXCHANGE_JOBS_SUCCESS,
   COMPLETE_JOBS_SUCCESS,
   FAIL_JOBS_SUCCESS,
+  GET_JOB_BY_ID_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -29,7 +29,7 @@ const jobsPersistConfig = {
     'dateForJobs',
     'allAlerts',
     'dateForAlerts',
-    'focusedJobId',
+    'focusedJob',
   ],
 };
 
@@ -55,9 +55,6 @@ function Jobs(state = DEFAULT, action = {}) {
       case GET_ALERTS_BY_PAGE_SUCCESS:
         draft.allAlerts.concat(payload.data);
         break;
-      case SET_FOCUSED_JOB_ID:
-        draft.focusedJobId = payload;
-        break;
       case ACKNOWLEDGE_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
         draft.allAlerts = payload.newAlerts;
@@ -67,6 +64,9 @@ function Jobs(state = DEFAULT, action = {}) {
       case COMPLETE_JOBS_SUCCESS:
       case FAIL_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
+        break;
+      case GET_JOB_BY_ID_SUCCESS:
+        draft.focusedJob = payload;
         break;
     }
   });
