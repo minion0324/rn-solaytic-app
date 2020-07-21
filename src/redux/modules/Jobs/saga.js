@@ -351,7 +351,7 @@ export function* asyncCompleteJobs({ payload }) {
       address: lastJobStep.address,
       wasteTypeId: lastJobStep.wasteTypeId,
       binTypeId: lastJobStep.binTypeId,
-      binNumber: lastJobStep.binNumber,
+      binNumber: '', //
       binWeight: lastJobStep.binWeight,
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
