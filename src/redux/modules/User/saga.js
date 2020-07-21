@@ -3,6 +3,9 @@ import {
 } from 'redux-saga/effects';
 
 import {
+  onError,
+} from 'src/utils';
+import {
   apiLogin,
   apiAuthToken,
   apiSetFCMToken,
@@ -32,6 +35,7 @@ export function* asyncLogin({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
