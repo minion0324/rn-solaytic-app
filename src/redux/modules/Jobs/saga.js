@@ -407,11 +407,33 @@ export function* watchCompleteJobs() {
 
 export function* asyncFailJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds, driverNote, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiFailJobs, jobIds);
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customer.customerName,
+      amountCollected: lastJobStep.amountToCollect,
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypeId: lastJobStep.wasteTypeId,
+      binTypeId: lastJobStep.binTypeId,
+      binNumber: '', //
+      binWeight: lastJobStep.binWeight,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      driverName: '', //
+      vehicleName: '', //
+      remarks: driverNote,
+    };
+
+    const { data } = yield call(apiFailJobs, jobIds, attempt);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
