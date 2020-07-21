@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -104,6 +104,7 @@ const LoginScreen = ({
     if (loading) return;
 
     setLoading(true);
+    Keyboard.dismiss();
 
     login({
       userName,
