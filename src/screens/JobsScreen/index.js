@@ -59,7 +59,7 @@ const JobsScreen = ({
   dateForJobs,
   getJobsByDate,
   getJobsByPage,
-  setFocusedJobId,
+  getJobById,
   componentId,
 }) => {
   const [ tabs ] = useState([
@@ -100,9 +100,23 @@ const JobsScreen = ({
     });
   };
 
-  const onItemPress = (job) => {
-    setFocusedJobId(job.jobId);
+  const onSuccess = () => {
+    setLoading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
+  const onItemPress = (job) => {
+    setLoading(true);
+
+    getJobById({
+      jobId: job.jobId,
+      success: onSuccess,
+      failure: onFailure,
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -188,7 +202,7 @@ JobsScreen.propTypes = {
   dateForJobs: PropTypes.string.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
-  setFocusedJobId: PropTypes.func.isRequired,
+  getJobById: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -204,7 +218,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getJobsByDate: Jobs.actionCreators.getJobsByDate,
   getJobsByPage: Jobs.actionCreators.getJobsByPage,
-  setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
+  getJobById: Jobs.actionCreators.getJobById,
 };
 
 export default connect(
