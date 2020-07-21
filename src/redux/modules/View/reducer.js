@@ -7,6 +7,8 @@ import {
   UPLOAD_PHOTOS_SUCCESS,
   UPLOAD_SIGN_SUCCESS,
   INIT_JOB_PHOTOS_AND_SIGN,
+  GET_DRIVER_NOTES_SUCCESS,
+  GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -20,6 +22,7 @@ const viewPersistConfig = {
     'coreScreenInfo',
     'jobPhotos',
     'jobSign',
+    'driverNotes',
   ],
 };
 
@@ -41,6 +44,12 @@ function View(state = DEFAULT, action = {}) {
       case INIT_JOB_PHOTOS_AND_SIGN:
         draft.jobPhotos = [];
         draft.jobSign = '';
+        break;
+      case GET_DRIVER_NOTES_SUCCESS:
+        draft.driverNotes = payload.data;
+        break;
+      case GET_DRIVER_NOTES_BY_PAGE_SUCCESS:
+        draft.driverNotes.concat(payload.data);
         break;
     }
   });

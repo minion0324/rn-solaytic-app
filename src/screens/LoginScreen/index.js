@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Orientation from 'react-native-orientation-locker';
 
 import {
   pushMultiScreensApp,
@@ -54,14 +53,10 @@ const LoginScreen = ({
   const inputPassword = useRef(null);
 
   const [ loading, setLoading ] = useState(false);
-  const [ userName, setUserName ] = useState('suhk_deep');
-  const [ password, setPassword ] = useState('Xg213567');
+  const [ userName, setUserName ] = useState('');
+  const [ password, setPassword ] = useState('');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
-
-  useEffect(() => {
-    Orientation.lockToPortrait();
-  }, []);
 
   useEffect(() => {
     if (!isRehydrated) return;
@@ -84,7 +79,7 @@ const LoginScreen = ({
     pushMultiScreensApp();
   };
 
-  const onFailure = (error) => {
+  const onFailure = () => {
     setLoading(false);
   };
 
@@ -106,9 +101,18 @@ const LoginScreen = ({
   }
 
   const onLogin = () => {
-    if (loading) return;
+    if (!userName) {
+      Alert.alert('Warning', 'Please enter username.');
+      return;
+    }
+
+    if (!password) {
+      Alert.alert('Warning', 'Please enter password.');
+      return;
+    }
 
     setLoading(true);
+    Keyboard.dismiss();
 
     login({
       userName,
@@ -137,7 +141,8 @@ const LoginScreen = ({
           </LeftWrap>
           <Input
             ref={inputUserName}
-            underlineColorAndroid={COLORS.TRANSPARENT}
+            placeholder={'Username'}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
             returnKeyType={'next'}
             onSubmitEditing={() => inputPassword.current.focus()}
             autoCapitalize={'none'}
@@ -154,8 +159,9 @@ const LoginScreen = ({
           </LeftWrap>
           <Input
             ref={inputPassword}
+            placeholder={'Password'}
             secureTextEntry={!visibility}
-            underlineColorAndroid={COLORS.TRANSPARENT}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
             returnKeyType={'go'}
             onSubmitEditing={onLogin}
             autoCapitalize={'none'}
@@ -184,7 +190,7 @@ const LoginScreen = ({
         </RememberWrap>
 
         <ButtonWrap>
-          <LoginButton onPress={onLogin}>
+          <LoginButton onPress={onLogin} disabled={loading}>
             {
               loading
               ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />

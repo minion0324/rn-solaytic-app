@@ -14,5 +14,6 @@ export default {
   RED1: '#EF476F',
   GREEN1: '#06D6A0',
   PURPLE1: '#8C03F4',
-  TRANSPARENT: 'transparent',
+  TRANSPARENT1: 'transparent',
+  TRANSPARENT2: '#000000A0',
 };

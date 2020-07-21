@@ -1,5 +1,7 @@
 export * from './Screens';
 export {
+  showOverlay,
+  dismissOverlay,
   changeTabIndex,
   showModal,
   dismissModal,

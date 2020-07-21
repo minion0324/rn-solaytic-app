@@ -14,6 +14,8 @@ import {
   apiStartJobs,
   apiExchangeJobs,
   apiCompleteJobs,
+  apiFailJobs,
+  apiGetJobById,
 } from 'src/services';
 import {
   Jobs,
@@ -33,6 +35,8 @@ import {
   START_JOBS,
   EXCHANGE_JOBS,
   COMPLETE_JOBS,
+  FAIL_JOBS,
+  GET_JOB_BY_ID,
   actionCreators,
 } from './actions';
 
@@ -203,7 +207,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
         res.newJobs.splice(idx, 1, {
           ...res.newJobs[idx],
-          jobStatusId: 4,
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
 
@@ -217,7 +220,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
         res.newJobs.splice(idx, 0, {
           ...res.newAlerts[index],
-          jobStatusId: 4,
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
@@ -246,11 +248,11 @@ export function* watchAcknowledgeJobs() {
 
 export function* asyncStartJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds, stepBinUpdate, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiStartJobs, jobIds);
+    const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -261,7 +263,6 @@ export function* asyncStartJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 5,
         statusName: JOB_STATUS.IN_PROGRESS1,
       });
 
@@ -287,11 +288,11 @@ export function* watchStartJobs() {
 
 export function* asyncExchangeJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds, stepBinUpdate, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiExchangeJobs, jobIds);
+    const { data } = yield call(apiExchangeJobs, jobIds, stepBinUpdate);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -302,7 +303,6 @@ export function* asyncExchangeJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 6,
         statusName: JOB_STATUS.IN_PROGRESS2,
       });
 
@@ -328,11 +328,15 @@ export function* watchExchangeJobs() {
 
 export function* asyncCompleteJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds,
+    stepBinUpdate,
+    signedUserName,
+    signedUserContact,
+    success,
+    failure,
   } = payload;
 
   try {
-    //
     const focusedJob = yield select(Jobs.selectors.getFocusedJob);
     const jobPhotos = yield select(ViewStore.selectors.getJobPhotos);
     const jobSign = yield select(ViewStore.selectors.getJobSign);
@@ -341,29 +345,23 @@ export function* asyncCompleteJobs({ payload }) {
 
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
-      customerName: focusedJob.customerName,
-      amountCollected: 0, //
+      customerName: focusedJob.customer.customerName,
+      amountCollected: lastJobStep.amountToCollect,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: lastJobStep.wasteTypeId,
       binTypeId: lastJobStep.binTypeId,
-      binNumber: lastJobStep.binNumber,
-      binWeight: lastJobStep.binNumber,
+      binNumber: '', //
+      binWeight: lastJobStep.binWeight,
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
       signatureUrl: jobSign,
-      signedUserName: focusedJob.driverName,
-      signedUserContact: lastJobStep.contactPersonOne || lastJobStep.contactPersonTwo,
-      driverName: focusedJob.driverName,
-      vehicleName: focusedJob.vehicleName,
+      signedUserName,
+      signedUserContact,
+      driverName: '', //
+      vehicleName: '', //
       remarks: focusedJob.remarks,
-      wasteType: {
-        wasteTypeId: lastJobStep.wasteTypeId || 0,
-      },
-      binType: {
-        binTypeId: lastJobStep.binTypeId || 0,
-      },
       jobPhotos: jobPhotos.map((photo) => {
         return {
           jobStepId: lastJobStep.jobStepId,
@@ -373,7 +371,7 @@ export function* asyncCompleteJobs({ payload }) {
       }),
     };
 
-    const { data } = yield call(apiCompleteJobs, jobIds, attempt);
+    const { data } = yield call(apiCompleteJobs, jobIds, stepBinUpdate, attempt);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -384,7 +382,6 @@ export function* asyncCompleteJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 7,
         statusName: JOB_STATUS.COMPLETED,
       });
 
@@ -405,6 +402,90 @@ export function* watchCompleteJobs() {
   while (true) {
     const action = yield take(COMPLETE_JOBS);
     yield* asyncCompleteJobs(action);
+  }
+}
+
+export function* asyncFailJobs({ payload }) {
+  const {
+    jobIds, driverNote, success, failure,
+  } = payload;
+
+  try {
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customer.customerName,
+      amountCollected: lastJobStep.amountToCollect,
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypeId: lastJobStep.wasteTypeId,
+      binTypeId: lastJobStep.binTypeId,
+      binNumber: '', //
+      binWeight: lastJobStep.binWeight,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      driverName: '', //
+      vehicleName: '', //
+      remarks: driverNote,
+    };
+
+    const { data } = yield call(apiFailJobs, jobIds, attempt);
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      res.newJobs.splice(index, 1, {
+        ...res.newJobs[index],
+        statusName: JOB_STATUS.FAILED,
+      });
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.failJobsSuccess(result));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchFailJobs() {
+  while (true) {
+    const action = yield take(FAIL_JOBS);
+    yield* asyncFailJobs(action);
+  }
+}
+
+export function* asyncGetJobById({ payload }) {
+  const {
+    jobId, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetJobById, jobId);
+    yield put(actionCreators.getJobByIdSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetJobById() {
+  while (true) {
+    const action = yield take(GET_JOB_BY_ID);
+    yield* asyncGetJobById(action);
   }
 }
 
@@ -441,5 +522,7 @@ export default function* () {
     fork(watchStartJobs),
     fork(watchExchangeJobs),
     fork(watchCompleteJobs),
+    fork(watchFailJobs),
+    fork(watchGetJobById),
   ]);
 }

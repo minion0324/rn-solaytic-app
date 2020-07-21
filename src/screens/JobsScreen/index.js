@@ -33,6 +33,7 @@ import {
   Container,
   ShadowWrap,
   LoadingWrap,
+  FlexWrap,
 } from 'src/styles/common.styles';
 import {
   HelloText,
@@ -54,12 +55,11 @@ const { SideMenuIcon } = SVGS;
 const JobsScreen = ({
   driverName,
   allJobs,
-  countOfJobs,
   pageOfJobs,
   dateForJobs,
   getJobsByDate,
   getJobsByPage,
-  setFocusedJobId,
+  getJobById,
   componentId,
 }) => {
   const [ tabs ] = useState([
@@ -100,9 +100,23 @@ const JobsScreen = ({
     });
   };
 
-  const onItemPress = (job) => {
-    setFocusedJobId(job.jobId);
+  const onSuccess = () => {
+    setLoading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+  };
+
+  const onFailure = () => {
+    setLoading(false);
+  };
+
+  const onItemPress = (job) => {
+    setLoading(true);
+
+    getJobById({
+      jobId: job.jobId,
+      success: onSuccess,
+      failure: onFailure,
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -122,17 +136,19 @@ const JobsScreen = ({
             </DateWrap>
           : <DateWrap />
         }
-        <ItemWrap
-          onPress={() => onItemPress(item)}
-        >
-          <JobCard
-            customer={item.customerName}
-            type={item.jobTypeName}
-            location={getJobCustomerAddress(item)}
-            time={jobDate.format('hh:mm A')}
-            status={item.statusName}
-          />
-        </ItemWrap>
+        <FlexWrap>
+          <ItemWrap
+            onPress={() => onItemPress(item)}
+          >
+            <JobCard
+              customer={item.customerName}
+              type={item.jobTypeName}
+              location={getJobCustomerAddress(item)}
+              time={jobDate.format('hh:mm A')}
+              status={item.statusName}
+            />
+          </ItemWrap>
+        </FlexWrap>
       </CardRow>
     );
   };
@@ -182,12 +198,11 @@ const JobsScreen = ({
 JobsScreen.propTypes = {
   driverName: PropTypes.string.isRequired,
   allJobs: PropTypes.array.isRequired,
-  countOfJobs: PropTypes.number.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
-  setFocusedJobId: PropTypes.func.isRequired,
+  getJobById: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -195,7 +210,6 @@ const mapStateToProps = (state) => {
   return {
     driverName: User.selectors.getDriverName(state),
     allJobs: Jobs.selectors.getAllJobs(state),
-    countOfJobs: Jobs.selectors.getCountOfJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
   };
@@ -204,7 +218,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   getJobsByDate: Jobs.actionCreators.getJobsByDate,
   getJobsByPage: Jobs.actionCreators.getJobsByPage,
-  setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
+  getJobById: Jobs.actionCreators.getJobById,
 };
 
 export default connect(

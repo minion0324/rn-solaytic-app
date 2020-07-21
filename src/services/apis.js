@@ -63,30 +63,64 @@ function apiAcknowledgeJobs(jobIds) {
   });
 };
 
-function apiStartJobs(jobIds) {
+function apiStartJobs(jobIds, stepBinUpdate) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
     data: {
       jobIds,
+      stepBinUpdate,
     },
   });
 };
 
-function apiExchangeJobs(jobIds) {
+function apiExchangeJobs(jobIds, stepBinUpdate) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
       jobIds,
+      stepBinUpdate,
     },
   });
 };
 
-function apiCompleteJobs(jobIds, attempt) {
+function apiCompleteJobs(jobIds, stepBinUpdate, attempt) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
+    data: {
+      jobIds,
+      stepBinUpdate,
+      attempt,
+    },
+  });
+};
+
+function apiGetDriverNotes(
+  searchQuery = '',
+  currentPage = 1,
+  pageSize = 10,
+  sortColumn = '', // 'driverNoteId',
+  sortDir = 'asc',
+) {
+  return apiCall('api/mobile/driver/notes', 'get', {
+    params: {
+      searchQuery,
+      currentPage,
+      pageSize,
+      sortColumn,
+      sortDir,
+    },
+  });
+};
+
+function apiFailJobs(jobIds, attempt) {
+  return apiCall('api/mobile/driver/jobs/fail', 'post', {
     data: {
       jobIds,
       attempt,
     },
   });
 };
+
+function apiGetJobById(jobId) {
+  return apiCall(`api/mobile/driver/jobs/${jobId}`, 'get', {});
+}
 
 export {
   apiLogin,
@@ -97,4 +131,7 @@ export {
   apiStartJobs,
   apiExchangeJobs,
   apiCompleteJobs,
+  apiGetDriverNotes,
+  apiFailJobs,
+  apiGetJobById,
 };

@@ -4,7 +4,6 @@ import {
   IMAGES,
   COLORS,
   FONT,
-  PLATFORM,
 } from 'src/constants';
 
 import {
@@ -17,6 +16,30 @@ import {
 import registerScreens from './registerScreens';
 
 registerScreens();
+
+export function showOverlay(screenName, passProps = {}, options = {}) {
+  return Navigation.showOverlay({
+    component: {
+      name: screenName,
+      passProps: {
+        ...passProps,
+      },
+      options: {
+        layout: {
+          componentBackgroundColor: COLORS.TRANSPARENT1,
+        },
+        overlay: {
+          interceptTouchOutside: true,
+        },
+        ...options,
+      },
+    },
+  });
+}
+
+export function dismissOverlay(componentId) {
+  return Navigation.dismissOverlay(componentId);
+}
 
 export function changeTabIndex(componentId, tabIndex) {
   Navigation.mergeOptions(componentId, {
@@ -73,7 +96,7 @@ export function popToRootScreen(componentId) {
 export function pushSingleScreenApp() {
   Navigation.setDefaultOptions({
     layout: {
-      orientation: PLATFORM === 'ios' ? ['portrait', 'landscape'] : ['portrait'],
+      orientation: ['portrait'],
     },
     topBar: {
       visible: false,
@@ -113,7 +136,7 @@ export function pushSingleScreenApp() {
 export function pushMultiScreensApp() {
   Navigation.setDefaultOptions({
     layout: {
-      orientation: PLATFORM === 'ios' ? ['portrait', 'landscape'] : ['portrait'],
+      orientation: ['portrait'],
     },
     topBar: {
       visible: false,

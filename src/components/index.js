@@ -5,3 +5,4 @@ export { default as ListWrap } from './ListWrap';
 export { default as ItemWrap } from './ItemWrap';
 export { default as DefaultButton } from './DefaultButton';
 export { default as DatePicker } from './DatePicker';
+export { default as OverlayWrap } from './OverlayWrap';

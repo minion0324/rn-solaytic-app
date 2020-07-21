@@ -3,7 +3,6 @@ import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import Orientation from 'react-native-orientation-locker';
 
 import {
   HeaderBar,
@@ -41,6 +40,7 @@ import {
   Container,
   ShadowWrap,
   LoadingWrap,
+  FlexWrap,
 } from 'src/styles/common.styles';
 import {
   HelloText,
@@ -68,8 +68,8 @@ const AlertScreen = ({
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
-  setFocusedJobId,
   acknowledgeJobs,
+  getJobById,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -77,7 +77,6 @@ const AlertScreen = ({
   const [ refreshing, setRefreshing ] = useState(false);
 
   useEffect(() => {
-    Orientation.lockToPortrait();
     pushNotifications.connect(setFCMToken);
 
     return () => {
@@ -146,9 +145,23 @@ const AlertScreen = ({
     });
   };
 
-  const onItemPress = (job) => {
-    setFocusedJobId(job.jobId);
+  const onSuccess = () => {
+    setReloading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+  };
+
+  const onFailure = () => {
+    setReloading(false);
+  };
+
+  const onItemPress = (job) => {
+    setReloading(true);
+
+    getJobById({
+      jobId: job.jobId,
+      success: onSuccess,
+      failure: onFailure,
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -168,17 +181,19 @@ const AlertScreen = ({
             </DateWrap>
           : <DateWrap />
         }
-        <ItemWrap
-          onPress={() => onItemPress(item)}
-        >
-          <JobCard
-            customer={item.customerName}
-            type={item.jobTypeName}
-            location={getJobCustomerAddress(item)}
-            time={jobDate.format('hh:mm A')}
-            status={item.statusName}
-          />
-        </ItemWrap>
+        <FlexWrap>
+          <ItemWrap
+            onPress={() => onItemPress(item)}
+          >
+            <JobCard
+              customer={item.customerName}
+              type={item.jobTypeName}
+              location={getJobCustomerAddress(item)}
+              time={jobDate.format('hh:mm A')}
+              status={item.statusName}
+            />
+          </ItemWrap>
+        </FlexWrap>
       </CardRow>
     );
   };
@@ -235,8 +250,8 @@ AlertScreen.propTypes = {
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
-  setFocusedJobId: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
+  getJobById: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -255,8 +270,8 @@ const mapDispatchToProps = {
   setFCMToken: User.actionCreators.setFCMToken,
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
-  setFocusedJobId: Jobs.actionCreators.setFocusedJobId,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
+  getJobById: Jobs.actionCreators.getJobById,
 };
 
 export default connect(

@@ -58,22 +58,33 @@ const getDateForAlerts = createSelector(
   },
 );
 
-const getFocusedJobId = createSelector(
+const getFocusedJob = createSelector(
   getJobsStore,
   (jobs) => {
-    return jobs.focusedJobId;
+    return jobs.focusedJob || {};
   },
 );
 
-const getFocusedJob = createSelector(
-  getFocusedJobId,
-  getAllJobs,
-  getAllAlerts,
-  (focusedJobId, allJobs, allAlerts) => {
-    const focusedJob =
-      allAlerts.find(item => item.jobId === focusedJobId) || allJobs.find(item => item.jobId === focusedJobId);
+const getPhotosAndSign = createSelector(
+  getFocusedJob,
+  (focusedJob) => {
+    try {
+      const lastAttempt = focusedJob.attempts[focusedJob.attempts.length - 1];
 
-    return focusedJob;
+      return {
+        photos: lastAttempt.jobPhotos.map(item => item.photoUrl),
+        sign: lastAttempt.signatureUrl,
+        signedUserName: lastAttempt.signedUserName,
+        signedUserContact: lastAttempt.signedUserContact,
+      };
+    } catch (error) {
+      return {
+        photos: [],
+        sign: '',
+        signedUserName: '',
+        signedUserContact: '',
+      };
+    }
   },
 );
 
@@ -87,4 +98,5 @@ export default {
   getPageOfAlerts,
   getDateForAlerts,
   getFocusedJob,
+  getPhotosAndSign,
 };

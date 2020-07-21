@@ -105,7 +105,7 @@ const BinButton = styled.TouchableOpacity`
   justify-content: center;
   border-radius: ${SIZE1}px;
   background-color: ${(props) => (
-    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT
+    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT1
   )};
 `;
 
@@ -131,6 +131,15 @@ const BinInfoRow = styled.View`
 `;
 
 const BinText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLUE1};
+  text-align: center;
+`;
+
+const BinInput = styled.TextInput`
+  width: 100%;
+  padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
@@ -223,6 +232,7 @@ export {
   BinInfoWrap,
   BinInfoRow,
   BinText,
+  BinInput,
   InstructionsWrap,
   InstructionsContent,
   InstructionsText,

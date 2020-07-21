@@ -4,14 +4,14 @@ import {
 
 import {
   apiUploadFile,
+  apiGetDriverNotes,
 } from 'src/services';
-import {
-  PLATFORM,
-} from 'src/constants';
 
 import {
   UPLOAD_PHOTOS,
   UPLOAD_SIGN,
+  GET_DRIVER_NOTES,
+  GET_DRIVER_NOTES_BY_PAGE,
   actionCreators,
 } from './actions';
 
@@ -46,7 +46,7 @@ export function* asyncUploadSign({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiUploadFile, PLATFORM === 'ios' ? sign : 'file://' + sign);
+    const { data } = yield call(apiUploadFile, sign);
     yield put(actionCreators.uploadSignSuccess(data));
 
     success && success();
@@ -59,6 +59,50 @@ export function* watchUploadSign() {
   while (true) {
     const action = yield take(UPLOAD_SIGN);
     yield* asyncUploadSign(action);
+  }
+}
+
+export function* asyncGetDriverNotes({ payload }) {
+  const {
+    search, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetDriverNotes, search);
+    yield put(actionCreators.getDriverNotesSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetDriverNotes() {
+  while (true) {
+    const action = yield take(GET_DRIVER_NOTES);
+    yield* asyncGetDriverNotes(action);
+  }
+}
+
+export function* asyncGetDriverNotesByPage({ payload }) {
+  const {
+    search, page, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetDriverNotes, search, page);
+    yield put(actionCreators.getDriverNotesByPageSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetDriverNotesByPage() {
+  while (true) {
+    const action = yield take(GET_DRIVER_NOTES_BY_PAGE);
+    yield* asyncGetDriverNotesByPage(action);
   }
 }
 
@@ -88,5 +132,7 @@ export default function* () {
   yield all([
     fork(watchUploadPhotos),
     fork(watchUploadSign),
+    fork(watchGetDriverNotes),
+    fork(watchGetDriverNotesByPage),
   ]);
 }
