@@ -344,22 +344,22 @@ export function* asyncCompleteJobs({ payload }) {
 
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
-      customerName: focusedJob.customerName,
-      amountCollected: 0, //
+      customerName: focusedJob.customer.customerName,
+      amountCollected: lastJobStep.amountToCollect,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: lastJobStep.wasteTypeId,
       binTypeId: lastJobStep.binTypeId,
       binNumber: lastJobStep.binNumber,
-      binWeight: lastJobStep.binNumber,
+      binWeight: lastJobStep.binWeight,
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
       signatureUrl: jobSign,
       signedUserName,
       signedUserContact,
-      driverName: focusedJob.driverName,
-      vehicleName: focusedJob.vehicleName,
+      driverName: '', //
+      vehicleName: '', //
       remarks: focusedJob.remarks,
       jobPhotos: jobPhotos.map((photo) => {
         return {
