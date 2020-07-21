@@ -63,26 +63,29 @@ function apiAcknowledgeJobs(jobIds) {
   });
 };
 
-function apiStartJobs(jobIds) {
+function apiStartJobs(jobIds, stepBinUpdate) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
     data: {
       jobIds,
+      stepBinUpdate,
     },
   });
 };
 
-function apiExchangeJobs(jobIds) {
+function apiExchangeJobs(jobIds, stepBinUpdate) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
       jobIds,
+      stepBinUpdate,
     },
   });
 };
 
-function apiCompleteJobs(jobIds, attempt) {
+function apiCompleteJobs(jobIds, stepBinUpdate, attempt) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
+      stepBinUpdate,
       attempt,
     },
   });
