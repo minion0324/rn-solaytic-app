@@ -114,6 +114,8 @@ const JobDetailsScreen = ({
   const [ binNumber1, setBinNumber1 ] = useState(focusedJob.steps[0].binNumber);
   const [ binNumber2, setBinNumber2 ] = useState(focusedJob.steps[1].binNumber);
 
+  const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
+
   useEffect(() => {
     setCoreScreenInfo({
       componentId,
@@ -136,7 +138,10 @@ const JobDetailsScreen = ({
 
     acknowledgeJobs({
       jobIds: `${focusedJob.jobId}`,
-      success: () => setLoading(false),
+      success: () => {
+        setLoading(false);
+        setJobStatus(JOB_STATUS.ACKNOWLEDGED);
+      },
       failure: () => setLoading(false),
     });
   };
@@ -146,7 +151,10 @@ const JobDetailsScreen = ({
 
     startJobs({
       jobIds: `${focusedJob.jobId}`,
-      success: () => setLoading(false),
+      success: () => {
+        setLoading(false);
+        setJobStatus(JOB_STATUS.IN_PROGRESS1);
+      },
       failure: () => setLoading(false),
     });
   };
@@ -156,7 +164,10 @@ const JobDetailsScreen = ({
 
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
-      success: () => setLoading(false),
+      success: () => {
+        setLoading(false);
+        setJobStatus(JOB_STATUS.IN_PROGRESS2);
+      },
       failure: () => setLoading(false),
     });
   };
@@ -246,7 +257,7 @@ const JobDetailsScreen = ({
   };
 
   const renderButton = () => {
-    if (focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED) {
+    if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
       return (
         <ButtonWrap>
           <DefaultButton
@@ -260,7 +271,7 @@ const JobDetailsScreen = ({
     }
 
     if (
-      focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 &&
+      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
       focusedJob.steps.length === 3
     ) {
       return (
@@ -276,8 +287,8 @@ const JobDetailsScreen = ({
     }
 
     if (
-      focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
-      focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.IN_PROGRESS2
     ) {
       return (
         <ButtonWrap>
@@ -420,9 +431,9 @@ const JobDetailsScreen = ({
                   onChangeText={text => setBinNumber1(text)}
                   value={binNumber1}
                   editable={
-                    focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED ||
-                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
-                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+                    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+                    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+                    jobStatus === JOB_STATUS.IN_PROGRESS2
                   }
                 />
               : <BinInput
@@ -432,9 +443,9 @@ const JobDetailsScreen = ({
                   onChangeText={text => setBinNumber2(text)}
                   value={binNumber2}
                   editable={
-                    focusedJob.statusName === JOB_STATUS.ACKNOWLEDGED ||
-                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
-                    focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+                    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+                    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+                    jobStatus === JOB_STATUS.IN_PROGRESS2
                   }
                 />
             }
@@ -517,7 +528,7 @@ const JobDetailsScreen = ({
   return (
     <Container>
       {
-        JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName)
+        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
         ? <HeaderBar
             centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
             leftIcon={<BackButton />}
@@ -529,8 +540,8 @@ const JobDetailsScreen = ({
               centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
               leftIcon={<BackButton />}
               rightIcon={
-                focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 ||
-                focusedJob.statusName === JOB_STATUS.IN_PROGRESS2
+                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+                jobStatus === JOB_STATUS.IN_PROGRESS2
                 ? <IconsWrap>
                     <IconButton onPress={onMessage}><MessageIcon /></IconButton>
                     <IconButton onPress={onService}><PlusIcon /></IconButton>
@@ -559,12 +570,12 @@ const JobDetailsScreen = ({
               }
               { renderAttachments() }
               {
-                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS2 ||
-                (focusedJob.statusName === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+                (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+                (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
                 renderPhotoAndSign()
               }
               {
-                JOB_STATUS.FOR_ACKNOWLEDGE.includes(focusedJob.statusName) &&
+                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
                 <DefaultButton
                   text={'Acknowledge'}
                   color={COLORS.BLUE1}
