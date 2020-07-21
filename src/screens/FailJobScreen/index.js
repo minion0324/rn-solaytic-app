@@ -10,6 +10,7 @@ import {
 } from 'src/constants';
 import {
   popScreen,
+  popToRootScreen,
 } from 'src/navigation';
 import {
   HeaderBar,
@@ -85,7 +86,10 @@ const FailJobScreen = ({
     failJobs({
       jobIds: `${focusedJob.jobId}`,
       driverNote: driverNotes[selectedIndex].note,
-      success: () => setLoading(false),
+      success: () => {
+        setLoading(false);
+        popToRootScreen(componentId);
+      },
       failure: () => setLoading(false),
     });
   }
