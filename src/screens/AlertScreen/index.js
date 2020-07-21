@@ -146,12 +146,12 @@ const AlertScreen = ({
   };
 
   const onSuccess = () => {
-    setLoading(false);
+    setReloading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
 
   const onFailure = () => {
-    setLoading(false);
+    setReloading(false);
   };
 
   const onItemPress = (job) => {
