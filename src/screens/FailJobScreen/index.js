@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Keyboard } from 'react-native';
+import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -75,10 +75,16 @@ const FailJobScreen = ({
   };
 
   const onFail = () => {
+    if (selectedIndex === -1) {
+      Alert.alert('Warning', 'Please select a driver note.');
+      return;
+    }
+
     setLoading(true);
 
     failJobs({
       jobIds: `${focusedJob.jobId}`,
+      driverNote: driverNotes[selectedIndex].note,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
