@@ -109,10 +109,11 @@ function apiGetDriverNotes(
   });
 };
 
-function apiFailJobs(jobIds) {
+function apiFailJobs(jobIds, attempt) {
   return apiCall('api/mobile/driver/jobs/fail', 'post', {
     data: {
       jobIds,
+      attempt,
     },
   });
 };
