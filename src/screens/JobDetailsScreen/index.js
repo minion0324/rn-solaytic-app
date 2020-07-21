@@ -361,17 +361,17 @@ const JobDetailsScreen = ({
       <ContactInfo>
         <InfoWrap>
           <LabelText>Customer</LabelText>
-          <InfoText>{focusedJob.customerName}</InfoText>
+          <InfoText>{focusedJob.customer.customerName}</InfoText>
         </InfoWrap>
         <InfoWrap>
           <LabelText>Customer Contact & Phone Number</LabelText>
           <RowWrap>
             <InfoText>
-              {`${focusedJob.steps[0].contactPersonOne || focusedJob.steps[1].contactPersonOne}  |  `}
+              {`${focusedJob.customer.contactPerson}  |  `}
             </InfoText>
             <IdWrap>
               <IdText>
-                {focusedJob.steps[0].contactNumberOne || focusedJob.steps[1].contactNumberOne}
+                {focusedJob.customer.contactNumber}
               </IdText>
             </IdWrap>
           </RowWrap>
@@ -388,9 +388,7 @@ const JobDetailsScreen = ({
     return (
       <View>
         {
-          focusedJob.steps[1].wasteTypeName ||
-          focusedJob.steps[1].binTypeName ||
-          focusedJob.steps[1].binNumber
+          focusedJob.steps[1].wasteType || focusedJob.steps[1].binType
           ? <BinButtonWrap>
               <BinButton
                 active={index === 0}
@@ -416,10 +414,14 @@ const JobDetailsScreen = ({
         }
         <BinInfoWrap>
           <BinInfoRow>
-            <BinText numberOfLines={2}>{focusedJob.steps[index].wasteTypeName}</BinText>
+            <BinText numberOfLines={2}>
+              {focusedJob.steps[index].wasteType.wasteTypeName}
+            </BinText>
           </BinInfoRow>
           <BinInfoRow>
-            <BinText numberOfLines={2}>{focusedJob.steps[index].binTypeName}</BinText>
+            <BinText numberOfLines={2}>
+              {focusedJob.steps[index].binType.binTypeName}
+            </BinText>
           </BinInfoRow>
           <BinInfoRow>
             {
