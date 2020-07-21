@@ -248,11 +248,11 @@ export function* watchAcknowledgeJobs() {
 
 export function* asyncStartJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds, stepBinUpdate, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiStartJobs, jobIds);
+    const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -288,11 +288,11 @@ export function* watchStartJobs() {
 
 export function* asyncExchangeJobs({ payload }) {
   const {
-    jobIds, success, failure,
+    jobIds, stepBinUpdate, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiExchangeJobs, jobIds);
+    const { data } = yield call(apiExchangeJobs, jobIds, stepBinUpdate);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -329,6 +329,7 @@ export function* watchExchangeJobs() {
 export function* asyncCompleteJobs({ payload }) {
   const {
     jobIds,
+    stepBinUpdate,
     signedUserName,
     signedUserContact,
     success,
@@ -370,7 +371,7 @@ export function* asyncCompleteJobs({ payload }) {
       }),
     };
 
-    const { data } = yield call(apiCompleteJobs, jobIds, attempt);
+    const { data } = yield call(apiCompleteJobs, jobIds, stepBinUpdate, attempt);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
