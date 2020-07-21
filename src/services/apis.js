@@ -114,6 +114,10 @@ function apiFailJobs(jobIds) {
   });
 };
 
+function apiGetJobById(jobId) {
+  return apiCall(`api/mobile/driver/jobs/${jobId}`, 'get', {});
+}
+
 export {
   apiLogin,
   apiAuthToken,
@@ -125,4 +129,5 @@ export {
   apiCompleteJobs,
   apiGetDriverNotes,
   apiFailJobs,
+  apiGetJobById,
 };
