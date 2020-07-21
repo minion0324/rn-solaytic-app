@@ -207,7 +207,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
         res.newJobs.splice(idx, 1, {
           ...res.newJobs[idx],
-          jobStatusId: 4,
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
 
@@ -221,7 +220,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
         res.newJobs.splice(idx, 0, {
           ...res.newAlerts[index],
-          jobStatusId: 4,
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
@@ -265,7 +263,6 @@ export function* asyncStartJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 5,
         statusName: JOB_STATUS.IN_PROGRESS1,
       });
 
@@ -306,7 +303,6 @@ export function* asyncExchangeJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 6,
         statusName: JOB_STATUS.IN_PROGRESS2,
       });
 
@@ -385,9 +381,7 @@ export function* asyncCompleteJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 7,
         statusName: JOB_STATUS.COMPLETED,
-        attempts: [ attempt ],
       });
 
       return res;
@@ -427,7 +421,6 @@ export function* asyncFailJobs({ payload }) {
 
       res.newJobs.splice(index, 1, {
         ...res.newJobs[index],
-        jobStatusId: 8,
         statusName: JOB_STATUS.FAILED,
       });
 
