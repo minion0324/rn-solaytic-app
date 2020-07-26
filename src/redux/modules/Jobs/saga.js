@@ -4,6 +4,7 @@ import {
 import moment from 'moment';
 
 import {
+  onError,
   getFormattedDate,
   getStartOfMonth,
   getEndOfMonth,
@@ -235,6 +236,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
@@ -275,6 +277,7 @@ export function* asyncStartJobs({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
@@ -315,6 +318,7 @@ export function* asyncExchangeJobs({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
@@ -394,6 +398,7 @@ export function* asyncCompleteJobs({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
@@ -456,6 +461,7 @@ export function* asyncFailJobs({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
@@ -478,6 +484,7 @@ export function* asyncGetJobById({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
