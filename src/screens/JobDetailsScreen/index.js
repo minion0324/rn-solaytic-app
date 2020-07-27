@@ -58,8 +58,7 @@ import {
   Border,
   ContactInfo,
   InfoWrap,
-  IdWrap,
-  IdText,
+  NumberText,
   RowWrap,
   BinButtonWrap,
   BinButton,
@@ -373,6 +372,19 @@ const JobDetailsScreen = ({
   const renderContactInfo = () => {
     const jobDate = moment(focusedJob[JOB_DATE[0]] || focusedJob[JOB_DATE[1]]);
 
+    let stepIndex = focusedJob.steps.length - 1;
+    if (
+      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+    ) {
+      stepIndex = 0;
+    } else if (
+      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
+      focusedJob.steps.length === 3
+    ) {
+      stepIndex = 1;
+    }
+
     return (
       <ContactInfo>
         <InfoWrap>
@@ -383,13 +395,20 @@ const JobDetailsScreen = ({
           <LabelText>Customer Contact & Phone Number</LabelText>
           <RowWrap>
             <InfoText>
-              {`${focusedJob.customer.contactPerson}  |  `}
+              {
+                focusedJob.steps[stepIndex].contactPersonOne
+                || focusedJob.customer.contactPerson
+              }
             </InfoText>
-            <IdWrap>
-              <IdText>
-                {focusedJob.customer.contactNumber}
-              </IdText>
-            </IdWrap>
+            <InfoText>
+              {'  |  '}
+            </InfoText>
+            <NumberText>
+              {
+                focusedJob.steps[stepIndex].contactNumberOne
+                || focusedJob.customer.contactNumber
+              }
+            </NumberText>
           </RowWrap>
         </InfoWrap>
         <InfoWrap>

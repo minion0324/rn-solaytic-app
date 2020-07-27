@@ -75,11 +75,7 @@ const InfoWrap = styled.View`
   margin-vertical: ${SIZE2}px;
 `;
 
-const IdWrap = styled.TouchableOpacity`
-
-`;
-
-const IdText = styled.Text`
+const NumberText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700,
   color: ${COLORS.BLUE1};
@@ -223,8 +219,7 @@ export {
   Border,
   ContactInfo,
   InfoWrap,
-  IdWrap,
-  IdText,
+  NumberText,
   RowWrap,
   BinButtonWrap,
   BinButton,
