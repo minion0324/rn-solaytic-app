@@ -23,10 +23,14 @@ const ShadowWrap = styled.View`
 `;
 
 const LoadingWrap = styled.View`
-  flex: 1;
-  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
   align-items: center;
   justify-content: center;
+  background-color: ${COLORS.WHITE1};
 `;
 
 const FullImage = styled.Image`
