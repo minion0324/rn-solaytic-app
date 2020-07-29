@@ -114,7 +114,7 @@ const BinButtonText = styled.Text`
 `;
 
 const BinInfoWrap = styled.View`
-
+  margin-bottom: ${SIZE4}px;
 `;
 
 const BinInfoRow = styled.View`
@@ -144,7 +144,7 @@ const BinInput = styled.TextInput`
 
 const InstructionsWrap = styled.View`
   align-items: center;
-  margin-vertical: ${SIZE4}px;
+  margin-bottom: ${SIZE4}px;
 `;
 
 const InstructionsContent = styled.View`
