@@ -375,14 +375,36 @@ const JobDetailsScreen = ({
     let stepIndex = focusedJob.steps.length - 1;
     if (
       jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.CANCELLED ||
       JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
     ) {
-      stepIndex = 0;
-    } else if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
-      focusedJob.steps.length === 3
-    ) {
-      stepIndex = 1;
+      if (
+        focusedJob.steps[0].contactPersonOne &&
+        focusedJob.steps[0].contactNumberOne
+      ) {
+        stepIndex = 0;
+      } else {
+        stepIndex = 1;
+      }
+    } else if (jobStatus === JOB_STATUS.IN_PROGRESS2) {
+      if (
+        focusedJob.steps[2].contactPersonOne &&
+        focusedJob.steps[2].contactNumberOne
+      ) {
+        stepIndex = 2;
+      } else {
+        stepIndex = 1;
+      }
+    } else {
+      if (
+        focusedJob.steps[stepIndex].contactPersonOne &&
+        focusedJob.steps[stepIndex].contactNumberOne
+      ) {
+        stepIndex = stepIndex;
+      } else {
+        stepIndex = stepIndex - 1;
+      }
     }
 
     return (
