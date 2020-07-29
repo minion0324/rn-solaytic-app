@@ -220,19 +220,20 @@ const AlertScreen = ({
         }
       </ShadowWrap>
 
+      <ListWrap
+        data={allAlerts}
+        keyExtractor={(item) => `${item.jobId}`}
+        renderItem={renderItem}
+        onEndProcess={onEnd}
+        onRefreshProcess={onRefresh}
+        refreshing={refreshing}
+      />
+
       {
-        reloading
-        ? <LoadingWrap>
-            <ActivityIndicator size={'large'} />
-          </LoadingWrap>
-        : <ListWrap
-            data={allAlerts}
-            keyExtractor={(item) => `${item.jobId}`}
-            renderItem={renderItem}
-            onEndProcess={onEnd}
-            onRefreshProcess={onRefresh}
-            refreshing={refreshing}
-          />
+        reloading &&
+        <LoadingWrap>
+          <ActivityIndicator size={'large'} />
+        </LoadingWrap>
       }
 
       <BottomBar componentId={componentId} activeIndex={0} />

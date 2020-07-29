@@ -175,19 +175,20 @@ const JobsScreen = ({
         </TabWrap>
       </ShadowWrap>
 
+      <ListWrap
+        data={allJobs}
+        keyExtractor={(item) => `${item.jobId}`}
+        renderItem={renderItem}
+        onEndProcess={onEnd}
+        onRefreshProcess={onRefresh}
+        refreshing={refreshing}
+      />
+
       {
-        loading
-        ? <LoadingWrap>
-            <ActivityIndicator size={'large'} />
-          </LoadingWrap>
-        : <ListWrap
-            data={allJobs}
-            keyExtractor={(item) => `${item.jobId}`}
-            renderItem={renderItem}
-            onEndProcess={onEnd}
-            onRefreshProcess={onRefresh}
-            refreshing={refreshing}
-          />
+        loading &&
+        <LoadingWrap>
+          <ActivityIndicator size={'large'} />
+        </LoadingWrap>
       }
 
       <BottomBar componentId={componentId} activeIndex={1} />

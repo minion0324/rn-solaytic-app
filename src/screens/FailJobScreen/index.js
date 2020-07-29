@@ -192,19 +192,20 @@ const FailJobScreen = ({
         />
       </SearchBarWrap>
 
+      <ListWrap
+        data={driverNotes}
+        keyExtractor={(item) => `${item.driverNoteId}`}
+        renderItem={renderItem}
+        onEndProcess={onEnd}
+        onRefreshProcess={onRefresh}
+        refreshing={refreshing}
+      />
+
       {
-        reloading
-        ? <LoadingWrap>
-            <ActivityIndicator size={'large'} />
-          </LoadingWrap>
-        : <ListWrap
-            data={driverNotes}
-            keyExtractor={(item) => `${item.driverNoteId}`}
-            renderItem={renderItem}
-            onEndProcess={onEnd}
-            onRefreshProcess={onRefresh}
-            refreshing={refreshing}
-          />
+        reloading &&
+        <LoadingWrap>
+          <ActivityIndicator size={'large'} />
+        </LoadingWrap>
       }
 
       <ButtonWrap>
