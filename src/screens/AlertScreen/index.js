@@ -88,7 +88,7 @@ const AlertScreen = ({
     pushNotifications.setNotificationOpenedHandler(onNotification);
   }, [coreScreenInfo]);
 
-  const onNotification = async () => {
+  const onNotification = async (notification) => {
     try {
       if (coreScreenInfo.componentType === 'push') {
         popToRootScreen(coreScreenInfo.componentId);
@@ -154,14 +154,18 @@ const AlertScreen = ({
     setReloading(false);
   };
 
-  const onItemPress = (job) => {
+  const onJobDetails = (jobId) => {
     setReloading(true);
 
     getJobById({
-      jobId: job.jobId,
+      jobId,
       success: onSuccess,
       failure: onFailure,
     });
+  };
+
+  const onItemPress = (job) => {
+    onJobDetails(job.jobId)
   };
 
   const renderItem = ({ item, index }) => {
