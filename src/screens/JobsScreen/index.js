@@ -68,16 +68,16 @@ const JobsScreen = ({
     { key: 'third', color: COLORS.GREEN1 },
     { key: 'fourth', color: COLORS.RED1 },
   ]);
-  const [ loading, setLoading ] = useState(false);
+  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const onDateSelect = (selectedDate) => {
-    setLoading(true);
+    setReloading(true);
 
     getJobsByDate({
       dateForJobs: selectedDate,
-      success: () => setLoading(false),
-      failure: () => setLoading(false),
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
     });
   };
 
@@ -101,22 +101,26 @@ const JobsScreen = ({
   };
 
   const onSuccess = () => {
-    setLoading(false);
+    setReloading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
 
   const onFailure = () => {
-    setLoading(false);
+    setReloading(false);
   };
 
-  const onItemPress = (job) => {
-    setLoading(true);
+  const onJobDetails = (jobId) => {
+    setReloading(true);
 
     getJobById({
-      jobId: job.jobId,
+      jobId,
       success: onSuccess,
       failure: onFailure,
     });
+  };
+
+  const onItemPress = (job) => {
+    onJobDetails(job.jobId);
   };
 
   const renderItem = ({ item, index }) => {
@@ -185,7 +189,7 @@ const JobsScreen = ({
       />
 
       {
-        loading &&
+        reloading &&
         <LoadingWrap>
           <ActivityIndicator size={'large'} />
         </LoadingWrap>
