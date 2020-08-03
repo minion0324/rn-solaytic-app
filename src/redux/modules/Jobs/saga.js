@@ -32,6 +32,7 @@ import {
   GET_JOBS_BY_PAGE,
   GET_ALERTS_BY_DATE,
   GET_ALERTS_BY_PAGE,
+  RELOAD_JOBS_AND_ALERTS,
   ACKNOWLEDGE_JOBS,
   START_JOBS,
   EXCHANGE_JOBS,
@@ -180,6 +181,37 @@ export function* watchGetAlertsByPage() {
   while (true) {
     const action = yield take(GET_ALERTS_BY_PAGE);
     yield* asyncGetAlertsByPage(action);
+  }
+}
+
+export function* asyncReloadJobsAndAlerts({ payload }) {
+  const {
+    success, failure,
+  } = payload;
+
+  try {
+    const dateForAlerts = yield select(Jobs.selectors.getDateForAlerts);
+    const fromDateForAlerts = getStartOfMonth(dateForAlerts);
+    const toDateForAlerts = getEndOfMonth(dateForAlerts);
+    const { data: newAlerts } = yield call(apiGetJobs, fromDateForAlerts, toDateForAlerts, true);
+
+    const dateForJobs = yield select(Jobs.selectors.getDateForJobs);
+    const fromDateForJobs = getStartOfMonth(dateForJobs);
+    const toDateForJobs = getEndOfMonth(dateForJobs);
+    const { data: newJobs } = yield call(apiGetJobs, fromDateForJobs, toDateForJobs, false);
+
+    yield put(actionCreators.reloadJobsAndAlertsSuccess({ newJobs, newAlerts }));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchReloadJobsAndAlerts() {
+  while (true) {
+    const action = yield take(RELOAD_JOBS_AND_ALERTS);
+    yield* asyncReloadJobsAndAlerts(action);
   }
 }
 
