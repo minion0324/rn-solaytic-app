@@ -86,7 +86,7 @@ const AlertScreen = ({
   }, []);
 
   useEffect(() => {
-    pushNotifications.setNotificationOpenedHandler(onNotification);
+    pushNotifications.setNotificationHandlerForAlerts(onNotification);
   }, [coreScreenInfo]);
 
   const onNotification = async () => {
