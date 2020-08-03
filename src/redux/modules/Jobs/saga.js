@@ -190,17 +190,14 @@ export function* asyncReloadJobsAndAlerts({ payload }) {
   } = payload;
 
   try {
-    const dateForAlerts = yield select(Jobs.selectors.getDateForAlerts);
-    const fromDateForAlerts = getStartOfMonth(dateForAlerts);
-    const toDateForAlerts = getEndOfMonth(dateForAlerts);
-    const { data: newAlerts } = yield call(apiGetJobs, fromDateForAlerts, toDateForAlerts, true);
+    const date = getFormattedDate();
+    const fromDate = getStartOfMonth(date);
+    const toDate = getEndOfMonth(date);
 
-    const dateForJobs = yield select(Jobs.selectors.getDateForJobs);
-    const fromDateForJobs = getStartOfMonth(dateForJobs);
-    const toDateForJobs = getEndOfMonth(dateForJobs);
-    const { data: newJobs } = yield call(apiGetJobs, fromDateForJobs, toDateForJobs, false);
+    const { data: { data: newJobs } } = yield call(apiGetJobs, fromDate, toDate, false);
+    const { data: { data: newAlerts } } = yield call(apiGetJobs, fromDate, toDate, true);
 
-    yield put(actionCreators.reloadJobsAndAlertsSuccess({ newJobs, newAlerts }));
+    yield put(actionCreators.reloadJobsAndAlertsSuccess({ date, newJobs, newAlerts }));
 
     success && success();
   } catch (error) {
@@ -557,6 +554,7 @@ export default function* () {
     fork(watchGetJobsByPage),
     fork(watchGetAlertsByDate),
     fork(watchGetAlertsByPage),
+    fork(watchReloadJobsAndAlerts),
     fork(watchAcknowledgeJobs),
     fork(watchStartJobs),
     fork(watchExchangeJobs),

@@ -56,8 +56,13 @@ function Jobs(state = DEFAULT, action = {}) {
       case GET_ALERTS_BY_PAGE_SUCCESS:
         draft.allAlerts.concat(payload.data);
         break;
-      case ACKNOWLEDGE_JOBS_SUCCESS:
       case RELOAD_JOBS_AND_ALERTS_SUCCESS:
+        draft.allJobs = payload.newJobs;
+        draft.allAlerts = payload.newAlerts;
+        draft.dateForJobs = payload.date;
+        draft.dateForAlerts = payload.date;
+        break;
+      case ACKNOWLEDGE_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
         draft.allAlerts = payload.newAlerts;
         break;
