@@ -30,7 +30,7 @@ const LoadingWrap = styled.View`
   bottom: 0px;
   align-items: center;
   justify-content: center;
-  background-color: ${COLORS.WHITE1};
+  background-color: ${COLORS.WHITE2};
 `;
 
 const FullImage = styled.Image`
