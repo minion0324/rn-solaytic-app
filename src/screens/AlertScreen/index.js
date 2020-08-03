@@ -68,6 +68,7 @@ const AlertScreen = ({
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
+  reloadJobsAndAlerts,
   acknowledgeJobs,
   getJobById,
   componentId,
@@ -88,7 +89,7 @@ const AlertScreen = ({
     pushNotifications.setNotificationOpenedHandler(onNotification);
   }, [coreScreenInfo]);
 
-  const onNotification = async (notification) => {
+  const onNotification = async () => {
     try {
       if (coreScreenInfo.componentType === 'push') {
         popToRootScreen(coreScreenInfo.componentId);
@@ -104,6 +105,15 @@ const AlertScreen = ({
     }
   }
 
+  const onReloading = () => {
+    setReloading(true);
+
+    reloadJobsAndAlerts({
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
+    });
+  };
+
   const onAcknowledge = () => {
     setLoading(true);
 
@@ -113,16 +123,6 @@ const AlertScreen = ({
       jobIds,
       success: () => setLoading(false),
       failure: () => setLoading(false),
-    });
-  };
-
-  const onReloading = () => {
-    setReloading(true);
-
-    getAlertsByDate({
-      dateForAlerts,
-      success: () => setReloading(false),
-      failure: () => setReloading(false),
     });
   };
 
@@ -255,6 +255,7 @@ AlertScreen.propTypes = {
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
+  reloadJobsAndAlerts: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
@@ -275,6 +276,7 @@ const mapDispatchToProps = {
   setFCMToken: User.actionCreators.setFCMToken,
   getAlertsByDate: Jobs.actionCreators.getAlertsByDate,
   getAlertsByPage: Jobs.actionCreators.getAlertsByPage,
+  reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   getJobById: Jobs.actionCreators.getJobById,
 };
