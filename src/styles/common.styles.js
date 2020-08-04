@@ -63,6 +63,13 @@ const FlexWrap = styled.View`
   flex: ${props => props.flex || 1};
 `;
 
+const SpaceView = styled.View`
+  margin-left: ${props => props.mLeft || 0}px;
+  margin-top: ${props => props.mTop || 0}px;
+  margin-right: ${props => props.mRight || 0}px;
+  margin-bottom: ${props => props.mBottom || 0}px;
+`;
+
 export {
   Container,
   ShadowWrap,
@@ -72,4 +79,5 @@ export {
   SearchIconWrap,
   SearchInput,
   FlexWrap,
+  SpaceView,
 };
