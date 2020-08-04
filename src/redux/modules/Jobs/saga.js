@@ -2,6 +2,7 @@ import {
   take, put, call, fork, all, select,
 } from 'redux-saga/effects';
 import moment from 'moment';
+import { sortBy } from 'lodash';
 
 import {
   onError,
@@ -509,7 +510,12 @@ export function* asyncGetJobById({ payload }) {
 
   try {
     const { data } = yield call(apiGetJobById, jobId);
-    yield put(actionCreators.getJobByIdSuccess(data));
+
+    //
+    let steps = data.steps.slice(0);
+    steps = sortBy(steps, 'stepOrder');
+
+    yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
 
     success && success();
   } catch (error) {
