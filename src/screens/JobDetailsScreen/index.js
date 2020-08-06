@@ -616,14 +616,18 @@ const JobDetailsScreen = ({
       {
         JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
         ? <HeaderBar
-            centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
+            centerIcon={
+              <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
+            }
             leftIcon={<BackButton />}
             rightIcon={<EmptyWrap />}
             onPressLeft={onBack}
           />
         : <ShadowWrap>
             <HeaderBar
-              centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
+              centerIcon={
+                <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
+              }
               leftIcon={<BackButton />}
               rightIcon={
                 jobStatus === JOB_STATUS.IN_PROGRESS1 ||
