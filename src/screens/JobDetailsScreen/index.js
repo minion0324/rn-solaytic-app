@@ -456,7 +456,9 @@ const JobDetailsScreen = ({
         </InfoWrap>
         <InfoWrap>
           <LabelText>Date & Time</LabelText>
-          <InfoText>{`${jobDate.format('DD ddd')} | ${jobDate.format('hh:mm A')}`}</InfoText>
+          <InfoText>
+            {`${jobDate.format('DD MMM')} | ${jobDate.format('hh:mm A')}`}
+          </InfoText>
         </InfoWrap>
       </ContactInfo>
     );
