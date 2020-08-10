@@ -15,6 +15,7 @@ import {
   COLORS,
   JOB_DATE,
   JOB_STATUS,
+  SIZE1,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -33,6 +34,7 @@ import {
   Container,
   ShadowWrap,
   FullImage,
+  SpaceView,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -432,10 +434,31 @@ const JobDetailsScreen = ({
               }
             </NumberText>
           </RowWrap>
+
+          {
+            !!focusedJob.steps[stepIndex].contactPersonTwo &&
+            !!focusedJob.steps[stepIndex].contactNumberTwo &&
+            <View>
+              <SpaceView mTop={SIZE1} />
+              <RowWrap>
+                <InfoText>
+                  {focusedJob.steps[stepIndex].contactPersonTwo}
+                </InfoText>
+                <InfoText>
+                  {'  |  '}
+                </InfoText>
+                <NumberText>
+                  {focusedJob.steps[stepIndex].contactNumberTwo}
+                </NumberText>
+              </RowWrap>
+            </View>
+          }
         </InfoWrap>
         <InfoWrap>
           <LabelText>Date & Time</LabelText>
-          <InfoText>{`${jobDate.format('DD ddd')} | ${jobDate.format('hh:mm A')}`}</InfoText>
+          <InfoText>
+            {`${jobDate.format('DD MMM')} | ${jobDate.format('hh:mm A')}`}
+          </InfoText>
         </InfoWrap>
       </ContactInfo>
     );
@@ -595,14 +618,18 @@ const JobDetailsScreen = ({
       {
         JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
         ? <HeaderBar
-            centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
+            centerIcon={
+              <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
+            }
             leftIcon={<BackButton />}
             rightIcon={<EmptyWrap />}
             onPressLeft={onBack}
           />
         : <ShadowWrap>
             <HeaderBar
-              centerIcon={<ScreenText>{focusedJob.jobTypeName}</ScreenText>}
+              centerIcon={
+                <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
+              }
               leftIcon={<BackButton />}
               rightIcon={
                 jobStatus === JOB_STATUS.IN_PROGRESS1 ||

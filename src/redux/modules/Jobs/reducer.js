@@ -9,6 +9,7 @@ import {
   GET_ALERTS_SUCCESS,
   GET_ALERTS_BY_DATE_SUCCESS,
   GET_ALERTS_BY_PAGE_SUCCESS,
+  RELOAD_JOBS_AND_ALERTS_SUCCESS,
   ACKNOWLEDGE_JOBS_SUCCESS,
   START_JOBS_SUCCESS,
   EXCHANGE_JOBS_SUCCESS,
@@ -54,6 +55,12 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case GET_ALERTS_BY_PAGE_SUCCESS:
         draft.allAlerts.concat(payload.data);
+        break;
+      case RELOAD_JOBS_AND_ALERTS_SUCCESS:
+        draft.allJobs = payload.newJobs;
+        draft.allAlerts = payload.newAlerts;
+        draft.dateForJobs = payload.date;
+        draft.dateForAlerts = payload.date;
         break;
       case ACKNOWLEDGE_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;

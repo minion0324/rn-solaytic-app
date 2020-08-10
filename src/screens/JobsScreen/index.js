@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -18,14 +18,21 @@ import {
   JOB_DATE,
 } from 'src/constants';
 import {
+  changeTabIndex,
   pushScreen,
+  popToRootScreen,
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 import {
   User,
   Jobs,
+  ViewStore,
 } from 'src/redux';
 import {
+  pushNotifications,
+} from 'src/services';
+import {
+  delay,
   getJobCustomerAddress,
 } from 'src/utils';
 
@@ -57,8 +64,10 @@ const JobsScreen = ({
   allJobs,
   pageOfJobs,
   dateForJobs,
+  coreScreenInfo,
   getJobsByDate,
   getJobsByPage,
+  reloadJobsAndAlerts,
   getJobById,
   componentId,
 }) => {
@@ -68,16 +77,45 @@ const JobsScreen = ({
     { key: 'third', color: COLORS.GREEN1 },
     { key: 'fourth', color: COLORS.RED1 },
   ]);
-  const [ loading, setLoading ] = useState(false);
+  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
+  useEffect(() => {
+    pushNotifications.setNotificationHandlerForJobs(onNotification);
+  }, [coreScreenInfo]);
+
+  const onNotification = async (jobId) => {
+    try {
+      if (coreScreenInfo.componentType === 'push') {
+        popToRootScreen(coreScreenInfo.componentId);
+        await delay(100);
+      }
+
+      changeTabIndex(componentId, 1);
+      await delay(100);
+
+      onReloading(jobId);
+    } catch (error) {
+      //
+    }
+  }
+
+  const onReloading = (jobId) => {
+    setReloading(true);
+
+    reloadJobsAndAlerts({
+      success: () => onJobDetails(jobId),
+      failure: () => setReloading(false),
+    });
+  };
+
   const onDateSelect = (selectedDate) => {
-    setLoading(true);
+    setReloading(true);
 
     getJobsByDate({
       dateForJobs: selectedDate,
-      success: () => setLoading(false),
-      failure: () => setLoading(false),
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
     });
   };
 
@@ -101,22 +139,26 @@ const JobsScreen = ({
   };
 
   const onSuccess = () => {
-    setLoading(false);
+    setReloading(false);
     pushScreen(componentId, JOB_DETAILS_SCREEN);
   };
 
   const onFailure = () => {
-    setLoading(false);
+    setReloading(false);
   };
 
-  const onItemPress = (job) => {
-    setLoading(true);
+  const onJobDetails = (jobId) => {
+    setReloading(true);
 
     getJobById({
-      jobId: job.jobId,
+      jobId,
       success: onSuccess,
       failure: onFailure,
     });
+  };
+
+  const onItemPress = (job) => {
+    onJobDetails(job.jobId);
   };
 
   const renderItem = ({ item, index }) => {
@@ -142,7 +184,7 @@ const JobsScreen = ({
           >
             <JobCard
               customer={item.customerName}
-              type={item.jobTypeName}
+              type={item.jobTemplateName || item.jobTypeName}
               location={getJobCustomerAddress(item)}
               time={jobDate.format('hh:mm A')}
               status={item.statusName}
@@ -185,7 +227,7 @@ const JobsScreen = ({
       />
 
       {
-        loading &&
+        reloading &&
         <LoadingWrap>
           <ActivityIndicator size={'large'} />
         </LoadingWrap>
@@ -201,8 +243,10 @@ JobsScreen.propTypes = {
   allJobs: PropTypes.array.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
+  coreScreenInfo: PropTypes.object.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
+  reloadJobsAndAlerts: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -213,12 +257,14 @@ const mapStateToProps = (state) => {
     allJobs: Jobs.selectors.getAllJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
+    coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
 };
 
 const mapDispatchToProps = {
   getJobsByDate: Jobs.actionCreators.getJobsByDate,
   getJobsByPage: Jobs.actionCreators.getJobsByPage,
+  reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   getJobById: Jobs.actionCreators.getJobById,
 };
 

@@ -51,8 +51,7 @@ class PushNotifications {
   }
 
   onNotificationOpened = ({ notification }) => {
-    this.notificationOpenedHandler && // eslint-disable-line
-    this.notificationOpenedHandler(notification);
+    this.notificationHandler(notification);
   }
 
   onTokenRefresh = (registrationToken) => {
@@ -89,10 +88,21 @@ class PushNotifications {
   getInitialNotification = async () => {
     try {
       const { notification } = await firebase.notifications().getInitialNotification();
-      this.notificationOpenedHandler && // eslint-disable-line
-      this.notificationOpenedHandler(notification);
+      this.notificationHandler(notification);
     } catch (error) {
       //
+    }
+  }
+
+  notificationHandler = (notification) => {
+    const { data: { jobId } } = notification;
+
+    if (jobId) {
+      this.notificationHandlerForJobs && // eslint-disable-line
+      this.notificationHandlerForJobs(jobId);
+    } else {
+      this.notificationHandlerForAlerts && // eslint-disable-line
+      this.notificationHandlerForAlerts();
     }
   }
 
@@ -131,8 +141,12 @@ class PushNotifications {
     }
   }
 
-  setNotificationOpenedHandler = (handler) => {
-    this.notificationOpenedHandler = handler;
+  setNotificationHandlerForJobs = (handler) => {
+    this.notificationHandlerForJobs = handler;
+  }
+
+  setNotificationHandlerForAlerts = (handler) => {
+    this.notificationHandlerForAlerts = handler;
   }
 }
 

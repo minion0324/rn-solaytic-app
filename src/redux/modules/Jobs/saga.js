@@ -2,6 +2,7 @@ import {
   take, put, call, fork, all, select,
 } from 'redux-saga/effects';
 import moment from 'moment';
+import { sortBy } from 'lodash';
 
 import {
   onError,
@@ -32,6 +33,7 @@ import {
   GET_JOBS_BY_PAGE,
   GET_ALERTS_BY_DATE,
   GET_ALERTS_BY_PAGE,
+  RELOAD_JOBS_AND_ALERTS,
   ACKNOWLEDGE_JOBS,
   START_JOBS,
   EXCHANGE_JOBS,
@@ -180,6 +182,34 @@ export function* watchGetAlertsByPage() {
   while (true) {
     const action = yield take(GET_ALERTS_BY_PAGE);
     yield* asyncGetAlertsByPage(action);
+  }
+}
+
+export function* asyncReloadJobsAndAlerts({ payload }) {
+  const {
+    success, failure,
+  } = payload;
+
+  try {
+    const date = getFormattedDate();
+    const fromDate = getStartOfMonth(date);
+    const toDate = getEndOfMonth(date);
+
+    const { data: { data: newJobs } } = yield call(apiGetJobs, fromDate, toDate, false);
+    const { data: { data: newAlerts } } = yield call(apiGetJobs, fromDate, toDate, true);
+
+    yield put(actionCreators.reloadJobsAndAlertsSuccess({ date, newJobs, newAlerts }));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchReloadJobsAndAlerts() {
+  while (true) {
+    const action = yield take(RELOAD_JOBS_AND_ALERTS);
+    yield* asyncReloadJobsAndAlerts(action);
   }
 }
 
@@ -353,10 +383,14 @@ export function* asyncCompleteJobs({ payload }) {
       amountCollected: lastJobStep.amountToCollect,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
-      wasteTypeId: lastJobStep.wasteTypeId,
-      binTypeId: lastJobStep.binTypeId,
-      binNumber: '', //
-      binWeight: lastJobStep.binWeight,
+      wasteTypeId: focusedJob.steps[0].wasteTypeId,
+      binTypeId: focusedJob.steps[0].binTypeId,
+      binNumber: focusedJob.steps[0].binNumber,
+      binWeight: focusedJob.steps[0].binWeight,
+      wasteType2Id: focusedJob.steps[1].wasteTypeId,
+      binType2Id: focusedJob.steps[1].binTypeId,
+      binNumber2: focusedJob.steps[1].binNumber,
+      binWeight2: focusedJob.steps[1].binWeight,
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
@@ -426,10 +460,14 @@ export function* asyncFailJobs({ payload }) {
       amountCollected: lastJobStep.amountToCollect,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
-      wasteTypeId: lastJobStep.wasteTypeId,
-      binTypeId: lastJobStep.binTypeId,
-      binNumber: '', //
-      binWeight: lastJobStep.binWeight,
+      wasteTypeId: focusedJob.steps[0].wasteTypeId,
+      binTypeId: focusedJob.steps[0].binTypeId,
+      binNumber: focusedJob.steps[0].binNumber,
+      binWeight: focusedJob.steps[0].binWeight,
+      wasteType2Id: focusedJob.steps[1].wasteTypeId,
+      binType2Id: focusedJob.steps[1].binTypeId,
+      binNumber2: focusedJob.steps[1].binNumber,
+      binWeight2: focusedJob.steps[1].binWeight,
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
@@ -480,7 +518,12 @@ export function* asyncGetJobById({ payload }) {
 
   try {
     const { data } = yield call(apiGetJobById, jobId);
-    yield put(actionCreators.getJobByIdSuccess(data));
+
+    //
+    let steps = data.steps.slice(0);
+    steps = sortBy(steps, 'stepOrder');
+
+    yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
 
     success && success();
   } catch (error) {
@@ -525,6 +568,7 @@ export default function* () {
     fork(watchGetJobsByPage),
     fork(watchGetAlertsByDate),
     fork(watchGetAlertsByPage),
+    fork(watchReloadJobsAndAlerts),
     fork(watchAcknowledgeJobs),
     fork(watchStartJobs),
     fork(watchExchangeJobs),
