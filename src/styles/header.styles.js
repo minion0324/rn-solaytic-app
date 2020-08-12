@@ -7,14 +7,11 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
-  SIZE6,
-  SIZE8,
   SIZE12,
-  SIZE20,
   FONT,
 } from 'src/constants';
 
-const { ArrowBackIcon } = SVGS;
+const { ArrowBackIcon, FailIcon } = SVGS;
 
 const HelloText = styled.Text`
   font-size: ${FONT(15)}px;
@@ -31,19 +28,6 @@ const ScreenText = styled.Text`
 
 const EmptyWrap = styled.View`
   width: ${SIZE12}px;
-`;
-
-const IconsWrap = styled.View`
-  width: ${SIZE12}px;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const IconButton = styled.TouchableOpacity`
-  width: ${SIZE6}px;
-  height: ${SIZE6}px;
-  align-items: center;
-  justify-content: center;
 `;
 
 //
@@ -70,24 +54,23 @@ const BackButton = () => (
 
 //
 const FailJobWrap = styled.View`
-  width: ${SIZE20}px;
-  height: ${SIZE8}px;
+  width: ${SIZE12}px;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: ${SIZE4}px;
-  border-width: 1px;
-  border-color: ${COLORS.RED1};
 `;
 
 const FailJobText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700;
-  color: ${COLORS.RED1};
+  color: ${COLORS.BLACK2};
+  margin-left: ${SIZE1}px;
 `;
 
 const FailJob = () => (
   <FailJobWrap>
-    <FailJobText>Fail Job</FailJobText>
+    <FailIcon />
+    <FailJobText>Fail</FailJobText>
   </FailJobWrap>
 )
 
@@ -95,8 +78,6 @@ export {
   HelloText,
   ScreenText,
   EmptyWrap,
-  IconsWrap,
-  IconButton,
   BackButton,
   FailJob,
 };
