@@ -78,7 +78,7 @@ const InfoWrap = styled.View`
 const NumberText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700,
-  color: ${COLORS.BLUE1};
+  color: ${COLORS.BLACK2};
   text-decoration-line: underline;
 `;
 
