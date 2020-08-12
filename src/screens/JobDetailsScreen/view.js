@@ -517,9 +517,9 @@ JobDetailsScreenView.propTypes = {
   setIndex: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
-  sign: PropTypes.string.isRequired,
-  signedUserName: PropTypes.string.isRequired,
-  signedUserContact: PropTypes.string.isRequired,
+  sign: PropTypes.string,
+  signedUserName: PropTypes.string,
+  signedUserContact: PropTypes.string,
   binNumber1: PropTypes.string.isRequired,
   setBinNumber1: PropTypes.func.isRequired,
   binNumber2: PropTypes.string.isRequired,
@@ -539,7 +539,9 @@ JobDetailsScreenView.propTypes = {
 };
 
 JobDetailsScreenView.defaultProps = {
-  //
+  sign: '',
+  signedUserName: '',
+  signedUserContact: '',
 };
 
 export default JobDetailsScreenView;
