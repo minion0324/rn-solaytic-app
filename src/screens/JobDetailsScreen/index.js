@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Alert,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import ImagePicker from 'react-native-image-picker';
 
 import {
-  SVGS,
-  COLORS,
-  JOB_DATE,
   JOB_STATUS,
-  SIZE1,
 } from 'src/constants';
-import {
-  HeaderBar,
-  DefaultButton,
-  ItemWrap,
-} from 'src/components';
 import {
   showOverlay,
   pushScreen,
@@ -31,64 +16,11 @@ import {
 } from 'src/navigation';
 
 import {
-  Container,
-  ShadowWrap,
-  FullImage,
-  SpaceView,
-} from 'src/styles/common.styles';
-import {
-  ScreenText,
-  EmptyWrap,
-  IconsWrap,
-  IconButton,
-  BackButton,
-} from 'src/styles/header.styles';
-import {
   Jobs,
   ViewStore,
 } from 'src/redux';
 
-import {
-  ButtonWrap,
-  JobDetails,
-  Content,
-  LabelText,
-  InfoText,
-  LocationInfo,
-  LocationRow,
-  IconWrap,
-  Border,
-  ContactInfo,
-  InfoWrap,
-  NumberText,
-  RowWrap,
-  BinButtonWrap,
-  BinButton,
-  BinButtonText,
-  BinInfoWrap,
-  BinInfoRow,
-  BinText,
-  BinInput,
-  InstructionsWrap,
-  InstructionsContent,
-  InstructionsText,
-  PhotoAndSignWrap,
-  PhotoAndSignText,
-  AttachmentWrap,
-  HalfWrap,
-  SignInfo,
-  SignInfoText,
-} from './styled';
-
-const {
-  Location1Icon,
-  Location2Icon,
-  Location3Icon,
-  CameraIcon,
-  SignIcon,
-  MessageIcon,
-  PlusIcon,
-} = SVGS;
+import JobDetailsScreenView from './view';
 
 const JobDetailsScreen = ({
   focusedJob,
@@ -273,413 +205,33 @@ const JobDetailsScreen = ({
 
   };
 
-  const renderButton = () => {
-    if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.BLUE1}
-            text={'Start'}
-            onPress={onStart}
-            loading={loading}
-          />
-        </ButtonWrap>
-      )
-    }
-
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
-      focusedJob.steps.length === 3
-    ) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.PURPLE1}
-            text={'Exchange'}
-            onPress={onExchange}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
-    }
-
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
-    ) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.GREEN1}
-            text={'Complete'}
-            onPress={onComplete}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
-    }
-
-    return null;
-  };
-
-  const renderLocationInfo = () => {
-    const locations = focusedJob.steps.map(item => item.address);
-
-    return (
-      <View>
-        <LabelText>Locations</LabelText>
-        <LocationInfo>
-          <LocationRow>
-            <IconWrap>
-              <Location1Icon />
-            </IconWrap>
-            <InfoText numberOfLines={1}>
-              {locations[0]}
-            </InfoText>
-          </LocationRow>
-
-          {
-            locations.length === 3 &&
-            <View>
-              <Border />
-              <LocationRow>
-                <IconWrap>
-                  <Location2Icon />
-                </IconWrap>
-                <InfoText numberOfLines={1}>
-                  {locations[1]}
-                </InfoText>
-              </LocationRow>
-            </View>
-          }
-
-          {
-            <View>
-              <Border />
-              <LocationRow>
-                <IconWrap>
-                  <Location3Icon />
-                </IconWrap>
-                <InfoText numberOfLines={1}>
-                  {locations.length === 3 ? locations[2] : locations[1]}
-                </InfoText>
-              </LocationRow>
-            </View>
-          }
-        </LocationInfo>
-      </View>
-    );
-  };
-
-  const renderContactInfo = () => {
-    const jobDate = moment(focusedJob[JOB_DATE[0]] || focusedJob[JOB_DATE[1]]);
-
-    let stepIndex = focusedJob.steps.length - 1;
-    if (
-      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.CANCELLED ||
-      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-    ) {
-      if (
-        focusedJob.steps[0].contactPersonOne &&
-        focusedJob.steps[0].contactNumberOne
-      ) {
-        stepIndex = 0;
-      } else {
-        stepIndex = 1;
-      }
-    } else if (jobStatus === JOB_STATUS.IN_PROGRESS2) {
-      if (
-        focusedJob.steps[2].contactPersonOne &&
-        focusedJob.steps[2].contactNumberOne
-      ) {
-        stepIndex = 2;
-      } else {
-        stepIndex = 1;
-      }
-    } else {
-      if (
-        focusedJob.steps[stepIndex].contactPersonOne &&
-        focusedJob.steps[stepIndex].contactNumberOne
-      ) {
-        stepIndex = stepIndex;
-      } else {
-        stepIndex = stepIndex - 1;
-      }
-    }
-
-    return (
-      <ContactInfo>
-        <InfoWrap>
-          <LabelText>Customer</LabelText>
-          <InfoText>{focusedJob.customer.customerName}</InfoText>
-        </InfoWrap>
-        <InfoWrap>
-          <LabelText>Customer Contact & Phone Number</LabelText>
-          <RowWrap>
-            <InfoText>
-              {
-                focusedJob.steps[stepIndex].contactPersonOne
-                || focusedJob.customer.contactPerson
-              }
-            </InfoText>
-            <InfoText>
-              {'  |  '}
-            </InfoText>
-            <NumberText>
-              {
-                focusedJob.steps[stepIndex].contactNumberOne
-                || focusedJob.customer.contactNumber
-              }
-            </NumberText>
-          </RowWrap>
-
-          {
-            !!focusedJob.steps[stepIndex].contactPersonTwo &&
-            !!focusedJob.steps[stepIndex].contactNumberTwo &&
-            <View>
-              <SpaceView mTop={SIZE1} />
-              <RowWrap>
-                <InfoText>
-                  {focusedJob.steps[stepIndex].contactPersonTwo}
-                </InfoText>
-                <InfoText>
-                  {'  |  '}
-                </InfoText>
-                <NumberText>
-                  {focusedJob.steps[stepIndex].contactNumberTwo}
-                </NumberText>
-              </RowWrap>
-            </View>
-          }
-        </InfoWrap>
-        <InfoWrap>
-          <LabelText>Date & Time</LabelText>
-          <InfoText>
-            {`${jobDate.format('DD MMM')} | ${jobDate.format('hh:mm A')}`}
-          </InfoText>
-        </InfoWrap>
-      </ContactInfo>
-    );
-  };
-
-  const renderBinInfo = () => {
-    return (
-      <View>
-        {
-          focusedJob.steps[1].wasteType || focusedJob.steps[1].binType
-          ? <BinButtonWrap>
-              <BinButton
-                active={index === 0}
-                onPress={() => setIndex(0)}
-              >
-                <BinButtonText active={index === 0}>Bin1</BinButtonText>
-              </BinButton>
-              <BinButton
-                active={index === 1}
-                onPress={() => setIndex(1)}
-              >
-                <BinButtonText active={index === 1}>Bin2</BinButtonText>
-              </BinButton>
-            </BinButtonWrap>
-          : <BinButtonWrap>
-              <BinButton
-                active={index === 0}
-                onPress={() => setIndex(0)}
-              >
-                <BinButtonText active={index === 0}>Bin</BinButtonText>
-              </BinButton>
-            </BinButtonWrap>
-        }
-        <BinInfoWrap>
-          <BinInfoRow>
-            <BinText numberOfLines={2}>
-              {
-                focusedJob.steps[index].wasteType &&
-                focusedJob.steps[index].wasteType.wasteTypeName
-              }
-            </BinText>
-          </BinInfoRow>
-          <BinInfoRow>
-            <BinText numberOfLines={2}>
-              {
-                focusedJob.steps[index].binType &&
-                focusedJob.steps[index].binType.binTypeName
-              }
-            </BinText>
-          </BinInfoRow>
-          <BinInfoRow>
-            {
-              index === 0
-              ? <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  onChangeText={text => setBinNumber1(text)}
-                  value={binNumber1}
-                  editable={
-                    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS2
-                  }
-                />
-              : <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  onChangeText={text => setBinNumber2(text)}
-                  value={binNumber2}
-                  editable={
-                    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS2
-                  }
-                />
-            }
-          </BinInfoRow>
-        </BinInfoWrap>
-      </View>
-    );
-  };
-
-  const renderInstructions = () => {
-    return (
-      <InstructionsWrap>
-        <InfoText>Instructions</InfoText>
-        <InstructionsContent>
-          <InstructionsText>
-            {focusedJob.instructionToDrivers || ''}
-          </InstructionsText>
-        </InstructionsContent>
-      </InstructionsWrap>
-    );
-  }
-
-  const renderPhotoAndSign = () => {
-    return (
-      <PhotoAndSignWrap>
-        <TouchableOpacity onPress={onPhoto}>
-          <RowWrap>
-            <CameraIcon />
-            <PhotoAndSignText>Photo</PhotoAndSignText>
-          </RowWrap>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onSign}>
-          <RowWrap>
-            <SignIcon />
-            <PhotoAndSignText>Sign</PhotoAndSignText>
-          </RowWrap>
-        </TouchableOpacity>
-      </PhotoAndSignWrap>
-    );
-  }
-
-  const renderAttachments = () => {
-    return (
-      <View>
-        {
-          photos.map(imageUri =>
-            <ItemWrap key={imageUri} mLeft={0} mRight={0}>
-              <AttachmentWrap>
-                <FullImage source={{ uri: imageUri }} />
-              </AttachmentWrap>
-            </ItemWrap>
-          )
-        }
-        {
-          !!sign &&
-          <ItemWrap mLeft={0} mRight={0}>
-            <AttachmentWrap>
-              <HalfWrap>
-                <FullImage source={{ uri: sign }} />
-              </HalfWrap>
-              <HalfWrap>
-                <SignInfo>
-                  <SignInfoText numberOfLines={1}>
-                    {signedUserName}
-                  </SignInfoText>
-                </SignInfo>
-                <SignInfo>
-                  <SignInfoText numberOfLines={1}>
-                    {signedUserContact}
-                  </SignInfoText>
-                </SignInfo>
-              </HalfWrap>
-            </AttachmentWrap>
-          </ItemWrap>
-        }
-      </View>
-    )
-  }
-
   return (
-    <Container>
-      {
-        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-        ? <HeaderBar
-            centerIcon={
-              <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-            }
-            leftIcon={<BackButton />}
-            rightIcon={<EmptyWrap />}
-            onPressLeft={onBack}
-          />
-        : <ShadowWrap>
-            <HeaderBar
-              centerIcon={
-                <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-              }
-              leftIcon={<BackButton />}
-              rightIcon={
-                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                jobStatus === JOB_STATUS.IN_PROGRESS2
-                ? <IconsWrap>
-                    <IconButton onPress={onMessage}><MessageIcon /></IconButton>
-                    <IconButton onPress={onService}><PlusIcon /></IconButton>
-                  </IconsWrap>
-                : <EmptyWrap />
-              }
-              onPressLeft={onBack}
-            />
+    <JobDetailsScreenView
+      index={index}
+      setIndex={setIndex}
+      loading={loading}
+      photos={photos}
+      sign={sign}
+      signedUserName={signedUserName}
+      signedUserContact={signedUserContact}
+      binNumber1={binNumber1}
+      setBinNumber1={setBinNumber1}
+      binNumber2={binNumber2}
+      setBinNumber2={setBinNumber2}
+      jobStatus={jobStatus}
 
-            { renderButton() }
-          </ShadowWrap>
-      }
+      focusedJob={focusedJob}
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
-        <JobDetails>
-          <ShadowWrap>
-            <Content>
-              { renderLocationInfo() }
-              { renderContactInfo() }
-              { renderBinInfo() }
-              {
-                !!focusedJob.instructionToDrivers &&
-                renderInstructions()
-              }
-              { renderAttachments() }
-              {
-                (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-                (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
-                renderPhotoAndSign()
-              }
-              {
-                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
-                <DefaultButton
-                  text={'Acknowledge'}
-                  color={COLORS.BLUE1}
-                  onPress={onAcknowledge}
-                  loading={loading}
-                />
-              }
-            </Content>
-          </ShadowWrap>
-        </JobDetails>
-      </ScrollView>
-    </Container>
+      onBack={onBack}
+      onAcknowledge={onAcknowledge}
+      onStart={onStart}
+      onExchange={onExchange}
+      onComplete={onComplete}
+      onPhoto={onPhoto}
+      onSign={onSign}
+      onMessage={onMessage}
+      onService={onService}
+    />
   );
 };
 
