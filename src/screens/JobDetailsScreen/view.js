@@ -29,9 +29,8 @@ import {
 import {
   ScreenText,
   EmptyWrap,
-  IconsWrap,
-  IconButton,
   BackButton,
+  FailJob,
 } from 'src/styles/header.styles';
 
 import {
@@ -72,8 +71,6 @@ const {
   Location3Icon,
   CameraIcon,
   SignIcon,
-  MessageIcon,
-  PlusIcon,
 } = SVGS;
 
 const JobDetailsScreenView = ({
@@ -99,8 +96,7 @@ const JobDetailsScreenView = ({
   onComplete,
   onPhoto,
   onSign,
-  onMessage,
-  onService,
+  onFail,
 }) => {
 
   const renderButton = () => {
@@ -464,13 +460,16 @@ const JobDetailsScreenView = ({
               rightIcon={
                 jobStatus === JOB_STATUS.IN_PROGRESS1 ||
                 jobStatus === JOB_STATUS.IN_PROGRESS2
-                ? <IconsWrap>
-                    <IconButton onPress={onMessage}><MessageIcon /></IconButton>
-                    <IconButton onPress={onService}><PlusIcon /></IconButton>
-                  </IconsWrap>
+                ? <FailJob />
                 : <EmptyWrap />
               }
               onPressLeft={onBack}
+              onPressRight={
+                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+                jobStatus === JOB_STATUS.IN_PROGRESS2
+                ? onFail
+                : null
+              }
             />
 
             { renderButton() }
@@ -536,8 +535,7 @@ JobDetailsScreenView.propTypes = {
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
-  onMessage: PropTypes.func.isRequired,
-  onService: PropTypes.func.isRequired,
+  onFail: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {

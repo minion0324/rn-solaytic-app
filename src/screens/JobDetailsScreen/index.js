@@ -197,12 +197,8 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onMessage = () => {
+  const onFail = () => {
     pushScreen(componentId, FAIL_JOB_SCREEN);
-  };
-
-  const onService = () => {
-
   };
 
   return (
@@ -229,8 +225,7 @@ const JobDetailsScreen = ({
       onComplete={onComplete}
       onPhoto={onPhoto}
       onSign={onSign}
-      onMessage={onMessage}
-      onService={onService}
+      onFail={onFail}
     />
   );
 };
