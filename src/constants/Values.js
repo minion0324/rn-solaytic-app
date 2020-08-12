@@ -24,6 +24,7 @@ const SIZE14 = SIZE1 * 14; // 70
 const SIZE16 = SIZE1 * 16; // 80
 
 const SIZE20 = SIZE1 * 20; // 100
+const SIZE22 = SIZE1 * 22; // 110
 const SIZE24 = SIZE1 * 24; // 120
 const SIZE30 = SIZE1 * 30; // 150
 const SIZE40 = SIZE1 * 40; // 200
@@ -78,6 +79,7 @@ export {
   SIZE14,
   SIZE16,
   SIZE20,
+  SIZE22,
   SIZE24,
   SIZE30,
   SIZE40,
