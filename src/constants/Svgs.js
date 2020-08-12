@@ -20,9 +20,8 @@ import Location3Icon from 'src/assets/svgs/icon-location3.svg';
 import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import ArrowDateIcon from 'src/assets/svgs/icon-date-arrow.svg';
-import MessageIcon from 'src/assets/svgs/icon-message.svg';
-import PlusIcon from 'src/assets/svgs/icon-plus.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
+import FailIcon from 'src/assets/svgs/icon-fail.svg';
 
 export default {
   ActiveCheckIcon,
@@ -47,7 +46,6 @@ export default {
   CameraIcon,
   SignIcon,
   ArrowDateIcon,
-  MessageIcon,
-  PlusIcon,
   SearchIcon,
+  FailIcon,
 };
