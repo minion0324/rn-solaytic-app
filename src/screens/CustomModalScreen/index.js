@@ -10,7 +10,7 @@ import {
 
 const CustomModalScreen = ({
   width,
-  top,
+  offsetFromCenter,
   dismissible,
   getContent,
   componentId,
@@ -23,7 +23,7 @@ const CustomModalScreen = ({
   return (
     <OverlayWrap
       width={width}
-      top={top}
+      offsetFromCenter={offsetFromCenter}
       dismissible={dismissible}
       dismissOverlay={onBack}
     >
@@ -34,7 +34,7 @@ const CustomModalScreen = ({
 
 CustomModalScreen.propTypes = {
   width: PropTypes.string,
-  top: PropTypes.number,
+  offsetFromCenter: PropTypes.number,
   dismissible: PropTypes.bool,
   getContent: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
@@ -42,7 +42,7 @@ CustomModalScreen.propTypes = {
 
 CustomModalScreen.defaultProps = {
   width: '90%',
-  top: 0,
+  offsetFromCenter: 0,
   dismissible: true,
 };
 
