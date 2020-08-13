@@ -84,6 +84,9 @@ import {
   CollectRow,
   CollectInputWrap,
   CollectInput,
+  AddServices,
+  ServicesWrap,
+  ServiceRow,
 } from './styled';
 
 const {
@@ -93,6 +96,8 @@ const {
   CameraIcon,
   SignIcon,
   CommentIcon,
+  ActiveCircleCheckIcon,
+  DeactiveCircleCheckIcon,
 } = SVGS;
 
 const TAB1 = 'Details';
@@ -186,12 +191,51 @@ const JobDetailsScreenView = ({
     );
   };
 
+  const renderServices = () => {
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <ShadowWrap>
+          <Content>
+            <AddServices>
+              <InfoText>ADD SERVICES</InfoText>
+            </AddServices>
+            <ServicesWrap>
+              <ServiceRow>
+                <ActiveCircleCheckIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText>Night charge</InfoText>
+              </ServiceRow>
+              <ServiceRow>
+                <ActiveCircleCheckIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText>Extra manpower</InfoText>
+              </ServiceRow>
+              <ServiceRow>
+                <DeactiveCircleCheckIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText>Extra Height</InfoText>
+              </ServiceRow>
+              <ServiceRow>
+                <DeactiveCircleCheckIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText>Additional waiting time</InfoText>
+              </ServiceRow>
+            </ServicesWrap>
+          </Content>
+        </ShadowWrap>
+      </View>
+    );
+  };
+
   const renderJobInstruction = () => {
     return (
       <JobInstruction>
         { renderComments() }
 
         { renderCollect() }
+
+        { renderServices() }
       </JobInstruction>
     );
   };

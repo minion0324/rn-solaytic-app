@@ -273,6 +273,25 @@ const CollectInput = styled.TextInput`
   text-align: center;
 `;
 
+const AddServices = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: ${SIZE1}px;
+`;
+
+const ServicesWrap = styled.View`
+  margin-vertical: ${SIZE1}px;
+  padding-vertical: ${SIZE2}px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY3};
+`;
+
+const ServiceRow = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  margin-vertical: ${SIZE2}px;
+`;
+
 export {
   ButtonWrap,
   JobDetails,
@@ -312,4 +331,7 @@ export {
   CollectRow,
   CollectInputWrap,
   CollectInput,
+  AddServices,
+  ServicesWrap,
+  ServiceRow,
 };
