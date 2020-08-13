@@ -24,6 +24,8 @@ import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
 import EditIcon from 'src/assets/svgs/icon-edit.svg';
 import CommentIcon from 'src/assets/svgs/icon-comment.svg';
+import ActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active.svg';
+import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
 
 export default {
   ActiveCheckIcon,
@@ -52,4 +54,6 @@ export default {
   FailIcon,
   EditIcon,
   CommentIcon,
+  ActiveCircleCheckIcon,
+  DeactiveCircleCheckIcon,
 };
