@@ -71,6 +71,12 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
+
+  JobInstruction,
+  CommentsWrap,
+  Comment,
+  CommentText,
+  AddComment,
 } from './styled';
 
 const {
@@ -79,6 +85,7 @@ const {
   Location3Icon,
   CameraIcon,
   SignIcon,
+  CommentIcon,
 } = SVGS;
 
 const TAB1 = 'Details';
@@ -116,12 +123,39 @@ const JobDetailsScreenView = ({
   const [ binIndex, setBinIndex ] = useState(0);
 
 
+  const renderComments = () => {
+    return (
+      <ShadowWrap>
+        <Content>
+          <CommentsWrap>
+            <Comment>
+              <CommentText>
+                Look out for bombs. If discovered, please contact the admin or the police.
+              </CommentText>
+            </Comment>
+            <Comment pos={'right'}>
+              <CommentText pos={'right'}>
+                Blah blah
+              </CommentText>
+            </Comment>
+          </CommentsWrap>
+          <AddComment onPress={() => {}}>
+            <CommentIcon />
+            <SpaceView mLeft={SIZE1} />
+            <InfoText>ADD COMMENT</InfoText>
+          </AddComment>
+        </Content>
+      </ShadowWrap>
+    );
+  };
+
   const renderJobInstruction = () => {
     return (
-      <View style={{ backgroundColor: 'red', width: '100%', height: 1000 }}>
-      </View>
+      <JobInstruction>
+        { renderComments() }
+      </JobInstruction>
     );
-  }
+  };
 
   const renderLocationInfo = () => {
     const locations = focusedJob.steps.map(item => item.address);

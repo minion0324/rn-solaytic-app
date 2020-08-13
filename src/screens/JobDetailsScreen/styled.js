@@ -22,7 +22,8 @@ const ButtonWrap = styled.View`
 `;
 
 const JobDetails = styled.View`
-  margin: ${SIZE2}px;
+  margin-bottom: ${SIZE2}px;
+  margin-horizontal: ${SIZE2}px;
 `;
 
 const Content = styled.View`
@@ -207,6 +208,43 @@ const SignInfoText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const JobInstruction = styled.View`
+  margin-bottom: ${SIZE2}px;
+  margin-horizontal: ${SIZE2}px;
+`;
+
+const CommentsWrap = styled.View`
+  margin-bottom: ${SIZE2}px;
+`;
+
+const Comment = styled.View`
+  padding: ${SIZE3}px;
+  margin-vertical: ${SIZE2}px;
+  max-width: 90%;
+  border-radius: ${SIZE2}px;
+  background-color: ${COLORS.BLUE4};
+  align-self: ${(props) => (
+    props.pos === 'right'
+    ? 'flex-end' : 'flex-start'
+  )};
+`;
+
+const CommentText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 600;
+  color: ${COLORS.BLACK2};
+  text-align: ${(props) => (
+    props.pos === 'right'
+    ? 'right' : 'left'
+  )};
+`;
+
+const AddComment = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: ${SIZE1}px;
+`;
+
 export {
   ButtonWrap,
   JobDetails,
@@ -237,4 +275,10 @@ export {
   HalfWrap,
   SignInfo,
   SignInfoText,
+
+  JobInstruction,
+  CommentsWrap,
+  Comment,
+  CommentText,
+  AddComment,
 };
