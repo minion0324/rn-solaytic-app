@@ -22,6 +22,7 @@ import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import ArrowDateIcon from 'src/assets/svgs/icon-date-arrow.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
+import EditIcon from 'src/assets/svgs/icon-edit.svg';
 
 export default {
   ActiveCheckIcon,
@@ -48,4 +49,5 @@ export default {
   ArrowDateIcon,
   SearchIcon,
   FailIcon,
+  EditIcon,
 };
