@@ -9,7 +9,7 @@ import {
   FONT,
 } from 'src/constants';
 
-const AlertWrap = styled.View`
+const ModalWrap = styled.View`
   padding: ${SIZE4}px;
 `;
 
@@ -46,7 +46,7 @@ const AlertButtonText = styled.Text`
 `;
 
 export {
-  AlertWrap,
+  ModalWrap,
   AlertText,
   AlertButtonRow,
   AlertButton,
