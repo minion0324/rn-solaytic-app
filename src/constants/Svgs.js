@@ -23,6 +23,7 @@ import ArrowDateIcon from 'src/assets/svgs/icon-date-arrow.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
 import EditIcon from 'src/assets/svgs/icon-edit.svg';
+import CommentIcon from 'src/assets/svgs/icon-comment.svg';
 
 export default {
   ActiveCheckIcon,
@@ -50,4 +51,5 @@ export default {
   SearchIcon,
   FailIcon,
   EditIcon,
+  CommentIcon,
 };
