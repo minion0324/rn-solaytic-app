@@ -109,7 +109,7 @@ const FailJobScreen = ({
     showOverlay(CUSTOM_MODAL_SCREEN, {
       width: '80%',
       top: -SIZE10,
-      getContent: renderAlert,
+      getContent: renderAlertModal,
     });
   }
 
@@ -167,7 +167,7 @@ const FailJobScreen = ({
     }
   };
 
-  const renderAlert = (containerId) => {
+  const renderAlertModal = (containerId) => {
     return (
       <AlertWrap>
         <AlertText>
