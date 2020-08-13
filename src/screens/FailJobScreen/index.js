@@ -41,7 +41,7 @@ import {
   BackButton,
 } from 'src/styles/header.styles';
 import {
-  AlertWrap,
+  ModalWrap,
   AlertText,
   AlertButtonRow,
   AlertButton,
@@ -169,7 +169,7 @@ const FailJobScreen = ({
 
   const renderAlertModal = (containerId) => {
     return (
-      <AlertWrap>
+      <ModalWrap>
         <AlertText>
           Fail this Job. Are you sure?
         </AlertText>
@@ -187,7 +187,7 @@ const FailJobScreen = ({
             <AlertButtonText color={COLORS.RED1}>Proceed</AlertButtonText>
           </AlertButton>
         </AlertButtonRow>
-      </AlertWrap>
+      </ModalWrap>
     );
   }
 
