@@ -33,7 +33,7 @@ const Content = styled.View`
 
 const OverlayWrap = ({
   width,
-  top,
+  offsetFromCenter,
   dismissible,
   children,
   dismissOverlay,
@@ -46,7 +46,7 @@ const OverlayWrap = ({
       >
         <Overlay />
       </TouchableWithoutFeedback>
-      <Content width={width} top={top}>
+      <Content width={width} top={-offsetFromCenter}>
        { children }
       </Content>
     </Container>
@@ -55,7 +55,7 @@ const OverlayWrap = ({
 
 OverlayWrap.propTypes = {
   width: PropTypes.string,
-  top: PropTypes.number,
+  offsetFromCenter: PropTypes.number,
   dismissible: PropTypes.bool,
   children: PropTypes.node.isRequired,
   dismissOverlay: PropTypes.func,
@@ -63,7 +63,7 @@ OverlayWrap.propTypes = {
 
 OverlayWrap.defaultProps = {
   width: '90%',
-  top: 0,
+  offsetFromCenter: 0,
   dismissible: true,
   dismissOverlay: null,
 };
