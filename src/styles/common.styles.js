@@ -70,6 +70,25 @@ const SpaceView = styled.View`
   margin-bottom: ${props => props.mBottom || 0}px;
 `;
 
+const OkCancelRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-vertical: ${SIZE1}px;
+`;
+
+const OkCancelButton = styled.TouchableOpacity`
+  padding-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE2}px;
+`;
+
+const OkCancelText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700,
+  color: ${COLORS.BLUE1};
+  text-transform: uppercase;
+`;
+
 export {
   Container,
   ShadowWrap,
@@ -80,4 +99,7 @@ export {
   SearchInput,
   FlexWrap,
   SpaceView,
+  OkCancelRow,
+  OkCancelButton,
+  OkCancelText,
 };
