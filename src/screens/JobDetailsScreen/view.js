@@ -14,6 +14,7 @@ import {
   JOB_DATE,
   JOB_STATUS,
   SIZE1,
+  SIZE2,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -26,6 +27,9 @@ import {
   ShadowWrap,
   FullImage,
   SpaceView,
+  OkCancelRow,
+  OkCancelButton,
+  OkCancelText,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -77,6 +81,9 @@ import {
   Comment,
   CommentText,
   AddComment,
+  CollectRow,
+  CollectInputWrap,
+  CollectInput,
 } from './styled';
 
 const {
@@ -149,10 +156,42 @@ const JobDetailsScreenView = ({
     );
   };
 
+  const renderCollect = () => {
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <ShadowWrap>
+          <Content>
+            <CollectRow>
+              <InfoText>COLLECT</InfoText>
+              <CollectInputWrap>
+                <CollectInput
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                />
+              </CollectInputWrap>
+            </CollectRow>
+            <OkCancelRow>
+              <OkCancelButton>
+                <OkCancelText>Cancel</OkCancelText>
+              </OkCancelButton>
+              <OkCancelButton>
+                <OkCancelText>Ok</OkCancelText>
+              </OkCancelButton>
+            </OkCancelRow>
+          </Content>
+        </ShadowWrap>
+      </View>
+    );
+  };
+
   const renderJobInstruction = () => {
     return (
       <JobInstruction>
         { renderComments() }
+
+        { renderCollect() }
       </JobInstruction>
     );
   };

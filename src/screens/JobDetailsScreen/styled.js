@@ -245,6 +245,34 @@ const AddComment = styled.TouchableOpacity`
   padding-vertical: ${SIZE1}px;
 `;
 
+const CollectRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: ${SIZE2}px;
+  margin-bottom: ${SIZE2}px;
+`;
+
+const CollectInputWrap = styled.View`
+  flex: 1;
+  height: ${SIZE8}px;
+  align-items: center;
+  justify-content: center;
+  margin-left: ${SIZE4}px;
+  background-color: ${COLORS.WHITE2};
+  border-width: 1px;
+  border-color: ${COLORS.BLUE1};
+  border-radius: ${SIZE1}px;
+`;
+
+const CollectInput = styled.TextInput`
+  width: 100%;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 700,
+  color: ${COLORS.BLACK2};
+  text-align: center;
+`;
+
 export {
   ButtonWrap,
   JobDetails,
@@ -281,4 +309,7 @@ export {
   Comment,
   CommentText,
   AddComment,
+  CollectRow,
+  CollectInputWrap,
+  CollectInput,
 };
