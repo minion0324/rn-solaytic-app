@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { TabView, TabBar } from 'react-native-tab-view';
 
 import {
   SVGS,
@@ -32,6 +33,13 @@ import {
   BackButton,
   FailJob,
 } from 'src/styles/header.styles';
+import {
+  TabBarStyle,
+  TabBarIndicatorStyle,
+  TabBarLabelStyle,
+  TabBarActiveColor,
+  TabBarInactiveColor,
+} from 'src/styles/tab.styles';
 
 import {
   ButtonWrap,
@@ -96,6 +104,12 @@ const JobDetailsScreenView = ({
   onSign,
   onFail,
 }) => {
+  const [ index, setIndex ] = useState(0);
+  const [ routes ] = useState([
+    { key: 'Details', title: 'Details' },
+    { key: 'Instruction', title: 'Instruction' },
+  ]);
+
   const [ binIndex, setBinIndex ] = useState(0);
 
   const renderButton = () => {
@@ -109,7 +123,7 @@ const JobDetailsScreenView = ({
             loading={loading}
           />
         </ButtonWrap>
-      )
+      );
     }
 
     if (
@@ -379,7 +393,7 @@ const JobDetailsScreenView = ({
         </InstructionsContent>
       </InstructionsWrap>
     );
-  }
+  };
 
   const renderPhotoAndSign = () => {
     return (
@@ -398,7 +412,7 @@ const JobDetailsScreenView = ({
         </TouchableOpacity>
       </PhotoAndSignWrap>
     );
-  }
+  };
 
   const renderAttachments = () => {
     return (
@@ -435,78 +449,114 @@ const JobDetailsScreenView = ({
           </ItemWrap>
         }
       </View>
-    )
-  }
+    );
+  };
 
-  return (
-    <Container>
-      {
-        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-        ? <HeaderBar
+  const renderJobDetails = () => {
+    return (
+      <JobDetails>
+        <ShadowWrap>
+          <Content>
+            { renderLocationInfo() }
+            { renderContactInfo() }
+            { renderBinInfo() }
+            {
+              !!focusedJob.instructionToDrivers &&
+              renderInstructions()
+            }
+            { renderAttachments() }
+            {
+              (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+              (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+              renderPhotoAndSign()
+            }
+            {
+              JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
+              <DefaultButton
+                text={'Acknowledge'}
+                color={COLORS.BLUE1}
+                onPress={onAcknowledge}
+                loading={loading}
+              />
+            }
+          </Content>
+        </ShadowWrap>
+      </JobDetails>
+    );
+  };
+
+  const renderHeader = () => {
+    return (
+      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+      ? <HeaderBar
+          centerIcon={
+            <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
+          }
+          leftIcon={<BackButton />}
+          rightIcon={<EmptyWrap />}
+          onPressLeft={onBack}
+        />
+      : <ShadowWrap>
+          <HeaderBar
             centerIcon={
               <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
             }
             leftIcon={<BackButton />}
-            rightIcon={<EmptyWrap />}
+            rightIcon={
+              jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+              jobStatus === JOB_STATUS.IN_PROGRESS2
+              ? <FailJob />
+              : <EmptyWrap />
+            }
             onPressLeft={onBack}
+            onPressRight={
+              jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+              jobStatus === JOB_STATUS.IN_PROGRESS2
+              ? onFail
+              : null
+            }
           />
-        : <ShadowWrap>
-            <HeaderBar
-              centerIcon={
-                <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-              }
-              leftIcon={<BackButton />}
-              rightIcon={
-                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                jobStatus === JOB_STATUS.IN_PROGRESS2
-                ? <FailJob />
-                : <EmptyWrap />
-              }
-              onPressLeft={onBack}
-              onPressRight={
-                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                jobStatus === JOB_STATUS.IN_PROGRESS2
-                ? onFail
-                : null
-              }
-            />
 
-            { renderButton() }
-          </ShadowWrap>
-      }
+          { renderButton() }
+        </ShadowWrap>
+    );
+  };
 
+  const renderScene = ({ route }) => {
+    return (
       <ScrollView
         showsVerticalScrollIndicator={false}
       >
-        <JobDetails>
-          <ShadowWrap>
-            <Content>
-              { renderLocationInfo() }
-              { renderContactInfo() }
-              { renderBinInfo() }
-              {
-                !!focusedJob.instructionToDrivers &&
-                renderInstructions()
-              }
-              { renderAttachments() }
-              {
-                (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-                (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
-                renderPhotoAndSign()
-              }
-              {
-                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
-                <DefaultButton
-                  text={'Acknowledge'}
-                  color={COLORS.BLUE1}
-                  onPress={onAcknowledge}
-                  loading={loading}
-                />
-              }
-            </Content>
-          </ShadowWrap>
-        </JobDetails>
+          { renderJobDetails() }
       </ScrollView>
+    );
+  };
+
+  const renderTabBar = (props) => {
+    return (
+      <TabBar
+        {...props}
+        getLabelText={({ route }) => route.title}
+        style={TabBarStyle}
+        indicatorStyle={TabBarIndicatorStyle}
+        labelStyle={TabBarLabelStyle}
+        activeColor={TabBarActiveColor}
+        inactiveColor={TabBarInactiveColor}
+      />
+    );
+  };
+
+  return (
+    <Container>
+      { renderHeader() }
+
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={idx => setIndex(idx)}
+        useNativeDriver
+      />
     </Container>
   );
 };
