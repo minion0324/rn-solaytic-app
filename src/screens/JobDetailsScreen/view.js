@@ -151,7 +151,7 @@ const JobDetailsScreenView = ({
 
   const onAddComment = () => {
     showOverlay(CUSTOM_MODAL_SCREEN, {
-      top: -SIZE10,
+      offsetFromCenter: SIZE10,
       dismissible: false,
       getContent: renderCommentModal,
     });
