@@ -3,6 +3,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -15,12 +16,21 @@ import {
   JOB_STATUS,
   SIZE1,
   SIZE2,
+  SIZE10,
 } from 'src/constants';
 import {
   HeaderBar,
   DefaultButton,
   ItemWrap,
 } from 'src/components';
+import {
+  showOverlay,
+  dismissOverlay,
+  CUSTOM_MODAL_SCREEN,
+} from 'src/navigation';
+import {
+  delay,
+} from 'src/utils';
 
 import {
   Container,
@@ -44,6 +54,11 @@ import {
   TabBarActiveColor,
   TabBarInactiveColor,
 } from 'src/styles/tab.styles';
+import {
+  ModalWrap,
+  ModalTopText,
+  ModalInput,
+} from 'src/styles/modal.styles';
 
 import {
   ButtonWrap,
@@ -134,6 +149,41 @@ const JobDetailsScreenView = ({
 
   const [ binIndex, setBinIndex ] = useState(0);
 
+  const onAddComment = () => {
+    showOverlay(CUSTOM_MODAL_SCREEN, {
+      width: '90%',
+      top: -SIZE10,
+      getContent: renderCommentModal,
+    });
+  };
+
+  const onDismissModal = async (containerId) => {
+    Keyboard.dismiss();
+
+    await delay(100);
+    dismissOverlay(containerId);
+  };
+
+  const renderCommentModal = (containerId) => {
+    return (
+      <ModalWrap>
+        <ModalTopText>Enter a comment</ModalTopText>
+        <ModalInput
+          underlineColorAndroid={COLORS.TRANSPARENT1}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+        />
+        <OkCancelRow>
+          <OkCancelButton onPress={() => onDismissModal(containerId)}>
+            <OkCancelText>Cancel</OkCancelText>
+          </OkCancelButton>
+          <OkCancelButton onPress={() => onDismissModal(containerId)}>
+            <OkCancelText>Ok</OkCancelText>
+          </OkCancelButton>
+        </OkCancelRow>
+      </ModalWrap>
+    );
+  };
 
   const renderComments = () => {
     return (
@@ -151,7 +201,7 @@ const JobDetailsScreenView = ({
               </CommentText>
             </Comment>
           </CommentsWrap>
-          <AddComment onPress={() => {}}>
+          <AddComment onPress={onAddComment}>
             <CommentIcon />
             <SpaceView mLeft={SIZE1} />
             <InfoText>ADD COMMENT</InfoText>
