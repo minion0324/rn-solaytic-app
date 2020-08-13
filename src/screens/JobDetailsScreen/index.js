@@ -35,7 +35,6 @@ const JobDetailsScreen = ({
   initJobPhotosAndSign,
   componentId,
 }) => {
-  const [ index, setIndex ] = useState(0);
   const [ loading, setLoading ] = useState(false);
 
   const [ photos, setPhotos ] = useState(photosAndSign.photos);
@@ -203,8 +202,6 @@ const JobDetailsScreen = ({
 
   return (
     <JobDetailsScreenView
-      index={index}
-      setIndex={setIndex}
       loading={loading}
       photos={photos}
       sign={sign}

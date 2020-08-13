@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   ScrollView,
@@ -74,8 +74,6 @@ const {
 } = SVGS;
 
 const JobDetailsScreenView = ({
-  index,
-  setIndex,
   loading,
   photos,
   sign,
@@ -98,6 +96,7 @@ const JobDetailsScreenView = ({
   onSign,
   onFail,
 }) => {
+  const [ binIndex, setBinIndex ] = useState(0);
 
   const renderButton = () => {
     if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
@@ -297,24 +296,24 @@ const JobDetailsScreenView = ({
           focusedJob.steps[1].wasteType || focusedJob.steps[1].binType
           ? <BinButtonWrap>
               <BinButton
-                active={index === 0}
-                onPress={() => setIndex(0)}
+                active={binIndex === 0}
+                onPress={() => setBinIndex(0)}
               >
-                <BinButtonText active={index === 0}>Bin1</BinButtonText>
+                <BinButtonText active={binIndex === 0}>Bin1</BinButtonText>
               </BinButton>
               <BinButton
-                active={index === 1}
-                onPress={() => setIndex(1)}
+                active={binIndex === 1}
+                onPress={() => setBinIndex(1)}
               >
-                <BinButtonText active={index === 1}>Bin2</BinButtonText>
+                <BinButtonText active={binIndex === 1}>Bin2</BinButtonText>
               </BinButton>
             </BinButtonWrap>
           : <BinButtonWrap>
               <BinButton
-                active={index === 0}
-                onPress={() => setIndex(0)}
+                active={binIndex === 0}
+                onPress={() => setBinIndex(0)}
               >
-                <BinButtonText active={index === 0}>Bin</BinButtonText>
+                <BinButtonText active={binIndex === 0}>Bin</BinButtonText>
               </BinButton>
             </BinButtonWrap>
         }
@@ -322,22 +321,22 @@ const JobDetailsScreenView = ({
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                focusedJob.steps[index].wasteType &&
-                focusedJob.steps[index].wasteType.wasteTypeName
+                focusedJob.steps[binIndex].wasteType &&
+                focusedJob.steps[binIndex].wasteType.wasteTypeName
               }
             </BinText>
           </BinInfoRow>
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                focusedJob.steps[index].binType &&
-                focusedJob.steps[index].binType.binTypeName
+                focusedJob.steps[binIndex].binType &&
+                focusedJob.steps[binIndex].binType.binTypeName
               }
             </BinText>
           </BinInfoRow>
           <BinInfoRow>
             {
-              index === 0
+              binIndex === 0
               ? <BinInput
                   underlineColorAndroid={COLORS.TRANSPARENT1}
                   autoCapitalize={'none'}
@@ -513,8 +512,6 @@ const JobDetailsScreenView = ({
 };
 
 JobDetailsScreenView.propTypes = {
-  index: PropTypes.number.isRequired,
-  setIndex: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
   sign: PropTypes.string,
