@@ -53,12 +53,13 @@ OverlayWrap.propTypes = {
   width: PropTypes.string,
   top: PropTypes.number,
   children: PropTypes.node.isRequired,
-  dismissOverlay: PropTypes.func.isRequired,
+  dismissOverlay: PropTypes.func,
 };
 
 OverlayWrap.defaultProps = {
   width: '90%',
   top: 0,
+  dismissOverlay: null,
 };
 
 export default OverlayWrap;
