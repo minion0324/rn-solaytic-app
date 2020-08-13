@@ -138,9 +138,11 @@ const JobsScreen = ({
     });
   };
 
-  const onSuccess = () => {
-    setReloading(false);
+  const onSuccess = async () => {
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+
+    await delay(100);
+    setReloading(false);
   };
 
   const onFailure = () => {
