@@ -11,6 +11,24 @@ import {
 
 const ModalWrap = styled.View`
   padding: ${SIZE4}px;
+  background-color: ${props => props.color || COLORS.WHITE1};
+`;
+
+const ModalTopText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+  margin-bottom: ${SIZE2}px;
+`;
+
+const ModalInput = styled.TextInput`
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLACK2};
+  margin-vertical: ${SIZE4}px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${COLORS.BLUE1};
 `;
 
 const AlertText = styled.Text`
@@ -47,6 +65,8 @@ const AlertButtonText = styled.Text`
 
 export {
   ModalWrap,
+  ModalTopText,
+  ModalInput,
   AlertText,
   AlertButtonRow,
   AlertButton,
