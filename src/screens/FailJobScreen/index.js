@@ -108,7 +108,7 @@ const FailJobScreen = ({
 
     showOverlay(CUSTOM_MODAL_SCREEN, {
       width: '80%',
-      top: -SIZE10,
+      offsetFromCenter: SIZE10,
       getContent: renderAlertModal,
     });
   }
