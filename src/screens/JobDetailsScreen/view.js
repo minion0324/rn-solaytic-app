@@ -81,6 +81,9 @@ const {
   SignIcon,
 } = SVGS;
 
+const TAB1 = 'Details';
+const TAB2 = 'Instruction';
+
 const JobDetailsScreenView = ({
   loading,
   photos,
@@ -106,60 +109,19 @@ const JobDetailsScreenView = ({
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ routes ] = useState([
-    { key: 'Details', title: 'Details' },
-    { key: 'Instruction', title: 'Instruction' },
+    { key: TAB1, title: TAB1 },
+    { key: TAB2, title: TAB2 },
   ]);
 
   const [ binIndex, setBinIndex ] = useState(0);
 
-  const renderButton = () => {
-    if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.BLUE1}
-            text={'Start'}
-            onPress={onStart}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
-    }
 
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
-      focusedJob.steps.length === 3
-    ) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.PURPLE1}
-            text={'Exchange'}
-            onPress={onExchange}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
-    }
-
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
-    ) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.GREEN1}
-            text={'Complete'}
-            onPress={onComplete}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
-    }
-
-    return null;
-  };
+  const renderJobInstruction = () => {
+    return (
+      <View style={{ backgroundColor: 'red', width: '100%', height: 1000 }}>
+      </View>
+    );
+  }
 
   const renderLocationInfo = () => {
     const locations = focusedJob.steps.map(item => item.address);
@@ -395,25 +357,6 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderPhotoAndSign = () => {
-    return (
-      <PhotoAndSignWrap>
-        <TouchableOpacity onPress={onPhoto}>
-          <RowWrap>
-            <CameraIcon />
-            <PhotoAndSignText>Photo</PhotoAndSignText>
-          </RowWrap>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onSign}>
-          <RowWrap>
-            <SignIcon />
-            <PhotoAndSignText>Sign</PhotoAndSignText>
-          </RowWrap>
-        </TouchableOpacity>
-      </PhotoAndSignWrap>
-    );
-  };
-
   const renderAttachments = () => {
     return (
       <View>
@@ -452,6 +395,25 @@ const JobDetailsScreenView = ({
     );
   };
 
+  const renderPhotoAndSign = () => {
+    return (
+      <PhotoAndSignWrap>
+        <TouchableOpacity onPress={onPhoto}>
+          <RowWrap>
+            <CameraIcon />
+            <PhotoAndSignText>Photo</PhotoAndSignText>
+          </RowWrap>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onSign}>
+          <RowWrap>
+            <SignIcon />
+            <PhotoAndSignText>Sign</PhotoAndSignText>
+          </RowWrap>
+        </TouchableOpacity>
+      </PhotoAndSignWrap>
+    );
+  };
+
   const renderJobDetails = () => {
     return (
       <JobDetails>
@@ -483,6 +445,55 @@ const JobDetailsScreenView = ({
         </ShadowWrap>
       </JobDetails>
     );
+  };
+
+  const renderButton = () => {
+    if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.BLUE1}
+            text={'Start'}
+            onPress={onStart}
+            loading={loading}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    if (
+      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
+      focusedJob.steps.length === 3
+    ) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.PURPLE1}
+            text={'Exchange'}
+            onPress={onExchange}
+            loading={loading}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    if (
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.IN_PROGRESS2
+    ) {
+      return (
+        <ButtonWrap>
+          <DefaultButton
+            color={COLORS.GREEN1}
+            text={'Complete'}
+            onPress={onComplete}
+            loading={loading}
+          />
+        </ButtonWrap>
+      );
+    }
+
+    return null;
   };
 
   const renderHeader = () => {
@@ -527,7 +538,11 @@ const JobDetailsScreenView = ({
       <ScrollView
         showsVerticalScrollIndicator={false}
       >
-          { renderJobDetails() }
+          {
+            route.key === TAB1
+            ? renderJobDetails()
+            : renderJobInstruction()
+          }
       </ScrollView>
     );
   };
