@@ -18,6 +18,8 @@ import {
   apiCompleteJobs,
   apiFailJobs,
   apiGetJobById,
+  apiAddService,
+  apiRemoveService,
 } from 'src/services';
 import {
   Jobs,
@@ -40,6 +42,8 @@ import {
   COMPLETE_JOBS,
   FAIL_JOBS,
   GET_JOB_BY_ID,
+  ADD_SERVICE,
+  REMOVE_SERVICE,
   actionCreators,
 } from './actions';
 
@@ -567,6 +571,58 @@ export function* watchGetJobById() {
   }
 }
 
+export function* asyncAddService({ payload }) {
+  const {
+    jobId, serviceId, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiAddService, jobId, serviceId);
+
+    console.log(data);
+
+    // yield put(actionCreators.addServiceSuccess());
+
+    success && success();
+  } catch (error) {
+    onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchAddService() {
+  while (true) {
+    const action = yield take(ADD_SERVICE);
+    yield* asyncAddService(action);
+  }
+}
+
+export function* asyncRemoveService({ payload }) {
+  const {
+    jobId, serviceId, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiRemoveService, jobId, serviceId);
+
+    console.log(data);
+
+    // yield put(actionCreators.removeServiceSuccess());
+
+    success && success();
+  } catch (error) {
+    onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchRemoveService() {
+  while (true) {
+    const action = yield take(REMOVE_SERVICE);
+    yield* asyncRemoveService(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -603,5 +659,7 @@ export default function* () {
     fork(watchCompleteJobs),
     fork(watchFailJobs),
     fork(watchGetJobById),
+    fork(watchAddService),
+    fork(watchRemoveService),
   ]);
 }
