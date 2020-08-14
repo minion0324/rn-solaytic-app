@@ -29,6 +29,8 @@ export const ADD_SERVICE = 'JOBS/ADD_SERVICE';
 export const ADD_SERVICE_SUCCESS = 'JOBS/ADD_SERVICE_SUCCESS';
 export const REMOVE_SERVICE = 'JOBS/REMOVE_SERVICE';
 export const REMOVE_SERVICE_SUCCESS = 'JOBS/REMOVE_SERVICE_SUCCESS';
+export const MARK_MESSAGES_AS_READ = 'JOBS/MARK_MESSAGES_AS_READ';
+export const MARK_MESSAGES_AS_READ_SUCCESS = 'JOBS/MARK_MESSAGES_AS_READ_SUCCESS';
 
 export const actionCreators = {
   getJobsSuccess: createAction(GET_JOBS_SUCCESS),
@@ -59,4 +61,6 @@ export const actionCreators = {
   addServiceSuccess: createAction(ADD_SERVICE_SUCCESS),
   removeService: createAction(REMOVE_SERVICE),
   removeServiceSuccess: createAction(REMOVE_SERVICE_SUCCESS),
+  markMessagesAsRead: createAction(MARK_MESSAGES_AS_READ),
+  markMessagesAsReadSuccess: createAction(MARK_MESSAGES_AS_READ_SUCCESS),
 };
