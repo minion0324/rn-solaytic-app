@@ -140,6 +140,14 @@ function apiRemoveService(jobId, serviceId) {
   });
 };
 
+function apiMarkMessagesAsRead(jobId) {
+  return apiCall('api/mobile/driver/jobs/mark-messages-as-read', 'post', {
+    data: {
+      jobId,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -154,4 +162,5 @@ export {
   apiGetJobById,
   apiAddService,
   apiRemoveService,
+  apiMarkMessagesAsRead,
 };
