@@ -1,8 +1,21 @@
+import styled from 'styled-components';
+
 import {
   COLORS,
+  SIZE1,
   SIZE2,
+  SIZE6,
   FONT,
 } from 'src/constants';
+
+const TabBarBadge = styled.View`
+  width: ${SIZE2}px;
+  aspect-ratio: 1;
+  border-radius: ${SIZE1}px;
+  background-color: ${COLORS.RED1};
+  top: ${SIZE2}px;
+  right: ${SIZE6}px;
+`;
 
 const TabBarStyle = {
   paddingTop: 0,
@@ -28,6 +41,7 @@ const TabBarActiveColor = COLORS.BLACK2;
 const TabBarInactiveColor = COLORS.BLACK2;
 
 export {
+  TabBarBadge,
   TabBarStyle,
   TabBarIndicatorStyle,
   TabBarLabelStyle,
