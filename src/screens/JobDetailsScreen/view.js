@@ -119,6 +119,9 @@ const {
 const TAB1 = 'Details';
 const TAB2 = 'Instruction';
 
+const COMMENT = 'Comment';
+const SERVICES = 'Services';
+
 const JobDetailsScreenView = ({
   loading,
   photos,
@@ -149,6 +152,7 @@ const JobDetailsScreenView = ({
   ]);
 
   const [ binIndex, setBinIndex ] = useState(0);
+  const [ active, setActive ] = useState(COMMENT);
 
   const onAddComment = () => {
     showOverlay(CUSTOM_MODAL_SCREEN, {
@@ -187,6 +191,23 @@ const JobDetailsScreenView = ({
   };
 
   const renderComments = () => {
+    if (active !== COMMENT) {
+      return (
+        <View>
+          <SpaceView mTop={SIZE2} />
+          <ShadowWrap>
+            <Content>
+              <AddComment onPress={() => setActive(COMMENT)}>
+                <CommentIcon />
+                <SpaceView mLeft={SIZE1} />
+                <InfoText>ADD COMMENT</InfoText>
+              </AddComment>
+            </Content>
+          </ShadowWrap>
+        </View>
+      );
+    }
+
     return (
       <ShadowWrap>
         <Content>
@@ -248,31 +269,34 @@ const JobDetailsScreenView = ({
         <SpaceView mTop={SIZE2} />
         <ShadowWrap>
           <Content>
-            <AddServices>
+            <AddServices onPress={() => setActive(SERVICES)}>
               <InfoText>ADD SERVICES</InfoText>
             </AddServices>
-            <ServicesWrap>
-              <ServiceRow>
-                <ActiveCircleCheckIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText>Night charge</InfoText>
-              </ServiceRow>
-              <ServiceRow>
-                <ActiveCircleCheckIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText>Extra manpower</InfoText>
-              </ServiceRow>
-              <ServiceRow>
-                <DeactiveCircleCheckIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText>Extra Height</InfoText>
-              </ServiceRow>
-              <ServiceRow>
-                <DeactiveCircleCheckIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText>Additional waiting time</InfoText>
-              </ServiceRow>
-            </ServicesWrap>
+            {
+              active === SERVICES &&
+              <ServicesWrap>
+                <ServiceRow>
+                  <ActiveCircleCheckIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText>Night charge</InfoText>
+                </ServiceRow>
+                <ServiceRow>
+                  <ActiveCircleCheckIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText>Extra manpower</InfoText>
+                </ServiceRow>
+                <ServiceRow>
+                  <DeactiveCircleCheckIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText>Extra Height</InfoText>
+                </ServiceRow>
+                <ServiceRow>
+                  <DeactiveCircleCheckIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText>Additional waiting time</InfoText>
+                </ServiceRow>
+              </ServicesWrap>
+            }
           </Content>
         </ShadowWrap>
       </View>
