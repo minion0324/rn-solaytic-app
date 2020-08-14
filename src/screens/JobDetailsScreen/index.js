@@ -29,6 +29,8 @@ const JobDetailsScreen = ({
   startJobs,
   exchangeJobs,
   completeJobs,
+  addService,
+  removeService,
   setCoreScreenInfo,
   uploadPhotos,
   uploadSign,
@@ -200,6 +202,20 @@ const JobDetailsScreen = ({
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
 
+  const onUpdateService = (service) => {
+    if (service.isSelected) {
+      removeService({
+        jobId: `${focusedJob.jobId}`,
+        serviceId: `${service.serviceAdditionalChargeTemplateId}`,
+      });
+    } else {
+      addService({
+        jobId: `${focusedJob.jobId}`,
+        serviceId: `${service.serviceAdditionalChargeTemplateId}`,
+      });
+    }
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -223,6 +239,7 @@ const JobDetailsScreen = ({
       onPhoto={onPhoto}
       onSign={onSign}
       onFail={onFail}
+      onUpdateService={onUpdateService}
     />
   );
 };
@@ -234,6 +251,8 @@ JobDetailsScreen.propTypes = {
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
+  addService: PropTypes.func.isRequired,
+  removeService: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   uploadPhotos: PropTypes.func.isRequired,
   uploadSign: PropTypes.func.isRequired,
@@ -256,6 +275,8 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
+  addService: Jobs.actionCreators.addService,
+  removeService: Jobs.actionCreators.removeService,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   uploadPhotos: ViewStore.actionCreators.uploadPhotos,
   uploadSign: ViewStore.actionCreators.uploadSign,

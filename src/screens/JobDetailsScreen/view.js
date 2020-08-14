@@ -144,6 +144,7 @@ const JobDetailsScreenView = ({
   onPhoto,
   onSign,
   onFail,
+  onUpdateService,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ routes ] = useState([
@@ -275,26 +276,22 @@ const JobDetailsScreenView = ({
             {
               active === SERVICES &&
               <ServicesWrap>
-                <ServiceRow>
-                  <ActiveCircleCheckIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <InfoText>Night charge</InfoText>
-                </ServiceRow>
-                <ServiceRow>
-                  <ActiveCircleCheckIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <InfoText>Extra manpower</InfoText>
-                </ServiceRow>
-                <ServiceRow>
-                  <DeactiveCircleCheckIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <InfoText>Extra Height</InfoText>
-                </ServiceRow>
-                <ServiceRow>
-                  <DeactiveCircleCheckIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <InfoText>Additional waiting time</InfoText>
-                </ServiceRow>
+                {
+                  focusedJob.additionalCharges.map((item) => (
+                    <ServiceRow
+                      key={`${item.serviceAdditionalChargeId}`}
+                      onPress={() => onUpdateService(item)}
+                    >
+                      {
+                        item.isSelected
+                        ? <ActiveCircleCheckIcon />
+                        : <DeactiveCircleCheckIcon />
+                      }
+                      <SpaceView mLeft={SIZE2} />
+                      <InfoText>{item.serviceAdditionalChargeName}</InfoText>
+                    </ServiceRow>
+                  ))
+                }
               </ServicesWrap>
             }
           </Content>
@@ -310,7 +307,10 @@ const JobDetailsScreenView = ({
 
         { renderCollect() }
 
-        { renderServices() }
+        {
+          focusedJob.additionalCharges.length > 0 &&
+          renderServices()
+        }
       </JobInstruction>
     );
   };
@@ -804,6 +804,7 @@ JobDetailsScreenView.propTypes = {
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
+  onUpdateService: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
