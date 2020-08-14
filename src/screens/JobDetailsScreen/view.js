@@ -145,6 +145,7 @@ const JobDetailsScreenView = ({
   onSign,
   onFail,
   onUpdateService,
+  onReadMessages,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ routes ] = useState([
@@ -168,6 +169,17 @@ const JobDetailsScreenView = ({
 
     await delay(100);
     dismissOverlay(containerId);
+  };
+
+  const onTapPress = ({ route }) => {
+    if (
+      route.key === TAB1 ||
+      !focusedJob.haveUnreadMessage
+    ) {
+      return;
+    }
+
+    onReadMessages();
   };
 
   const renderCommentModal = (containerId) => {
@@ -763,6 +775,7 @@ const JobDetailsScreenView = ({
         activeColor={TabBarActiveColor}
         inactiveColor={TabBarInactiveColor}
         renderBadge={renderBadge}
+        onTabPress={onTapPress}
       />
     );
   };
@@ -805,6 +818,7 @@ JobDetailsScreenView.propTypes = {
   onSign: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onUpdateService: PropTypes.func.isRequired,
+  onReadMessages: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
