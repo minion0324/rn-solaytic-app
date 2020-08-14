@@ -120,7 +120,25 @@ function apiFailJobs(jobIds, attempt) {
 
 function apiGetJobById(jobId) {
   return apiCall(`api/mobile/driver/jobs/${jobId}`, 'get', {});
-}
+};
+
+function apiAddService(jobId, serviceId) {
+  return apiCall('api/mobile/driver/jobs/add-additional-service', 'post', {
+    data: {
+      jobId,
+      serviceAdditionalChargeTemplateId: serviceId,
+    },
+  });
+};
+
+function apiRemoveService(jobId, serviceId) {
+  return apiCall('api/mobile/driver/jobs/remove-additional-service', 'post', {
+    data: {
+      jobId,
+      serviceAdditionalChargeTemplateId: serviceId,
+    },
+  });
+};
 
 export {
   apiLogin,
@@ -134,4 +152,6 @@ export {
   apiGetDriverNotes,
   apiFailJobs,
   apiGetJobById,
+  apiAddService,
+  apiRemoveService,
 };
