@@ -48,6 +48,7 @@ import {
   FailJob,
 } from 'src/styles/header.styles';
 import {
+  TabBarBadge,
   TabBarStyle,
   TabBarIndicatorStyle,
   TabBarLabelStyle,
@@ -714,6 +715,19 @@ const JobDetailsScreenView = ({
     );
   };
 
+  const renderBadge = ({ route }) => {
+    if (
+      route.key === TAB1 ||
+      !focusedJob.haveUnreadMessage
+    ) {
+      return null;
+    }
+
+    return (
+      <TabBarBadge />
+    );
+  };
+
   const renderTabBar = (props) => {
     return (
       <TabBar
@@ -724,6 +738,7 @@ const JobDetailsScreenView = ({
         labelStyle={TabBarLabelStyle}
         activeColor={TabBarActiveColor}
         inactiveColor={TabBarInactiveColor}
+        renderBadge={renderBadge}
       />
     );
   };
