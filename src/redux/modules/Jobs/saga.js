@@ -99,7 +99,19 @@ export function* asyncGetJobsByPage({ payload }) {
     const toDate = getEndOfMonth(dateForJobs);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, false, pageOfJobs);
-    yield put(actionCreators.getJobsByPageSuccess(data));
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const newJobs = data.data.reduce((result, item) => {
+      const index = result.findIndex(el => el.jobId === item.jobId);
+      if (index === -1) {
+        result.push(item);
+      }
+
+      return result;
+    }, allJobs.slice(0));
+
+    yield put(actionCreators.getJobsByPageSuccess(newJobs));
 
     success && success();
   } catch (error) {
@@ -170,7 +182,19 @@ export function* asyncGetAlertsByPage({ payload }) {
     const toDate = getEndOfMonth(dateForAlerts);
 
     const { data } = yield call(apiGetJobs, fromDate, toDate, true, pageOfAlerts);
-    yield put(actionCreators.getAlertsByPageSuccess(data));
+
+    const allAlerts = yield select(Jobs.selectors.getAllAlerts);
+
+    const newAlerts = data.data.reduce((result, item) => {
+      const index = result.findIndex(el => el.jobId === item.jobId);
+      if (index === -1) {
+        result.push(item);
+      }
+
+      return result;
+    }, allAlerts.slice(0));
+
+    yield put(actionCreators.getAlertsByPageSuccess(newAlerts));
 
     success && success();
   } catch (error) {
