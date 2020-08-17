@@ -18,6 +18,7 @@ import {
   GET_JOB_BY_ID_SUCCESS,
   ADD_SERVICE_SUCCESS,
   REMOVE_SERVICE_SUCCESS,
+  MARK_MESSAGES_AS_READ_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -80,6 +81,9 @@ function Jobs(state = DEFAULT, action = {}) {
       case ADD_SERVICE_SUCCESS:
       case REMOVE_SERVICE_SUCCESS:
         draft.focusedJob.additionalCharges = payload;
+        break;
+      case MARK_MESSAGES_AS_READ_SUCCESS:
+        draft.focusedJob.haveUnreadMessage = false;
         break;
     }
   });

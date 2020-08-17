@@ -651,15 +651,12 @@ export function* asyncMarkMessagesAsRead({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiMarkMessagesAsRead, jobId);
-
-    console.log(data);
+    yield call(apiMarkMessagesAsRead, jobId);
 
     yield put(actionCreators.markMessagesAsReadSuccess());
 
     success && success();
   } catch (error) {
-    onError(error);
     failure && failure();
   }
 }
