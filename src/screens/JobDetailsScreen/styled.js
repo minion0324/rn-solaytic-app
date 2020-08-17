@@ -120,27 +120,28 @@ const BinInfoWrap = styled.View`
 
 const BinInfoRow = styled.View`
   height: ${SIZE8}px;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: ${COLORS.WHITE3};
   margin-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE4}px;
   border-radius: ${SIZE1}px;
 `;
 
 const BinText = styled.Text`
+  width: 80%;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
-  text-align: center;
 `;
 
 const BinInput = styled.TextInput`
-  width: 100%;
+  width: 80%;
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
-  text-align: center;
 `;
 
 const PhotoAndSignWrap = styled.View`
