@@ -130,6 +130,8 @@ const JobDetailsScreenView = ({
   binNumber2,
   setBinNumber2,
   jobStatus,
+  amountCollected,
+  setAmountCollected,
 
   focusedJob,
 
@@ -144,6 +146,7 @@ const JobDetailsScreenView = ({
   onUpdateService,
   onReadMessages,
   onNewComment,
+  onUpdateAmountCollected,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ routes ] = useState([
@@ -275,14 +278,21 @@ const JobDetailsScreenView = ({
                   underlineColorAndroid={COLORS.TRANSPARENT1}
                   autoCapitalize={'none'}
                   autoCorrect={false}
+                  onChangeText={text => setAmountCollected(text)}
+                  value={amountCollected}
+                  keyboardType={'numeric'}
                 />
               </CollectInputWrap>
             </CollectRow>
             <OkCancelRow>
-              <OkCancelButton>
+              <OkCancelButton
+                onPress={() => setAmountCollected(focusedJob.collectedAmount)}
+              >
                 <OkCancelText>Cancel</OkCancelText>
               </OkCancelButton>
-              <OkCancelButton>
+              <OkCancelButton
+                onPress={() => onUpdateAmountCollected(amountCollected)}
+              >
                 <OkCancelText>Ok</OkCancelText>
               </OkCancelButton>
             </OkCancelRow>
@@ -333,7 +343,10 @@ const JobDetailsScreenView = ({
       <JobInstruction>
         { renderComments() }
 
-        { renderCollect() }
+        {
+          focusedJob.isEnabledCashCollection &&
+          renderCollect()
+        }
 
         {
           focusedJob.additionalCharges.length > 0 &&
@@ -805,6 +818,8 @@ JobDetailsScreenView.propTypes = {
   binNumber2: PropTypes.string.isRequired,
   setBinNumber2: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
+  amountCollected: PropTypes.string,
+  setAmountCollected: PropTypes.func.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
@@ -819,12 +834,14 @@ JobDetailsScreenView.propTypes = {
   onUpdateService: PropTypes.func.isRequired,
   onReadMessages: PropTypes.func.isRequired,
   onNewComment: PropTypes.func.isRequired,
+  onUpdateAmountCollected: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
   sign: '',
   signedUserName: '',
   signedUserContact: '',
+  amountCollected: '',
 };
 
 export default JobDetailsScreenView;

@@ -32,6 +32,7 @@ const JobDetailsScreen = ({
   removeService,
   markMessagesAsRead,
   addMessage,
+  updateAmountCollected,
   setCoreScreenInfo,
   uploadPhotos,
   uploadSign,
@@ -50,6 +51,8 @@ const JobDetailsScreen = ({
   const [ binNumber2, setBinNumber2 ] = useState(focusedJob.steps[1].binNumber);
 
   const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
+
+  const [ amountCollected, setAmountCollected ] = useState(focusedJob.collectedAmount);
 
   useEffect(() => {
     setCoreScreenInfo({
@@ -230,6 +233,13 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onUpdateAmountCollected = (amount) => {
+    updateAmountCollected({
+      jobIds: `${focusedJob.jobId}`,
+      amountCollected: +amount,
+    });
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -242,6 +252,8 @@ const JobDetailsScreen = ({
       binNumber2={binNumber2}
       setBinNumber2={setBinNumber2}
       jobStatus={jobStatus}
+      amountCollected={amountCollected}
+      setAmountCollected={setAmountCollected}
 
       focusedJob={focusedJob}
 
@@ -256,6 +268,7 @@ const JobDetailsScreen = ({
       onUpdateService={onUpdateService}
       onReadMessages={onReadMessages}
       onNewComment={onNewComment}
+      onUpdateAmountCollected={onUpdateAmountCollected}
     />
   );
 };
@@ -271,6 +284,7 @@ JobDetailsScreen.propTypes = {
   removeService: PropTypes.func.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
+  updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   uploadPhotos: PropTypes.func.isRequired,
   uploadSign: PropTypes.func.isRequired,
@@ -298,6 +312,7 @@ const mapDispatchToProps = {
   removeService: Jobs.actionCreators.removeService,
   markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
   addMessage: Jobs.actionCreators.addMessage,
+  updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   uploadPhotos: ViewStore.actionCreators.uploadPhotos,
   uploadSign: ViewStore.actionCreators.uploadSign,
