@@ -157,6 +157,14 @@ function apiAddMessage(jobId, message) {
   });
 };
 
+function apiUpdateAmountCollected(jobIds, attempt) {
+  return apiCall('api/mobile/driver/jobs/update-amount-collected', 'post', {
+    data: {
+      jobIds,
+      attempt,
+    },
+  });
+};
 
 export {
   apiLogin,
@@ -174,4 +182,5 @@ export {
   apiRemoveService,
   apiMarkMessagesAsRead,
   apiAddMessage,
+  apiUpdateAmountCollected,
 };
