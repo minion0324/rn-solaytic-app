@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://staging-tms-dispatch.logisfleet.com/';
+const API_BASE_URL = 'https://tms-dispatch-api.wasteporter.com/';
 
 const apiInstance = axios.create({
   baseURL: API_BASE_URL,
