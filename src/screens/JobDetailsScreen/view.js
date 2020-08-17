@@ -119,6 +119,8 @@ const TAB2 = 'Instruction';
 const COMMENT = 'Comment';
 const SERVICES = 'Services';
 
+const UNIT = '$ ';
+
 const JobDetailsScreenView = ({
   loading,
   photos,
@@ -278,8 +280,8 @@ const JobDetailsScreenView = ({
                   underlineColorAndroid={COLORS.TRANSPARENT1}
                   autoCapitalize={'none'}
                   autoCorrect={false}
-                  onChangeText={text => setAmountCollected(text)}
-                  value={amountCollected}
+                  onChangeText={text => setAmountCollected(text.replace(UNIT, ''))}
+                  value={amountCollected ? `${UNIT}${amountCollected}` : amountCollected}
                   keyboardType={'numeric'}
                 />
               </CollectInputWrap>
