@@ -22,6 +22,7 @@ import {
   apiRemoveService,
   apiMarkMessagesAsRead,
   apiAddMessage,
+  apiUpdateAmountCollected,
 } from 'src/services';
 import {
   Jobs,
@@ -48,6 +49,7 @@ import {
   REMOVE_SERVICE,
   MARK_MESSAGES_AS_READ,
   ADD_MESSAGE,
+  UPDATE_AMOUNT_COLLECTED,
   actionCreators,
 } from './actions';
 
@@ -706,6 +708,36 @@ export function* watchAddMessage() {
   while (true) {
     const action = yield take(ADD_MESSAGE);
     yield* asyncAddMessage(action);
+  }
+}
+
+export function* asyncUpdateAmountCollected({ payload }) {
+  const {
+    jobIds, amountCollected, success, failure,
+  } = payload;
+
+  try {
+    const attempt = {
+      amountCollected,
+    };
+
+    const { data } = yield call(apiUpdateAmountCollected, jobIds, attempt);
+
+    console.log('------------------- data');
+    console.log(data);
+
+    yield put(actionCreators.updateAmountCollectedSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchUpdateAmountCollected() {
+  while (true) {
+    const action = yield take(UPDATE_AMOUNT_COLLECTED);
+    yield* asyncUpdateAmountCollected(action);
   }
 }
 
