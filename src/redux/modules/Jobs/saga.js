@@ -111,7 +111,15 @@ export function* asyncGetJobsByPage({ payload }) {
     const newJobs = data.data.reduce((result, item) => {
       const index = result.findIndex(el => el.jobId === item.jobId);
       if (index === -1) {
-        result.push(item);
+        const idx = result.findIndex((el) => {
+          return moment(el[JOB_DATE[0]]).isAfter(item[JOB_DATE[0]]);
+        });
+
+        if (idx === -1) {
+          result.push(item);
+        } else {
+          result.splice(idx, 0, item);
+        }
       }
 
       return result;
@@ -194,7 +202,15 @@ export function* asyncGetAlertsByPage({ payload }) {
     const newAlerts = data.data.reduce((result, item) => {
       const index = result.findIndex(el => el.jobId === item.jobId);
       if (index === -1) {
-        result.push(item);
+        const idx = result.findIndex((el) => {
+          return moment(el[JOB_DATE[0]]).isAfter(item[JOB_DATE[0]]);
+        });
+
+        if (idx === -1) {
+          result.push(item);
+        } else {
+          result.splice(idx, 0, item);
+        }
       }
 
       return result;
