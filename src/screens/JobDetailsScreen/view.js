@@ -111,6 +111,7 @@ const {
   CommentIcon,
   ActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
+  EditIcon,
 } = SVGS;
 
 const TAB1 = 'Details';
@@ -536,6 +537,9 @@ const JobDetailsScreenView = ({
                 focusedJob.steps[binIndex].wasteType.wasteTypeName
               }
             </BinText>
+            <TouchableOpacity>
+              <EditIcon />
+            </TouchableOpacity>
           </BinInfoRow>
           <BinInfoRow>
             <BinText numberOfLines={2}>
@@ -544,35 +548,43 @@ const JobDetailsScreenView = ({
                 focusedJob.steps[binIndex].binType.binTypeName
               }
             </BinText>
+            <TouchableOpacity>
+              <EditIcon />
+            </TouchableOpacity>
           </BinInfoRow>
           <BinInfoRow>
-            {
-              binIndex === 0
-              ? <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  onChangeText={text => setBinNumber1(text)}
-                  value={binNumber1}
-                  editable={
-                    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS2
-                  }
-                />
-              : <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  onChangeText={text => setBinNumber2(text)}
-                  value={binNumber2}
-                  editable={
-                    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                    jobStatus === JOB_STATUS.IN_PROGRESS2
-                  }
-                />
-            }
+            <BinInput
+              underlineColorAndroid={COLORS.TRANSPARENT1}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={(text) => {
+                binIndex === 0 ? setBinNumber1(text) : setBinNumber2(text);
+              }}
+              value={
+                binIndex === 0 ? binNumber1 : binNumber2
+              }
+              editable={
+                jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+                jobStatus === JOB_STATUS.IN_PROGRESS2
+              }
+            />
+            <TouchableOpacity>
+              <EditIcon />
+            </TouchableOpacity>
+          </BinInfoRow>
+          <BinInfoRow>
+            <BinInput
+              underlineColorAndroid={COLORS.TRANSPARENT1}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              placeholder={'BIN WEIGHT'}
+              editable={
+                jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+                jobStatus === JOB_STATUS.IN_PROGRESS2
+              }
+            />
           </BinInfoRow>
         </BinInfoWrap>
       </View>
