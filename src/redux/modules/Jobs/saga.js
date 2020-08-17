@@ -781,5 +781,6 @@ export default function* () {
     fork(watchRemoveService),
     fork(watchMarkMessagesAsRead),
     fork(watchAddMessage),
+    fork(watchUpdateAmountCollected),
   ]);
 }
