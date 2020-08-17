@@ -206,20 +206,20 @@ const JobDetailsScreen = ({
   const onUpdateService = (service) => {
     if (service.isSelected) {
       removeService({
-        jobId: `${focusedJob.jobId}`,
-        serviceId: `${service.serviceAdditionalChargeTemplateId}`,
+        jobId: focusedJob.jobId,
+        serviceId: service.serviceAdditionalChargeTemplateId,
       });
     } else {
       addService({
-        jobId: `${focusedJob.jobId}`,
-        serviceId: `${service.serviceAdditionalChargeTemplateId}`,
+        jobId: focusedJob.jobId,
+        serviceId: service.serviceAdditionalChargeTemplateId,
       });
     }
   };
 
   const onReadMessages = () => {
     markMessagesAsRead({
-      jobId: `${focusedJob.jobId}`,
+      jobId: focusedJob.jobId,
     });
   };
 
@@ -286,7 +286,7 @@ const mapDispatchToProps = {
   completeJobs: Jobs.actionCreators.completeJobs,
   addService: Jobs.actionCreators.addService,
   removeService: Jobs.actionCreators.removeService,
-  markMessagesAsRead: Jobs.actionCreators.removeService,
+  markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   uploadPhotos: ViewStore.actionCreators.uploadPhotos,
   uploadSign: ViewStore.actionCreators.uploadSign,
