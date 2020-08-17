@@ -16,6 +16,8 @@ import {
   COMPLETE_JOBS_SUCCESS,
   FAIL_JOBS_SUCCESS,
   GET_JOB_BY_ID_SUCCESS,
+  ADD_SERVICE_SUCCESS,
+  REMOVE_SERVICE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -74,6 +76,10 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case GET_JOB_BY_ID_SUCCESS:
         draft.focusedJob = payload;
+        break;
+      case ADD_SERVICE_SUCCESS:
+      case REMOVE_SERVICE_SUCCESS:
+        draft.focusedJob.additionalCharges = payload;
         break;
     }
   });
