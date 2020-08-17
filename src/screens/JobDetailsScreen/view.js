@@ -221,18 +221,25 @@ const JobDetailsScreenView = ({
     return (
       <ShadowWrap>
         <Content>
-          <CommentsWrap>
-            <Comment>
-              <CommentText>
-                Look out for bombs. If discovered, please contact the admin or the police.
-              </CommentText>
-            </Comment>
-            <Comment pos={'right'}>
-              <CommentText pos={'right'}>
-                Blah blah
-              </CommentText>
-            </Comment>
-          </CommentsWrap>
+          {
+            focusedJob.messages.length > 0 &&
+            <CommentsWrap>
+              {
+                focusedJob.messages.map((item) => (
+                  <Comment
+                    key={item.jobMessageId}
+                    pos={item.type && 'right'}
+                  >
+                    <CommentText
+                      pos={item.type && 'right'}
+                    >
+                      {item.message}
+                    </CommentText>
+                  </Comment>
+                ))
+              }
+            </CommentsWrap>
+          }
           <AddComment onPress={onAddComment}>
             <CommentIcon />
             <SpaceView mLeft={SIZE1} />
