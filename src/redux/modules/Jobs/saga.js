@@ -579,11 +579,21 @@ export function* asyncAddService({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiAddService, jobId, serviceId);
+    yield call(apiAddService, jobId, serviceId);
 
-    console.log(data);
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    const services = focusedJob.additionalCharges.slice(0);
 
-    // yield put(actionCreators.addServiceSuccess());
+    const index = services.findIndex((item) => {
+      return item.serviceAdditionalChargeTemplateId === serviceId;
+    });
+
+    services[index] = {
+      ...services[index],
+      isSelected: true,
+    };
+
+    yield put(actionCreators.addServiceSuccess(services));
 
     success && success();
   } catch (error) {
@@ -605,11 +615,21 @@ export function* asyncRemoveService({ payload }) {
   } = payload;
 
   try {
-    const { data } = yield call(apiRemoveService, jobId, serviceId);
+    yield call(apiRemoveService, jobId, serviceId);
 
-    console.log(data);
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    const services = focusedJob.additionalCharges.slice(0);
 
-    // yield put(actionCreators.removeServiceSuccess());
+    const index = services.findIndex((item) => {
+      return item.serviceAdditionalChargeTemplateId === serviceId;
+    });
+
+    services[index] = {
+      ...services[index],
+      isSelected: false,
+    };
+
+    yield put(actionCreators.removeServiceSuccess(services));
 
     success && success();
   } catch (error) {
@@ -635,7 +655,7 @@ export function* asyncMarkMessagesAsRead({ payload }) {
 
     console.log(data);
 
-    // yield put(actionCreators.markMessagesAsReadSuccess());
+    yield put(actionCreators.markMessagesAsReadSuccess());
 
     success && success();
   } catch (error) {
