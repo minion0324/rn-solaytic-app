@@ -143,28 +143,6 @@ const BinInput = styled.TextInput`
   text-align: center;
 `;
 
-const InstructionsWrap = styled.View`
-  align-items: center;
-  margin-bottom: ${SIZE4}px;
-`;
-
-const InstructionsContent = styled.View`
-  width: 100%;
-  margin-top: ${SIZE2}px;
-  border-radius: ${SIZE1}px;
-  border-width: 1px;
-  border-color: ${COLORS.GRAY4};
-  padding-horizontal: ${SIZE4}px;
-  padding-top: ${SIZE4}px;
-  padding-bottom: ${SIZE8}px;
-`;
-
-const InstructionsText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 600,
-  color: ${COLORS.BLACK1};
-`;
-
 const PhotoAndSignWrap = styled.View`
   flex-direction: row;
   align-items: center;
@@ -313,9 +291,6 @@ export {
   BinInfoRow,
   BinText,
   BinInput,
-  InstructionsWrap,
-  InstructionsContent,
-  InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
   AttachmentWrap,

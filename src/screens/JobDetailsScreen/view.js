@@ -82,9 +82,6 @@ import {
   BinInfoRow,
   BinText,
   BinInput,
-  InstructionsWrap,
-  InstructionsContent,
-  InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
   AttachmentWrap,
@@ -548,19 +545,6 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderInstructions = () => {
-    return (
-      <InstructionsWrap>
-        <InfoText>Instructions</InfoText>
-        <InstructionsContent>
-          <InstructionsText>
-            {focusedJob.instructionToDrivers || ''}
-          </InstructionsText>
-        </InstructionsContent>
-      </InstructionsWrap>
-    );
-  };
-
   const renderAttachments = () => {
     return (
       <View>
@@ -626,10 +610,6 @@ const JobDetailsScreenView = ({
             { renderLocationInfo() }
             { renderContactInfo() }
             { renderBinInfo() }
-            {
-              !!focusedJob.instructionToDrivers &&
-              renderInstructions()
-            }
             { renderAttachments() }
             {
               (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
