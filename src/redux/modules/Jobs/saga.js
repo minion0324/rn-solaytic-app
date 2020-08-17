@@ -694,10 +694,7 @@ export function* asyncAddMessage({ payload }) {
   try {
     const { data } = yield call(apiAddMessage, jobId, message);
 
-    console.log('------------------');
-    console.log(data);
-
-    yield put(actionCreators.addMessageSuccess());
+    yield put(actionCreators.addMessageSuccess(data));
 
     success && success();
   } catch (error) {

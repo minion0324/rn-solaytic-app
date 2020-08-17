@@ -19,6 +19,7 @@ import {
   ADD_SERVICE_SUCCESS,
   REMOVE_SERVICE_SUCCESS,
   MARK_MESSAGES_AS_READ_SUCCESS,
+  ADD_MESSAGE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -84,6 +85,9 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case MARK_MESSAGES_AS_READ_SUCCESS:
         draft.focusedJob.haveUnreadMessage = false;
+        break;
+      case ADD_MESSAGE_SUCCESS:
+        draft.focusedJob.messages.push(payload);
         break;
     }
   });
