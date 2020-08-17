@@ -21,6 +21,7 @@ import {
   apiAddService,
   apiRemoveService,
   apiMarkMessagesAsRead,
+  apiAddMessage,
 } from 'src/services';
 import {
   Jobs,
@@ -46,6 +47,7 @@ import {
   ADD_SERVICE,
   REMOVE_SERVICE,
   MARK_MESSAGES_AS_READ,
+  ADD_MESSAGE,
   actionCreators,
 } from './actions';
 
@@ -684,6 +686,32 @@ export function* watchMarkMessagesAsRead() {
   }
 }
 
+export function* asyncAddMessage({ payload }) {
+  const {
+    jobId, message, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiAddMessage, jobId, message);
+
+    console.log('------------------');
+    console.log(data);
+
+    yield put(actionCreators.addMessageSuccess());
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchAddMessage() {
+  while (true) {
+    const action = yield take(ADD_MESSAGE);
+    yield* asyncAddMessage(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -723,5 +751,6 @@ export default function* () {
     fork(watchAddService),
     fork(watchRemoveService),
     fork(watchMarkMessagesAsRead),
+    fork(watchAddMessage),
   ]);
 }
