@@ -148,6 +148,16 @@ function apiMarkMessagesAsRead(jobId) {
   });
 };
 
+function apiAddMessage(jobId, message) {
+  return apiCall('api/mobile/driver/jobs/add-message', 'post', {
+    data: {
+      jobId,
+      message,
+    },
+  });
+};
+
+
 export {
   apiLogin,
   apiAuthToken,
@@ -163,4 +173,5 @@ export {
   apiAddService,
   apiRemoveService,
   apiMarkMessagesAsRead,
+  apiAddMessage,
 };
