@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -15,6 +15,7 @@ const CustomModalScreen = ({
   getContent,
   componentId,
 }) => {
+  const [ modalData, setModalData ] = useState(null);
 
   const onBack = () => {
     dismissOverlay(componentId);
@@ -27,7 +28,9 @@ const CustomModalScreen = ({
       dismissible={dismissible}
       dismissOverlay={onBack}
     >
-      {getContent(componentId)}
+      {
+        getContent(componentId, { modalData, setModalData })
+      }
     </OverlayWrap>
   );
 };
