@@ -14,7 +14,6 @@ import {
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
 } from 'src/navigation';
-
 import {
   Jobs,
   ViewStore,
@@ -275,6 +274,7 @@ JobDetailsScreen.propTypes = {
   setCoreScreenInfo: PropTypes.func.isRequired,
   uploadPhotos: PropTypes.func.isRequired,
   uploadSign: PropTypes.func.isRequired,
+  initJobPhotosAndSign: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
