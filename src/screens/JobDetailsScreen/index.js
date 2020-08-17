@@ -32,6 +32,7 @@ const JobDetailsScreen = ({
   addService,
   removeService,
   markMessagesAsRead,
+  addMessage,
   setCoreScreenInfo,
   uploadPhotos,
   uploadSign,
@@ -223,6 +224,13 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onNewComment = (message) => {
+    addMessage({
+      jobId: focusedJob.jobId,
+      message,
+    });
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -248,6 +256,7 @@ const JobDetailsScreen = ({
       onFail={onFail}
       onUpdateService={onUpdateService}
       onReadMessages={onReadMessages}
+      onNewComment={onNewComment}
     />
   );
 };
@@ -262,6 +271,7 @@ JobDetailsScreen.propTypes = {
   addService: PropTypes.func.isRequired,
   removeService: PropTypes.func.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
+  addMessage: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   uploadPhotos: PropTypes.func.isRequired,
   uploadSign: PropTypes.func.isRequired,
@@ -287,6 +297,7 @@ const mapDispatchToProps = {
   addService: Jobs.actionCreators.addService,
   removeService: Jobs.actionCreators.removeService,
   markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
+  addMessage: Jobs.actionCreators.addMessage,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   uploadPhotos: ViewStore.actionCreators.uploadPhotos,
   uploadSign: ViewStore.actionCreators.uploadSign,
