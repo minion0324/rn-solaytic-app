@@ -143,6 +143,7 @@ const JobDetailsScreenView = ({
   onFail,
   onUpdateService,
   onReadMessages,
+  onNewComment,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ routes ] = useState([
@@ -179,7 +180,7 @@ const JobDetailsScreenView = ({
     onReadMessages();
   };
 
-  const renderCommentModal = (containerId) => {
+  const renderCommentModal = (containerId, { modalData, setModalData }) => {
     return (
       <ModalWrap>
         <ModalTopText>Enter a comment</ModalTopText>
@@ -187,12 +188,23 @@ const JobDetailsScreenView = ({
           underlineColorAndroid={COLORS.TRANSPARENT1}
           autoCapitalize={'none'}
           autoCorrect={false}
+          onChangeText={text => setModalData(text)}
+          value={modalData}
         />
         <OkCancelRow>
-          <OkCancelButton onPress={() => onDismissModal(containerId)}>
+          <OkCancelButton
+            onPress={() => {
+              onDismissModal(containerId);
+            }}
+          >
             <OkCancelText>Cancel</OkCancelText>
           </OkCancelButton>
-          <OkCancelButton onPress={() => onDismissModal(containerId)}>
+          <OkCancelButton
+            onPress={() => {
+              onNewComment(modalData);
+              onDismissModal(containerId);
+            }}
+          >
             <OkCancelText>Ok</OkCancelText>
           </OkCancelButton>
         </OkCancelRow>
@@ -806,6 +818,7 @@ JobDetailsScreenView.propTypes = {
   onFail: PropTypes.func.isRequired,
   onUpdateService: PropTypes.func.isRequired,
   onReadMessages: PropTypes.func.isRequired,
+  onNewComment: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
