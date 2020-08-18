@@ -721,12 +721,9 @@ export function* asyncUpdateAmountCollected({ payload }) {
       amountCollected,
     };
 
-    const { data } = yield call(apiUpdateAmountCollected, jobIds, attempt);
+    yield call(apiUpdateAmountCollected, jobIds, attempt);
 
-    console.log('------------------- data');
-    console.log(data);
-
-    yield put(actionCreators.updateAmountCollectedSuccess(data));
+    yield put(actionCreators.updateAmountCollectedSuccess(amountCollected));
 
     success && success();
   } catch (error) {
