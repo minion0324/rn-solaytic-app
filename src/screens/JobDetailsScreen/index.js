@@ -52,7 +52,7 @@ const JobDetailsScreen = ({
 
   const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
-  const [ amountCollected, setAmountCollected ] = useState(focusedJob.collectedAmount);
+  const [ amountCollected, setAmountCollected ] = useState(`${focusedJob.collectedAmount}`);
 
   useEffect(() => {
     setCoreScreenInfo({

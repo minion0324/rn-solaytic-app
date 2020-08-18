@@ -289,7 +289,7 @@ const JobDetailsScreenView = ({
             </CollectRow>
             <OkCancelRow>
               <OkCancelButton
-                onPress={() => setAmountCollected(focusedJob.collectedAmount)}
+                onPress={() => setAmountCollected(`${focusedJob.collectedAmount}`)}
               >
                 <OkCancelText>Cancel</OkCancelText>
               </OkCancelButton>
