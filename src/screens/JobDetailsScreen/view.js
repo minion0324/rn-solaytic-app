@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   ScrollView,
@@ -9,7 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { TabView, TabBar } from 'react-native-tab-view';
-import Picker from 'react-native-picker';
+import ActionSheet from 'react-native-actionsheet';
 
 import {
   SVGS,
@@ -131,10 +131,8 @@ const JobDetailsScreenView = ({
   sign,
   signedUserName,
   signedUserContact,
-  binInfo1,
-  setBinInfo1,
-  binInfo2,
-  setBinInfo2,
+  binInfo,
+  setBinInfo,
   jobStatus,
   amountCollected,
   setAmountCollected,
@@ -167,11 +165,10 @@ const JobDetailsScreenView = ({
 
   const [ chargeIndex, setChargeIndex ] = useState(-1);
 
-  useEffect(() => {
-    return () => {
-      Picker.hide();
-    };
-  }, []);
+  const [ actionSheetData, setActionSheetData ] = useState([]);
+
+  const actionSheetRef = useRef(null);
+  const actionSheetKey = useRef(null);
 
   const onAddComment = () => {
     if (!onAlertNotProgress()) {
@@ -192,125 +189,76 @@ const JobDetailsScreenView = ({
     dismissOverlay(containerId);
   };
 
-  const onAlertNotCharge = () => {
-    const { site } = focusedJob.steps[binIndex];
+  const onActionSheetPress = (index) => {
+    const { charges } = focusedJob;
 
-    if (
-      !site ||
-      (site.services || []).length === 0 ||
-      (site.services[0].charges || []).length === 0
-    ) {
-      Alert.alert('Warning', 'The customer has no Bin / Waste.');
-      return false;
+    if (index === actionSheetData.length) {
+      return;
     }
 
-    return true;
+    if (
+      actionSheetKey.current === 'wasteType' ||
+      actionSheetKey.current === 'binType'
+    ) {
+      onUpdateBinInfo({
+        wasteType: charges[index].wasteType,
+        binType: charges[index].binType,
+      });
+
+      setChargeIndex(index);
+    } else {
+      onUpdateBinInfo({
+        binNumber: charges[chargeIndex].binType.binNumbers[index].binNumberName,
+      });
+    }
   };
 
-  const onPicker = (key) => {
-    Picker.isPickerShow((status) => {
-      if (status) {
-        Picker.hide();
-      } else {
-        //
-        let pickerData = [];
-        const { charges } = focusedJob.steps[binIndex].site.services[0];
-        if (key === 'wasteType' || key === 'binType') {
-          pickerData = charges
-            .filter(charge => charge[key])
-            .map(charge => charge[key][`${key}Name`]);
-        } else {
-          pickerData = charges[chargeIndex].binType.binNumbers || [];
+  const onShowActionSheet = (key) => {
+    const { charges } = focusedJob;
 
-          if (pickerData.length === 0) {
-            Alert.alert('Warning', 'There are no Bin Numbers.');
-            return;
-          }
-        }
+    if (charges.length === 0) {
+      Alert.alert('Warning', 'The customer has no Bin / Waste.');
+      return;
+    }
 
-        Picker.init({
-          pickerData: pickerData,
-          pickerBg: [255, 255, 255, 1],
-          pickerTitleText: '',
-          onPickerConfirm: (data) => {
-            const result = data[0];
+    actionSheetKey.current = key;
 
-            if (key === 'wasteType' || key === 'binType') {
-              const index = charges.findIndex((charge) => {
-                return charge[key][`${key}Name`] === result;
-              });
+    let data = [];
+    if (key === 'wasteType' || key === 'binType') {
+      data = charges
+        .map(charge => charge[key][`${key}Name`]);
+    } else {
+      data = charges[chargeIndex].binType.binNumbers
+        .map(binNumber => binNumber[`${key}Name`]);
 
-              setChargeIndex(index);
-
-              if (binIndex === 0) {
-                setBinInfo1({
-                  ...binInfo1,
-                  wasteType: charges[index].wasteType,
-                  binType: charges[index].binType,
-                  binNumber: '',
-                });
-              } else {
-                setBinInfo2({
-                  ...binInfo2,
-                  wasteType: charges[index].wasteType,
-                  binType: charges[index].binType,
-                  binNumber: '',
-                });
-              }
-            } else {
-              if (binIndex === 0) {
-                setBinInfo1({
-                  ...binInfo1,
-                  binNumber: result,
-                });
-              } else {
-                setBinInfo2({
-                  ...binInfo2,
-                  binNumber: result,
-                });
-              }
-            }
-          },
-          onPickerCancel: () => {
-            Picker.hide();
-          },
-        });
-
-        Picker.show();
+      if (data.length === 0) {
+        Alert.alert('Warning', 'There are no Bin Numbers.');
+        return;
       }
-    });
+    }
+    setActionSheetData(data);
+
+    actionSheetRef.current.show();
   };
 
   const onEditWasteType = () => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
+    // if (!onAlertNotProgress()) {
+    //   return;
+    // }
 
-    if (!onAlertNotCharge()) {
-      return;
-    }
-
-    onPicker('wasteType');
+    onShowActionSheet('wasteType');
   };
 
   const onEditBinType = () => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
+    // if (!onAlertNotProgress()) {
+    //   return;
+    // }
 
-    if (!onAlertNotCharge()) {
-      return;
-    }
-
-    onPicker('binType');
+    onShowActionSheet('binType');
   };
 
   const onEditBinNumber = () => {
     if (!onAlertNotProgress()) {
-      return;
-    }
-
-    if (!onAlertNotCharge()) {
       return;
     }
 
@@ -319,12 +267,21 @@ const JobDetailsScreenView = ({
       return false;
     }
 
-    onPicker('binNumber');
+    onShowActionSheet('binNumber');
+  };
+
+  const onUpdateBinInfo = (newInfo) => {
+    const newBinInfo = binInfo.slice(0);
+
+    newBinInfo[binIndex] = {
+      ...newBinInfo[binIndex],
+      ...newInfo,
+    };
+
+    setBinInfo(newBinInfo);
   };
 
   const onTapPress = ({ route }) => {
-    Picker.hide();
-
     if (
       route.key === TAB1 ||
       !focusedJob.haveUnreadMessage
@@ -687,9 +644,8 @@ const JobDetailsScreenView = ({
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                binIndex === 0
-                ? binInfo1['wasteType'] && binInfo1['wasteType'].wasteTypeName
-                : binInfo2['wasteType'] && binInfo2['wasteType'].wasteTypeName
+                binInfo[binIndex]['wasteType'] &&
+                binInfo[binIndex]['wasteType'].wasteTypeName
               }
             </BinText>
             <TouchableOpacity onPress={onEditWasteType}>
@@ -699,9 +655,8 @@ const JobDetailsScreenView = ({
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                binIndex === 0
-                ? binInfo1['binType'] && binInfo1['binType'].binTypeName
-                : binInfo2['binType'] && binInfo2['binType'].binTypeName
+                binInfo[binIndex]['binType'] &&
+                binInfo[binIndex]['binType'].binTypeName
               }
             </BinText>
             <TouchableOpacity onPress={onEditBinType}>
@@ -711,9 +666,7 @@ const JobDetailsScreenView = ({
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                binIndex === 0
-                ? binInfo1['binNumber']
-                : binInfo2['binNumber']
+                binInfo[binIndex]['binNumber']
               }
             </BinText>
             <TouchableOpacity onPress={onEditBinNumber}>
@@ -727,19 +680,21 @@ const JobDetailsScreenView = ({
               autoCorrect={false}
               placeholder={'BIN WEIGHT'}
               value={
-                binIndex === 0
-                ? binInfo1['binWeight']
-                : binInfo2['binWeight']
+                binInfo[binIndex]['binWeight']
               }
-              onChangeText={(text) => {
-                binIndex === 0
-                ? setBinInfo1({ ...binInfo1, binWeight: text })
-                : setBinInfo2({ ...binInfo2, binWeight: text });
-              }}
+              onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
               editable={isInProgress()}
             />
           </BinInfoRow>
         </BinInfoWrap>
+
+        <ActionSheet
+          ref={actionSheetRef}
+          title={'Please select one.'}
+          options={[ ...actionSheetData, 'Cancel' ]}
+          cancelButtonIndex={actionSheetData.length}
+          onPress={onActionSheetPress}
+        />
       </View>
     );
   };
@@ -980,10 +935,8 @@ JobDetailsScreenView.propTypes = {
   sign: PropTypes.string,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
-  binInfo1: PropTypes.object.isRequired,
-  setBinInfo1: PropTypes.func.isRequired,
-  binInfo2: PropTypes.object.isRequired,
-  setBinInfo2: PropTypes.func.isRequired,
+  binInfo: PropTypes.array.isRequired,
+  setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   amountCollected: PropTypes.string,
   setAmountCollected: PropTypes.func.isRequired,
