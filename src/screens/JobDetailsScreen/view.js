@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { TabView, TabBar } from 'react-native-tab-view';
+import Picker from 'react-native-picker';
 
 import {
   SVGS,
@@ -164,6 +165,8 @@ const JobDetailsScreenView = ({
   const [ binIndex, setBinIndex ] = useState(0);
   const [ active, setActive ] = useState(COMMENT);
 
+  const [ chargeIndex, setChargeIndex ] = useState(-1);
+
   const onAddComment = () => {
     if (!onAlertNotProgress()) {
       return;
@@ -183,14 +186,39 @@ const JobDetailsScreenView = ({
     dismissOverlay(containerId);
   };
 
+  const onAlertNotCharge = () => {
+    const { site } = focusedJob.steps[binIndex];
+
+    if (
+      !site ||
+      (!site.services || []).length === 0 ||
+      (!site.services[0].charges || []).length === 0
+    ) {
+      Alert.alert('Warning', 'The customer has no Bin / Waste.');
+      return false;
+    }
+
+    return true;
+  };
+
   const onEditWasteType = () => {
     if (!onAlertNotProgress()) {
       return;
     }
+
+    if (!onAlertNotCharge()) {
+      return;
+    }
+
+
   };
 
   const onEditBinType = () => {
     if (!onAlertNotProgress()) {
+      return;
+    }
+
+    if (!onAlertNotCharge()) {
       return;
     }
   };
@@ -198,6 +226,15 @@ const JobDetailsScreenView = ({
   const onEditBinNumber = () => {
     if (!onAlertNotProgress()) {
       return;
+    }
+
+    if (!onAlertNotCharge()) {
+      return;
+    }
+
+    if (chargeIndex === -1) {
+      Alert.alert('Warning', 'You can take Bin Numbers after a Bin Type is selected.');
+      return false;
     }
   };
 
