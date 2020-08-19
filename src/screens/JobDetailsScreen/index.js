@@ -47,18 +47,17 @@ const JobDetailsScreen = ({
   const [ signedUserName, setSignedUserName ] = useState(photosAndSign.signedUserName);
   const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
 
-  const [ binInfo1, setBinInfo1 ] = useState({
-    wasteType: focusedJob.steps[0].wasteType,
-    binType: focusedJob.steps[0].binType,
-    binNumber: focusedJob.steps[0].binNumber,
-    binWeight: focusedJob.steps[0].binWeight,
-  });
-  const [ binInfo2, setBinInfo2 ] = useState({
-    wasteType: focusedJob.steps[1].wasteType,
-    binType: focusedJob.steps[1].binType,
-    binNumber: focusedJob.steps[1].binNumber,
-    binWeight: focusedJob.steps[1].binWeight,
-  });
+  const [ binInfo, setBinInfo ] = useState(
+    [0, 1].map((index) => {
+      const {
+        wasteType, binType, binNumber, binWeight,
+      } = focusedJob.steps[index];
+
+      return {
+        wasteType, binType, binNumber, binWeight,
+      };
+    })
+  );
 
   const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
@@ -97,22 +96,19 @@ const JobDetailsScreen = ({
   };
 
   const getUpdatedBinInfo = () => {
-    return [
-      {
-        jobStepId: focusedJob.steps[0].jobStepId,
-        wasteTypeId: binInfo1['wasteType'] && binInfo1['wasteType'].wasteTypeId,
-        binTypeId: binInfo1['binType'] && binInfo1['binType'].binTypeId,
-        binNumber: binInfo1['binNumber'],
-        binWeight: binInfo1['binWeight'],
-      },
-      {
-        jobStepId: focusedJob.steps[1].jobStepId,
-        wasteTypeId: binInfo2['wasteType'] && binInfo2['wasteType'].wasteTypeId,
-        binTypeId: binInfo2['binType'] && binInfo2['binType'].binTypeId,
-        binNumber: binInfo2['binNumber'],
-        binWeight: binInfo2['binWeight'],
+    return [0, 1].map((index) => {
+      const {
+        wasteType, binType, binNumber, binWeight,
+      } = binInfo[index];
+
+      return {
+        jobStepId: focusedJob.steps[index].jobStepId,
+        wasteTypeId: wasteType && wasteType.wasteTypeId,
+        binTypeId: binType && binType.binTypeId,
+        binNumber: binNumber,
+        binWeight: binWeight,
       }
-    ];
+    });
   };
 
   const onStart = () => {
@@ -300,10 +296,8 @@ const JobDetailsScreen = ({
       sign={sign}
       signedUserName={signedUserName}
       signedUserContact={signedUserContact}
-      binInfo1={binInfo1}
-      setBinInfo1={setBinInfo1}
-      binInfo2={binInfo2}
-      setBinInfo2={setBinInfo2}
+      binInfo={binInfo}
+      setBinInfo={setBinInfo}
       jobStatus={jobStatus}
       amountCollected={amountCollected}
       setAmountCollected={setAmountCollected}
