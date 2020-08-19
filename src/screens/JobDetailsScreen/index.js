@@ -146,23 +146,33 @@ const JobDetailsScreen = ({
   const onFailure = () => {
     setLoading(false);
     initJobPhotosAndSign();
-  }
+  };
 
   const onUploadPhotos = () => {
+    if (photos.length === 0) {
+      onUploadSign();
+      return;
+    }
+
     uploadPhotos({
       photos,
       success: onUploadSign,
       failure: onFailure,
     });
-  }
+  };
 
   const onUploadSign = () => {
+    if (!sign) {
+      onCompleteJob();
+      return;
+    }
+
     uploadSign({
       sign,
       success: onCompleteJob,
       failure: onFailure,
-    })
-  }
+    });
+  };
 
   const onCompleteJob = () => {
     completeJobs({
@@ -173,16 +183,16 @@ const JobDetailsScreen = ({
       success: onBack,
       failure: onFailure,
     });
-  }
+  };
 
   const onComplete = () => {
-    if (!photos.length || !sign) {
-      Alert.alert('Warning', 'Please upload photos & sign.');
+    if (focusedJob.mustTakePhoto && photos.length === 0) {
+      Alert.alert('Warning', 'Please upload photos.');
       return;
     }
 
-    if (!signedUserName || !signedUserContact) {
-      Alert.alert('Warning', 'Please type signed user name & contact.');
+    if (focusedJob.mustTakeSignature && !sign) {
+      Alert.alert('Warning', 'Please upload signature.');
       return;
     }
 
