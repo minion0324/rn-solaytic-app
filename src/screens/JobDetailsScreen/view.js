@@ -170,6 +170,8 @@ const JobDetailsScreenView = ({
   const actionSheetRef = useRef(null);
   const actionSheetKey = useRef(null);
 
+  const inputBinWeight = useRef(null);
+
   const onAddComment = () => {
     if (!onAlertNotProgress()) {
       return;
@@ -676,6 +678,7 @@ const JobDetailsScreenView = ({
             focusedJob.isAllowDriverEditOnApp)) &&
             <BinInfoRow>
               <BinInput
+                ref={inputBinWeight}
                 underlineColorAndroid={COLORS.TRANSPARENT1}
                 autoCapitalize={'none'}
                 autoCorrect={false}
@@ -693,7 +696,7 @@ const JobDetailsScreenView = ({
                 isInProgress() &&
                 focusedJob.isAllowDriverEditOnApp &&
                 <TouchableOpacity
-                  onPress={() => {}}
+                  onPress={() => inputBinWeight.current.focus()}
                 >
                   <EditIcon />
                 </TouchableOpacity>
