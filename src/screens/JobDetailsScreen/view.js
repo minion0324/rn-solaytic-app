@@ -161,6 +161,14 @@ const JobDetailsScreenView = ({
   const [ binIndex, setBinIndex ] = useState(0);
   const [ active, setActive ] = useState(COMMENT);
 
+  const isInProgress = () => {
+    return (
+      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.IN_PROGRESS2
+    );
+  };
+
   const onAddComment = () => {
     showOverlay(CUSTOM_MODAL_SCREEN, {
       offsetFromCenter: SIZE10,
@@ -578,11 +586,7 @@ const JobDetailsScreenView = ({
                 ? binInfo1['binWeight']
                 : binInfo2['binWeight']
               }
-              editable={
-                jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                jobStatus === JOB_STATUS.IN_PROGRESS2
-              }
+              editable={isInProgress()}
             />
           </BinInfoRow>
         </BinInfoWrap>
