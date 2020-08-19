@@ -62,7 +62,7 @@ const JobDetailsScreen = ({
 
   const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
-  const [ amountCollected, setAmountCollected ] = useState(`${focusedJob.collectedAmount}`);
+  const [ amountCollected, setAmountCollected ] = useState(`${focusedJob.collectedAmount || ''}`);
 
   useEffect(() => {
     setCoreScreenInfo({
@@ -223,6 +223,10 @@ const JobDetailsScreen = ({
   };
 
   const onUpdateService = (service) => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
     if (service.isSelected) {
       removeService({
         jobId: focusedJob.jobId,
@@ -250,10 +254,31 @@ const JobDetailsScreen = ({
   };
 
   const onUpdateAmountCollected = (amount) => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
     updateAmountCollected({
       jobIds: `${focusedJob.jobId}`,
       amountCollected: +amount,
     });
+  };
+
+  const isInProgress = () => {
+    return (
+      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.IN_PROGRESS2
+    );
+  };
+
+  const onAlertNotProgress = () => {
+    if (!isInProgress()) {
+      Alert.alert('Warning', 'This job is not in progress now.');
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -285,6 +310,8 @@ const JobDetailsScreen = ({
       onReadMessages={onReadMessages}
       onNewComment={onNewComment}
       onUpdateAmountCollected={onUpdateAmountCollected}
+      isInProgress={isInProgress}
+      onAlertNotProgress={onAlertNotProgress}
     />
   );
 };

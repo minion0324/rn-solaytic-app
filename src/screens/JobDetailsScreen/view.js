@@ -4,6 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Keyboard,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -151,6 +152,8 @@ const JobDetailsScreenView = ({
   onReadMessages,
   onNewComment,
   onUpdateAmountCollected,
+  isInProgress,
+  onAlertNotProgress,
 }) => {
   const [ index, setIndex ] = useState(0);
   const [ routes ] = useState([
@@ -161,15 +164,11 @@ const JobDetailsScreenView = ({
   const [ binIndex, setBinIndex ] = useState(0);
   const [ active, setActive ] = useState(COMMENT);
 
-  const isInProgress = () => {
-    return (
-      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
-    );
-  };
-
   const onAddComment = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
     showOverlay(CUSTOM_MODAL_SCREEN, {
       offsetFromCenter: SIZE10,
       dismissible: false,
@@ -293,12 +292,13 @@ const JobDetailsScreenView = ({
                   onChangeText={text => setAmountCollected(text.replace(UNIT, ''))}
                   value={amountCollected ? `${UNIT}${amountCollected}` : amountCollected}
                   keyboardType={'numeric'}
+                  editable={isInProgress()}
                 />
               </CollectInputWrap>
             </CollectRow>
             <OkCancelRow>
               <OkCancelButton
-                onPress={() => setAmountCollected(`${focusedJob.collectedAmount}`)}
+                onPress={() => setAmountCollected(`${focusedJob.collectedAmount || ''}`)}
               >
                 <OkCancelText>Cancel</OkCancelText>
               </OkCancelButton>
@@ -852,6 +852,8 @@ JobDetailsScreenView.propTypes = {
   onReadMessages: PropTypes.func.isRequired,
   onNewComment: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
+  isInProgress: PropTypes.func.isRequired,
+  onAlertNotProgress: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
