@@ -228,6 +228,11 @@ const JobDetailsScreenView = ({
       data = charges
         .map(charge => charge[key][`${key}Name`]);
     } else {
+      if (chargeIndex === -1) {
+        Alert.alert('Warning', 'You can take Bin Numbers after a Bin Type is selected.');
+        return;
+      }
+
       data = charges[chargeIndex].binType.binNumbers
         .map(binNumber => binNumber[`${key}Name`]);
 
@@ -239,35 +244,6 @@ const JobDetailsScreenView = ({
     setActionSheetData(data);
 
     actionSheetRef.current.show();
-  };
-
-  const onEditWasteType = () => {
-    // if (!onAlertNotProgress()) {
-    //   return;
-    // }
-
-    onShowActionSheet('wasteType');
-  };
-
-  const onEditBinType = () => {
-    // if (!onAlertNotProgress()) {
-    //   return;
-    // }
-
-    onShowActionSheet('binType');
-  };
-
-  const onEditBinNumber = () => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
-
-    if (chargeIndex === -1) {
-      Alert.alert('Warning', 'You can take Bin Numbers after a Bin Type is selected.');
-      return false;
-    }
-
-    onShowActionSheet('binNumber');
   };
 
   const onUpdateBinInfo = (newInfo) => {
@@ -641,51 +617,89 @@ const JobDetailsScreenView = ({
             </BinButtonWrap>
         }
         <BinInfoWrap>
-          <BinInfoRow>
-            <BinText numberOfLines={2}>
-              {
-                binInfo[binIndex]['wasteType'] &&
-                binInfo[binIndex]['wasteType'].wasteTypeName
-              }
-            </BinText>
-            <TouchableOpacity onPress={onEditWasteType}>
-              <EditIcon />
-            </TouchableOpacity>
-          </BinInfoRow>
-          <BinInfoRow>
-            <BinText numberOfLines={2}>
-              {
-                binInfo[binIndex]['binType'] &&
-                binInfo[binIndex]['binType'].binTypeName
-              }
-            </BinText>
-            <TouchableOpacity onPress={onEditBinType}>
-              <EditIcon />
-            </TouchableOpacity>
-          </BinInfoRow>
-          <BinInfoRow>
-            <BinText numberOfLines={2}>
-              {
-                binInfo[binIndex]['binNumber']
-              }
-            </BinText>
-            <TouchableOpacity onPress={onEditBinNumber}>
-              <EditIcon />
-            </TouchableOpacity>
-          </BinInfoRow>
+          {
+            ['wasteType', 'binType'].map((key) => (
+              <BinInfoRow key={key}>
+                <BinText
+                  numberOfLines={2}
+                  editable={
+                    isInProgress() &&
+                    focusedJob.isAllowDriverEditOnApp
+                  }
+                >
+                  {
+                    binInfo[binIndex][key] &&
+                    binInfo[binIndex][key][`${key}Name`]
+                  }
+                </BinText>
+                {
+                  isInProgress() &&
+                  focusedJob.isAllowDriverEditOnApp &&
+                  <TouchableOpacity
+                    onPress={() => onShowActionSheet(key)}
+                  >
+                    <EditIcon />
+                  </TouchableOpacity>
+                }
+              </BinInfoRow>
+            ))
+          }
+
           <BinInfoRow>
             <BinInput
               underlineColorAndroid={COLORS.TRANSPARENT1}
               autoCapitalize={'none'}
               autoCorrect={false}
-              placeholder={'BIN WEIGHT'}
               value={
-                binInfo[binIndex]['binWeight']
+                binInfo[binIndex]['binNumber']
               }
-              onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
-              editable={isInProgress()}
+              onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
+              editable={
+                isInProgress() &&
+                focusedJob.isAllowDriverEditOnApp
+              }
             />
+            {
+              isInProgress() &&
+              focusedJob.isAllowDriverEditOnApp &&
+              <TouchableOpacity
+                onPress={() => onShowActionSheet('binNumber')}
+              >
+                <EditIcon />
+              </TouchableOpacity>
+            }
           </BinInfoRow>
+
+          {
+            (!!binInfo[binIndex]['binWeight'] ||
+            (isInProgress() &&
+            focusedJob.isAllowDriverEditOnApp)) &&
+            <BinInfoRow>
+              <BinInput
+                underlineColorAndroid={COLORS.TRANSPARENT1}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                placeholder={'BIN WEIGHT'}
+                value={
+                  binInfo[binIndex]['binWeight']
+                }
+                onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
+                editable={
+                  isInProgress() &&
+                  focusedJob.isAllowDriverEditOnApp
+                }
+              />
+              {
+                isInProgress() &&
+                focusedJob.isAllowDriverEditOnApp &&
+                <TouchableOpacity
+                  onPress={() => {}}
+                >
+                  <EditIcon />
+                </TouchableOpacity>
+              }
+            </BinInfoRow>
+          }
         </BinInfoWrap>
 
         <ActionSheet
