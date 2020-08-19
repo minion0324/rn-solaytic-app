@@ -122,7 +122,7 @@ const BinInfoRow = styled.View`
   height: ${SIZE8}px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background-color: ${COLORS.WHITE3};
   margin-vertical: ${SIZE1}px;
   padding-horizontal: ${SIZE4}px;
@@ -130,18 +130,30 @@ const BinInfoRow = styled.View`
 `;
 
 const BinText = styled.Text`
-  width: 80%;
+  flex: 1;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
+  margin-right: ${(props) => (
+    props.editable ? SIZE4 : 0
+  )}px;
+  text-align: ${(props) => (
+    props.editable ? 'left' : 'center'
+  )};
 `;
 
 const BinInput = styled.TextInput`
-  width: 80%;
+  flex: 1;
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
+  margin-right: ${(props) => (
+    props.editable ? SIZE4 : 0
+  )}px;
+  text-align: ${(props) => (
+    props.editable ? 'left' : 'center'
+  )};
 `;
 
 const PhotoAndSignWrap = styled.View`
@@ -203,8 +215,7 @@ const Comment = styled.View`
   border-radius: ${SIZE2}px;
   background-color: ${COLORS.BLUE4};
   align-self: ${(props) => (
-    props.pos === 'right'
-    ? 'flex-end' : 'flex-start'
+    props.pos === 'right' ? 'flex-end' : 'flex-start'
   )};
 `;
 
@@ -213,8 +224,7 @@ const CommentText = styled.Text`
   font-weight: 600;
   color: ${COLORS.BLACK2};
   text-align: ${(props) => (
-    props.pos === 'right'
-    ? 'right' : 'left'
+    props.pos === 'right' ? 'right' : 'left'
   )};
 `;
 
