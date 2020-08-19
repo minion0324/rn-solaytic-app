@@ -14,6 +14,7 @@ import {
   COLORS,
   JOB_DATE,
   JOB_STATUS,
+  JOB_TYPE,
   SIZE1,
   SIZE2,
   SIZE10,
@@ -128,10 +129,10 @@ const JobDetailsScreenView = ({
   sign,
   signedUserName,
   signedUserContact,
-  binNumber1,
-  setBinNumber1,
-  binNumber2,
-  setBinNumber2,
+  binInfo1,
+  setBinInfo1,
+  binInfo2,
+  setBinInfo2,
   jobStatus,
   amountCollected,
   setAmountCollected,
@@ -505,7 +506,7 @@ const JobDetailsScreenView = ({
     return (
       <View>
         {
-          focusedJob.steps[1].wasteType || focusedJob.steps[1].binType
+          focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
           ? <BinButtonWrap>
               <BinButton
                 active={binIndex === 0}
@@ -533,8 +534,9 @@ const JobDetailsScreenView = ({
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                focusedJob.steps[binIndex].wasteType &&
-                focusedJob.steps[binIndex].wasteType.wasteTypeName
+                binIndex === 0
+                ? binInfo1['wasteType'] && binInfo1['wasteType'].wasteTypeName
+                : binInfo2['wasteType'] && binInfo2['wasteType'].wasteTypeName
               }
             </BinText>
             <TouchableOpacity>
@@ -544,8 +546,9 @@ const JobDetailsScreenView = ({
           <BinInfoRow>
             <BinText numberOfLines={2}>
               {
-                focusedJob.steps[binIndex].binType &&
-                focusedJob.steps[binIndex].binType.binTypeName
+                binIndex === 0
+                ? binInfo1['binType'] && binInfo1['binType'].binTypeName
+                : binInfo2['binType'] && binInfo2['binType'].binTypeName
               }
             </BinText>
             <TouchableOpacity>
@@ -553,22 +556,13 @@ const JobDetailsScreenView = ({
             </TouchableOpacity>
           </BinInfoRow>
           <BinInfoRow>
-            <BinInput
-              underlineColorAndroid={COLORS.TRANSPARENT1}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(text) => {
-                binIndex === 0 ? setBinNumber1(text) : setBinNumber2(text);
-              }}
-              value={
-                binIndex === 0 ? binNumber1 : binNumber2
+            <BinText numberOfLines={2}>
+              {
+                binIndex === 0
+                ? binInfo1['binNumber']
+                : binInfo2['binNumber']
               }
-              editable={
-                jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-                jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-                jobStatus === JOB_STATUS.IN_PROGRESS2
-              }
-            />
+            </BinText>
             <TouchableOpacity>
               <EditIcon />
             </TouchableOpacity>
@@ -579,6 +573,11 @@ const JobDetailsScreenView = ({
               autoCapitalize={'none'}
               autoCorrect={false}
               placeholder={'BIN WEIGHT'}
+              value={
+                binIndex === 0
+                ? binInfo1['binWeight']
+                : binInfo2['binWeight']
+              }
               editable={
                 jobStatus === JOB_STATUS.ACKNOWLEDGED ||
                 jobStatus === JOB_STATUS.IN_PROGRESS1 ||
@@ -827,10 +826,10 @@ JobDetailsScreenView.propTypes = {
   sign: PropTypes.string,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
-  binNumber1: PropTypes.string.isRequired,
-  setBinNumber1: PropTypes.func.isRequired,
-  binNumber2: PropTypes.string.isRequired,
-  setBinNumber2: PropTypes.func.isRequired,
+  binInfo1: PropTypes.object.isRequired,
+  setBinInfo1: PropTypes.func.isRequired,
+  binInfo2: PropTypes.object.isRequired,
+  setBinInfo2: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   amountCollected: PropTypes.string,
   setAmountCollected: PropTypes.func.isRequired,

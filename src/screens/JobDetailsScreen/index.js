@@ -47,8 +47,18 @@ const JobDetailsScreen = ({
   const [ signedUserName, setSignedUserName ] = useState(photosAndSign.signedUserName);
   const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
 
-  const [ binNumber1, setBinNumber1 ] = useState(focusedJob.steps[0].binNumber);
-  const [ binNumber2, setBinNumber2 ] = useState(focusedJob.steps[1].binNumber);
+  const [ binInfo1, setBinInfo1 ] = useState({
+    wasteType: focusedJob.steps[0].wasteType,
+    binType: focusedJob.steps[0].binType,
+    binNumber: focusedJob.steps[0].binNumber,
+    binWeight: focusedJob.steps[0].binWeight,
+  });
+  const [ binInfo2, setBinInfo2 ] = useState({
+    wasteType: focusedJob.steps[1].wasteType,
+    binType: focusedJob.steps[1].binType,
+    binNumber: focusedJob.steps[1].binNumber,
+    binWeight: focusedJob.steps[1].binWeight,
+  });
 
   const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
@@ -88,11 +98,17 @@ const JobDetailsScreen = ({
     return [
       {
         jobStepId: focusedJob.steps[0].jobStepId,
-        binNumber: binNumber1,
+        wasteTypeId: binInfo1['wasteType'] && binInfo1['wasteType'].wasteTypeId,
+        binTypeId: binInfo1['binType'] && binInfo1['binType'].binTypeId,
+        binNumber: binInfo1['binNumber'],
+        binWeight: binInfo1['binWeight'],
       },
       {
         jobStepId: focusedJob.steps[1].jobStepId,
-        binNumber: binNumber2,
+        wasteTypeId: binInfo2['wasteType'] && binInfo2['wasteType'].wasteTypeId,
+        binTypeId: binInfo2['binType'] && binInfo2['binType'].binTypeId,
+        binNumber: binInfo2['binNumber'],
+        binWeight: binInfo2['binWeight'],
       }
     ];
   };
@@ -247,10 +263,10 @@ const JobDetailsScreen = ({
       sign={sign}
       signedUserName={signedUserName}
       signedUserContact={signedUserContact}
-      binNumber1={binNumber1}
-      setBinNumber1={setBinNumber1}
-      binNumber2={binNumber2}
-      setBinNumber2={setBinNumber2}
+      binInfo1={binInfo1}
+      setBinInfo1={setBinInfo1}
+      binInfo2={binInfo2}
+      setBinInfo2={setBinInfo2}
       jobStatus={jobStatus}
       amountCollected={amountCollected}
       setAmountCollected={setAmountCollected}
