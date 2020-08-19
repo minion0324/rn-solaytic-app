@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -167,6 +167,12 @@ const JobDetailsScreenView = ({
 
   const [ chargeIndex, setChargeIndex ] = useState(-1);
 
+  useEffect(() => {
+    return () => {
+      Picker.hide();
+    };
+  }, []);
+
   const onAddComment = () => {
     if (!onAlertNotProgress()) {
       return;
@@ -191,14 +197,88 @@ const JobDetailsScreenView = ({
 
     if (
       !site ||
-      (!site.services || []).length === 0 ||
-      (!site.services[0].charges || []).length === 0
+      (site.services || []).length === 0 ||
+      (site.services[0].charges || []).length === 0
     ) {
       Alert.alert('Warning', 'The customer has no Bin / Waste.');
       return false;
     }
 
     return true;
+  };
+
+  const onPicker = (key) => {
+    Picker.isPickerShow((status) => {
+      if (status) {
+        Picker.hide();
+      } else {
+        //
+        let pickerData = [];
+        const { charges } = focusedJob.steps[binIndex].site.services[0];
+        if (key === 'wasteType' || key === 'binType') {
+          pickerData = charges
+            .filter(charge => charge[key])
+            .map(charge => charge[key][`${key}Name`]);
+        } else {
+          pickerData = charges[chargeIndex].binType.binNumbers || [];
+
+          if (pickerData.length === 0) {
+            Alert.alert('Warning', 'There are no Bin Numbers.');
+            return;
+          }
+        }
+
+        Picker.init({
+          pickerData: pickerData,
+          pickerBg: [255, 255, 255, 1],
+          pickerTitleText: '',
+          onPickerConfirm: (data) => {
+            const result = data[0];
+
+            if (key === 'wasteType' || key === 'binType') {
+              const index = charges.findIndex((charge) => {
+                return charge[key][`${key}Name`] === result;
+              });
+
+              setChargeIndex(index);
+
+              if (binIndex === 0) {
+                setBinInfo1({
+                  ...binInfo1,
+                  wasteType: charges[index].wasteType,
+                  binType: charges[index].binType,
+                  binNumber: '',
+                });
+              } else {
+                setBinInfo2({
+                  ...binInfo2,
+                  wasteType: charges[index].wasteType,
+                  binType: charges[index].binType,
+                  binNumber: '',
+                });
+              }
+            } else {
+              if (binIndex === 0) {
+                setBinInfo1({
+                  ...binInfo1,
+                  binNumber: result,
+                });
+              } else {
+                setBinInfo2({
+                  ...binInfo2,
+                  binNumber: result,
+                });
+              }
+            }
+          },
+          onPickerCancel: () => {
+            Picker.hide();
+          },
+        });
+
+        Picker.show();
+      }
+    });
   };
 
   const onEditWasteType = () => {
@@ -210,7 +290,7 @@ const JobDetailsScreenView = ({
       return;
     }
 
-
+    onPicker('wasteType');
   };
 
   const onEditBinType = () => {
@@ -221,6 +301,8 @@ const JobDetailsScreenView = ({
     if (!onAlertNotCharge()) {
       return;
     }
+
+    onPicker('binType');
   };
 
   const onEditBinNumber = () => {
@@ -236,9 +318,13 @@ const JobDetailsScreenView = ({
       Alert.alert('Warning', 'You can take Bin Numbers after a Bin Type is selected.');
       return false;
     }
+
+    onPicker('binNumber');
   };
 
   const onTapPress = ({ route }) => {
+    Picker.hide();
+
     if (
       route.key === TAB1 ||
       !focusedJob.haveUnreadMessage
@@ -641,6 +727,11 @@ const JobDetailsScreenView = ({
                 ? binInfo1['binWeight']
                 : binInfo2['binWeight']
               }
+              onChangeText={(text) => {
+                binIndex === 0
+                ? setBinInfo1({ ...binInfo1, binWeight: text })
+                : setBinInfo2({ ...binInfo2, binWeight: text });
+              }}
               editable={isInProgress()}
             />
           </BinInfoRow>
