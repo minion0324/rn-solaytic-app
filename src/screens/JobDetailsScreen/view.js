@@ -183,6 +183,24 @@ const JobDetailsScreenView = ({
     dismissOverlay(containerId);
   };
 
+  const onEditWasteType = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+  };
+
+  const onEditBinType = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+  };
+
+  const onEditBinNumber = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+  };
+
   const onTapPress = ({ route }) => {
     if (
       route.key === TAB1 ||
@@ -547,7 +565,7 @@ const JobDetailsScreenView = ({
                 : binInfo2['wasteType'] && binInfo2['wasteType'].wasteTypeName
               }
             </BinText>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onEditWasteType}>
               <EditIcon />
             </TouchableOpacity>
           </BinInfoRow>
@@ -559,7 +577,7 @@ const JobDetailsScreenView = ({
                 : binInfo2['binType'] && binInfo2['binType'].binTypeName
               }
             </BinText>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onEditBinType}>
               <EditIcon />
             </TouchableOpacity>
           </BinInfoRow>
@@ -571,7 +589,7 @@ const JobDetailsScreenView = ({
                 : binInfo2['binNumber']
               }
             </BinText>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onEditBinNumber}>
               <EditIcon />
             </TouchableOpacity>
           </BinInfoRow>
