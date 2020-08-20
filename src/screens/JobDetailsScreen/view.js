@@ -653,7 +653,7 @@ const JobDetailsScreenView = ({
               autoCapitalize={'none'}
               autoCorrect={false}
               value={
-                `${binInfo[binIndex]['binNumber']}`
+                `${binInfo[binIndex]['binNumber'] || ''}`
               }
               onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
               editable={
@@ -685,7 +685,7 @@ const JobDetailsScreenView = ({
                 placeholder={'BIN WEIGHT'}
                 keyboardType={'numeric'}
                 value={
-                  `${binInfo[binIndex]['binWeight']}`
+                  `${binInfo[binIndex]['binWeight'] || ''}`
                 }
                 onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
                 editable={
