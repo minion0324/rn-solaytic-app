@@ -304,6 +304,8 @@ export function* asyncAcknowledgeJobs({ payload }) {
       }
 
       const newItem = res.newAlerts[index];
+      res.newAlerts.splice(index, 1);
+
       const idx = res.newJobs.findIndex(item => item.jobId === id);
 
       if (idx === -1) {
@@ -328,7 +330,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
-      res.newAlerts.splice(index, 1);
 
       return res;
     }, {
