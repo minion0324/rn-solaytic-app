@@ -15,6 +15,7 @@ const Container = styled.SafeAreaView`
 
 const ShadowWrap = styled.View`
   elevation: 10;
+  z-index: 1;
   box-shadow: 0px 8px;
   shadow-color: ${COLORS.BLACK1};
   shadow-opacity: 0.1;
