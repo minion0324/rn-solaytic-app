@@ -35,7 +35,7 @@ const scale = size => WIDTH / 360 * size; // 360
 const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 
 //
-const DATE_FORMAT = 'MMM YYYY';
+const DATE_FORMAT = 'DD MMM YYYY';
 
 const JOB_DATE = ['jobTimeSpecific', 'jobDate'];
 
