@@ -154,8 +154,8 @@ const JobDetailsScreenView = ({
   isInProgress,
   onAlertNotProgress,
 }) => {
-  const [ index, setIndex ] = useState(0);
-  const [ routes ] = useState([
+  const [ tabIndex, setTabIndex ] = useState(0);
+  const [ tabRoutes ] = useState([
     { key: TAB1, title: TAB1 },
     { key: TAB2, title: TAB2 },
   ]);
@@ -938,10 +938,12 @@ const JobDetailsScreenView = ({
       { renderHeader() }
 
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{
+          index: tabIndex, routes: tabRoutes
+        }}
         renderScene={renderScene}
         renderTabBar={renderTabBar}
-        onIndexChange={idx => setIndex(idx)}
+        onIndexChange={idx => setTabIndex(idx)}
         useNativeDriver
       />
     </Container>
