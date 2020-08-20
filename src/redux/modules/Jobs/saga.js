@@ -283,7 +283,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
     const allAlerts = yield select(Jobs.selectors.getAllAlerts);
 
     const dateForJobs = yield select(Jobs.selectors.getDateForJobs);
-    const dateForAlerts = yield select(Jobs.selectors.getDateForAlerts);
 
     //
     const result = successJobIds.reduce((res, id) => {
@@ -291,6 +290,10 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
       if (index === -1) {
         const idx = res.newJobs.findIndex(item => item.jobId === id);
+
+        if (idx === -1) {
+          return res;
+        }
 
         res.newJobs.splice(idx, 1, {
           ...res.newJobs[idx],
@@ -300,18 +303,28 @@ export function* asyncAcknowledgeJobs({ payload }) {
         return res;
       }
 
-      if (dateForJobs === dateForAlerts) {
-        let idx = res.newJobs.findIndex((item) => {
-          return moment(item[JOB_DATE[0]])
-            .isAfter(moment(res.newAlerts[index][JOB_DATE[0]]));
-        });
+      const newItem = res.newAlerts[index];
+      const idx = res.newJobs.findIndex(item => item.jobId === id);
 
-        if (idx === -1) {
-          idx = res.newJobs.length;
+      if (idx === -1) {
+        if (dateForJobs === getDate(newItem[JOB_DATE[0]])) {
+          let orderIndex = res.newJobs.findIndex((item) => {
+            return moment(item[JOB_DATE[0]])
+              .isAfter(moment(newItem[JOB_DATE[0]]));
+          });
+
+          if (orderIndex === -1) {
+            orderIndex = res.newJobs.length;
+          }
+
+          res.newJobs.splice(orderIndex, 0, {
+            ...newItem,
+            statusName: JOB_STATUS.ACKNOWLEDGED,
+          });
         }
-
-        res.newJobs.splice(idx, 0, {
-          ...res.newAlerts[index],
+      } else {
+        res.newJobs.splice(idx, 1, {
+          ...res.newJobs[idx],
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
