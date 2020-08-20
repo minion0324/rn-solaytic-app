@@ -6,9 +6,9 @@ import { sortBy } from 'lodash';
 
 import {
   onError,
-  getFormattedDate,
-  getStartOfMonth,
-  getEndOfMonth,
+  getDate,
+  getStartDate,
+  getEndDate,
 } from 'src/utils';
 import {
   apiGetJobs,
@@ -29,6 +29,8 @@ import {
   ViewStore,
 } from 'src/redux';
 import {
+  DATE_KEY,
+  MONTH_KEY,
   JOB_DATE,
   JOB_STATUS,
 } from 'src/constants';
@@ -55,12 +57,12 @@ import {
 
 export function* asyncGetJobs() {
   try {
-    const dateForJobs = getFormattedDate();
+    const dateForJobs = getDate();
 
-    const fromDate = getStartOfMonth(dateForJobs);
-    const toDate = getEndOfMonth(dateForJobs);
+    const startDate = getStartDate(dateForJobs, DATE_KEY);
+    const endDate = getEndDate(dateForJobs, DATE_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, false);
+    const { data } = yield call(apiGetJobs, startDate, endDate, false);
     yield put(actionCreators.getJobsSuccess({ dateForJobs, ...data }));
 
     return {
@@ -80,10 +82,10 @@ export function* asyncGetJobsByDate({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForJobs);
-    const toDate = getEndOfMonth(dateForJobs);
+    const startDate = getStartDate(dateForJobs, DATE_KEY);
+    const endDate = getEndDate(dateForJobs, DATE_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, false);
+    const { data } = yield call(apiGetJobs, startDate, endDate, false);
     yield put(actionCreators.getJobsByDateSuccess({ dateForJobs, ...data }));
 
     success && success();
@@ -105,10 +107,10 @@ export function* asyncGetJobsByPage({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForJobs);
-    const toDate = getEndOfMonth(dateForJobs);
+    const startDate = getStartDate(dateForJobs, DATE_KEY);
+    const endDate = getEndDate(dateForJobs, DATE_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, false, pageOfJobs);
+    const { data } = yield call(apiGetJobs, startDate, endDate, false, pageOfJobs);
 
     const allJobs = yield select(Jobs.selectors.getAllJobs);
 
@@ -146,12 +148,12 @@ export function* watchGetJobsByPage() {
 
 export function* asyncGetAlerts() {
   try {
-    const dateForAlerts = getFormattedDate();
+    const dateForAlerts = getDate();
 
-    const fromDate = getStartOfMonth(dateForAlerts);
-    const toDate = getEndOfMonth(dateForAlerts);
+    const startDate = getStartDate(dateForAlerts, MONTH_KEY);
+    const endDate = getEndDate(dateForAlerts, MONTH_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, true);
+    const { data } = yield call(apiGetJobs, startDate, endDate, true);
     yield put(actionCreators.getAlertsSuccess({ dateForAlerts, ...data }));
 
     return {
@@ -171,10 +173,10 @@ export function* asyncGetAlertsByDate({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForAlerts);
-    const toDate = getEndOfMonth(dateForAlerts);
+    const startDate = getStartDate(dateForAlerts, MONTH_KEY);
+    const endDate = getEndDate(dateForAlerts, MONTH_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, true);
+    const { data } = yield call(apiGetJobs, startDate, endDate, true);
     yield put(actionCreators.getAlertsByDateSuccess({ dateForAlerts, ...data }));
 
     success && success();
@@ -196,10 +198,10 @@ export function* asyncGetAlertsByPage({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForAlerts);
-    const toDate = getEndOfMonth(dateForAlerts);
+    const startDate = getStartDate(dateForAlerts, MONTH_KEY);
+    const endDate = getEndDate(dateForAlerts, MONTH_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, true, pageOfAlerts);
+    const { data } = yield call(apiGetJobs, startDate, endDate, true, pageOfAlerts);
 
     const allAlerts = yield select(Jobs.selectors.getAllAlerts);
 
@@ -241,12 +243,16 @@ export function* asyncReloadJobsAndAlerts({ payload }) {
   } = payload;
 
   try {
-    const date = getFormattedDate();
-    const fromDate = getStartOfMonth(date);
-    const toDate = getEndOfMonth(date);
+    const date = getDate();
 
-    const { data: { data: newJobs } } = yield call(apiGetJobs, fromDate, toDate, false);
-    const { data: { data: newAlerts } } = yield call(apiGetJobs, fromDate, toDate, true);
+    const startDateForJobs = getStartDate(date, DATE_KEY);
+    const endDateForJobs = getEndDate(date, DATE_KEY);
+
+    const startDateForAlerts = getStartDate(date, MONTH_KEY);
+    const endDateForAlerts = getEndDate(date, MONTH_KEY);
+
+    const { data: { data: newJobs } } = yield call(apiGetJobs, startDateForJobs, endDateForJobs, false);
+    const { data: { data: newAlerts } } = yield call(apiGetJobs, startDateForAlerts, endDateForAlerts, true);
 
     yield put(actionCreators.reloadJobsAndAlertsSuccess({ date, newJobs, newAlerts }));
 
@@ -296,7 +302,8 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
       if (dateForJobs === dateForAlerts) {
         let idx = res.newJobs.findIndex((item) => {
-          return moment(item[JOB_DATE[0]]).isAfter(moment(res.newAlerts[index][JOB_DATE[0]]));
+          return moment(item[JOB_DATE[0]])
+            .isAfter(moment(res.newAlerts[index][JOB_DATE[0]]));
         });
 
         if (idx === -1) {
