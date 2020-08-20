@@ -594,7 +594,7 @@ const JobDetailsScreenView = ({
     return (
       <View>
         {
-          focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
+          binInfo[1].wasteType || binInfo[1].binType
           ? <BinButtonWrap>
               <BinButton
                 active={binIndex === 0}
