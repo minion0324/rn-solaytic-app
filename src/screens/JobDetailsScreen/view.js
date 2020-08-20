@@ -215,6 +215,24 @@ const JobDetailsScreenView = ({
     }
   };
 
+  const getInitChargeIndex = () => {
+    try {
+      const { charges } = focusedJob;
+      const { binTypeId } = binInfo[binIndex].binType;
+
+      const index = charges
+        .findIndex(charge => charge.binType.binTypeId === binTypeId);
+
+      if (index !== -1) {
+        setChargeIndex(index);
+      }
+
+      return index;
+    } catch (error) {
+      return -1;
+    }
+  };
+
   const onShowActionSheet = (key) => {
     const { charges } = focusedJob;
 
@@ -230,12 +248,16 @@ const JobDetailsScreenView = ({
       data = charges
         .map(charge => charge[key][`${key}Name`]);
     } else {
-      if (chargeIndex === -1) {
+      const index = chargeIndex !== -1
+        ? chargeIndex
+        : getInitChargeIndex();
+
+      if (index === -1) {
         Alert.alert('Warning', 'You can take Bin Numbers after a Bin Type is selected.');
         return;
       }
 
-      data = charges[chargeIndex].binType.binNumbers
+      data = charges[index].binType.binNumbers
         .map(binNumber => binNumber[`${key}Name`]);
 
       if (data.length === 0) {
