@@ -26,6 +26,9 @@ const TouchWrap = styled.TouchableOpacity`
   elevation: ${(props) => (
     props.deactivated ? 0 : 10
   )};
+  z-index: ${(props) => (
+    props.deactivated ? 0 : 1
+  )};
   box-shadow: 0px 8px;
   shadow-color: ${COLORS.BLACK1};
   shadow-opacity: ${(props) => (
