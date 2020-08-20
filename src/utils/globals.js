@@ -1,7 +1,8 @@
 import moment from 'moment';
 
 import {
-  DATE_FORMAT,
+  APP_DATE_FORMAT,
+  DEFAULT_DATE_FORMAT,
   JOB_TYPE,
 } from 'src/constants';
 
@@ -9,18 +10,20 @@ function delay(milliseconds) {
   return new Promise((rs) => setTimeout(rs, milliseconds));
 }
 
-function getFormattedDate(date) {
-  return moment(date).format(DATE_FORMAT);
+function getDate(date) {
+  return moment(date).format(APP_DATE_FORMAT);
 };
 
-function getStartOfMonth(date, format = DATE_FORMAT) {
-  return moment(date, format)
-    .startOf('month').format('YYYY-MM-DD');
+function getStartDate(date, key, format) {
+  return moment(date, format || APP_DATE_FORMAT)
+    .startOf(key)
+    .format(DEFAULT_DATE_FORMAT);
 };
 
-function getEndOfMonth(date, format = DATE_FORMAT) {
-  return moment(date, format)
-    .endOf('month').format('YYYY-MM-DD');
+function getEndDate(date, key, format) {
+  return moment(date, format || APP_DATE_FORMAT)
+    .endOf(key)
+    .format(DEFAULT_DATE_FORMAT);
 };
 
 function getJobCustomerAddress(job) {
@@ -45,8 +48,8 @@ function getJobCustomerAddress(job) {
 
 export {
   delay,
-  getFormattedDate,
-  getStartOfMonth,
-  getEndOfMonth,
+  getDate,
+  getStartDate,
+  getEndDate,
   getJobCustomerAddress,
 };
