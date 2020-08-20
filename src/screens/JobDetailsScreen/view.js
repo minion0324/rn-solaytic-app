@@ -676,6 +676,7 @@ const JobDetailsScreenView = ({
             (!!binInfo[binIndex]['binWeight'] ||
             (isInProgress() &&
             focusedJob.isAllowDriverEditOnApp)) &&
+            focusedJob.isEnabledBinWeight &&
             <BinInfoRow>
               <BinInput
                 ref={inputBinWeight}
