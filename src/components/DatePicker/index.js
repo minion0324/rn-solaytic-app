@@ -9,7 +9,7 @@ import {
   COLORS,
   SIZE2,
   FONT,
-  DATE_FORMAT,
+  APP_DATE_FORMAT,
 } from 'src/constants';
 
 const { ArrowDateIcon } = SVGS;
@@ -53,9 +53,9 @@ const DatePicker = ({
       });
 
       const selectedValue = [
-        moment(date, DATE_FORMAT).format('YYYY'),
-        moment(date, DATE_FORMAT).format('MMMM'),
-        moment(date, DATE_FORMAT).format( 'DD' ),
+        moment(date, APP_DATE_FORMAT).format('YYYY'),
+        moment(date, APP_DATE_FORMAT).format('MMMM'),
+        moment(date, APP_DATE_FORMAT).format( 'DD' ),
       ];
 
       Picker.init({
