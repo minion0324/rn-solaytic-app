@@ -35,7 +35,11 @@ const scale = size => WIDTH / 360 * size; // 360
 const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 
 //
-const DATE_FORMAT = 'DD MMM YYYY';
+const APP_DATE_FORMAT = 'DD MMM YYYY';
+const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
+
+const DATE_KEY = 'date';
+const MONTH_KEY = 'month';
 
 const JOB_DATE = ['jobTimeSpecific', 'jobDate'];
 
@@ -84,7 +88,10 @@ export {
   SIZE30,
   SIZE40,
   FONT,
-  DATE_FORMAT,
+  APP_DATE_FORMAT,
+  DEFAULT_DATE_FORMAT,
+  DATE_KEY,
+  MONTH_KEY,
   JOB_DATE,
   JOB_STATUS,
   JOB_TYPE,
