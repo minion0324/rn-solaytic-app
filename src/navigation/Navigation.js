@@ -108,6 +108,7 @@ export function pushSingleScreenApp() {
       drawBehind: true,
       animate: false,
       titleDisplayMode: 'alwaysShow',
+      currentTabIndex: 1,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -148,6 +149,7 @@ export function pushMultiScreensApp() {
       drawBehind: true,
       animate: false,
       titleDisplayMode: 'alwaysShow',
+      currentTabIndex: 1,
     },
     bottomTab: {
       fontSize: FONT(13),
