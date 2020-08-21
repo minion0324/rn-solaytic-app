@@ -172,7 +172,7 @@ const JobDetailsScreenView = ({
 
   const inputBinWeight = useRef(null);
 
-  const onAddComment = () => {
+  const onShowCommentModal = () => {
     if (!onAlertNotProgress()) {
       return;
     }
@@ -184,11 +184,21 @@ const JobDetailsScreenView = ({
     });
   };
 
-  const onDismissModal = async (containerId) => {
+  const onDismissCommentModal = async (containerId) => {
     Keyboard.dismiss();
 
     await delay(100);
     dismissOverlay(containerId);
+  };
+
+  const onAddComment = (comment, containerId) => {
+    if (!comment) {
+      Alert.alert('Warning', 'Please enter comment.');
+      return;
+    }
+
+    onNewComment(comment);
+    onDismissCommentModal(containerId);
   };
 
   const onActionSheetPress = (index) => {
@@ -305,17 +315,12 @@ const JobDetailsScreenView = ({
         />
         <OkCancelRow>
           <OkCancelButton
-            onPress={() => {
-              onDismissModal(containerId);
-            }}
+            onPress={() => onDismissCommentModal(containerId)}
           >
             <OkCancelText>Cancel</OkCancelText>
           </OkCancelButton>
           <OkCancelButton
-            onPress={() => {
-              onNewComment(modalData);
-              onDismissModal(containerId);
-            }}
+            onPress={() => onAddComment(modalData, containerId)}
           >
             <OkCancelText>Ok</OkCancelText>
           </OkCancelButton>
@@ -364,7 +369,7 @@ const JobDetailsScreenView = ({
               }
             </CommentsWrap>
           }
-          <AddComment onPress={onAddComment}>
+          <AddComment onPress={onShowCommentModal}>
             <CommentIcon />
             <SpaceView mLeft={SIZE1} />
             <InfoText>ADD COMMENT</InfoText>
