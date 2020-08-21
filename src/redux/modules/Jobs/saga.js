@@ -721,6 +721,7 @@ export function* asyncAddMessage({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
@@ -748,6 +749,7 @@ export function* asyncUpdateAmountCollected({ payload }) {
 
     success && success();
   } catch (error) {
+    onError(error);
     failure && failure();
   }
 }
