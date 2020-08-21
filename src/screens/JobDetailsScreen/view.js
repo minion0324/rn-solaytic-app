@@ -355,6 +355,7 @@ const JobDetailsScreenView = ({
             <CommentsWrap>
               {
                 focusedJob.messages.map((item) => (
+                  !!item.message &&
                   <Comment
                     key={item.jobMessageId}
                     pos={item.type && 'right'}
