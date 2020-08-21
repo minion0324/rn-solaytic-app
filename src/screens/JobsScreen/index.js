@@ -138,9 +138,11 @@ const JobsScreen = ({
     });
   };
 
-  const onSuccess = () => {
-    setReloading(false);
+  const onSuccess = async () => {
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+
+    await delay(100);
+    setReloading(false);
   };
 
   const onFailure = () => {
@@ -217,21 +219,23 @@ const JobsScreen = ({
         </TabWrap>
       </ShadowWrap>
 
-      <ListWrap
-        data={allJobs}
-        keyExtractor={(item) => `${item.jobId}`}
-        renderItem={renderItem}
-        onEndProcess={onEnd}
-        onRefreshProcess={onRefresh}
-        refreshing={refreshing}
-      />
+      <FlexWrap>
+        <ListWrap
+          data={allJobs}
+          keyExtractor={(item) => `${item.jobId}`}
+          renderItem={renderItem}
+          onEndProcess={onEnd}
+          onRefreshProcess={onRefresh}
+          refreshing={refreshing}
+        />
 
-      {
-        reloading &&
-        <LoadingWrap>
-          <ActivityIndicator size={'large'} />
-        </LoadingWrap>
-      }
+        {
+          reloading &&
+          <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        }
+      </FlexWrap>
 
       <BottomBar componentId={componentId} activeIndex={1} />
     </Container>

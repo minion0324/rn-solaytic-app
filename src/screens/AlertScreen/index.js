@@ -145,9 +145,11 @@ const AlertScreen = ({
     });
   };
 
-  const onSuccess = () => {
-    setReloading(false);
+  const onSuccess = async () => {
     pushScreen(componentId, JOB_DETAILS_SCREEN);
+
+    await delay(100);
+    setReloading(false);
   };
 
   const onFailure = () => {
@@ -224,21 +226,23 @@ const AlertScreen = ({
         }
       </ShadowWrap>
 
-      <ListWrap
-        data={allAlerts}
-        keyExtractor={(item) => `${item.jobId}`}
-        renderItem={renderItem}
-        onEndProcess={onEnd}
-        onRefreshProcess={onRefresh}
-        refreshing={refreshing}
-      />
+      <FlexWrap>
+        <ListWrap
+          data={allAlerts}
+          keyExtractor={(item) => `${item.jobId}`}
+          renderItem={renderItem}
+          onEndProcess={onEnd}
+          onRefreshProcess={onRefresh}
+          refreshing={refreshing}
+        />
 
-      {
-        reloading &&
-        <LoadingWrap>
-          <ActivityIndicator size={'large'} />
-        </LoadingWrap>
-      }
+        {
+          reloading &&
+          <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        }
+      </FlexWrap>
 
       <BottomBar componentId={componentId} activeIndex={0} />
     </Container>

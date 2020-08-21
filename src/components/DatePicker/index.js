@@ -9,7 +9,7 @@ import {
   COLORS,
   SIZE2,
   FONT,
-  DATE_FORMAT,
+  APP_DATE_FORMAT,
 } from 'src/constants';
 
 const { ArrowDateIcon } = SVGS;
@@ -35,24 +35,43 @@ const DatePicker = ({
     Picker.isPickerShow((status) => {
       if (status) {
         Picker.hide();
-      } else {
-        Picker.init({
-          pickerData: moment.months(),
-          selectedValue: [moment(date, DATE_FORMAT).format('MMMM')],
-          pickerBg: [255, 255, 255, 1],
-          pickerTitleText: 'Pick a Month',
-          onPickerConfirm: (data) => {
-            const month = moment(data[0], 'MMMM').format('MMM');
-            const year = moment(date, DATE_FORMAT).format('YYYY');
-            onSelect(`${month} ${year}`);
-          },
-          onPickerCancel: () => {
-            Picker.hide();
-          },
-        });
-
-        Picker.show();
+        return;
       }
+
+      const pickerData = [-2, -1, 0, 1].map((index) => {
+        const year = moment().add(index, 'years').format('YYYY');
+
+        return {
+          [year]: moment.months().map((month) => {
+            return {
+              [month]: Array(moment(`${year}-${month}`, 'YYYY-MMMM').daysInMonth())
+                .fill(0)
+                .map((e, i) => i < 9 ? `0${i + 1}` : `${i + 1}`)
+            }
+          })
+        };
+      });
+
+      const selectedValue = [
+        moment(date, APP_DATE_FORMAT).format('YYYY'),
+        moment(date, APP_DATE_FORMAT).format('MMMM'),
+        moment(date, APP_DATE_FORMAT).format( 'DD' ),
+      ];
+
+      Picker.init({
+        pickerData: pickerData,
+        selectedValue: selectedValue,
+        pickerBg: [255, 255, 255, 1],
+        pickerTitleText: 'Pick a Month',
+        onPickerConfirm: ([year, month, day]) => {
+          onSelect(`${day} ${moment(month, 'MMMM').format('MMM')} ${year}`);
+        },
+        onPickerCancel: () => {
+          Picker.hide();
+        },
+      });
+
+      Picker.show();
     });
   };
 

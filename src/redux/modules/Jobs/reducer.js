@@ -16,6 +16,11 @@ import {
   COMPLETE_JOBS_SUCCESS,
   FAIL_JOBS_SUCCESS,
   GET_JOB_BY_ID_SUCCESS,
+  ADD_SERVICE_SUCCESS,
+  REMOVE_SERVICE_SUCCESS,
+  MARK_MESSAGES_AS_READ_SUCCESS,
+  ADD_MESSAGE_SUCCESS,
+  UPDATE_AMOUNT_COLLECTED_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -46,7 +51,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.dateForJobs = payload.dateForJobs;
         break;
       case GET_JOBS_BY_PAGE_SUCCESS:
-        draft.allJobs.concat(payload.data);
+        draft.allJobs = payload;
         break;
       case GET_ALERTS_SUCCESS:
       case GET_ALERTS_BY_DATE_SUCCESS:
@@ -54,7 +59,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.dateForAlerts = payload.dateForAlerts;
         break;
       case GET_ALERTS_BY_PAGE_SUCCESS:
-        draft.allAlerts.concat(payload.data);
+        draft.allAlerts = payload;
         break;
       case RELOAD_JOBS_AND_ALERTS_SUCCESS:
         draft.allJobs = payload.newJobs;
@@ -74,6 +79,19 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case GET_JOB_BY_ID_SUCCESS:
         draft.focusedJob = payload;
+        break;
+      case ADD_SERVICE_SUCCESS:
+      case REMOVE_SERVICE_SUCCESS:
+        draft.focusedJob.additionalCharges = payload;
+        break;
+      case MARK_MESSAGES_AS_READ_SUCCESS:
+        draft.focusedJob.haveUnreadMessage = false;
+        break;
+      case ADD_MESSAGE_SUCCESS:
+        draft.focusedJob.messages.push(payload);
+        break;
+      case UPDATE_AMOUNT_COLLECTED_SUCCESS:
+        draft.focusedJob.collectedAmount = payload;
         break;
     }
   });

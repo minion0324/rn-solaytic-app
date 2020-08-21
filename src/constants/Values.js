@@ -24,6 +24,7 @@ const SIZE14 = SIZE1 * 14; // 70
 const SIZE16 = SIZE1 * 16; // 80
 
 const SIZE20 = SIZE1 * 20; // 100
+const SIZE22 = SIZE1 * 22; // 110
 const SIZE24 = SIZE1 * 24; // 120
 const SIZE30 = SIZE1 * 30; // 150
 const SIZE40 = SIZE1 * 40; // 200
@@ -34,7 +35,11 @@ const scale = size => WIDTH / 360 * size; // 360
 const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
 
 //
-const DATE_FORMAT = 'MMM YYYY';
+const APP_DATE_FORMAT = 'DD MMM YYYY';
+const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
+
+const DATE_KEY = 'date';
+const MONTH_KEY = 'month';
 
 const JOB_DATE = ['jobTimeSpecific', 'jobDate'];
 
@@ -78,11 +83,15 @@ export {
   SIZE14,
   SIZE16,
   SIZE20,
+  SIZE22,
   SIZE24,
   SIZE30,
   SIZE40,
   FONT,
-  DATE_FORMAT,
+  APP_DATE_FORMAT,
+  DEFAULT_DATE_FORMAT,
+  DATE_KEY,
+  MONTH_KEY,
   JOB_DATE,
   JOB_STATUS,
   JOB_TYPE,

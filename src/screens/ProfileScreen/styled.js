@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  SIZE1,
   SIZE2,
   SIZE5,
   SIZE6,
@@ -45,7 +46,7 @@ const LogoutButton = styled.TouchableOpacity`
   height: ${SIZE10}px;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
+  border-radius: ${SIZE1}px;
   border-width: 1px;
   border-color: ${COLORS.BLUE1};
 `;

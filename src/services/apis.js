@@ -120,7 +120,51 @@ function apiFailJobs(jobIds, attempt) {
 
 function apiGetJobById(jobId) {
   return apiCall(`api/mobile/driver/jobs/${jobId}`, 'get', {});
-}
+};
+
+function apiAddService(jobId, serviceId) {
+  return apiCall('api/mobile/driver/jobs/add-additional-service', 'post', {
+    data: {
+      jobId,
+      serviceAdditionalChargeTemplateId: serviceId,
+    },
+  });
+};
+
+function apiRemoveService(jobId, serviceId) {
+  return apiCall('api/mobile/driver/jobs/remove-additional-service', 'post', {
+    data: {
+      jobId,
+      serviceAdditionalChargeTemplateId: serviceId,
+    },
+  });
+};
+
+function apiMarkMessagesAsRead(jobId) {
+  return apiCall('api/mobile/driver/jobs/mark-messages-as-read', 'post', {
+    data: {
+      jobId,
+    },
+  });
+};
+
+function apiAddMessage(jobId, message) {
+  return apiCall('api/mobile/driver/jobs/add-message', 'post', {
+    data: {
+      jobId,
+      message,
+    },
+  });
+};
+
+function apiUpdateAmountCollected(jobIds, attempt) {
+  return apiCall('api/mobile/driver/jobs/update-amount-collected', 'post', {
+    data: {
+      jobIds,
+      attempt,
+    },
+  });
+};
 
 export {
   apiLogin,
@@ -134,4 +178,9 @@ export {
   apiGetDriverNotes,
   apiFailJobs,
   apiGetJobById,
+  apiAddService,
+  apiRemoveService,
+  apiMarkMessagesAsRead,
+  apiAddMessage,
+  apiUpdateAmountCollected,
 };

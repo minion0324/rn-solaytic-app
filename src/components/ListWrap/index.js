@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -13,11 +13,6 @@ const ListWrap = ({
   refreshing,
   onEndProcess,
 }) => {
-
-  const onRefresh = useCallback(() => {
-    onRefreshProcess && onRefreshProcess();
-  }, [refreshing]);
-
   return (
     <FlatList
       data={data}
@@ -26,7 +21,7 @@ const ListWrap = ({
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
-          onRefresh={onRefresh}
+          onRefresh={onRefreshProcess}
         />
       }
       onEndReached={onEndProcess}

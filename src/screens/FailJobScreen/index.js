@@ -7,10 +7,14 @@ import {
   SVGS,
   COLORS,
   SIZE1,
+  SIZE10,
 } from 'src/constants';
 import {
+  showOverlay,
+  dismissOverlay,
   popScreen,
   popToRootScreen,
+  CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
 import {
   HeaderBar,
@@ -36,6 +40,13 @@ import {
   EmptyWrap,
   BackButton,
 } from 'src/styles/header.styles';
+import {
+  ModalWrap,
+  AlertText,
+  AlertButtonRow,
+  AlertButton,
+  AlertButtonText,
+} from 'src/styles/modal.styles';
 
 import {
   ButtonWrap,
@@ -75,12 +86,7 @@ const FailJobScreen = ({
     popScreen(componentId);
   };
 
-  const onFail = () => {
-    if (selectedIndex === -1) {
-      Alert.alert('Warning', 'Please select a driver note.');
-      return;
-    }
-
+  const onFailJob = () => {
     setLoading(true);
 
     failJobs({
@@ -91,6 +97,19 @@ const FailJobScreen = ({
         popToRootScreen(componentId);
       },
       failure: () => setLoading(false),
+    });
+  }
+
+  const onFail = () => {
+    if (selectedIndex === -1) {
+      Alert.alert('Warning', 'Please select a driver note.');
+      return;
+    }
+
+    showOverlay(CUSTOM_MODAL_SCREEN, {
+      width: '80%',
+      offsetFromCenter: SIZE10,
+      getContent: renderAlertModal,
     });
   }
 
@@ -147,6 +166,30 @@ const FailJobScreen = ({
       setSelectedIndex(index);
     }
   };
+
+  const renderAlertModal = (containerId) => {
+    return (
+      <ModalWrap>
+        <AlertText>
+          Fail this Job. Are you sure?
+        </AlertText>
+        <AlertButtonRow>
+          <AlertButton onPress={() => dismissOverlay(containerId)}>
+            <AlertButtonText>Cancel</AlertButtonText>
+          </AlertButton>
+          <AlertButton
+            color={COLORS.RED1}
+            onPress={() => {
+              dismissOverlay(containerId);
+              onFailJob();
+            }}
+          >
+            <AlertButtonText color={COLORS.RED1}>Proceed</AlertButtonText>
+          </AlertButton>
+        </AlertButtonRow>
+      </ModalWrap>
+    );
+  }
 
   const renderItem = ({ item, index }) => {
     return (

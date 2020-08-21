@@ -6,9 +6,9 @@ import { sortBy } from 'lodash';
 
 import {
   onError,
-  getFormattedDate,
-  getStartOfMonth,
-  getEndOfMonth,
+  getDate,
+  getStartDate,
+  getEndDate,
 } from 'src/utils';
 import {
   apiGetJobs,
@@ -18,12 +18,19 @@ import {
   apiCompleteJobs,
   apiFailJobs,
   apiGetJobById,
+  apiAddService,
+  apiRemoveService,
+  apiMarkMessagesAsRead,
+  apiAddMessage,
+  apiUpdateAmountCollected,
 } from 'src/services';
 import {
   Jobs,
   ViewStore,
 } from 'src/redux';
 import {
+  DATE_KEY,
+  MONTH_KEY,
   JOB_DATE,
   JOB_STATUS,
 } from 'src/constants';
@@ -40,17 +47,22 @@ import {
   COMPLETE_JOBS,
   FAIL_JOBS,
   GET_JOB_BY_ID,
+  ADD_SERVICE,
+  REMOVE_SERVICE,
+  MARK_MESSAGES_AS_READ,
+  ADD_MESSAGE,
+  UPDATE_AMOUNT_COLLECTED,
   actionCreators,
 } from './actions';
 
 export function* asyncGetJobs() {
   try {
-    const dateForJobs = getFormattedDate();
+    const dateForJobs = getDate();
 
-    const fromDate = getStartOfMonth(dateForJobs);
-    const toDate = getEndOfMonth(dateForJobs);
+    const startDate = getStartDate(dateForJobs, DATE_KEY);
+    const endDate = getEndDate(dateForJobs, DATE_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, false);
+    const { data } = yield call(apiGetJobs, startDate, endDate, false);
     yield put(actionCreators.getJobsSuccess({ dateForJobs, ...data }));
 
     return {
@@ -70,10 +82,10 @@ export function* asyncGetJobsByDate({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForJobs);
-    const toDate = getEndOfMonth(dateForJobs);
+    const startDate = getStartDate(dateForJobs, DATE_KEY);
+    const endDate = getEndDate(dateForJobs, DATE_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, false);
+    const { data } = yield call(apiGetJobs, startDate, endDate, false);
     yield put(actionCreators.getJobsByDateSuccess({ dateForJobs, ...data }));
 
     success && success();
@@ -95,11 +107,31 @@ export function* asyncGetJobsByPage({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForJobs);
-    const toDate = getEndOfMonth(dateForJobs);
+    const startDate = getStartDate(dateForJobs, DATE_KEY);
+    const endDate = getEndDate(dateForJobs, DATE_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, false, pageOfJobs);
-    yield put(actionCreators.getJobsByPageSuccess(data));
+    const { data } = yield call(apiGetJobs, startDate, endDate, false, pageOfJobs);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const newJobs = data.data.reduce((result, item) => {
+      const index = result.findIndex(el => el.jobId === item.jobId);
+      if (index === -1) {
+        const idx = result.findIndex((el) => {
+          return moment(el[JOB_DATE[0]]).isAfter(item[JOB_DATE[0]]);
+        });
+
+        if (idx === -1) {
+          result.push(item);
+        } else {
+          result.splice(idx, 0, item);
+        }
+      }
+
+      return result;
+    }, allJobs.slice(0));
+
+    yield put(actionCreators.getJobsByPageSuccess(newJobs));
 
     success && success();
   } catch (error) {
@@ -116,12 +148,12 @@ export function* watchGetJobsByPage() {
 
 export function* asyncGetAlerts() {
   try {
-    const dateForAlerts = getFormattedDate();
+    const dateForAlerts = getDate();
 
-    const fromDate = getStartOfMonth(dateForAlerts);
-    const toDate = getEndOfMonth(dateForAlerts);
+    const startDate = getStartDate(dateForAlerts, MONTH_KEY);
+    const endDate = getEndDate(dateForAlerts, MONTH_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, true);
+    const { data } = yield call(apiGetJobs, startDate, endDate, true);
     yield put(actionCreators.getAlertsSuccess({ dateForAlerts, ...data }));
 
     return {
@@ -141,10 +173,10 @@ export function* asyncGetAlertsByDate({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForAlerts);
-    const toDate = getEndOfMonth(dateForAlerts);
+    const startDate = getStartDate(dateForAlerts, MONTH_KEY);
+    const endDate = getEndDate(dateForAlerts, MONTH_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, true);
+    const { data } = yield call(apiGetJobs, startDate, endDate, true);
     yield put(actionCreators.getAlertsByDateSuccess({ dateForAlerts, ...data }));
 
     success && success();
@@ -166,11 +198,31 @@ export function* asyncGetAlertsByPage({ payload }) {
   } = payload;
 
   try {
-    const fromDate = getStartOfMonth(dateForAlerts);
-    const toDate = getEndOfMonth(dateForAlerts);
+    const startDate = getStartDate(dateForAlerts, MONTH_KEY);
+    const endDate = getEndDate(dateForAlerts, MONTH_KEY);
 
-    const { data } = yield call(apiGetJobs, fromDate, toDate, true, pageOfAlerts);
-    yield put(actionCreators.getAlertsByPageSuccess(data));
+    const { data } = yield call(apiGetJobs, startDate, endDate, true, pageOfAlerts);
+
+    const allAlerts = yield select(Jobs.selectors.getAllAlerts);
+
+    const newAlerts = data.data.reduce((result, item) => {
+      const index = result.findIndex(el => el.jobId === item.jobId);
+      if (index === -1) {
+        const idx = result.findIndex((el) => {
+          return moment(el[JOB_DATE[0]]).isAfter(item[JOB_DATE[0]]);
+        });
+
+        if (idx === -1) {
+          result.push(item);
+        } else {
+          result.splice(idx, 0, item);
+        }
+      }
+
+      return result;
+    }, allAlerts.slice(0));
+
+    yield put(actionCreators.getAlertsByPageSuccess(newAlerts));
 
     success && success();
   } catch (error) {
@@ -191,12 +243,16 @@ export function* asyncReloadJobsAndAlerts({ payload }) {
   } = payload;
 
   try {
-    const date = getFormattedDate();
-    const fromDate = getStartOfMonth(date);
-    const toDate = getEndOfMonth(date);
+    const date = getDate();
 
-    const { data: { data: newJobs } } = yield call(apiGetJobs, fromDate, toDate, false);
-    const { data: { data: newAlerts } } = yield call(apiGetJobs, fromDate, toDate, true);
+    const startDateForJobs = getStartDate(date, DATE_KEY);
+    const endDateForJobs = getEndDate(date, DATE_KEY);
+
+    const startDateForAlerts = getStartDate(date, MONTH_KEY);
+    const endDateForAlerts = getEndDate(date, MONTH_KEY);
+
+    const { data: { data: newJobs } } = yield call(apiGetJobs, startDateForJobs, endDateForJobs, false);
+    const { data: { data: newAlerts } } = yield call(apiGetJobs, startDateForAlerts, endDateForAlerts, true);
 
     yield put(actionCreators.reloadJobsAndAlertsSuccess({ date, newJobs, newAlerts }));
 
@@ -227,7 +283,6 @@ export function* asyncAcknowledgeJobs({ payload }) {
     const allAlerts = yield select(Jobs.selectors.getAllAlerts);
 
     const dateForJobs = yield select(Jobs.selectors.getDateForJobs);
-    const dateForAlerts = yield select(Jobs.selectors.getDateForAlerts);
 
     //
     const result = successJobIds.reduce((res, id) => {
@@ -235,6 +290,10 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
       if (index === -1) {
         const idx = res.newJobs.findIndex(item => item.jobId === id);
+
+        if (idx === -1) {
+          return res;
+        }
 
         res.newJobs.splice(idx, 1, {
           ...res.newJobs[idx],
@@ -244,21 +303,33 @@ export function* asyncAcknowledgeJobs({ payload }) {
         return res;
       }
 
-      if (dateForJobs === dateForAlerts) {
-        let idx = res.newJobs.findIndex((item) => {
-          return moment(item[JOB_DATE[0]]).isAfter(moment(res.newAlerts[index][JOB_DATE[0]]));
-        });
+      const newItem = res.newAlerts[index];
+      res.newAlerts.splice(index, 1);
 
-        if (idx === -1) {
-          idx = res.newJobs.length;
+      const idx = res.newJobs.findIndex(item => item.jobId === id);
+
+      if (idx === -1) {
+        if (dateForJobs === getDate(newItem[JOB_DATE[0]])) {
+          let orderIndex = res.newJobs.findIndex((item) => {
+            return moment(item[JOB_DATE[0]])
+              .isAfter(moment(newItem[JOB_DATE[0]]));
+          });
+
+          if (orderIndex === -1) {
+            orderIndex = res.newJobs.length;
+          }
+
+          res.newJobs.splice(orderIndex, 0, {
+            ...newItem,
+            statusName: JOB_STATUS.ACKNOWLEDGED,
+          });
         }
-
-        res.newJobs.splice(idx, 0, {
-          ...res.newAlerts[index],
+      } else {
+        res.newJobs.splice(idx, 1, {
+          ...res.newJobs[idx],
           statusName: JOB_STATUS.ACKNOWLEDGED,
         });
       }
-      res.newAlerts.splice(index, 1);
 
       return res;
     }, {
@@ -370,6 +441,7 @@ export function* asyncCompleteJobs({ payload }) {
     stepBinUpdate,
     signedUserName,
     signedUserContact,
+    amountCollected,
     success,
     failure,
   } = payload;
@@ -384,7 +456,7 @@ export function* asyncCompleteJobs({ payload }) {
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
-      amountCollected: lastJobStep.amountToCollect,
+      amountCollected,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -461,7 +533,7 @@ export function* asyncFailJobs({ payload }) {
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
-      amountCollected: lastJobStep.amountToCollect,
+      amountCollected: focusedJob.collectedAmount || focusedJob.amountToCollect,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -543,6 +615,153 @@ export function* watchGetJobById() {
   }
 }
 
+export function* asyncAddService({ payload }) {
+  const {
+    jobId, serviceId, success, failure,
+  } = payload;
+
+  try {
+    yield call(apiAddService, jobId, serviceId);
+
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    const services = focusedJob.additionalCharges.slice(0);
+
+    const index = services.findIndex((item) => {
+      return item.serviceAdditionalChargeTemplateId === serviceId;
+    });
+
+    services[index] = {
+      ...services[index],
+      isSelected: true,
+    };
+
+    yield put(actionCreators.addServiceSuccess(services));
+
+    success && success();
+  } catch (error) {
+    onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchAddService() {
+  while (true) {
+    const action = yield take(ADD_SERVICE);
+    yield* asyncAddService(action);
+  }
+}
+
+export function* asyncRemoveService({ payload }) {
+  const {
+    jobId, serviceId, success, failure,
+  } = payload;
+
+  try {
+    yield call(apiRemoveService, jobId, serviceId);
+
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    const services = focusedJob.additionalCharges.slice(0);
+
+    const index = services.findIndex((item) => {
+      return item.serviceAdditionalChargeTemplateId === serviceId;
+    });
+
+    services[index] = {
+      ...services[index],
+      isSelected: false,
+    };
+
+    yield put(actionCreators.removeServiceSuccess(services));
+
+    success && success();
+  } catch (error) {
+    onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchRemoveService() {
+  while (true) {
+    const action = yield take(REMOVE_SERVICE);
+    yield* asyncRemoveService(action);
+  }
+}
+
+export function* asyncMarkMessagesAsRead({ payload }) {
+  const {
+    jobId, success, failure,
+  } = payload;
+
+  try {
+    yield call(apiMarkMessagesAsRead, jobId);
+
+    yield put(actionCreators.markMessagesAsReadSuccess());
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchMarkMessagesAsRead() {
+  while (true) {
+    const action = yield take(MARK_MESSAGES_AS_READ);
+    yield* asyncMarkMessagesAsRead(action);
+  }
+}
+
+export function* asyncAddMessage({ payload }) {
+  const {
+    jobId, message, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiAddMessage, jobId, message);
+
+    yield put(actionCreators.addMessageSuccess(data));
+
+    success && success();
+  } catch (error) {
+    onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchAddMessage() {
+  while (true) {
+    const action = yield take(ADD_MESSAGE);
+    yield* asyncAddMessage(action);
+  }
+}
+
+export function* asyncUpdateAmountCollected({ payload }) {
+  const {
+    jobIds, amountCollected, success, failure,
+  } = payload;
+
+  try {
+    const attempt = {
+      amountCollected,
+    };
+
+    yield call(apiUpdateAmountCollected, jobIds, attempt);
+
+    yield put(actionCreators.updateAmountCollectedSuccess(amountCollected));
+
+    success && success();
+  } catch (error) {
+    onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchUpdateAmountCollected() {
+  while (true) {
+    const action = yield take(UPDATE_AMOUNT_COLLECTED);
+    yield* asyncUpdateAmountCollected(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -579,5 +798,10 @@ export default function* () {
     fork(watchCompleteJobs),
     fork(watchFailJobs),
     fork(watchGetJobById),
+    fork(watchAddService),
+    fork(watchRemoveService),
+    fork(watchMarkMessagesAsRead),
+    fork(watchAddMessage),
+    fork(watchUpdateAmountCollected),
   ]);
 }

@@ -22,7 +22,8 @@ const ButtonWrap = styled.View`
 `;
 
 const JobDetails = styled.View`
-  margin: ${SIZE2}px;
+  margin-bottom: ${SIZE2}px;
+  margin-horizontal: ${SIZE2}px;
 `;
 
 const Content = styled.View`
@@ -78,7 +79,7 @@ const InfoWrap = styled.View`
 const NumberText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700,
-  color: ${COLORS.BLUE1};
+  color: ${COLORS.BLACK2};
   text-decoration-line: underline;
 `;
 
@@ -119,49 +120,40 @@ const BinInfoWrap = styled.View`
 
 const BinInfoRow = styled.View`
   height: ${SIZE8}px;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.WHITE3};
   margin-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE4}px;
   border-radius: ${SIZE1}px;
 `;
 
 const BinText = styled.Text`
+  flex: 1;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
-  text-align: center;
+  margin-right: ${(props) => (
+    props.editable ? SIZE4 : 0
+  )}px;
+  text-align: ${(props) => (
+    props.editable ? 'left' : 'center'
+  )};
 `;
 
 const BinInput = styled.TextInput`
-  width: 100%;
+  flex: 1;
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLUE1};
-  text-align: center;
-`;
-
-const InstructionsWrap = styled.View`
-  align-items: center;
-  margin-bottom: ${SIZE4}px;
-`;
-
-const InstructionsContent = styled.View`
-  width: 100%;
-  margin-top: ${SIZE2}px;
-  border-radius: ${SIZE1}px;
-  border-width: 1px;
-  border-color: ${COLORS.GRAY4};
-  padding-horizontal: ${SIZE4}px;
-  padding-top: ${SIZE4}px;
-  padding-bottom: ${SIZE8}px;
-`;
-
-const InstructionsText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 600,
-  color: ${COLORS.BLACK1};
+  margin-right: ${(props) => (
+    props.editable ? SIZE4 : 0
+  )}px;
+  text-align: ${(props) => (
+    props.editable ? 'left' : 'center'
+  )};
 `;
 
 const PhotoAndSignWrap = styled.View`
@@ -207,6 +199,88 @@ const SignInfoText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const JobInstruction = styled.View`
+  margin-bottom: ${SIZE2}px;
+  margin-horizontal: ${SIZE2}px;
+`;
+
+const CommentsWrap = styled.View`
+  margin-bottom: ${SIZE2}px;
+`;
+
+const Comment = styled.View`
+  padding: ${SIZE3}px;
+  margin-vertical: ${SIZE2}px;
+  max-width: 90%;
+  border-radius: ${SIZE2}px;
+  background-color: ${COLORS.BLUE4};
+  align-self: ${(props) => (
+    props.pos === 'right' ? 'flex-end' : 'flex-start'
+  )};
+`;
+
+const CommentText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 600;
+  color: ${COLORS.BLACK2};
+  text-align: ${(props) => (
+    props.pos === 'right' ? 'right' : 'left'
+  )};
+`;
+
+const AddComment = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: ${SIZE1}px;
+`;
+
+const CollectRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: ${SIZE2}px;
+  margin-bottom: ${SIZE2}px;
+`;
+
+const CollectInputWrap = styled.View`
+  flex: 1;
+  height: ${SIZE8}px;
+  align-items: center;
+  justify-content: center;
+  margin-left: ${SIZE4}px;
+  background-color: ${COLORS.WHITE2};
+  border-width: 1px;
+  border-color: ${COLORS.BLUE1};
+  border-radius: ${SIZE1}px;
+`;
+
+const CollectInput = styled.TextInput`
+  width: 100%;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 700,
+  color: ${COLORS.BLACK2};
+  text-align: center;
+`;
+
+const AddServices = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: ${SIZE1}px;
+`;
+
+const ServicesWrap = styled.View`
+  margin-vertical: ${SIZE1}px;
+  padding-vertical: ${SIZE2}px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY3};
+`;
+
+const ServiceRow = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  margin-vertical: ${SIZE2}px;
+`;
+
 export {
   ButtonWrap,
   JobDetails,
@@ -228,13 +302,22 @@ export {
   BinInfoRow,
   BinText,
   BinInput,
-  InstructionsWrap,
-  InstructionsContent,
-  InstructionsText,
   PhotoAndSignWrap,
   PhotoAndSignText,
   AttachmentWrap,
   HalfWrap,
   SignInfo,
   SignInfoText,
+
+  JobInstruction,
+  CommentsWrap,
+  Comment,
+  CommentText,
+  AddComment,
+  CollectRow,
+  CollectInputWrap,
+  CollectInput,
+  AddServices,
+  ServicesWrap,
+  ServiceRow,
 };

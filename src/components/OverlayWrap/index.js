@@ -24,22 +24,29 @@ const Overlay = styled.View`
 `;
 
 const Content = styled.View`
-  width: 90%;
+  width: ${props => props.width};
+  top: ${props => props.top}px;
   background-color: ${COLORS.WHITE2};
   border-radius: ${SIZE1}px;
   overflow: hidden;
 `;
 
 const OverlayWrap = ({
+  width,
+  offsetFromCenter,
+  dismissible,
   children,
   dismissOverlay,
 }) => {
   return (
     <Container>
-      <TouchableWithoutFeedback onPress={dismissOverlay}>
+      <TouchableWithoutFeedback
+        disabled={!dismissible}
+        onPress={dismissOverlay}
+      >
         <Overlay />
       </TouchableWithoutFeedback>
-      <Content>
+      <Content width={width} top={-offsetFromCenter}>
        { children }
       </Content>
     </Container>
@@ -47,8 +54,18 @@ const OverlayWrap = ({
 }
 
 OverlayWrap.propTypes = {
+  width: PropTypes.string,
+  offsetFromCenter: PropTypes.number,
+  dismissible: PropTypes.bool,
   children: PropTypes.node.isRequired,
-  dismissOverlay: PropTypes.func.isRequired,
+  dismissOverlay: PropTypes.func,
+};
+
+OverlayWrap.defaultProps = {
+  width: '90%',
+  offsetFromCenter: 0,
+  dismissible: true,
+  dismissOverlay: null,
 };
 
 export default OverlayWrap;
