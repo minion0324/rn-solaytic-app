@@ -455,7 +455,7 @@ export function* asyncCompleteJobs({ payload }) {
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
-      amountCollected: lastJobStep.amountToCollect,
+      amountCollected: focusedJob.collectedAmount,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -532,7 +532,7 @@ export function* asyncFailJobs({ payload }) {
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
-      amountCollected: lastJobStep.amountToCollect,
+      amountCollected: focusedJob.collectedAmount,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
