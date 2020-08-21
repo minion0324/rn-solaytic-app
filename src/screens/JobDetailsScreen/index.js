@@ -62,7 +62,7 @@ const JobDetailsScreen = ({
   const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
   const [ amountCollected, setAmountCollected ] = useState(
-    `${focusedJob.collectedAmount || focusedJob.amountToCollect || ''}`
+    focusedJob.collectedAmount || focusedJob.amountToCollect
   );
 
   useEffect(() => {

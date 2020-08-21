@@ -394,7 +394,9 @@ const JobDetailsScreenView = ({
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   onChangeText={text => setAmountCollected(text.replace(UNIT, ''))}
-                  value={amountCollected ? `${UNIT}${amountCollected}` : amountCollected}
+                  value={
+                    amountCollected ? `${UNIT}${amountCollected}` : ''
+                  }
                   keyboardType={'numeric'}
                   editable={isInProgress()}
                 />
@@ -404,7 +406,7 @@ const JobDetailsScreenView = ({
               <OkCancelButton
                 onPress={() => {
                   setAmountCollected(
-                    `${focusedJob.collectedAmount || focusedJob.amountToCollect || ''}`
+                    focusedJob.collectedAmount || focusedJob.amountToCollect
                   );
                 }}
               >
