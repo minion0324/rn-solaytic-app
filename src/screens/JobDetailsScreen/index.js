@@ -176,6 +176,7 @@ const JobDetailsScreen = ({
       stepBinUpdate: getUpdatedBinInfo(),
       signedUserName,
       signedUserContact,
+      amountCollected,
       success: onBack,
       failure: onFailure,
     });

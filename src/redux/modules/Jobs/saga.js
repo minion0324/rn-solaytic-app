@@ -441,6 +441,7 @@ export function* asyncCompleteJobs({ payload }) {
     stepBinUpdate,
     signedUserName,
     signedUserContact,
+    amountCollected,
     success,
     failure,
   } = payload;
@@ -455,7 +456,7 @@ export function* asyncCompleteJobs({ payload }) {
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
-      amountCollected: focusedJob.collectedAmount,
+      amountCollected,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
