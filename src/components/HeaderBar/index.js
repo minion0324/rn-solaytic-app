@@ -15,7 +15,7 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${props => props.color || COLORS.WHITE2};
+  background-color: ${props => props.color || COLORS.WHITE1};
   padding-left: ${SIZE2}px;
   padding-right: ${SIZE4}px;
 `;
