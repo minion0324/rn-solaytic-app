@@ -12,7 +12,7 @@ const TabWrap = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${COLORS.WHITE2};
+  background-color: ${COLORS.WHITE1};
 `;
 
 const TabItem = styled.TouchableOpacity`

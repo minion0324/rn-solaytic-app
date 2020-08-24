@@ -18,7 +18,6 @@ const ButtonWrap = styled.View`
   align-items: center;
   justify-content: center;
   padding-horizontal: ${SIZE6}px;
-  background-color: ${COLORS.WHITE2};
 `;
 
 const JobDetails = styled.View`
