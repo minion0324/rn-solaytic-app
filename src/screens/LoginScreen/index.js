@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Keyboard,
   Alert,
-  ScrollView,
+  Keyboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -28,6 +27,7 @@ import {
   Content,
   LogoWrap,
   Logo,
+  FormWrap,
   InputRow,
   InputWrap,
   Input,
@@ -36,6 +36,7 @@ import {
   RememberWrap,
   RememberText,
   ButtonWrap,
+  PoweredByText,
 } from './styled';
 
 const {
@@ -140,21 +141,17 @@ const LoginScreen = ({
 
   return (
     <Container color={COLORS.WHITE1}>
-      <ScrollView
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-      >
-        <Content>
-          <LogoWrap>
-            <Logo
-              resizeMode={'contain'}
-              source={
-                appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
-              }
-            />
-          </LogoWrap>
+      <Content>
+        <LogoWrap>
+          <Logo
+            resizeMode={'contain'}
+            source={
+              appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+            }
+          />
+        </LogoWrap>
 
+        <FormWrap>
           <InputRow>
             <LeftWrap>
               <UserIcon />
@@ -221,8 +218,12 @@ const LoginScreen = ({
               loading={loading}
             />
           </ButtonWrap>
-        </Content>
-      </ScrollView>
+        </FormWrap>
+
+        <PoweredByText>
+          Powered by wasteporter.com
+        </PoweredByText>
+      </Content>
     </Container>
   );
 };

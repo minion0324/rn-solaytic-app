@@ -6,15 +6,14 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
-  SIZE5,
   SIZE8,
-  SIZE10,
   FONT,
 } from 'src/constants';
 
 const Content = styled.View`
   flex: 1;
   align-items: center;
+  justify-content: space-between;
   padding-horizontal: ${SIZE8}px;
   padding-vertical: ${SIZE4}px;
 `;
@@ -24,12 +23,17 @@ const LogoWrap = styled.View`
   height: ${HEIGHT * 0.25}px;
   align-items: center;
   justify-content: center;
-  margin-vertical: ${SIZE8}px;
+  margin-top: ${SIZE8}px;
+  margin-bottom: ${SIZE2}px;
 `;
 
 const Logo = styled.Image`
   width: 100%;
   height: 100%;
+`;
+
+const FormWrap = styled.View`
+  width: 100%;
 `;
 
 const InputRow = styled.View`
@@ -92,10 +96,17 @@ const ButtonWrap = styled.View`
   margin-vertical: ${SIZE4}px;
 `;
 
+const PoweredByText = styled.Text`
+  font-size: ${FONT(12)}px;
+  color: ${COLORS.GRAY3};
+  font-weight: 500;
+`;
+
 export {
   Content,
   LogoWrap,
   Logo,
+  FormWrap,
   InputRow,
   InputWrap,
   Input,
@@ -104,4 +115,5 @@ export {
   RememberWrap,
   RememberText,
   ButtonWrap,
+  PoweredByText,
 };
