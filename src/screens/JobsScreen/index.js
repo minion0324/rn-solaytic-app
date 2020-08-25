@@ -25,7 +25,6 @@ import {
   JOB_DETAILS_SCREEN,
 } from 'src/navigation';
 import {
-  User,
   Jobs,
   ViewStore,
 } from 'src/redux';
@@ -61,7 +60,6 @@ import {
 const { SideMenuIcon } = SVGS;
 
 const JobsScreen = ({
-  driverName,
   allJobs,
   pageOfJobs,
   dateForJobs,
@@ -242,7 +240,6 @@ const JobsScreen = ({
 };
 
 JobsScreen.propTypes = {
-  driverName: PropTypes.string.isRequired,
   allJobs: PropTypes.array.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
@@ -256,7 +253,6 @@ JobsScreen.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    driverName: User.selectors.getDriverName(state),
     allJobs: Jobs.selectors.getAllJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),

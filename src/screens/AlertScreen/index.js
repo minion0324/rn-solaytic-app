@@ -60,7 +60,6 @@ import {
 const { SideMenuIcon } = SVGS;
 
 const AlertScreen = ({
-  driverName,
   allAlerts,
   countOfAlerts,
   pageOfAlerts,
@@ -252,7 +251,6 @@ const AlertScreen = ({
 };
 
 AlertScreen.propTypes = {
-  driverName: PropTypes.string.isRequired,
   allAlerts: PropTypes.array.isRequired,
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
@@ -269,7 +267,6 @@ AlertScreen.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    driverName: User.selectors.getDriverName(state),
     allAlerts: Jobs.selectors.getAllAlerts(state),
     countOfAlerts: Jobs.selectors.getCountOfAlerts(state),
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
