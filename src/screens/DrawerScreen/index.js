@@ -35,7 +35,7 @@ import {
 
 const { AvatarIcon } = SVGS;
 
-const ProfileScreen = ({
+const DrawerScreen = ({
   driverName,
   logout,
   componentId,
@@ -75,7 +75,7 @@ const ProfileScreen = ({
   );
 };
 
-ProfileScreen.propTypes = {
+DrawerScreen.propTypes = {
   driverName: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
@@ -94,4 +94,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProfileScreen);
+)(DrawerScreen);
