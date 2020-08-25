@@ -7,6 +7,4 @@ export default {
   FIRST_TAB_ACTIVE: require(`${PATH}first-tab-active.png`),
   SECOND_TAB: require(`${PATH}second-tab.png`),
   SECOND_TAB_ACTIVE: require(`${PATH}second-tab-active.png`),
-  THIRD_TAB: require(`${PATH}third-tab.png`),
-  THIRD_TAB_ACTIVE: require(`${PATH}third-tab-active.png`),
 };
