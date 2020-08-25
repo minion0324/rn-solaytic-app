@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   Alert,
+  Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -93,6 +94,10 @@ const DetailsTab = ({
   const actionSheetKey = useRef(null);
 
   const inputBinWeight = useRef(null);
+
+  const onContact = (phoneNumber) => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  };
 
   const onActionSheetPress = (index) => {
     const { charges } = focusedJob;
@@ -298,12 +303,19 @@ const DetailsTab = ({
               <InfoText>
                 {'  |  '}
               </InfoText>
-              <NumberText>
-                {
+              <TouchableOpacity
+                onPress={() => onContact(
                   focusedJob.steps[stepIndex].contactNumberOne
                   || focusedJob.customer.contactNumber
-                }
-              </NumberText>
+                )}
+              >
+                <NumberText>
+                  {
+                    focusedJob.steps[stepIndex].contactNumberOne
+                    || focusedJob.customer.contactNumber
+                  }
+                </NumberText>
+              </TouchableOpacity>
             </RowWrap>
 
             {
@@ -318,9 +330,15 @@ const DetailsTab = ({
                   <InfoText>
                     {'  |  '}
                   </InfoText>
-                  <NumberText>
-                    {focusedJob.steps[stepIndex].contactNumberTwo}
-                  </NumberText>
+                  <TouchableOpacity
+                    onPress={() => onContact(
+                      focusedJob.steps[stepIndex].contactNumberTwo
+                    )}
+                  >
+                    <NumberText>
+                      {focusedJob.steps[stepIndex].contactNumberTwo}
+                    </NumberText>
+                  </TouchableOpacity>
                 </RowWrap>
               </View>
             }
