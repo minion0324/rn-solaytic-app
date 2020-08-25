@@ -26,6 +26,7 @@ import ActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active.svg'
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
 import CashIcon from 'src/assets/svgs/icon-cash.svg';
 import ArrowLocationIcon from 'src/assets/svgs/icon-location-arrow.svg';
+import CloseIcon from 'src/assets/svgs/icon-close.svg';
 
 export default {
   ActiveCheckIcon,
@@ -56,4 +57,5 @@ export default {
   DeactiveCircleCheckIcon,
   CashIcon,
   ArrowLocationIcon,
+  CloseIcon,
 };
