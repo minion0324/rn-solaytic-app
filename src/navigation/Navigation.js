@@ -108,7 +108,7 @@ export function pushSingleScreenApp() {
       drawBehind: true,
       animate: false,
       titleDisplayMode: 'alwaysShow',
-      currentTabIndex: 1,
+      currentTabIndex: 0,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -149,7 +149,7 @@ export function pushMultiScreensApp() {
       drawBehind: true,
       animate: false,
       titleDisplayMode: 'alwaysShow',
-      currentTabIndex: 1,
+      currentTabIndex: 0,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -200,25 +200,6 @@ export function pushMultiScreensApp() {
                       icon: IMAGES.SECOND_TAB,
                       selectedIcon: IMAGES.SECOND_TAB_ACTIVE,
                       testID: 'SECOND_TAB_BAR_BUTTON',
-                    },
-                  },
-                },
-              },
-              {
-                stack: {
-                  children: [
-                    {
-                      component: {
-                        name: PROFILE_SCREEN,
-                      },
-                    },
-                  ],
-                  options: {
-                    bottomTab: {
-                      text: 'Profile',
-                      icon: IMAGES.THIRD_TAB,
-                      selectedIcon: IMAGES.THIRD_TAB_ACTIVE,
-                      testID: 'THIRD_TAB_BAR_BUTTON',
                     },
                   },
                 },
