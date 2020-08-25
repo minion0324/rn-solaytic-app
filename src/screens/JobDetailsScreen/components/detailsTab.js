@@ -26,6 +26,7 @@ import {
 import {
   ShadowWrap,
   FullImage,
+  FlexWrap,
   SpaceView,
 } from 'src/styles/common.styles';
 
@@ -531,52 +532,57 @@ const DetailsTab = ({
 
   const renderPhotoAndSign = () => {
     return (
-      <PhotoAndSignWrap>
-        <TouchableOpacity onPress={onPhoto}>
-          <RowWrap>
-            <CameraIcon />
-            <PhotoAndSignText>Photo</PhotoAndSignText>
-          </RowWrap>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onSign}>
-          <RowWrap>
-            <SignIcon />
-            <PhotoAndSignText>Sign</PhotoAndSignText>
-          </RowWrap>
-        </TouchableOpacity>
-      </PhotoAndSignWrap>
+      <ShadowWrap>
+        <PhotoAndSignWrap>
+          <TouchableOpacity onPress={onPhoto}>
+            <RowWrap>
+              <CameraIcon />
+              <PhotoAndSignText>Photo</PhotoAndSignText>
+            </RowWrap>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onSign}>
+            <RowWrap>
+              <SignIcon />
+              <PhotoAndSignText>Sign</PhotoAndSignText>
+            </RowWrap>
+          </TouchableOpacity>
+        </PhotoAndSignWrap>
+      </ShadowWrap>
     );
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-    >
-      <JobDetails>
-        <ShadowWrap>
-          <Content>
-            { renderLocationInfo() }
-            { renderContactInfo() }
-            { renderBinInfo() }
-            { renderAttachments() }
-            {
-              (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-              (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
-              renderPhotoAndSign()
-            }
-            {
-              JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
-              <DefaultButton
-                text={'Acknowledge'}
-                color={COLORS.BLUE1}
-                onPress={onAcknowledge}
-                loading={loading}
-              />
-            }
-          </Content>
-        </ShadowWrap>
-      </JobDetails>
-    </ScrollView>
+    <FlexWrap>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
+        <JobDetails>
+          <ShadowWrap>
+            <Content>
+              { renderLocationInfo() }
+              { renderContactInfo() }
+              { renderBinInfo() }
+              { renderAttachments() }
+
+              {
+                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
+                <DefaultButton
+                  text={'Acknowledge'}
+                  color={COLORS.BLUE1}
+                  onPress={onAcknowledge}
+                  loading={loading}
+                />
+              }
+            </Content>
+          </ShadowWrap>
+        </JobDetails>
+      </ScrollView>
+      {
+        (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+        (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+        renderPhotoAndSign()
+      }
+    </FlexWrap>
   );
 };
 
