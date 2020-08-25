@@ -41,7 +41,7 @@ const InputRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-vertical: ${SIZE2}px;
+  margin-vertical: ${SIZE1}px;
 `;
 
 const InputWrap = styled.View`
