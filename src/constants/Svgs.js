@@ -26,6 +26,8 @@ import EditIcon from 'src/assets/svgs/icon-edit.svg';
 import CommentIcon from 'src/assets/svgs/icon-comment.svg';
 import ActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
+import CashIcon from 'src/assets/svgs/icon-cash.svg';
+import ArrowLocationIcon from 'src/assets/svgs/icon-location-arrow.svg';
 
 export default {
   ActiveCheckIcon,
@@ -56,4 +58,6 @@ export default {
   CommentIcon,
   ActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
+  CashIcon,
+  ArrowLocationIcon,
 };
