@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Keyboard, Alert } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -21,6 +26,7 @@ import {
   Content,
   LogoWrap,
   Logo,
+  InputRow,
   InputWrap,
   Input,
   LeftWrap,
@@ -134,79 +140,90 @@ const LoginScreen = ({
 
   return (
     <Container color={COLORS.WHITE1}>
-      <Content>
-        <LogoWrap>
-          <Logo
-            resizeMode={'contain'}
-            source={
-              appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
-            }
-          />
-        </LogoWrap>
-        <InputWrap>
-          <LeftWrap>
-            <UserIcon />
-          </LeftWrap>
-          <Input
-            ref={inputUserName}
-            placeholder={'Username'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'next'}
-            onSubmitEditing={() => inputPassword.current.focus()}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangeUserName(text)}
-            value={userName}
-          />
-          <RightWrap />
-        </InputWrap>
+      <ScrollView
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+      >
+        <Content>
+          <LogoWrap>
+            <Logo
+              resizeMode={'contain'}
+              source={
+                appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+              }
+            />
+          </LogoWrap>
 
-        <InputWrap>
-          <LeftWrap>
-            <LockIcon />
-          </LeftWrap>
-          <Input
-            ref={inputPassword}
-            placeholder={'Password'}
-            secureTextEntry={!visibility}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'go'}
-            onSubmitEditing={onLogin}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangePassword(text)}
-            value={password}
-          />
-          <RightWrap
-            onPress={() => setVisibility(!visibility)}
-          >
+          <InputRow>
+            <LeftWrap>
+              <UserIcon />
+            </LeftWrap>
+            <InputWrap>
+              <Input
+                ref={inputUserName}
+                placeholder={'Username'}
+                underlineColorAndroid={COLORS.TRANSPARENT1}
+                returnKeyType={'next'}
+                onSubmitEditing={() => inputPassword.current.focus()}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => onChangeUserName(text)}
+                value={userName}
+              />
+              <RightWrap />
+            </InputWrap>
+          </InputRow>
+
+          <InputRow>
+            <LeftWrap>
+              <LockIcon />
+            </LeftWrap>
+            <InputWrap>
+              <Input
+                ref={inputPassword}
+                placeholder={'Password'}
+                secureTextEntry={!visibility}
+                underlineColorAndroid={COLORS.TRANSPARENT1}
+                returnKeyType={'go'}
+                onSubmitEditing={onLogin}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => onChangePassword(text)}
+                value={password}
+              />
+              <RightWrap
+                onPress={() => setVisibility(!visibility)}
+              >
+                {
+                  visibility
+                  ? <VisibilityOnIcon />
+                  : <VisibilityOffIcon />
+                }
+              </RightWrap>
+            </InputWrap>
+          </InputRow>
+
+          <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
             {
-              visibility
-              ? <VisibilityOnIcon />
-              : <VisibilityOffIcon />
+              rememberCheck
+              ? <ActiveCheckIcon />
+              : <DeactiveCheckIcon />
             }
-          </RightWrap>
-        </InputWrap>
+            <RememberText>Remember me</RememberText>
+          </RememberWrap>
 
-        <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
-          {
-            rememberCheck
-            ? <ActiveCheckIcon />
-            : <DeactiveCheckIcon />
-          }
-          <RememberText>Remember me</RememberText>
-        </RememberWrap>
-
-        <ButtonWrap>
-          <LoginButton onPress={onLogin} disabled={loading}>
-            {
-              loading
-              ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
-              : <LoginText>SIGN IN</LoginText>
-            }
-          </LoginButton>
-        </ButtonWrap>
-      </Content>
+          <ButtonWrap>
+            <LoginButton onPress={onLogin} disabled={loading}>
+              {
+                loading
+                ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
+                : <LoginText>SIGN IN</LoginText>
+              }
+            </LoginButton>
+          </ButtonWrap>
+        </Content>
+      </ScrollView>
     </Container>
   );
 };
