@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  ActivityIndicator,
   Keyboard,
   Alert,
   ScrollView,
@@ -16,6 +15,9 @@ import {
   IMAGES,
   COLORS,
 } from 'src/constants';
+import {
+  DefaultButton,
+} from 'src/components';
 import { User } from 'src/redux';
 
 import {
@@ -34,8 +36,6 @@ import {
   RememberWrap,
   RememberText,
   ButtonWrap,
-  LoginButton,
-  LoginText,
 } from './styled';
 
 const {
@@ -214,13 +214,12 @@ const LoginScreen = ({
           </RememberWrap>
 
           <ButtonWrap>
-            <LoginButton onPress={onLogin} disabled={loading}>
-              {
-                loading
-                ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
-                : <LoginText>SIGN IN</LoginText>
-              }
-            </LoginButton>
+            <DefaultButton
+              onPress={onLogin}
+              text={'Sign in'}
+              color={COLORS.BLUE1}
+              loading={loading}
+            />
           </ButtonWrap>
         </Content>
       </ScrollView>

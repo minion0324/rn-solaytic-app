@@ -92,20 +92,6 @@ const ButtonWrap = styled.View`
   margin-vertical: ${SIZE4}px;
 `;
 
-const LoginButton = styled.TouchableOpacity`
-  height: ${SIZE10}px;
-  align-items: center;
-  justify-content: center;
-  background-color: ${COLORS.BLUE1};
-  border-radius: ${SIZE5}px;
-`;
-
-const LoginText = styled.Text`
-  font-size: ${FONT(18)}px;
-  font-weight: 500;
-  color: ${COLORS.WHITE1};
-`;
-
 export {
   Content,
   LogoWrap,
@@ -118,6 +104,4 @@ export {
   RememberWrap,
   RememberText,
   ButtonWrap,
-  LoginButton,
-  LoginText,
 };
