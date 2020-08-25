@@ -18,6 +18,7 @@ import {
   JOB_DATE,
 } from 'src/constants';
 import {
+  showDrawer,
   changeTabIndex,
   pushScreen,
   popToRootScreen,
@@ -210,6 +211,7 @@ const AlertScreen = ({
         <HeaderBar
           centerIcon={<ScreenText>Notifications</ScreenText>}
           leftIcon={<SideMenuIcon />}
+          onPressLeft={() => showDrawer(componentId)}
         />
 
         {
