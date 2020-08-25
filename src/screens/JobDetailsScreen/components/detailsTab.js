@@ -15,6 +15,7 @@ import {
   JOB_DATE,
   JOB_STATUS,
   SIZE1,
+  SIZE2,
 } from 'src/constants';
 import {
   DefaultButton,
@@ -217,7 +218,7 @@ const DetailsTab = ({
                 <InfoText numberOfLines={1}>
                   {locations[1]}
                 </InfoText>
-                <SpaceView mLeft={SIZE1} />
+                <SpaceView mLeft={SIZE2} />
                 <TouchableOpacity>
                   <ArrowLocationIcon />
                 </TouchableOpacity>
