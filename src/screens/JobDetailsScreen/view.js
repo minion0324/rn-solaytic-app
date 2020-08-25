@@ -190,6 +190,7 @@ const JobDetailsScreenView = ({
                 binInfo={binInfo}
                 setBinInfo={setBinInfo}
                 jobStatus={jobStatus}
+                setTabIndex={setTabIndex}
 
                 focusedJob={focusedJob}
 

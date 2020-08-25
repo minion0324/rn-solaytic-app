@@ -76,6 +76,7 @@ const DetailsTab = ({
   binInfo,
   setBinInfo,
   jobStatus,
+  setTabIndex,
 
   focusedJob,
 
@@ -345,7 +346,7 @@ const DetailsTab = ({
           </InfoWrap>
           {
             !focusedJob.collectedAmount &&
-            <CashButton>
+            <CashButton onPress={() => setTabIndex(1)}>
               <CashIcon />
             </CashButton>
           }
@@ -582,6 +583,7 @@ DetailsTab.propTypes = {
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
+  setTabIndex: PropTypes.func.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
