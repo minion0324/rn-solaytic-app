@@ -23,6 +23,13 @@ const getToken = createSelector(
   },
 );
 
+const getAppLogo = createSelector(
+  getUserStore,
+  (user) => {
+    return user.appLogo || '';
+  },
+);
+
 const getRememberedUser = createSelector(
   getUserStore,
   (user) => {
@@ -40,6 +47,7 @@ const getDriverName = createSelector(
 export default {
   getIsRehydrated,
   getToken,
+  getAppLogo,
   getRememberedUser,
   getDriverName,
 };
