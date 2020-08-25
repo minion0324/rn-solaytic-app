@@ -7,7 +7,7 @@ import {
   LoginScreen,
   AlertScreen,
   JobsScreen,
-  ProfileScreen,
+  DrawerScreen,
   JobDetailsScreen,
   SignatureScreen,
   FailJobScreen,
@@ -18,7 +18,7 @@ import {
   LOGIN_SCREEN,
   ALERT_SCREEN,
   JOBS_SCREEN,
-  PROFILE_SCREEN,
+  DRAWER_SCREEN,
   JOB_DETAILS_SCREEN,
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
@@ -41,7 +41,7 @@ export default function () {
   Navigation.registerComponent(LOGIN_SCREEN, () => WrappedComponent(LoginScreen));
   Navigation.registerComponent(ALERT_SCREEN, () => WrappedComponent(AlertScreen));
   Navigation.registerComponent(JOBS_SCREEN, () => WrappedComponent(JobsScreen));
-  Navigation.registerComponent(PROFILE_SCREEN, () => WrappedComponent(ProfileScreen));
+  Navigation.registerComponent(DRAWER_SCREEN, () => WrappedComponent(DrawerScreen));
   Navigation.registerComponent(JOB_DETAILS_SCREEN, () => WrappedComponent(JobDetailsScreen));
   Navigation.registerComponent(SIGNATURE_SCREEN, () => WrappedComponent(SignatureScreen));
   Navigation.registerComponent(FAIL_JOB_SCREEN, () => WrappedComponent(FailJobScreen));

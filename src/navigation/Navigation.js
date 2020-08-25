@@ -3,6 +3,7 @@ import { Navigation } from 'react-native-navigation';
 import {
   IMAGES,
   COLORS,
+  WIDTH,
   FONT,
 } from 'src/constants';
 
@@ -10,12 +11,35 @@ import {
   LOGIN_SCREEN,
   ALERT_SCREEN,
   JOBS_SCREEN,
-  PROFILE_SCREEN,
+  DRAWER_SCREEN,
 } from './Screens';
 
 import registerScreens from './registerScreens';
 
 registerScreens();
+
+export const DRAWER_COMPONENT_ID = 'left.NavigationDrawer';
+
+export function showDrawer(componentId) {
+  Navigation.mergeOptions(componentId, {
+    sideMenu: {
+      left: {
+        visible: true,
+        width: WIDTH * 0.5,
+      },
+    },
+  });
+}
+
+export function dismissDrawer(componentId) {
+  Navigation.mergeOptions(componentId, {
+    sideMenu: {
+      left: {
+        visible: false,
+      },
+    },
+  });
+}
 
 export function showOverlay(screenName, passProps = {}, options = {}) {
   return Navigation.showOverlay({
@@ -205,6 +229,16 @@ export function pushMultiScreensApp() {
                 },
               },
             ],
+          },
+        },
+        id: 'sideMenu',
+        left: {
+          component: {
+            id: DRAWER_COMPONENT_ID,
+            name: DRAWER_SCREEN,
+            passProps: {
+              componentId: DRAWER_COMPONENT_ID,
+            },
           },
         },
       },
