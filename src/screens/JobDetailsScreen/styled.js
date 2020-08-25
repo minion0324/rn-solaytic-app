@@ -72,6 +72,7 @@ const ContactInfo = styled.View`
 `;
 
 const InfoWrap = styled.View`
+  max-width: 75%;
   margin-vertical: ${SIZE2}px;
 `;
 
