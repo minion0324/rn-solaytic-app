@@ -6,19 +6,11 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
-  SIZE4,
   SIZE12,
   FONT,
 } from 'src/constants';
 
 const { ArrowBackIcon, FailIcon } = SVGS;
-
-const HelloText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK2};
-  margin-horizontal: ${SIZE4}px;
-`;
 
 const ScreenText = styled.Text`
   font-size: ${FONT(15)}px;
@@ -75,7 +67,6 @@ const FailJob = () => (
 )
 
 export {
-  HelloText,
   ScreenText,
   EmptyWrap,
   BackButton,
