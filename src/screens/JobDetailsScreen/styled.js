@@ -38,7 +38,7 @@ const LabelText = styled.Text`
 `;
 
 const InfoText = styled.Text`
-  max-width: 88%;
+  max-width: 80%;
   font-size: ${FONT(15)}px;
   font-weight: 700,
   color: ${COLORS.BLACK2};
