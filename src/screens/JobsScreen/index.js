@@ -43,7 +43,7 @@ import {
   FlexWrap,
 } from 'src/styles/common.styles';
 import {
-  HelloText,
+  ScreenText,
 } from 'src/styles/header.styles';
 import {
   CardRow,
@@ -201,11 +201,8 @@ const JobsScreen = ({
     <Container>
       <ShadowWrap>
         <HeaderBar
+          centerIcon={<ScreenText>Jobs</ScreenText>}
           leftIcon={<SideMenuIcon />}
-          centerIcon={
-            <DatePicker date={dateForJobs} onSelect={onDateSelect} />
-          }
-          rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
         <TabWrap>
           {

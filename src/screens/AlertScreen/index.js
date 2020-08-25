@@ -43,7 +43,7 @@ import {
   FlexWrap,
 } from 'src/styles/common.styles';
 import {
-  HelloText,
+  ScreenText,
 } from 'src/styles/header.styles';
 import {
   CardRow,
@@ -208,8 +208,8 @@ const AlertScreen = ({
     <Container>
       <ShadowWrap>
         <HeaderBar
+          centerIcon={<ScreenText>Notifications</ScreenText>}
           leftIcon={<SideMenuIcon />}
-          rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
         />
 
         {
