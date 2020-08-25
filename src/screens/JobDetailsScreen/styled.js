@@ -78,13 +78,18 @@ const InfoWrap = styled.View`
 const NumberText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700,
-  color: ${COLORS.BLACK2};
+  color: ${COLORS.BLUE1};
   text-decoration-line: underline;
 `;
 
 const RowWrap = styled.View`
   flex-direction: row;
   align-items: center;
+`;
+
+const CashButton = styled.TouchableOpacity`
+  top: ${SIZE1}px;
+  margin-left: ${SIZE4}px;
 `;
 
 const BinButtonWrap = styled.View`
@@ -294,6 +299,7 @@ export {
   InfoWrap,
   NumberText,
   RowWrap,
+  CashButton,
   BinButtonWrap,
   BinButton,
   BinButtonText,

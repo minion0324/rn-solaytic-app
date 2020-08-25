@@ -39,6 +39,7 @@ import {
   InfoWrap,
   NumberText,
   RowWrap,
+  CashButton,
   BinButtonWrap,
   BinButton,
   BinButtonText,
@@ -61,6 +62,8 @@ const {
   CameraIcon,
   SignIcon,
   EditIcon,
+  CashIcon,
+  ArrowLocationIcon,
 } = SVGS;
 
 const DetailsTab = ({
@@ -208,6 +211,10 @@ const DetailsTab = ({
                 <InfoText numberOfLines={1}>
                   {locations[1]}
                 </InfoText>
+                <SpaceView mLeft={SIZE1} />
+                <TouchableOpacity>
+                  <ArrowLocationIcon />
+                </TouchableOpacity>
               </LocationRow>
             </View>
           }
@@ -271,48 +278,60 @@ const DetailsTab = ({
     return (
       <ContactInfo>
         <InfoWrap>
+          <LabelText>Delivery Order</LabelText>
+          <InfoText>{focusedJob.jobNumber}</InfoText>
+        </InfoWrap>
+        <InfoWrap>
           <LabelText>Customer</LabelText>
           <InfoText>{focusedJob.customer.customerName}</InfoText>
         </InfoWrap>
-        <InfoWrap>
-          <LabelText>Customer Contact & Phone Number</LabelText>
-          <RowWrap>
-            <InfoText>
-              {
-                focusedJob.steps[stepIndex].contactPersonOne
-                || focusedJob.customer.contactPerson
-              }
-            </InfoText>
-            <InfoText>
-              {'  |  '}
-            </InfoText>
-            <NumberText>
-              {
-                focusedJob.steps[stepIndex].contactNumberOne
-                || focusedJob.customer.contactNumber
-              }
-            </NumberText>
-          </RowWrap>
+        <RowWrap>
+          <InfoWrap>
+            <LabelText>Customer Contact & Phone Number</LabelText>
+            <RowWrap>
+              <InfoText>
+                {
+                  focusedJob.steps[stepIndex].contactPersonOne
+                  || focusedJob.customer.contactPerson
+                }
+              </InfoText>
+              <InfoText>
+                {'  |  '}
+              </InfoText>
+              <NumberText>
+                {
+                  focusedJob.steps[stepIndex].contactNumberOne
+                  || focusedJob.customer.contactNumber
+                }
+              </NumberText>
+            </RowWrap>
 
+            {
+              !!focusedJob.steps[stepIndex].contactPersonTwo &&
+              !!focusedJob.steps[stepIndex].contactNumberTwo &&
+              <View>
+                <SpaceView mTop={SIZE1} />
+                <RowWrap>
+                  <InfoText>
+                    {focusedJob.steps[stepIndex].contactPersonTwo}
+                  </InfoText>
+                  <InfoText>
+                    {'  |  '}
+                  </InfoText>
+                  <NumberText>
+                    {focusedJob.steps[stepIndex].contactNumberTwo}
+                  </NumberText>
+                </RowWrap>
+              </View>
+            }
+          </InfoWrap>
           {
-            !!focusedJob.steps[stepIndex].contactPersonTwo &&
-            !!focusedJob.steps[stepIndex].contactNumberTwo &&
-            <View>
-              <SpaceView mTop={SIZE1} />
-              <RowWrap>
-                <InfoText>
-                  {focusedJob.steps[stepIndex].contactPersonTwo}
-                </InfoText>
-                <InfoText>
-                  {'  |  '}
-                </InfoText>
-                <NumberText>
-                  {focusedJob.steps[stepIndex].contactNumberTwo}
-                </NumberText>
-              </RowWrap>
-            </View>
+            !focusedJob.collectedAmount &&
+            <CashButton>
+              <CashIcon />
+            </CashButton>
           }
-        </InfoWrap>
+        </RowWrap>
         <InfoWrap>
           <LabelText>Date & Time</LabelText>
           <InfoText>
