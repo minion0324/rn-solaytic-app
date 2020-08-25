@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View,
+  ScrollView,
   TouchableOpacity,
   Alert,
   Linking,
@@ -548,30 +549,34 @@ const DetailsTab = ({
   };
 
   return (
-    <JobDetails>
-      <ShadowWrap>
-        <Content>
-          { renderLocationInfo() }
-          { renderContactInfo() }
-          { renderBinInfo() }
-          { renderAttachments() }
-          {
-            (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-            (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
-            renderPhotoAndSign()
-          }
-          {
-            JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
-            <DefaultButton
-              text={'Acknowledge'}
-              color={COLORS.BLUE1}
-              onPress={onAcknowledge}
-              loading={loading}
-            />
-          }
-        </Content>
-      </ShadowWrap>
-    </JobDetails>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+    >
+      <JobDetails>
+        <ShadowWrap>
+          <Content>
+            { renderLocationInfo() }
+            { renderContactInfo() }
+            { renderBinInfo() }
+            { renderAttachments() }
+            {
+              (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+              (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+              renderPhotoAndSign()
+            }
+            {
+              JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
+              <DefaultButton
+                text={'Acknowledge'}
+                color={COLORS.BLUE1}
+                onPress={onAcknowledge}
+                loading={loading}
+              />
+            }
+          </Content>
+        </ShadowWrap>
+      </JobDetails>
+    </ScrollView>
   );
 };
 

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import {
-  ScrollView,
-} from 'react-native';
 import PropTypes from 'prop-types';
 import { TabView, TabBar } from 'react-native-tab-view';
 
@@ -175,45 +172,37 @@ const JobDetailsScreenView = ({
   };
 
   const renderScene = ({ route }) => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
-          {
-            route.key === TAB1
-            ? <DetailsTab
-                loading={loading}
-                photos={photos}
-                sign={sign}
-                signedUserName={signedUserName}
-                signedUserContact={signedUserContact}
-                binInfo={binInfo}
-                setBinInfo={setBinInfo}
-                jobStatus={jobStatus}
-                setTabIndex={setTabIndex}
+    return route.key === TAB1
+      ? <DetailsTab
+          loading={loading}
+          photos={photos}
+          sign={sign}
+          signedUserName={signedUserName}
+          signedUserContact={signedUserContact}
+          binInfo={binInfo}
+          setBinInfo={setBinInfo}
+          jobStatus={jobStatus}
+          setTabIndex={setTabIndex}
 
-                focusedJob={focusedJob}
+          focusedJob={focusedJob}
 
-                onAcknowledge={onAcknowledge}
-                onPhoto={onPhoto}
-                onSign={onSign}
-                isInProgress={isInProgress}
-              />
-            : <InstructionTab
-                amountCollected={amountCollected}
-                setAmountCollected={setAmountCollected}
+          onAcknowledge={onAcknowledge}
+          onPhoto={onPhoto}
+          onSign={onSign}
+          isInProgress={isInProgress}
+        />
+      : <InstructionTab
+          amountCollected={amountCollected}
+          setAmountCollected={setAmountCollected}
 
-                focusedJob={focusedJob}
+          focusedJob={focusedJob}
 
-                onUpdateService={onUpdateService}
-                onNewComment={onNewComment}
-                onUpdateAmountCollected={onUpdateAmountCollected}
-                isInProgress={isInProgress}
-                onAlertNotProgress={onAlertNotProgress}
-              />
-          }
-      </ScrollView>
-    );
+          onUpdateService={onUpdateService}
+          onNewComment={onNewComment}
+          onUpdateAmountCollected={onUpdateAmountCollected}
+          isInProgress={isInProgress}
+          onAlertNotProgress={onAlertNotProgress}
+        />
   };
 
   const renderBadge = ({ route }) => {

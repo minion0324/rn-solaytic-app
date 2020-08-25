@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   View,
+  ScrollView,
   Keyboard,
   Alert,
 } from 'react-native';
@@ -264,19 +265,23 @@ const InstructionTab = ({
   };
 
   return (
-    <JobInstruction>
-      { renderComments() }
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+    >
+      <JobInstruction>
+        { renderComments() }
 
-      {
-        focusedJob.isEnabledCashCollection &&
-        renderCollect()
-      }
+        {
+          focusedJob.isEnabledCashCollection &&
+          renderCollect()
+        }
 
-      {
-        focusedJob.additionalCharges.length > 0 &&
-        renderServices()
-      }
-    </JobInstruction>
+        {
+          focusedJob.additionalCharges.length > 0 &&
+          renderServices()
+        }
+      </JobInstruction>
+    </ScrollView>
   );
 };
 
