@@ -43,6 +43,7 @@ const {
 const LoginScreen = ({
   isRehydrated,
   token,
+  appLogo,
   rememberedUser,
   login,
   setRememberedUser,
@@ -133,7 +134,12 @@ const LoginScreen = ({
   return (
     <Container color={COLORS.WHITE1}>
       <Content>
-        <Logo source={IMAGES.APP_LOGO} />
+        <Logo
+          resizeMode={'contain'}
+          source={
+            appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+          }
+        />
 
         <InputWrap>
           <LeftWrap>
@@ -206,6 +212,7 @@ const LoginScreen = ({
 LoginScreen.propTypes = {
   isRehydrated: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
+  appLogo: PropTypes.string.isRequired,
   rememberedUser: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   setRememberedUser: PropTypes.func.isRequired,
@@ -217,6 +224,7 @@ const mapStateToProps = (state) => {
   return {
     isRehydrated: User.selectors.getIsRehydrated(state),
     token: User.selectors.getToken(state),
+    appLogo: User.selectors.getAppLogo(state),
     rememberedUser: User.selectors.getRememberedUser(state),
   };
 };
