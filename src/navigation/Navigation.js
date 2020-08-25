@@ -25,7 +25,6 @@ export function showDrawer(componentId) {
     sideMenu: {
       left: {
         visible: true,
-        width: WIDTH * 0.5,
       },
     },
   });
@@ -238,6 +237,13 @@ export function pushMultiScreensApp() {
             name: DRAWER_SCREEN,
             passProps: {
               componentId: DRAWER_COMPONENT_ID,
+            },
+          },
+        },
+        options: {
+          sideMenu: {
+            left: {
+              width: WIDTH * 0.6,
             },
           },
         },
