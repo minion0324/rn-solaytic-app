@@ -19,6 +19,7 @@ import {
 
 import {
   Content,
+  LogoWrap,
   Logo,
   InputWrap,
   Input,
@@ -134,13 +135,14 @@ const LoginScreen = ({
   return (
     <Container color={COLORS.WHITE1}>
       <Content>
-        <Logo
-          resizeMode={'contain'}
-          source={
-            appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
-          }
-        />
-
+        <LogoWrap>
+          <Logo
+            resizeMode={'contain'}
+            source={
+              appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+            }
+          />
+        </LogoWrap>
         <InputWrap>
           <LeftWrap>
             <UserIcon />

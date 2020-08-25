@@ -2,24 +2,33 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  HEIGHT,
   SIZE2,
   SIZE4,
   SIZE5,
   SIZE8,
   SIZE10,
-  SIZE12,
   FONT,
 } from 'src/constants';
 
 const Content = styled.View`
   flex: 1;
   align-items: center;
-  justify-content: center;
   padding-horizontal: ${SIZE8}px;
+  padding-vertical: ${SIZE4}px;
+`;
+
+const LogoWrap = styled.View`
+  width: 75%;
+  height: ${HEIGHT * 0.25}px;
+  align-items: center;
+  justify-content: center;
+  margin-vertical: ${SIZE4}px;
 `;
 
 const Logo = styled.Image`
-  margin-bottom: ${SIZE12}px;
+  width: 100%;
+  height: 100%;
 `;
 
 const InputWrap = styled.View`
@@ -88,6 +97,7 @@ const LoginText = styled.Text`
 
 export {
   Content,
+  LogoWrap,
   Logo,
   InputWrap,
   Input,
