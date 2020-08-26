@@ -8,6 +8,8 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE5,
+  SIZE16,
   SIZE22,
   FONT,
   JOB_STATUS,
@@ -26,6 +28,26 @@ const {
 const Container = styled.View`
   height: ${SIZE22}px;
   padding: ${SIZE2}px;
+`;
+
+const StatusWrap = styled.View`
+  position: absolute;
+  top: ${SIZE2}px;
+  right: 0px;
+  width: ${SIZE16}px;
+  height: ${SIZE5}px;
+  background-color: ${props => props.color + '15'};
+  border-top-left-radius: ${SIZE1}px;
+  border-bottom-left-radius: ${SIZE1}px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StatusText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 600;
+  color: ${props => props.color};
+  text-align: center;
 `;
 
 const ContentWrap = styled.View`
@@ -90,6 +112,7 @@ const JobCard = ({
   jobInfo: {
     steps,
     customerName,
+    statusName,
     jobTemplateName,
     jobTimeSpecific,
     jobTypeName,
@@ -116,32 +139,59 @@ const JobCard = ({
     };
   }
 
-  const getColorByStatus = () => {
-    switch (status) {
+  const renderStatus = () => {
+    switch (statusName) {
       case JOB_STATUS.UNASSIGNED:
       case JOB_STATUS.DISPATCHED:
-        return COLORS.GRAY2;
+        return null;
 
       case JOB_STATUS.ASSIGNED:
       case JOB_STATUS.ACKNOWLEDGED:
+        return (
+          <StatusWrap color={COLORS.BLUE1}>
+            <StatusText color={COLORS.BLUE1}>
+              Started
+            </StatusText>
+          </StatusWrap>
+        );
+
       case JOB_STATUS.IN_PROGRESS1:
       case JOB_STATUS.IN_PROGRESS2:
-        return COLORS.BLUE1;
+        return (
+          <StatusWrap color={COLORS.PURPLE1}>
+            <StatusText color={COLORS.PURPLE1}>
+              In Progress
+            </StatusText>
+          </StatusWrap>
+        );
 
       case JOB_STATUS.COMPLETED:
-        return COLORS.GREEN1;
+        return (
+          <StatusWrap color={COLORS.GREEN1}>
+            <StatusText color={COLORS.GREEN1}>
+              Completed
+            </StatusText>
+          </StatusWrap>
+        );
 
       case JOB_STATUS.FAILED:
       case JOB_STATUS.CANCELLED:
-        return COLORS.RED1;
+        return (
+          <StatusWrap color={COLORS.RED1}>
+            <StatusText color={COLORS.RED1}>
+              Failed
+            </StatusText>
+          </StatusWrap>
+        );
 
       default:
-        return COLORS.BLUE1;
+        return null;
     };
   };
 
   return (
     <Container>
+      { renderStatus() }
       <FlexWrap flex={2}>
         <ContentWrap hasBorder>
           <FlexWrap flex={2}>
@@ -155,16 +205,16 @@ const JobCard = ({
           </FlexWrap>
           <SpaceView mLeft={SIZE2} />
           <FlexWrap flex={7}>
-              <CustomerText numberOfLines={1}>
-                {customerName}
-              </CustomerText>
-              <SpaceView mTop={SIZE1} />
-              <LocationRow>
-                <LocationIcon />
-                <LocationText numberOfLines={1}>
-                  {getLocation()}
-                </LocationText>
-              </LocationRow>
+            <CustomerText numberOfLines={1}>
+              {customerName}
+            </CustomerText>
+            <SpaceView mTop={SIZE1} />
+            <LocationRow>
+              <LocationIcon />
+              <LocationText numberOfLines={1}>
+                {getLocation()}
+              </LocationText>
+            </LocationRow>
           </FlexWrap>
         </ContentWrap>
       </FlexWrap>
@@ -201,6 +251,7 @@ JobCard.propTypes = {
   jobInfo: PropTypes.shape({
     steps: PropTypes.array.isRequired,
     customerName: PropTypes.string.isRequired,
+    statusName: PropTypes.string.isRequired,
     jobTemplateName: PropTypes.string.isRequired,
     jobTimeSpecific: PropTypes.string.isRequired,
     jobTypeName: PropTypes.string.isRequired,
