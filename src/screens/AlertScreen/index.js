@@ -14,6 +14,7 @@ import {
 import {
   SVGS,
   COLORS,
+  SIZE4,
 } from 'src/constants';
 import {
   showDrawer,
@@ -46,9 +47,12 @@ import {
 
 import {
   ButtonWrap,
+  NoAlertsWrap,
+  NoAlertsText,
+  NoAlertsIcon,
 } from './styled';
 
-const { SideMenuIcon } = SVGS;
+const { SideMenuIcon, HappyIcon } = SVGS;
 
 const AlertScreen = ({
   allAlerts,
@@ -161,6 +165,39 @@ const AlertScreen = ({
     onJobDetails(job.jobId)
   };
 
+  const renderNoAlerts = () => {
+    return (
+      <NoAlertsWrap>
+        <NoAlertsText>
+          {'Great!\nYou have no more alerts.'}
+        </NoAlertsText>
+
+        <NoAlertsIcon>
+          <HappyIcon />
+        </NoAlertsIcon>
+
+        <NoAlertsText>
+          {'View your jobs for'}
+        </NoAlertsText>
+
+        <DefaultButton
+          text={'Today'}
+          color={COLORS.BLUE1}
+          onPress={() => {}}
+          mTop={SIZE4}
+        />
+
+        <DefaultButton
+          text={'Tomorrow'}
+          color={COLORS.WHITE1}
+          onPress={() => {}}
+          textColor={COLORS.BLACK2}
+          mTop={SIZE4}
+        />
+      </NoAlertsWrap>
+    );
+  };
+
   const renderItem = ({ item }) => {
     return (
       <ItemWrap
@@ -209,6 +246,11 @@ const AlertScreen = ({
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
         />
+
+        {
+          allAlerts.length === 0 &&
+          renderNoAlerts()
+        }
 
         {
           reloading &&
