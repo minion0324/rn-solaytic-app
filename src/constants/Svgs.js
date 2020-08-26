@@ -28,6 +28,8 @@ import CashIcon from 'src/assets/svgs/icon-cash.svg';
 import ArrowLocationIcon from 'src/assets/svgs/icon-location-arrow.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
+import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
+import ServiceIcon from 'src/assets/svgs/icon-service.svg';
 
 export default {
   ActiveCheckIcon,
@@ -60,4 +62,6 @@ export default {
   ArrowLocationIcon,
   CloseIcon,
   HappyIcon,
+  CalendarIcon,
+  ServiceIcon,
 };
