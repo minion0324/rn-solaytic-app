@@ -248,7 +248,7 @@ const AlertScreen = ({
         />
 
         {
-          allAlerts.length === 0 &&
+          countOfAlerts === 0 &&
           renderNoAlerts()
         }
 
