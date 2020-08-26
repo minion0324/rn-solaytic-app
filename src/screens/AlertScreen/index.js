@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   HeaderBar,
@@ -33,6 +34,7 @@ import {
 } from 'src/services';
 import {
   delay,
+  getDate,
 } from 'src/utils';
 
 import {
@@ -66,6 +68,7 @@ const AlertScreen = ({
   reloadJobsAndAlerts,
   acknowledgeJobs,
   getJobById,
+  updateDateForJobs,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -162,7 +165,21 @@ const AlertScreen = ({
   };
 
   const onItemPress = (job) => {
-    onJobDetails(job.jobId)
+    onJobDetails(job.jobId);
+  };
+
+  const onTodayJobs = () => {
+    const date = getDate();
+    updateDateForJobs(date);
+
+    changeTabIndex(componentId, 1);
+  };
+
+  const onTomorrowJobs = () => {
+    const date = getDate(moment().add(1, 'd'));
+    updateDateForJobs(date);
+
+    changeTabIndex(componentId, 1);
   };
 
   const renderNoAlerts = () => {
@@ -183,14 +200,14 @@ const AlertScreen = ({
         <DefaultButton
           text={'Today'}
           color={COLORS.BLUE1}
-          onPress={() => {}}
+          onPress={onTodayJobs}
           mTop={SIZE4}
         />
 
         <DefaultButton
           text={'Tomorrow'}
           color={COLORS.WHITE1}
-          onPress={() => {}}
+          onPress={onTomorrowJobs}
           textColor={COLORS.BLACK2}
           mTop={SIZE4}
         />
@@ -229,7 +246,8 @@ const AlertScreen = ({
               ? COLORS.BLUE1 : COLORS.GRAY3
             }
             onPress={
-              countOfAlerts > 0 && onAcknowledge
+              countOfAlerts > 0
+              ? onAcknowledge : null
             }
             loading={loading}
             mTop={-8}
@@ -277,6 +295,7 @@ AlertScreen.propTypes = {
   reloadJobsAndAlerts: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
+  updateDateForJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -297,6 +316,7 @@ const mapDispatchToProps = {
   reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   getJobById: Jobs.actionCreators.getJobById,
+  updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
 };
 
 export default connect(
