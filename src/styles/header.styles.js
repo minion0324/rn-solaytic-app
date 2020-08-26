@@ -6,11 +6,17 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE8,
   SIZE12,
   FONT,
 } from 'src/constants';
 
-const { ArrowBackIcon, FailIcon } = SVGS;
+const {
+  ArrowBackIcon,
+  FailIcon,
+  SideMenuIcon,
+  CalendarIcon,
+} = SVGS;
 
 const ScreenText = styled.Text`
   font-size: ${FONT(15)}px;
@@ -20,6 +26,10 @@ const ScreenText = styled.Text`
 
 const EmptyWrap = styled.View`
   width: ${SIZE12}px;
+`;
+
+const EmptyIcon = styled.View`
+  width: ${SIZE8}px;
 `;
 
 //
@@ -42,7 +52,7 @@ const BackButton = () => (
     <ArrowBackIcon />
     <BackButtonText>Back</BackButtonText>
   </BackButtonWrap>
-)
+);
 
 //
 const FailJobWrap = styled.View`
@@ -64,11 +74,28 @@ const FailJob = () => (
     <FailIcon />
     <FailJobText>Fail</FailJobText>
   </FailJobWrap>
-)
+);
+
+//
+const SideMenu = () => (
+  <EmptyIcon>
+    <SideMenuIcon />
+  </EmptyIcon>
+);
+
+//
+const Calendar = () => (
+  <EmptyIcon>
+    <CalendarIcon />
+  </EmptyIcon>
+);
 
 export {
   ScreenText,
   EmptyWrap,
+  EmptyIcon,
   BackButton,
   FailJob,
+  SideMenu,
+  Calendar,
 };

@@ -45,6 +45,8 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
+  EmptyIcon,
+  SideMenu,
 } from 'src/styles/header.styles';
 
 import {
@@ -54,7 +56,7 @@ import {
   NoAlertsIcon,
 } from './styled';
 
-const { SideMenuIcon, HappyIcon } = SVGS;
+const { HappyIcon } = SVGS;
 
 const AlertScreen = ({
   allAlerts,
@@ -230,8 +232,9 @@ const AlertScreen = ({
       <ShadowWrap>
         <HeaderBar
           centerIcon={<ScreenText>Notifications</ScreenText>}
-          leftIcon={<SideMenuIcon />}
+          leftIcon={<SideMenu />}
           onPressLeft={() => showDrawer(componentId)}
+          rightIcon={<EmptyIcon />}
         />
 
         <ButtonWrap>

@@ -12,9 +12,6 @@ import {
   DatePicker,
 } from 'src/components';
 import {
-  SVGS,
-} from 'src/constants';
-import {
   showDrawer,
   changeTabIndex,
   pushScreen,
@@ -40,13 +37,13 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
+  SideMenu,
+  Calendar,
 } from 'src/styles/header.styles';
 
 import {
   //
 } from './styled';
-
-const { SideMenuIcon } = SVGS;
 
 const JobsScreen = ({
   allJobs,
@@ -165,8 +162,9 @@ const JobsScreen = ({
       <ShadowWrap>
         <HeaderBar
           centerIcon={<ScreenText>Jobs</ScreenText>}
-          leftIcon={<SideMenuIcon />}
+          leftIcon={<SideMenu />}
           onPressLeft={() => showDrawer(componentId)}
+          rightIcon={<Calendar />}
         />
       </ShadowWrap>
 
