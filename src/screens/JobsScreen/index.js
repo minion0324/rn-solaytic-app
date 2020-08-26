@@ -57,10 +57,21 @@ const JobsScreen = ({
   getJobsByPage,
   reloadJobsAndAlerts,
   getJobById,
+  updateDateForJobs,
   componentId,
 }) => {
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  useEffect(() => {
+    setReloading(true);
+
+    getJobsByDate({
+      dateForJobs,
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
+    });
+  }, [dateForJobs]);
 
   useEffect(() => {
     pushNotifications.setNotificationHandlerForJobs(onNotification);
@@ -91,14 +102,8 @@ const JobsScreen = ({
     });
   };
 
-  const onDateSelect = (selectedDate) => {
-    setReloading(true);
-
-    getJobsByDate({
-      dateForJobs: selectedDate,
-      success: () => setReloading(false),
-      failure: () => setReloading(false),
-    });
+  const onDateSelect = (date) => {
+    updateDateForJobs(date);
   };
 
   const onEnd = () => {
@@ -197,6 +202,7 @@ JobsScreen.propTypes = {
   getJobsByPage: PropTypes.func.isRequired,
   reloadJobsAndAlerts: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
+  updateDateForJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -214,6 +220,7 @@ const mapDispatchToProps = {
   getJobsByPage: Jobs.actionCreators.getJobsByPage,
   reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   getJobById: Jobs.actionCreators.getJobById,
+  updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
 };
 
 export default connect(
