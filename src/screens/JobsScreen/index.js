@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 import {
   HeaderBar,
@@ -15,7 +14,6 @@ import {
 import {
   SVGS,
   COLORS,
-  JOB_DATE,
 } from 'src/constants';
 import {
   showDrawer,
@@ -33,7 +31,6 @@ import {
 } from 'src/services';
 import {
   delay,
-  getJobCustomerAddress,
 } from 'src/utils';
 
 import {
@@ -45,12 +42,6 @@ import {
 import {
   ScreenText,
 } from 'src/styles/header.styles';
-import {
-  CardRow,
-  DateWrap,
-  DateText1,
-  DateText2,
-} from 'src/styles/card.styles';
 
 import {
   TabWrap,
@@ -162,37 +153,13 @@ const JobsScreen = ({
     onJobDetails(job.jobId);
   };
 
-  const renderItem = ({ item, index }) => {
-    const jobDate = moment(item[JOB_DATE[0]] || item[JOB_DATE[1]]);
-
-    const showDate =
-      index === 0 ||
-      jobDate.format('DD ddd') !== moment(allJobs[index - 1][JOB_DATE[0]]).format('DD ddd');
-
+  const renderItem = ({ item }) => {
     return (
-      <CardRow>
-        {
-          showDate
-          ? <DateWrap>
-              <DateText1>{jobDate.format('DD')}</DateText1>
-              <DateText2>{jobDate.format('ddd')}</DateText2>
-            </DateWrap>
-          : <DateWrap />
-        }
-        <FlexWrap>
-          <ItemWrap
-            onPress={() => onItemPress(item)}
-          >
-            <JobCard
-              customer={item.customerName}
-              type={item.jobTemplateName || item.jobTypeName}
-              location={getJobCustomerAddress(item)}
-              time={jobDate.format('hh:mm A')}
-              status={item.statusName}
-            />
-          </ItemWrap>
-        </FlexWrap>
-      </CardRow>
+      <ItemWrap
+        onPress={() => onItemPress(item)}
+      >
+        <JobCard jobInfo={item} />
+      </ItemWrap>
     );
   };
 
