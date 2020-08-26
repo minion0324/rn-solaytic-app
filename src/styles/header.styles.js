@@ -27,7 +27,7 @@ const BackButtonWrap = styled.View`
   width: ${SIZE12}px;
   flex-direction: row;
   align-items: center;
-  margin-left: ${SIZE2}px;
+  padding-left: ${SIZE2}px;
 `;
 
 const BackButtonText = styled.Text`
