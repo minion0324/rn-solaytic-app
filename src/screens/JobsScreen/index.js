@@ -13,7 +13,6 @@ import {
 } from 'src/components';
 import {
   SVGS,
-  COLORS,
 } from 'src/constants';
 import {
   showDrawer,
@@ -44,8 +43,7 @@ import {
 } from 'src/styles/header.styles';
 
 import {
-  TabWrap,
-  TabItem,
+  //
 } from './styled';
 
 const { SideMenuIcon } = SVGS;
@@ -61,12 +59,6 @@ const JobsScreen = ({
   getJobById,
   componentId,
 }) => {
-  const [ tabs ] = useState([
-    { key: 'first', color: COLORS.GRAY2 },
-    { key: 'second', color: COLORS.BLUE1 },
-    { key: 'third', color: COLORS.GREEN1 },
-    { key: 'fourth', color: COLORS.RED1 },
-  ]);
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
@@ -171,16 +163,6 @@ const JobsScreen = ({
           leftIcon={<SideMenuIcon />}
           onPressLeft={() => showDrawer(componentId)}
         />
-        <TabWrap>
-          {
-            tabs.map((item) => (
-              <TabItem
-                key={item.key}
-                color={item.color}
-              />
-            ))
-          }
-        </TabWrap>
       </ShadowWrap>
 
       <FlexWrap>
