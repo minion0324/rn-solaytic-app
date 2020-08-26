@@ -1,78 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import {
   SVGS,
   COLORS,
   SIZE1,
   SIZE2,
-  SIZE3,
-  SIZE4,
-  SIZE20,
+  SIZE22,
   FONT,
   JOB_STATUS,
+  JOB_TYPE,
 } from 'src/constants';
+
+import {
+  FlexWrap,
+  SpaceView,
+} from 'src/styles/common.styles';
 
 const {
   LocationIcon,
 } = SVGS;
 
 const Container = styled.View`
-  height: ${SIZE20}px;
-  flex-direction: row;
-
+  height: ${SIZE22}px;
+  padding: ${SIZE2}px;
 `;
 
-const Status = styled.View`
-  background-color: ${props => props.color || COLORS.BLUE1};
-  width: ${SIZE1}px;
+const ContentWrap = styled.View`
   height: 100%;
-  border-top-left-radius: ${SIZE2}px;
-  border-bottom-left-radius: ${SIZE2}px;
-`;
-
-const Content = styled.View`
-  flex: 1;
-  height: 100%;
-  justify-content: space-between;
-  padding-left: ${SIZE3}px;
-  padding-top: ${SIZE3}px;
-  padding-right: ${SIZE2}px;
-  padding-bottom: ${SIZE4}px;
-`;
-
-const TimeRow = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  border-bottom-width: 1px;
+  border-color: ${(props) => (
+    props.hasBorder
+    ? COLORS.GRAY2 : COLORS.TRANSPARENT1
+  )};
+`;
+
+const InfoWrap = styled.View`
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border-right-width: 1px;
+  border-color: ${(props) => (
+    props.hasBorder
+    ? COLORS.GRAY2 : COLORS.TRANSPARENT1
+  )};
 `;
 
 const TimeText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 700;
-  color: ${COLORS.BLUE1};
-`;
-
-const TypeWrap = styled.View`
-  width: ${SIZE20}px;
-  height: ${SIZE4}px;
-  align-items: center;
-  justify-content: center;
-  background-color: ${COLORS.BLUE2};
-  border-radius: ${SIZE1}px;
-`;
-
-const TypeText = styled.Text`
-  font-size: ${FONT(12)}px;
   font-weight: 500;
-  color: ${COLORS.BLUE1};
+  color: ${COLORS.BLACK2};
 `;
 
 const CustomerText = styled.Text`
+  width: 70%;
   font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK1};
+  font-weight: 700;
+  color: ${COLORS.BLACK2};
 `;
 
 const LocationRow = styled.View`
@@ -81,20 +69,51 @@ const LocationRow = styled.View`
 `;
 
 const LocationText = styled.Text`
-  width: 93%;
+  width: 90%;
   font-size: ${FONT(12)}px;
-  font-weight: 600;
+  font-weight: 500;
   color: ${COLORS.GRAY3};
   margin-left: ${SIZE1}px;
 `;
 
+const InfoText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 600;
+  color: ${COLORS.GRAY3};
+`;
+
+const DATE_FORMAT = 'DD (ddd)';
+const TIME_FORMAT = 'hh:mm A ';
+
 const JobCard = ({
-  customer,
-  type,
-  location,
-  time,
-  status,
+  jobInfo: {
+    steps,
+    jobTypeName,
+    jobTimeSpecific,
+    customerName,
+  },
 }) => {
+
+  const getLocation = () => {
+    switch (jobTypeName) {
+      case JOB_TYPE.PULL:
+        return steps[0].address || steps[1].address;
+
+      case JOB_TYPE.PUT:
+      case JOB_TYPE.EXCHANGE:
+      case JOB_TYPE.ON_THE_SPOT:
+        return steps[1].address || steps[0].address;
+
+      case JOB_TYPE.OUT:
+      case JOB_TYPE.SHIFT:
+      case JOB_TYPE.THROW_AT_CUSTOMER:
+        return steps[2].address || steps[1].address || steps[0].address;
+
+      default:
+        return steps[2].address || steps[1].address || steps[0].address;
+    };
+  }
+
   const getColorByStatus = () => {
     switch (status) {
       case JOB_STATUS.UNASSIGNED:
@@ -121,38 +140,62 @@ const JobCard = ({
 
   return (
     <Container>
-      <Status color={getColorByStatus()} />
-      <Content>
-        <TimeRow>
-          <TimeText>{time}</TimeText>
-          <TypeWrap>
-            <TypeText>{type}</TypeText>
-          </TypeWrap>
-        </TimeRow>
-        <CustomerText numberOfLines={1}>{customer}</CustomerText>
-        <LocationRow>
-          <LocationIcon />
-          <LocationText numberOfLines={1}>{location}</LocationText>
-        </LocationRow>
-      </Content>
+      <FlexWrap flex={2}>
+        <ContentWrap hasBorder>
+          <FlexWrap flex={2}>
+            <TimeText>
+              {moment(jobTimeSpecific).format(DATE_FORMAT)}
+            </TimeText>
+            <SpaceView mTop={SIZE1} />
+            <TimeText>
+              {moment(jobTimeSpecific).format(TIME_FORMAT)}
+            </TimeText>
+          </FlexWrap>
+          <SpaceView mLeft={SIZE2} />
+          <FlexWrap flex={7}>
+              <CustomerText numberOfLines={1}>
+                {customerName}
+              </CustomerText>
+              <SpaceView mTop={SIZE1} />
+              <LocationRow>
+                <LocationIcon />
+                <LocationText numberOfLines={1}>
+                  {getLocation()}
+                </LocationText>
+              </LocationRow>
+          </FlexWrap>
+        </ContentWrap>
+      </FlexWrap>
+      <FlexWrap flex={1}>
+        <ContentWrap>
+          <FlexWrap flex={2}>
+            <InfoWrap hasBorder>
+              <InfoText> test </InfoText>
+            </InfoWrap>
+          </FlexWrap>
+          <FlexWrap flex={3}>
+            <InfoWrap hasBorder>
+              <InfoText> test </InfoText>
+            </InfoWrap>
+          </FlexWrap>
+          <FlexWrap flex={4}>
+            <InfoWrap>
+              <InfoText> test </InfoText>
+            </InfoWrap>
+          </FlexWrap>
+        </ContentWrap>
+      </FlexWrap>
     </Container>
   );
 }
 
 JobCard.propTypes = {
-  customer: PropTypes.string,
-  type: PropTypes.string,
-  location: PropTypes.string,
-  time: PropTypes.string,
-  status: PropTypes.string,
-}
-
-JobCard.defaultProps = {
-  customer: '',
-  type: '',
-  location: '',
-  time: '',
-  status: '',
+  jobInfo: PropTypes.shape({
+    steps: PropTypes.array.isRequired,
+    jobTypeName: PropTypes.string.isRequired,
+    jobTimeSpecific: PropTypes.string.isRequired,
+    customerName: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default JobCard;
