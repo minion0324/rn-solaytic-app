@@ -80,6 +80,7 @@ const InfoText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 600;
   color: ${COLORS.GRAY3};
+  text-align: center;
 `;
 
 const DATE_FORMAT = 'DD (ddd)';
@@ -88,9 +89,10 @@ const TIME_FORMAT = 'hh:mm A ';
 const JobCard = ({
   jobInfo: {
     steps,
-    jobTypeName,
-    jobTimeSpecific,
     customerName,
+    jobTemplateName,
+    jobTimeSpecific,
+    jobTypeName,
   },
 }) => {
 
@@ -170,17 +172,23 @@ const JobCard = ({
         <ContentWrap>
           <FlexWrap flex={2}>
             <InfoWrap hasBorder>
-              <InfoText> test </InfoText>
+              <InfoText numberOfLines={2}>
+                {jobTemplateName}
+              </InfoText>
             </InfoWrap>
           </FlexWrap>
           <FlexWrap flex={3}>
             <InfoWrap hasBorder>
-              <InfoText> test </InfoText>
+              <InfoText numberOfLines={2}>
+                {steps[0].binTypeName || ''}
+              </InfoText>
             </InfoWrap>
           </FlexWrap>
           <FlexWrap flex={4}>
             <InfoWrap>
-              <InfoText> test </InfoText>
+              <InfoText numberOfLines={2}>
+                {steps[0].wasteTypeName || ''}
+              </InfoText>
             </InfoWrap>
           </FlexWrap>
         </ContentWrap>
@@ -192,9 +200,10 @@ const JobCard = ({
 JobCard.propTypes = {
   jobInfo: PropTypes.shape({
     steps: PropTypes.array.isRequired,
-    jobTypeName: PropTypes.string.isRequired,
-    jobTimeSpecific: PropTypes.string.isRequired,
     customerName: PropTypes.string.isRequired,
+    jobTemplateName: PropTypes.string.isRequired,
+    jobTimeSpecific: PropTypes.string.isRequired,
+    jobTypeName: PropTypes.string.isRequired,
   }).isRequired,
 }
 
