@@ -56,6 +56,7 @@ const {
   CommentIcon,
   ActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
+  ServiceIcon,
 } = SVGS;
 
 const COMMENT = 'Comment';
@@ -235,6 +236,8 @@ const InstructionTab = ({
         <ShadowWrap>
           <Content>
             <AddServices onPress={() => setActive(SERVICES)}>
+              <ServiceIcon />
+              <SpaceView mLeft={SIZE1} />
               <InfoText>ADD SERVICES</InfoText>
             </AddServices>
             {
