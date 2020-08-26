@@ -26,7 +26,7 @@ const Button = styled.TouchableOpacity`
 const ButtonText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600;
-  color: ${COLORS.WHITE1};
+  color: ${props => props.color};
   text-transform: uppercase;
 `;
 
@@ -34,6 +34,7 @@ const DefaultButton = ({
   text,
   color,
   onPress,
+  textColor,
   loading,
   mLeft,
   mTop,
@@ -53,8 +54,15 @@ const DefaultButton = ({
     >
       {
         loading
-        ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
-        : <ButtonText>{text}</ButtonText>
+        ? <ActivityIndicator
+            size={'small'}
+            color={textColor}
+          />
+        : <ButtonText
+            color={textColor}
+          >
+            {text}
+          </ButtonText>
       }
     </Button>
   );
@@ -64,6 +72,7 @@ DefaultButton.propTypes = {
   text: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   onPress: PropTypes.func,
+  textColor: PropTypes.string,
   loading: PropTypes.bool,
   mLeft: PropTypes.number,
   mTop: PropTypes.number,
@@ -73,6 +82,7 @@ DefaultButton.propTypes = {
 
 DefaultButton.defaultProps = {
   onPress: null,
+  textColor: COLORS.WHITE1,
   loading: false,
   mLeft: 0,
   mTop: 0,
