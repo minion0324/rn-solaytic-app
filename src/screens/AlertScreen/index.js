@@ -213,18 +213,24 @@ const AlertScreen = ({
           onPressLeft={() => showDrawer(componentId)}
         />
 
-        {
-          countOfAlerts > 0 &&
-          <ButtonWrap>
-            <DefaultButton
-              text={`Acknowledge (${countOfAlerts})`}
-              color={COLORS.BLUE1}
-              onPress={onAcknowledge}
-              loading={loading}
-              mTop={-8}
-            />
-          </ButtonWrap>
-        }
+        <ButtonWrap>
+          <DefaultButton
+            text={
+              countOfAlerts > 0
+              ? `Acknowledge (${countOfAlerts})`
+              : 'Acknowledge'
+            }
+            color={
+              countOfAlerts > 0
+              ? COLORS.BLUE1 : COLORS.GRAY3
+            }
+            onPress={
+              countOfAlerts > 0 && onAcknowledge
+            }
+            loading={loading}
+            mTop={-8}
+          />
+        </ButtonWrap>
       </ShadowWrap>
 
       <FlexWrap>
