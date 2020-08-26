@@ -247,7 +247,7 @@ const DetailsTab = ({
   };
 
   const renderContactInfo = () => {
-    const jobDate = moment(focusedJob[JOB_DATE[0]] || focusedJob[JOB_DATE[1]]);
+    const jobDate = moment(focusedJob[JOB_DATE]);
 
     let stepIndex = focusedJob.steps.length - 1;
     if (

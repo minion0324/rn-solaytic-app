@@ -41,7 +41,7 @@ const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 const DATE_KEY = 'date';
 const MONTH_KEY = 'month';
 
-const JOB_DATE = ['jobTimeSpecific', 'jobDate'];
+const JOB_DATE = 'jobTimeSpecific';
 
 const JOB_STATUS = {
   UNASSIGNED: 'Unassigned',

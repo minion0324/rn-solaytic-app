@@ -118,7 +118,7 @@ export function* asyncGetJobsByPage({ payload }) {
       const index = result.findIndex(el => el.jobId === item.jobId);
       if (index === -1) {
         const idx = result.findIndex((el) => {
-          return moment(el[JOB_DATE[0]]).isAfter(item[JOB_DATE[0]]);
+          return moment(el[JOB_DATE]).isAfter(item[JOB_DATE]);
         });
 
         if (idx === -1) {
@@ -209,7 +209,7 @@ export function* asyncGetAlertsByPage({ payload }) {
       const index = result.findIndex(el => el.jobId === item.jobId);
       if (index === -1) {
         const idx = result.findIndex((el) => {
-          return moment(el[JOB_DATE[0]]).isAfter(item[JOB_DATE[0]]);
+          return moment(el[JOB_DATE]).isAfter(item[JOB_DATE]);
         });
 
         if (idx === -1) {
@@ -309,10 +309,10 @@ export function* asyncAcknowledgeJobs({ payload }) {
       const idx = res.newJobs.findIndex(item => item.jobId === id);
 
       if (idx === -1) {
-        if (dateForJobs === getDate(newItem[JOB_DATE[0]])) {
+        if (dateForJobs === getDate(newItem[JOB_DATE])) {
           let orderIndex = res.newJobs.findIndex((item) => {
-            return moment(item[JOB_DATE[0]])
-              .isAfter(moment(newItem[JOB_DATE[0]]));
+            return moment(item[JOB_DATE])
+              .isAfter(moment(newItem[JOB_DATE]));
           });
 
           if (orderIndex === -1) {
