@@ -39,9 +39,9 @@ import {
 
 import {
   Container,
+  Content,
   ShadowWrap,
   LoadingWrap,
-  FlexWrap,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -258,7 +258,7 @@ const AlertScreen = ({
         </ButtonWrap>
       </ShadowWrap>
 
-      <FlexWrap>
+      <Content>
         <ListWrap
           data={allAlerts}
           keyExtractor={(item) => `${item.jobId}`}
@@ -279,7 +279,7 @@ const AlertScreen = ({
             <ActivityIndicator size={'large'} />
           </LoadingWrap>
         }
-      </FlexWrap>
+      </Content>
 
       <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
