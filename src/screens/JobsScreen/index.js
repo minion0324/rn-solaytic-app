@@ -13,10 +13,13 @@ import {
 } from 'src/components';
 import {
   showDrawer,
+  showOverlay,
+  dismissOverlay,
   changeTabIndex,
   pushScreen,
   popToRootScreen,
   JOB_DETAILS_SCREEN,
+  CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -57,7 +60,6 @@ const JobsScreen = ({
   updateDateForJobs,
   componentId,
 }) => {
-  const [ datePicker, setDatePicker ] = useState(false);
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
@@ -98,10 +100,6 @@ const JobsScreen = ({
       success: () => onJobDetails(jobId),
       failure: () => setReloading(false),
     });
-  };
-
-  const onDateSelect = (date) => {
-    updateDateForJobs(date);
   };
 
   const onEnd = () => {
@@ -148,6 +146,24 @@ const JobsScreen = ({
     onJobDetails(job.jobId);
   };
 
+  const onCalendar = () => {
+    showOverlay(CUSTOM_MODAL_SCREEN, {
+      getContent: renderCalendarModal,
+    });
+  };
+
+  const renderCalendarModal = (containerId) => {
+    return (
+      <DatePicker
+        date={dateForJobs}
+        onSelect={(date) => {
+          updateDateForJobs(date);
+          dismissOverlay(containerId);
+        }}
+      />
+    );
+  };
+
   const renderItem = ({ item }) => {
     return (
       <ItemWrap
@@ -166,16 +182,11 @@ const JobsScreen = ({
           leftIcon={<SideMenu />}
           onPressLeft={() => showDrawer(componentId)}
           rightIcon={<Calendar />}
-          onPressRight={() => setDatePicker(true)}
+          onPressRight={onCalendar}
         />
       </ShadowWrap>
 
       <Content>
-        {
-          datePicker &&
-          <DatePicker />
-        }
-
         <ListWrap
           data={allJobs}
           keyExtractor={(item) => `${item.jobId}`}
