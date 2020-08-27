@@ -31,9 +31,9 @@ import {
 
 import {
   Container,
+  Content,
   ShadowWrap,
   LoadingWrap,
-  FlexWrap,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -170,12 +170,12 @@ const JobsScreen = ({
         />
       </ShadowWrap>
 
-      {
-        datePicker &&
-        <DatePicker />
-      }
+      <Content>
+        {
+          datePicker &&
+          <DatePicker />
+        }
 
-      <FlexWrap>
         <ListWrap
           data={allJobs}
           keyExtractor={(item) => `${item.jobId}`}
@@ -191,7 +191,7 @@ const JobsScreen = ({
             <ActivityIndicator size={'large'} />
           </LoadingWrap>
         }
-      </FlexWrap>
+      </Content>
 
       <BottomBar componentId={componentId} activeIndex={1} />
     </Container>
