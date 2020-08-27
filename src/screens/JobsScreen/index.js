@@ -45,8 +45,12 @@ import {
 } from 'src/styles/header.styles';
 
 import {
-  //
+  TabWrap,
+  TabItem,
+  TabText,
 } from './styled';
+
+const tabs = ['All', 'Open', 'Closed'];
 
 const JobsScreen = ({
   allJobs,
@@ -62,6 +66,8 @@ const JobsScreen = ({
 }) => {
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  const [ tabIndex, setTabIndex ] = useState(0);
 
   useEffect(() => {
     setReloading(true);
@@ -164,6 +170,24 @@ const JobsScreen = ({
     );
   };
 
+  const renderTabs = () => {
+    return (
+      <TabWrap>
+        {
+          tabs.map((tab, index) => (
+            <TabItem
+              key={tab}
+              selected={index === tabIndex}
+              onPress={() => setTabIndex(index)}
+            >
+              <TabText>{tab}</TabText>
+            </TabItem>
+          ))
+        }
+      </TabWrap>
+    );
+  };
+
   const renderItem = ({ item }) => {
     return (
       <ItemWrap
@@ -187,6 +211,8 @@ const JobsScreen = ({
       </ShadowWrap>
 
       <Content>
+        { renderTabs() }
+
         <ListWrap
           data={allJobs}
           keyExtractor={(item) => `${item.jobId}`}
