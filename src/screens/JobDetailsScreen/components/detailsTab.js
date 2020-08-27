@@ -13,7 +13,6 @@ import ActionSheet from 'react-native-actionsheet';
 import {
   SVGS,
   COLORS,
-  JOB_DATE,
   JOB_STATUS,
   SIZE1,
   SIZE2,
@@ -247,8 +246,6 @@ const DetailsTab = ({
   };
 
   const renderContactInfo = () => {
-    const jobDate = moment(focusedJob[JOB_DATE]);
-
     let stepIndex = focusedJob.steps.length - 1;
     if (
       jobStatus === JOB_STATUS.ACKNOWLEDGED ||
@@ -357,7 +354,13 @@ const DetailsTab = ({
         <InfoWrap>
           <LabelText>Date & Time</LabelText>
           <InfoText>
-            {`${jobDate.format('DD MMM')} | ${jobDate.format('hh:mm A')}`}
+            {
+              `${moment(focusedJob.jobTimeSpecific || focusedJob.jobDate).format('DD MMM')}` +
+              (
+                focusedJob.jobTimeSpecific
+                ? ` | ${moment(focusedJob.jobTimeSpecific).format('hh:mm A')}` : ''
+              )
+            }
           </InfoText>
         </InfoWrap>
       </ContactInfo>
