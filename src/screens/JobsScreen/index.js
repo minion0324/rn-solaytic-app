@@ -31,6 +31,9 @@ import {
 import {
   delay,
 } from 'src/utils';
+import {
+  JOB_STATUS,
+} from 'src/constants';
 
 import {
   Container,
@@ -148,6 +151,31 @@ const JobsScreen = ({
     });
   };
 
+  const getFilteredJobs = () => {
+    if (tabIndex === 0) {
+      return allJobs;
+    }
+
+    if (tabIndex === 1) {
+      return allJobs.filter((job) => (
+        job.statusName === JOB_STATUS.ASSIGNED ||
+        job.statusName === JOB_STATUS.ACKNOWLEDGED ||
+        job.statusName === JOB_STATUS.IN_PROGRESS1 ||
+        job.statusName === JOB_STATUS.IN_PROGRESS2
+      ));
+    }
+
+    if (tabIndex === 2) {
+      return allJobs.filter((job) => (
+        job.statusName === JOB_STATUS.COMPLETED ||
+        job.statusName === JOB_STATUS.FAILED ||
+        job.statusName === JOB_STATUS.CANCELLED
+      ));
+    }
+
+    return allJobs;
+  };
+
   const onItemPress = (job) => {
     onJobDetails(job.jobId);
   };
@@ -214,7 +242,7 @@ const JobsScreen = ({
         { renderTabs() }
 
         <ListWrap
-          data={allJobs}
+          data={getFilteredJobs()}
           keyExtractor={(item) => `${item.jobId}`}
           renderItem={renderItem}
           onEndProcess={onEnd}
