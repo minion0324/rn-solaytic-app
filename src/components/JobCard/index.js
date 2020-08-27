@@ -70,6 +70,7 @@ const InfoWrap = styled.View`
     props.hasBorder
     ? COLORS.GRAY2 : COLORS.TRANSPARENT1
   )};
+  padding-horizontal: ${SIZE1}px;
 `;
 
 const TimeText = styled.Text`
@@ -113,6 +114,7 @@ const JobCard = ({
     steps,
     customerName,
     statusName,
+    jobDate,
     jobTemplateName,
     jobTimeSpecific,
     jobTypeName,
@@ -196,11 +198,16 @@ const JobCard = ({
         <ContentWrap hasBorder>
           <FlexWrap flex={2}>
             <TimeText>
-              {moment(jobTimeSpecific).format(DATE_FORMAT)}
+              {
+                moment(jobTimeSpecific || jobDate).format(DATE_FORMAT)
+              }
             </TimeText>
             <SpaceView mTop={SIZE1} />
             <TimeText>
-              {moment(jobTimeSpecific).format(TIME_FORMAT)}
+              {
+                jobTimeSpecific
+                ? moment(jobTimeSpecific).format(TIME_FORMAT) : ''
+              }
             </TimeText>
           </FlexWrap>
           <SpaceView mLeft={SIZE2} />
@@ -252,6 +259,7 @@ JobCard.propTypes = {
     steps: PropTypes.array.isRequired,
     customerName: PropTypes.string.isRequired,
     statusName: PropTypes.string.isRequired,
+    jobDate: PropTypes.string.isRequired,
     jobTemplateName: PropTypes.string.isRequired,
     jobTimeSpecific: PropTypes.string.isRequired,
     jobTypeName: PropTypes.string.isRequired,
