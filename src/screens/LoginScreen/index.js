@@ -140,7 +140,7 @@ const LoginScreen = ({
   };
 
   return (
-    <Container color={COLORS.WHITE1}>
+    <Container>
       <Content>
         <LogoWrap>
           <Logo
