@@ -9,7 +9,7 @@ import {
 } from 'src/constants';
 
 const Container = styled.View`
-  height: ${WIDTH}px;
+  height: ${WIDTH * 0.9}px;
   background-color: ${COLORS.WHITE1};
 `;
 
