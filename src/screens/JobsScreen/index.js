@@ -57,6 +57,7 @@ const JobsScreen = ({
   updateDateForJobs,
   componentId,
 }) => {
+  const [ datePicker, setDatePicker ] = useState(false);
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
@@ -165,8 +166,14 @@ const JobsScreen = ({
           leftIcon={<SideMenu />}
           onPressLeft={() => showDrawer(componentId)}
           rightIcon={<Calendar />}
+          onPressRight={() => setDatePicker(true)}
         />
       </ShadowWrap>
+
+      {
+        datePicker &&
+        <DatePicker />
+      }
 
       <FlexWrap>
         <ListWrap

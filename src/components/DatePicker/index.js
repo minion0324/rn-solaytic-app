@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Picker from 'react-native-picker';
-import moment from 'moment';
+
+import { Calendar } from 'react-native-calendars';
 
 import {
   SVGS,
@@ -14,71 +14,59 @@ import {
 
 const { ArrowDateIcon } = SVGS;
 
-const Container = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-start;
-`;
+const Container = styled.View`
 
-const DateText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK2};
-  margin-horizontal: ${SIZE2}px;
 `;
 
 const DatePicker = ({
   date,
   onSelect,
 }) => {
-  const onPicker = () => {
-    Picker.isPickerShow((status) => {
-      if (status) {
-        Picker.hide();
-        return;
-      }
-
-      const pickerData = [-2, -1, 0, 1].map((index) => {
-        const year = moment().add(index, 'years').format('YYYY');
-
-        return {
-          [year]: moment.months().map((month) => {
-            return {
-              [month]: Array(moment(`${year}-${month}`, 'YYYY-MMMM').daysInMonth())
-                .fill(0)
-                .map((e, i) => i < 9 ? `0${i + 1}` : `${i + 1}`)
-            }
-          })
-        };
-      });
-
-      const selectedValue = [
-        moment(date, APP_DATE_FORMAT).format('YYYY'),
-        moment(date, APP_DATE_FORMAT).format('MMMM'),
-        moment(date, APP_DATE_FORMAT).format( 'DD' ),
-      ];
-
-      Picker.init({
-        pickerData: pickerData,
-        selectedValue: selectedValue,
-        pickerBg: [255, 255, 255, 1],
-        pickerTitleText: 'Pick a Month',
-        onPickerConfirm: ([year, month, day]) => {
-          onSelect(`${day} ${moment(month, 'MMMM').format('MMM')} ${year}`);
-        },
-        onPickerCancel: () => {
-          Picker.hide();
-        },
-      });
-
-      Picker.show();
-    });
-  };
-
   return (
-    <Container onPress={onPicker}>
-      <DateText>{date}</DateText>
-      <ArrowDateIcon />
+    <Container>
+    <Calendar
+    // Initially visible month. Default = Date()
+    current={'2012-03-01'}
+    // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+    minDate={'2012-05-10'}
+    // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+    maxDate={'2012-05-30'}
+    // Handler which gets executed on day press. Default = undefined
+    onDayPress={(day) => {console.log('selected day', day)}}
+    // Handler which gets executed on day long press. Default = undefined
+    onDayLongPress={(day) => {console.log('selected day', day)}}
+    // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+    monthFormat={'yyyy MM'}
+    // Handler which gets executed when visible month changes in calendar. Default = undefined
+    onMonthChange={(month) => {console.log('month changed', month)}}
+    // Hide month navigation arrows. Default = false
+    hideArrows={true}
+    // Replace default arrows with custom ones (direction can be 'left' or 'right')
+    renderArrow={(direction) => (<Arrow/>)}
+    // Do not show days of other months in month page. Default = false
+    hideExtraDays={true}
+    // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+    // day from another month that is visible in calendar page. Default = false
+    disableMonthChange={true}
+    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+    firstDay={1}
+    // Hide day names. Default = false
+    hideDayNames={true}
+    // Show week numbers to the left. Default = false
+    showWeekNumbers={true}
+    // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+    onPressArrowLeft={subtractMonth => subtractMonth()}
+    // Handler which gets executed when press arrow icon right. It receive a callback can go next month
+    onPressArrowRight={addMonth => addMonth()}
+    // Disable left arrow. Default = false
+    disableArrowLeft={true}
+    // Disable right arrow. Default = false
+    disableArrowRight={true}
+    // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
+    disableAllTouchEventsForDisabledDays={true}
+    /** Replace default month and year title with custom one. the function receive a date as parameter. */
+    renderHeader={(date) => {/*Return JSX*/}}
+    />
     </Container>
   );
 }
