@@ -225,6 +225,7 @@ const JobCard = ({
           </FlexWrap>
         </ContentWrap>
       </FlexWrap>
+      <SpaceView mTop={SIZE1} />
       <FlexWrap flex={1}>
         <ContentWrap>
           <FlexWrap flex={2}>
