@@ -17,7 +17,6 @@ import Location2Icon from 'src/assets/svgs/icon-location2.svg';
 import Location3Icon from 'src/assets/svgs/icon-location3.svg';
 import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
-import ArrowDateIcon from 'src/assets/svgs/icon-date-arrow.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
 import EditIcon from 'src/assets/svgs/icon-edit.svg';
@@ -51,7 +50,6 @@ export default {
   Location3Icon,
   CameraIcon,
   SignIcon,
-  ArrowDateIcon,
   SearchIcon,
   FailIcon,
   EditIcon,
