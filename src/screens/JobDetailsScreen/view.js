@@ -13,6 +13,7 @@ import {
 
 import {
   Container,
+  Content,
   ShadowWrap,
 } from 'src/styles/common.styles';
 import {
@@ -238,15 +239,17 @@ const JobDetailsScreenView = ({
     <Container>
       { renderHeader() }
 
-      <TabView
-        navigationState={{
-          index: tabIndex, routes: tabRoutes
-        }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={idx => setTabIndex(idx)}
-        useNativeDriver
-      />
+      <Content>
+        <TabView
+          navigationState={{
+            index: tabIndex, routes: tabRoutes
+          }}
+          renderScene={renderScene}
+          renderTabBar={renderTabBar}
+          onIndexChange={idx => setTabIndex(idx)}
+          useNativeDriver
+        />
+      </Content>
     </Container>
   );
 };
