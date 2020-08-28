@@ -4,7 +4,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -21,6 +20,9 @@ import {
   DefaultButton,
   ItemWrap,
 } from 'src/components';
+import {
+  openUrl,
+} from 'src/utils';
 
 import {
   ShadowWrap,
@@ -99,7 +101,7 @@ const DetailsTab = ({
   const inputBinWeight = useRef(null);
 
   const onContact = (phoneNumber) => {
-    Linking.openURL(`tel:${phoneNumber}`);
+    openUrl(`tel:${phoneNumber}`);
   };
 
   const onActionSheetPress = (index) => {
