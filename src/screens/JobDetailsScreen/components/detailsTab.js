@@ -8,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import ActionSheet from 'react-native-actionsheet';
+import { showLocation } from 'react-native-map-link';
 
 import {
   SVGS,
@@ -100,8 +101,8 @@ const DetailsTab = ({
 
   const inputBinWeight = useRef(null);
 
-  const onLocation = () => {
-    //
+  const onLocation = (latitude, longitude) => {
+    showLocation({ latitude, longitude });
   };
 
   const onContact = (phoneNumber) => {
@@ -215,11 +216,34 @@ const DetailsTab = ({
             <SpaceView mLeft={SIZE2} />
             {
               !!steps[0].customerSiteId &&
-              <TouchableOpacity onPress={onLocation}>
+              <TouchableOpacity
+                onPress={() => onLocation(steps[0].latitude, steps[0].longitude)}
+              >
                 <ArrowLocationIcon />
               </TouchableOpacity>
             }
           </LocationRow>
+
+          <View>
+            <Border />
+            <LocationRow>
+              <IconWrap>
+                <Location2Icon />
+              </IconWrap>
+              <InfoText numberOfLines={1}>
+                {steps[1].address}
+              </InfoText>
+              <SpaceView mLeft={SIZE2} />
+              {
+                !!steps[1].customerSiteId &&
+                <TouchableOpacity
+                  onPress={() => onLocation(steps[1].latitude, steps[1].longitude)}
+                >
+                  <ArrowLocationIcon />
+                </TouchableOpacity>
+              }
+            </LocationRow>
+          </View>
 
           {
             steps.length === 3 &&
@@ -227,42 +251,17 @@ const DetailsTab = ({
               <Border />
               <LocationRow>
                 <IconWrap>
-                  <Location2Icon />
-                </IconWrap>
-                <InfoText numberOfLines={1}>
-                  {steps[1].address}
-                </InfoText>
-                <SpaceView mLeft={SIZE2} />
-                {
-                  !!steps[1].customerSiteId &&
-                  <TouchableOpacity onPress={onLocation}>
-                    <ArrowLocationIcon />
-                  </TouchableOpacity>
-                }
-              </LocationRow>
-            </View>
-          }
-
-          {
-            <View>
-              <Border />
-              <LocationRow>
-                <IconWrap>
                   <Location3Icon />
                 </IconWrap>
                 <InfoText numberOfLines={1}>
-                  {
-                    steps.length === 3
-                    ? steps[2].address : steps[1].address
-                  }
+                  {steps[2].address}
                 </InfoText>
                 <SpaceView mLeft={SIZE2} />
                 {
-                  (
-                    (steps.length === 3 && !!steps[2].customerSiteId) ||
-                    (steps.length !== 3 && !!steps[1].customerSiteId)
-                  ) &&
-                  <TouchableOpacity onPress={onLocation}>
+                  !!steps[2].customerSiteId &&
+                  <TouchableOpacity
+                    onPress={() => onLocation(steps[2].latitude, steps[2].longitude)}
+                  >
                     <ArrowLocationIcon />
                   </TouchableOpacity>
                 }
