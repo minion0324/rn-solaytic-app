@@ -143,7 +143,9 @@ const BinText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLACK2};
-  margin-right: ${SIZE4}px;
+  margin-right: ${(props) => (
+    props.editable ? SIZE4 : 0
+  )}px;
 `;
 
 const BinInput = styled.TextInput`
@@ -152,7 +154,9 @@ const BinInput = styled.TextInput`
   font-size: ${FONT(15)}px;
   font-weight: 600,
   color: ${COLORS.BLACK2};
-  margin-right: ${SIZE4}px;
+  margin-right: ${(props) => (
+    props.editable ? SIZE4 : 0
+  )}px;
 `;
 
 const PhotoAndSignWrap = styled.View`
