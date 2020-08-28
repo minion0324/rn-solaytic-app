@@ -9,7 +9,7 @@ import {
   SIZE6,
   SIZE8,
   SIZE12,
-  SIZE24,
+  SIZE20,
   FONT,
 } from 'src/constants';
 
@@ -94,6 +94,7 @@ const CashButton = styled.TouchableOpacity`
 `;
 
 const BinButtonWrap = styled.View`
+  width: 80%;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -101,21 +102,23 @@ const BinButtonWrap = styled.View`
 `;
 
 const BinButton = styled.TouchableOpacity`
-  width: ${SIZE24}px;
+  width: ${SIZE20}px;
   height: ${SIZE8}px;
   align-items: center;
   justify-content: center;
-  border-radius: ${SIZE1}px;
+  border-radius: ${SIZE4}px;
   background-color: ${(props) => (
-    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT1
+    props.active ? COLORS.BLUE1 : COLORS.TRANSPARENT1
   )};
+  border-width: 2px;
+  border-color: ${COLORS.BLUE1};
 `;
 
 const BinButtonText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600;
   color: ${(props) => (
-    props.active ? COLORS.BLUE1 : COLORS.BLACK2
+    props.active ? COLORS.WHITE1 : COLORS.BLUE1
   )};
 `;
 
@@ -124,6 +127,7 @@ const BinInfoWrap = styled.View`
 `;
 
 const BinInfoRow = styled.View`
+  flex: 1;
   height: ${SIZE8}px;
   flex-direction: row;
   align-items: center;

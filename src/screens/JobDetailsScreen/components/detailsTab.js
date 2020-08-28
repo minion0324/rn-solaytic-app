@@ -396,76 +396,77 @@ const DetailsTab = ({
             </BinButtonWrap>
         }
         <BinInfoWrap>
-          {
-            ['wasteType', 'binType'].map((key) => (
-              <BinInfoRow key={key}>
-                <BinText
-                  numberOfLines={2}
-                  editable={
-                    isInProgress() &&
-                    focusedJob.isAllowDriverEditOnApp
-                  }
-                >
-                  {
-                    binInfo[binIndex][key] &&
-                    binInfo[binIndex][key][`${key}Name`]
-                  }
-                </BinText>
-                {
+          <RowWrap>
+            <FlexWrap flex={0.5}>
+              <LabelText>Waste Type</LabelText>
+            </FlexWrap>
+            <BinInfoRow>
+              <BinText
+                numberOfLines={2}
+                editable={
                   isInProgress() &&
-                  focusedJob.isAllowDriverEditOnApp &&
-                  <TouchableOpacity
-                    onPress={() => onShowActionSheet(key)}
-                  >
-                    <EditIcon />
-                  </TouchableOpacity>
+                  focusedJob.isAllowDriverEditOnApp
                 }
-              </BinInfoRow>
-            ))
-          }
-
-          <BinInfoRow>
-            <BinInput
-              underlineColorAndroid={COLORS.TRANSPARENT1}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              value={
-                `${binInfo[binIndex]['binNumber'] || ''}`
-              }
-              onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
-              editable={
-                isInProgress() &&
-                focusedJob.isAllowDriverEditOnApp
-              }
-            />
-            {
-              isInProgress() &&
-              focusedJob.isAllowDriverEditOnApp &&
-              <TouchableOpacity
-                onPress={() => onShowActionSheet('binNumber')}
               >
-                <EditIcon />
-              </TouchableOpacity>
-            }
-          </BinInfoRow>
+                {
+                  binInfo[binIndex]['wasteType'] &&
+                  binInfo[binIndex]['wasteType']['wasteTypeName']
+                }
+              </BinText>
+              {
+                isInProgress() &&
+                focusedJob.isAllowDriverEditOnApp &&
+                <TouchableOpacity
+                  onPress={() => onShowActionSheet('wasteType')}
+                >
+                  <EditIcon />
+                </TouchableOpacity>
+              }
+            </BinInfoRow>
+          </RowWrap>
 
-          {
-            (!!binInfo[binIndex]['binWeight'] ||
-            (isInProgress() &&
-            focusedJob.isAllowDriverEditOnApp)) &&
-            focusedJob.isEnabledBinWeight &&
+          <RowWrap>
+            <FlexWrap flex={0.5}>
+              <LabelText>Bin Type</LabelText>
+            </FlexWrap>
+            <BinInfoRow>
+              <BinText
+                numberOfLines={2}
+                editable={
+                  isInProgress() &&
+                  focusedJob.isAllowDriverEditOnApp
+                }
+              >
+                {
+                  binInfo[binIndex]['binType'] &&
+                  binInfo[binIndex]['binType']['binTypeName']
+                }
+              </BinText>
+              {
+                isInProgress() &&
+                focusedJob.isAllowDriverEditOnApp &&
+                <TouchableOpacity
+                  onPress={() => onShowActionSheet('binType')}
+                >
+                  <EditIcon />
+                </TouchableOpacity>
+              }
+            </BinInfoRow>
+          </RowWrap>
+
+          <RowWrap>
+            <FlexWrap flex={0.5}>
+              <LabelText>Bin ID</LabelText>
+            </FlexWrap>
             <BinInfoRow>
               <BinInput
-                ref={inputBinWeight}
                 underlineColorAndroid={COLORS.TRANSPARENT1}
                 autoCapitalize={'none'}
                 autoCorrect={false}
-                placeholder={'BIN WEIGHT'}
-                keyboardType={'numeric'}
                 value={
-                  `${binInfo[binIndex]['binWeight'] || ''}`
+                  `${binInfo[binIndex]['binNumber'] || ''}`
                 }
-                onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
+                onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
                 editable={
                   isInProgress() &&
                   focusedJob.isAllowDriverEditOnApp
@@ -475,12 +476,51 @@ const DetailsTab = ({
                 isInProgress() &&
                 focusedJob.isAllowDriverEditOnApp &&
                 <TouchableOpacity
-                  onPress={() => inputBinWeight.current.focus()}
+                  onPress={() => onShowActionSheet('binNumber')}
                 >
                   <EditIcon />
                 </TouchableOpacity>
               }
             </BinInfoRow>
+          </RowWrap>
+
+          {
+            (!!binInfo[binIndex]['binWeight'] ||
+            (isInProgress() &&
+            focusedJob.isAllowDriverEditOnApp)) &&
+            focusedJob.isEnabledBinWeight &&
+            <RowWrap>
+              <FlexWrap flex={0.5}>
+                <LabelText>Bin Weight</LabelText>
+              </FlexWrap>
+              <BinInfoRow>
+                <BinInput
+                  ref={inputBinWeight}
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  placeholder={'BIN WEIGHT'}
+                  keyboardType={'numeric'}
+                  value={
+                    `${binInfo[binIndex]['binWeight'] || ''}`
+                  }
+                  onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
+                  editable={
+                    isInProgress() &&
+                    focusedJob.isAllowDriverEditOnApp
+                  }
+                />
+                {
+                  isInProgress() &&
+                  focusedJob.isAllowDriverEditOnApp &&
+                  <TouchableOpacity
+                    onPress={() => inputBinWeight.current.focus()}
+                  >
+                    <EditIcon />
+                  </TouchableOpacity>
+                }
+              </BinInfoRow>
+            </RowWrap>
           }
         </BinInfoWrap>
 
