@@ -142,13 +142,8 @@ const BinText = styled.Text`
   flex: 1;
   font-size: ${FONT(15)}px;
   font-weight: 600,
-  color: ${COLORS.BLUE1};
-  margin-right: ${(props) => (
-    props.editable ? SIZE4 : 0
-  )}px;
-  text-align: ${(props) => (
-    props.editable ? 'left' : 'center'
-  )};
+  color: ${COLORS.BLACK2};
+  margin-right: ${SIZE4}px;
 `;
 
 const BinInput = styled.TextInput`
@@ -156,13 +151,8 @@ const BinInput = styled.TextInput`
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600,
-  color: ${COLORS.BLUE1};
-  margin-right: ${(props) => (
-    props.editable ? SIZE4 : 0
-  )}px;
-  text-align: ${(props) => (
-    props.editable ? 'left' : 'center'
-  )};
+  color: ${COLORS.BLACK2};
+  margin-right: ${SIZE4}px;
 `;
 
 const PhotoAndSignWrap = styled.View`
