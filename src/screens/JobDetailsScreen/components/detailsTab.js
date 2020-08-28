@@ -100,6 +100,10 @@ const DetailsTab = ({
 
   const inputBinWeight = useRef(null);
 
+  const onLocation = () => {
+    //
+  };
+
   const onContact = (phoneNumber) => {
     openUrl(`tel:${phoneNumber}`);
   };
@@ -211,7 +215,7 @@ const DetailsTab = ({
             <SpaceView mLeft={SIZE2} />
             {
               !!steps[0].customerSiteId &&
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onLocation}>
                 <ArrowLocationIcon />
               </TouchableOpacity>
             }
@@ -231,7 +235,7 @@ const DetailsTab = ({
                 <SpaceView mLeft={SIZE2} />
                 {
                   !!steps[1].customerSiteId &&
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={onLocation}>
                     <ArrowLocationIcon />
                   </TouchableOpacity>
                 }
@@ -258,7 +262,7 @@ const DetailsTab = ({
                     (steps.length === 3 && !!steps[2].customerSiteId) ||
                     (steps.length !== 3 && !!steps[1].customerSiteId)
                   ) &&
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={onLocation}>
                     <ArrowLocationIcon />
                   </TouchableOpacity>
                 }
