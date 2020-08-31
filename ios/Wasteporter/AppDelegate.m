@@ -7,6 +7,8 @@
 #import "RNFirebaseMessaging.h"
 #import "RNFirebaseNotifications.h"
 
+#import <TSBackgroundFetch/TSBackgroundFetch.h>
+
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -39,6 +41,8 @@ static void InitializeFlipper(UIApplication *application) {
   [FIRApp configure];
 
   [RNFirebaseNotifications configure];
+
+  [[TSBackgroundFetch sharedInstance] didFinishLaunching];
 
   return YES;
 }
