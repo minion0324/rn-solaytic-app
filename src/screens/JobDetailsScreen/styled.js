@@ -34,7 +34,9 @@ const Content = styled.View`
 const LabelText = styled.Text`
   font-size: ${FONT(12)}px;
   font-weight: 500,
-  color: ${COLORS.GRAY3};
+  color:  ${(props) => (
+    props.required ? COLORS.RED1 : COLORS.GRAY3
+  )};
 `;
 
 const InfoText = styled.Text`
@@ -132,7 +134,9 @@ const BinInfoRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${COLORS.WHITE3};
+  background-color: ${(props) => (
+    props.editable ? COLORS.WHITE3 : COLORS.TRANSPARENT1
+  )};
   margin-vertical: ${SIZE1}px;
   padding-horizontal: ${SIZE4}px;
   border-radius: ${SIZE1}px;

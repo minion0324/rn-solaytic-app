@@ -423,7 +423,7 @@ const DetailsTab = ({
             <FlexWrap flex={0.5}>
               <LabelText>Waste Type</LabelText>
             </FlexWrap>
-            <BinInfoRow>
+            <BinInfoRow editable={editable}>
               <BinText
                 numberOfLines={2}
                 editable={editable}
@@ -448,7 +448,7 @@ const DetailsTab = ({
             <FlexWrap flex={0.5}>
               <LabelText>Bin Type</LabelText>
             </FlexWrap>
-            <BinInfoRow>
+            <BinInfoRow editable={editable}>
               <BinText
                 numberOfLines={2}
                 editable={editable}
@@ -471,9 +471,16 @@ const DetailsTab = ({
 
           <RowWrap>
             <FlexWrap flex={0.5}>
-              <LabelText>Bin ID</LabelText>
+              <LabelText
+                required={focusedJob.isRequireBinNumberToStart}
+              >
+                {
+                  focusedJob.isRequireBinNumberToStart
+                  ? 'Bin ID *' : 'Bin ID'
+                }
+              </LabelText>
             </FlexWrap>
-            <BinInfoRow>
+            <BinInfoRow editable={editable}>
               <BinInput
                 underlineColorAndroid={COLORS.TRANSPARENT1}
                 autoCapitalize={'none'}
@@ -503,7 +510,7 @@ const DetailsTab = ({
               <FlexWrap flex={0.5}>
                 <LabelText>Bin Weight</LabelText>
               </FlexWrap>
-              <BinInfoRow>
+              <BinInfoRow editable={editable}>
                 <BinInput
                   ref={inputBinWeight}
                   underlineColorAndroid={COLORS.TRANSPARENT1}
