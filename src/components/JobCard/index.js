@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
+import { sortBy } from 'lodash';
 
 import {
   SVGS,
@@ -111,7 +112,7 @@ const TIME_FORMAT = 'hh:mm A ';
 
 const JobCard = ({
   jobInfo: {
-    steps,
+    steps: originSteps,
     customerName,
     statusName,
     jobDate,
@@ -120,6 +121,7 @@ const JobCard = ({
     jobTypeName,
   },
 }) => {
+  const steps = sortBy(originSteps, 'stepOrder');
 
   const getLocation = () => {
     switch (jobTypeName) {
