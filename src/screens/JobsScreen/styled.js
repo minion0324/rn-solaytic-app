@@ -4,13 +4,11 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
-  SIZE8,
   SIZE10,
   FONT,
 } from 'src/constants';
 
 const TabWrap = styled.View`
-  height: ${SIZE8}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
