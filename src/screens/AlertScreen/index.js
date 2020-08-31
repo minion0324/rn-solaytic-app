@@ -237,25 +237,18 @@ const AlertScreen = ({
           rightIcon={<EmptyIcon />}
         />
 
-        <ButtonWrap>
-          <DefaultButton
-            text={
-              countOfAlerts > 0
-              ? `Acknowledge (${countOfAlerts})`
-              : 'Acknowledge'
-            }
-            color={
-              countOfAlerts > 0
-              ? COLORS.BLUE1 : COLORS.GRAY3
-            }
-            onPress={
-              countOfAlerts > 0
-              ? onAcknowledge : null
-            }
-            loading={loading}
-            mTop={-8}
-          />
-        </ButtonWrap>
+        {
+          countOfAlerts > 0 &&
+          <ButtonWrap>
+            <DefaultButton
+              text={`Acknowledge (${countOfAlerts})`}
+              color={COLORS.BLUE1}
+              onPress={onAcknowledge}
+              loading={loading}
+              mTop={-8}
+            />
+          </ButtonWrap>
+        }
       </ShadowWrap>
 
       <Content>
