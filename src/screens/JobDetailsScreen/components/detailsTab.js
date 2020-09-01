@@ -552,20 +552,20 @@ const DetailsTab = ({
     return (
       <View>
         {
-          photos.map(imageUri =>
-            <ItemWrap key={imageUri} mLeft={0} mRight={0}>
+          photos.map(photo =>
+            <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
               <AttachmentWrap>
-                <FullImage source={{ uri: imageUri }} />
+                <FullImage source={{ uri: photo.uri }} />
               </AttachmentWrap>
             </ItemWrap>
           )
         }
         {
-          !!sign &&
+          !!sign.uri &&
           <ItemWrap mLeft={0} mRight={0}>
             <AttachmentWrap>
               <HalfWrap>
-                <FullImage source={{ uri: sign }} />
+                <FullImage source={{ uri: sign.uri }} />
               </HalfWrap>
               <HalfWrap>
                 <SignInfo>
@@ -645,7 +645,7 @@ const DetailsTab = ({
 DetailsTab.propTypes = {
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
-  sign: PropTypes.string,
+  sign: PropTypes.object,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
@@ -662,7 +662,7 @@ DetailsTab.propTypes = {
 };
 
 DetailsTab.defaultProps = {
-  sign: '',
+  sign: null,
   signedUserName: '',
   signedUserContact: '',
 };
