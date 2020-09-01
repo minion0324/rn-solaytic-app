@@ -56,10 +56,9 @@ const SignatureScreen = ({
 
       const uri = PLATFORM === 'ios' ? '' : 'file://' +
         RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
-
       const data = signature.replace('data:image/png;base64,', '');
 
-      await RNFS.writeFile(path, data, 'base64');
+      await RNFS.writeFile(uri, data, 'base64');
 
       setSign({ uri, data });
 
