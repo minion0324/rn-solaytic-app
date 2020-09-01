@@ -4,9 +4,6 @@ import produce from 'immer';
 
 import {
   SET_CORE_SCREEN_INFO,
-  UPLOAD_PHOTOS_SUCCESS,
-  UPLOAD_SIGN_SUCCESS,
-  INIT_JOB_PHOTOS_AND_SIGN,
   GET_DRIVER_NOTES_SUCCESS,
   GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
   SET_IS_REQUIRED_UPDATE_TAB,
@@ -21,8 +18,6 @@ const viewPersistConfig = {
   storage: AsyncStorage,
   blacklist: [
     'coreScreenInfo',
-    'jobPhotos',
-    'jobSign',
     'driverNotes',
     'isRequiredUpdateTab',
   ],
@@ -36,16 +31,6 @@ function View(state = DEFAULT, action = {}) {
     switch (type) {
       case SET_CORE_SCREEN_INFO:
         draft.coreScreenInfo = payload;
-        break;
-      case UPLOAD_PHOTOS_SUCCESS:
-        draft.jobPhotos = payload;
-        break;
-      case UPLOAD_SIGN_SUCCESS:
-        draft.jobSign = payload;
-        break;
-      case INIT_JOB_PHOTOS_AND_SIGN:
-        draft.jobPhotos = [];
-        draft.jobSign = '';
         break;
       case GET_DRIVER_NOTES_SUCCESS:
         draft.driverNotes = payload.data;

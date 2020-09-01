@@ -9,20 +9,6 @@ const getCoreScreenInfo = createSelector(
   },
 );
 
-const getJobPhotos = createSelector(
-  getViewStore,
-  (view) => {
-    return view.jobPhotos || [];
-  },
-);
-
-const getJobSign = createSelector(
-  getViewStore,
-  (view) => {
-    return view.jobSign || '';
-  },
-);
-
 const getDriverNotes = createSelector(
   getViewStore,
   (view) => {
@@ -53,8 +39,6 @@ const getIsRequiredUpdateTab = createSelector(
 
 export default {
   getCoreScreenInfo,
-  getJobPhotos,
-  getJobSign,
   getDriverNotes,
   getCountOfDriverNotes,
   getPageOfDriverNotes,
