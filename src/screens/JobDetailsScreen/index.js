@@ -177,10 +177,8 @@ const JobDetailsScreen = ({
       } else if (response.error) {
         //
       } else {
-        setPhotos([
-          ...photos,
-          { path: response.uri, base64: response.data },
-        ]);
+        const { uri, data } = response;
+        setPhotos([ ...photos, { uri, data } ]);
       }
     });
   };
