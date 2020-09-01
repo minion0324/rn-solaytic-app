@@ -366,7 +366,7 @@ const DetailsTab = ({
             }
           </InfoWrap>
           {
-            !focusedJob.collectedAmount &&
+            !!focusedJob.amountToCollect &&
             <CashButton onPress={() => setTabIndex(1)}>
               <CashIcon />
             </CashButton>
