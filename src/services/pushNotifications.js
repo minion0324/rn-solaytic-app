@@ -1,3 +1,4 @@
+import { AppState } from 'react-native';
 import firebase from 'react-native-firebase';
 
 import { PLATFORM } from 'src/constants';
@@ -46,8 +47,9 @@ class PushNotifications {
 
     firebase.notifications().displayNotification(notification);
 
-    this.onNotificationHandler && // eslint-disable-line
-    this.onNotificationHandler(notification);
+    if (AppState.currentState === 'active') {
+      this.notificationHandler(notification);
+    }
   }
 
   onNotificationOpened = ({ notification }) => {
@@ -95,6 +97,16 @@ class PushNotifications {
   }
 
   notificationHandler = (notification) => {
+    if (this.forHandler) {
+      return;
+    }
+
+    this.forHandler = true;
+
+    setTimeout(() => {
+      this.forHandler = false;
+    }, 1500);
+
     const { data: { jobId } } = notification;
 
     if (jobId) {
