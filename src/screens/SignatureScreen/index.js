@@ -47,18 +47,22 @@ const SignatureScreen = ({
     dismissOverlay(componentId);
   };
 
-  const onSign = async (base64) => {
+  const onSign = async (signature) => {
     try {
       if (!name || !contact) {
         Alert.alert('Warning', 'Please type signed user name & contact.');
         return;
       }
 
-      const path = PLATFORM === 'ios' ? '' : 'file://' +
+      const uri = PLATFORM === 'ios' ? '' : 'file://' +
         RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
-      await RNFS.writeFile(path, base64.replace('data:image/png;base64,', ''), 'base64');
 
-      setSign(path);
+      const data = signature.replace('data:image/png;base64,', '');
+
+      await RNFS.writeFile(path, data, 'base64');
+
+      setSign({ uri, data });
+
       setSignedUserName(name);
       setSignedUserContact(contact);
 
