@@ -37,6 +37,7 @@ const JobDetailsScreen = ({
   uploadPhotos,
   uploadSign,
   initJobPhotosAndSign,
+  setIsRequiredUpdateTab,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -90,6 +91,7 @@ const JobDetailsScreen = ({
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.ACKNOWLEDGED);
+        setIsRequiredUpdateTab(true);
       },
       failure: () => setLoading(false),
     });
@@ -339,6 +341,7 @@ JobDetailsScreen.propTypes = {
   uploadPhotos: PropTypes.func.isRequired,
   uploadSign: PropTypes.func.isRequired,
   initJobPhotosAndSign: PropTypes.func.isRequired,
+  setIsRequiredUpdateTab: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -367,6 +370,7 @@ const mapDispatchToProps = {
   uploadPhotos: ViewStore.actionCreators.uploadPhotos,
   uploadSign: ViewStore.actionCreators.uploadSign,
   initJobPhotosAndSign: ViewStore.actionCreators.initJobPhotosAndSign,
+  setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
 };
 
 export default connect(
