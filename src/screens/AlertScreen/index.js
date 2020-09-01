@@ -65,6 +65,7 @@ const AlertScreen = ({
   pageOfAlerts,
   dateForAlerts,
   coreScreenInfo,
+  isRequiredUpdateTab,
   setFCMToken,
   getAlertsByDate,
   getAlertsByPage,
@@ -72,6 +73,7 @@ const AlertScreen = ({
   acknowledgeJobs,
   getJobById,
   updateDateForJobs,
+  setIsRequiredUpdateTab,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -90,10 +92,12 @@ const AlertScreen = ({
     pushNotifications.setNotificationHandlerForAlerts(onNotification);
   }, [coreScreenInfo]);
 
-  useNavigationComponentDidAppear((event) => {
-    console.log('--------------- component did appear');
-    console.log(event);
-  })
+  useNavigationComponentDidAppear(() => {
+    if (isRequiredUpdateTab) {
+      changeTabIndex(componentId, 1);
+      setIsRequiredUpdateTab(false);
+    }
+  });
 
   const onNotification = async () => {
     try {
@@ -291,6 +295,7 @@ AlertScreen.propTypes = {
   pageOfAlerts: PropTypes.number.isRequired,
   dateForAlerts: PropTypes.string.isRequired,
   coreScreenInfo: PropTypes.object.isRequired,
+  isRequiredUpdateTab: PropTypes.bool.isRequired,
   setFCMToken: PropTypes.func.isRequired,
   getAlertsByDate: PropTypes.func.isRequired,
   getAlertsByPage: PropTypes.func.isRequired,
@@ -298,6 +303,7 @@ AlertScreen.propTypes = {
   acknowledgeJobs: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
   updateDateForJobs: PropTypes.func.isRequired,
+  setIsRequiredUpdateTab: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -308,6 +314,7 @@ const mapStateToProps = (state) => {
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
     dateForAlerts: Jobs.selectors.getDateForAlerts(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
+    isRequiredUpdateTab: ViewStore.selectors.getIsRequiredUpdateTab(state),
   };
 };
 
@@ -319,6 +326,7 @@ const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   getJobById: Jobs.actionCreators.getJobById,
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
+  setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
 };
 
 export default connect(
