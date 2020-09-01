@@ -9,6 +9,7 @@ import {
   INIT_JOB_PHOTOS_AND_SIGN,
   GET_DRIVER_NOTES_SUCCESS,
   GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
+  SET_IS_REQUIRED_UPDATE_TAB,
 } from './actions';
 
 const DEFAULT = {
@@ -23,6 +24,7 @@ const viewPersistConfig = {
     'jobPhotos',
     'jobSign',
     'driverNotes',
+    'isRequiredUpdateTab',
   ],
 };
 
@@ -50,6 +52,9 @@ function View(state = DEFAULT, action = {}) {
         break;
       case GET_DRIVER_NOTES_BY_PAGE_SUCCESS:
         draft.driverNotes.concat(payload.data);
+        break;
+      case SET_IS_REQUIRED_UPDATE_TAB:
+        draft.isRequiredUpdateTab = payload;
         break;
     }
   });

@@ -44,6 +44,13 @@ const getPageOfDriverNotes = createSelector(
   },
 );
 
+const getIsRequiredUpdateTab = createSelector(
+  getViewStore,
+  (view) => {
+    return view.isRequiredUpdateTab || false;
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getJobPhotos,
@@ -51,4 +58,5 @@ export default {
   getDriverNotes,
   getCountOfDriverNotes,
   getPageOfDriverNotes,
+  getIsRequiredUpdateTab,
 };
