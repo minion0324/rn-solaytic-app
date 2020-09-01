@@ -34,9 +34,6 @@ const JobDetailsScreen = ({
   addMessage,
   updateAmountCollected,
   setCoreScreenInfo,
-  uploadPhotos,
-  uploadSign,
-  initJobPhotosAndSign,
   setIsRequiredUpdateTab,
   componentId,
 }) => {
@@ -71,8 +68,6 @@ const JobDetailsScreen = ({
       componentId,
       componentType: 'push',
     });
-
-    initJobPhotosAndSign();
 
     return () => {
       setCoreScreenInfo({});
@@ -141,49 +136,6 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onFailure = () => {
-    setLoading(false);
-    initJobPhotosAndSign();
-  };
-
-  const onUploadPhotos = () => {
-    if (photos.length === 0) {
-      onUploadSign();
-      return;
-    }
-
-    uploadPhotos({
-      photos,
-      success: onUploadSign,
-      failure: onFailure,
-    });
-  };
-
-  const onUploadSign = () => {
-    if (!sign) {
-      onCompleteJob();
-      return;
-    }
-
-    uploadSign({
-      sign,
-      success: onCompleteJob,
-      failure: onFailure,
-    });
-  };
-
-  const onCompleteJob = () => {
-    completeJobs({
-      jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      signedUserName,
-      signedUserContact,
-      amountCollected,
-      success: onBack,
-      failure: onFailure,
-    });
-  };
-
   const onComplete = () => {
     if (focusedJob.mustTakePhoto && photos.length === 0) {
       Alert.alert('Warning', 'Please upload photos.');
@@ -196,7 +148,18 @@ const JobDetailsScreen = ({
     }
 
     setLoading(true);
-    onUploadPhotos();
+
+    completeJobs({
+      jobIds: `${focusedJob.jobId}`,
+      stepBinUpdate: getUpdatedBinInfo(),
+      photos,
+      sign,
+      signedUserName,
+      signedUserContact,
+      amountCollected,
+      success: onBack,
+      failure: () => setLoading(false),
+    });
   };
 
   const onPhoto = () => {
@@ -214,7 +177,10 @@ const JobDetailsScreen = ({
       } else if (response.error) {
         //
       } else {
-        setPhotos([ ...photos, response.uri ]);
+        setPhotos([
+          ...photos,
+          { path: response.uri, base64: response.data },
+        ]);
       }
     });
   };
@@ -338,9 +304,6 @@ JobDetailsScreen.propTypes = {
   addMessage: PropTypes.func.isRequired,
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
-  uploadPhotos: PropTypes.func.isRequired,
-  uploadSign: PropTypes.func.isRequired,
-  initJobPhotosAndSign: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -367,9 +330,6 @@ const mapDispatchToProps = {
   addMessage: Jobs.actionCreators.addMessage,
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
-  uploadPhotos: ViewStore.actionCreators.uploadPhotos,
-  uploadSign: ViewStore.actionCreators.uploadSign,
-  initJobPhotosAndSign: ViewStore.actionCreators.initJobPhotosAndSign,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
 };
 
