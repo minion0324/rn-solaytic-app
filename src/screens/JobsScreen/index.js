@@ -100,7 +100,7 @@ const JobsScreen = ({
     } catch (error) {
       //
     }
-  }
+  };
 
   const onReloading = (jobId) => {
     setReloading(true);
