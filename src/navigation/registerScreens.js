@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigation } from 'react-native-navigation';
+import { NavigationProvider } from 'react-native-navigation-hooks';
 
 import { Provider } from 'src/redux';
 
@@ -29,7 +30,11 @@ function WrappedComponent(Component) {
   return function inject(props) {
     const EnhancedComponent = () => (
       <Provider>
-        <Component {...props} />
+        <NavigationProvider
+          value={{ componentId: props.componentId }}
+        >
+          <Component {...props} />
+        </NavigationProvider>
       </Provider>
     );
 
