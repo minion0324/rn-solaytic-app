@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
   HeaderBar,
@@ -88,6 +89,11 @@ const AlertScreen = ({
   useEffect(() => {
     pushNotifications.setNotificationHandlerForAlerts(onNotification);
   }, [coreScreenInfo]);
+
+  useNavigationComponentDidAppear((event) => {
+    console.log('--------------- component did appear');
+    console.log(event);
+  })
 
   const onNotification = async () => {
     try {
