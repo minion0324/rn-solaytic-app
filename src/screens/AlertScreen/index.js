@@ -103,7 +103,7 @@ const AlertScreen = ({
     } catch (error) {
       //
     }
-  }
+  };
 
   const onReloading = () => {
     setReloading(true);
