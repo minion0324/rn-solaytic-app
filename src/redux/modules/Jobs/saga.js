@@ -26,7 +26,6 @@ import {
 } from 'src/services';
 import {
   Jobs,
-  ViewStore,
 } from 'src/redux';
 import {
   DATE_KEY,
@@ -439,6 +438,8 @@ export function* asyncCompleteJobs({ payload }) {
   const {
     jobIds,
     stepBinUpdate,
+    photos,
+    sign,
     signedUserName,
     signedUserContact,
     amountCollected,
@@ -448,8 +449,6 @@ export function* asyncCompleteJobs({ payload }) {
 
   try {
     const focusedJob = yield select(Jobs.selectors.getFocusedJob);
-    const jobPhotos = yield select(ViewStore.selectors.getJobPhotos);
-    const jobSign = yield select(ViewStore.selectors.getJobSign);
 
     const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
 
@@ -470,16 +469,18 @@ export function* asyncCompleteJobs({ payload }) {
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
-      signatureUrl: jobSign,
+      base64Signature: sign.data,
+      signatureFileName: sign.uri.split('/').pop(),
       signedUserName,
       signedUserContact,
       driverName: '', //
       vehicleName: '', //
       remarks: focusedJob.remarks,
-      jobPhotos: jobPhotos.map((photo) => {
+      jobPhotos: photos.map((photo) => {
         return {
           jobStepId: lastJobStep.jobStepId,
-          photoUrl: photo,
+          base64Image: photo.data,
+          fileName: photo.uri.split('/').pop(),
           photoCaption: '', //
         }
       }),

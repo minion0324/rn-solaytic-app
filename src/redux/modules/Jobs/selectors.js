@@ -72,15 +72,17 @@ const getPhotosAndSign = createSelector(
       const lastAttempt = focusedJob.attempts[focusedJob.attempts.length - 1];
 
       return {
-        photos: lastAttempt.jobPhotos.map(item => item.photoUrl),
-        sign: lastAttempt.signatureUrl,
+        photos: lastAttempt.jobPhotos.map((item) => {
+          return { uri: item.photoUrl };
+        }),
+        sign: { uri: lastAttempt.signatureUrl },
         signedUserName: lastAttempt.signedUserName,
         signedUserContact: lastAttempt.signedUserContact,
       };
     } catch (error) {
       return {
         photos: [],
-        sign: '',
+        sign: null,
         signedUserName: '',
         signedUserContact: '',
       };
