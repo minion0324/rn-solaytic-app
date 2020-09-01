@@ -3,7 +3,11 @@ import { Alert } from 'react-native';
 function onError(error) {
   let message = 'Something went wrong.';
   try {
-    message = error.response.data;
+    const responseData = error.response.data;
+
+    if (typeof responseData === 'string') {
+      message = responseData;
+    }
   } catch (err) {
     //
   }
