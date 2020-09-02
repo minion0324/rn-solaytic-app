@@ -447,12 +447,14 @@ export function* asyncCompleteJobs({ payload }) {
     failure,
   } = payload;
 
+  let attempt = null;
+
   try {
     const focusedJob = yield select(Jobs.selectors.getFocusedJob);
 
     const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
 
-    const attempt = {
+    attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
       amountCollected,
@@ -509,7 +511,10 @@ export function* asyncCompleteJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    yield onError(error);
+    yield onError(error, {
+      api: apiCompleteJobs,
+      params: [jobIds, stepBinUpdate, attempt],
+    });
     failure && failure();
   }
 }
