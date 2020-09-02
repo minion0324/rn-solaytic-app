@@ -340,7 +340,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -381,7 +381,7 @@ export function* asyncStartJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -422,7 +422,7 @@ export function* asyncExchangeJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -509,7 +509,7 @@ export function* asyncCompleteJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -576,7 +576,7 @@ export function* asyncFailJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -604,7 +604,7 @@ export function* asyncGetJobById({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -640,7 +640,7 @@ export function* asyncAddService({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -676,7 +676,7 @@ export function* asyncRemoveService({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -723,7 +723,7 @@ export function* asyncAddMessage({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -751,7 +751,7 @@ export function* asyncUpdateAmountCollected({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }

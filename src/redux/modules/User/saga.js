@@ -35,7 +35,7 @@ export function* asyncLogin({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
