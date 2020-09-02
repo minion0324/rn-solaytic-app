@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 
 import {
   HeaderBar,
@@ -60,17 +61,33 @@ const JobsScreen = ({
   pageOfJobs,
   dateForJobs,
   coreScreenInfo,
+  isNetworkConnected,
   getJobsByDate,
   getJobsByPage,
   reloadJobsAndAlerts,
   getJobById,
   updateDateForJobs,
+  setIsNetworkConnected,
   componentId,
 }) => {
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const [ tabIndex, setTabIndex ] = useState(0);
+
+  useEffect(() => {
+    const networkEventListener = NetInfo.addEventListener(({ isConnected }) => {
+      if (isNetworkConnected === isConnected) {
+        return;
+      }
+
+      setIsNetworkConnected(isConnected);
+    });
+
+    return () => {
+      networkEventListener();
+    };
+  }, []);
 
   useEffect(() => {
     setReloading(true);
@@ -268,11 +285,13 @@ JobsScreen.propTypes = {
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
   coreScreenInfo: PropTypes.object.isRequired,
+  isNetworkConnected: PropTypes.bool.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
   reloadJobsAndAlerts: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
   updateDateForJobs: PropTypes.func.isRequired,
+  setIsNetworkConnected: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -282,6 +301,7 @@ const mapStateToProps = (state) => {
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
+    isNetworkConnected: ViewStore.selectors.getIsNetworkConnected(state),
   };
 };
 
@@ -291,6 +311,7 @@ const mapDispatchToProps = {
   reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   getJobById: Jobs.actionCreators.getJobById,
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
+  setIsNetworkConnected: ViewStore.actionCreators.setIsNetworkConnected,
 };
 
 export default connect(
