@@ -37,10 +37,18 @@ const getIsRequiredUpdateTab = createSelector(
   },
 );
 
+const getIsNetworkConnected = createSelector(
+  getViewStore,
+  (view) => {
+    return view.isNetworkConnected;
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getDriverNotes,
   getCountOfDriverNotes,
   getPageOfDriverNotes,
   getIsRequiredUpdateTab,
+  getIsNetworkConnected,
 };

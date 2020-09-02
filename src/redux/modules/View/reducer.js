@@ -7,10 +7,11 @@ import {
   GET_DRIVER_NOTES_SUCCESS,
   GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
   SET_IS_REQUIRED_UPDATE_TAB,
+  SET_IS_NETWORK_CONNECTED,
 } from './actions';
 
 const DEFAULT = {
-  //
+  isNetworkConnected: true,
 };
 
 const viewPersistConfig = {
@@ -20,6 +21,7 @@ const viewPersistConfig = {
     'coreScreenInfo',
     'driverNotes',
     'isRequiredUpdateTab',
+    'isNetworkConnected',
   ],
 };
 
@@ -40,6 +42,9 @@ function View(state = DEFAULT, action = {}) {
         break;
       case SET_IS_REQUIRED_UPDATE_TAB:
         draft.isRequiredUpdateTab = payload;
+        break;
+      case SET_IS_NETWORK_CONNECTED:
+        draft.isNetworkConnected = payload;
         break;
     }
   });
