@@ -24,9 +24,9 @@ function* onError(error, backgroundFetch) {
 
   if (!isNetworkConnected) {
     message = 'Network problem. ' +
-      backgroundFetch
+      (backgroundFetch
       ? 'The process goes into background mode.'
-      : 'Please check your network connection.';
+      : 'Please check your network connection.');
 
     if (backgroundFetch) {
       onBackgroundFetch(backgroundFetch);
