@@ -37,6 +37,9 @@ function* onError(error, backgroundFetch) {
 }
 
 function onBackgroundFetch(backgroundFetch) {
+  console.log('----- background fetch content');
+  console.log(backgroundFetch);
+
   const backgroundFetchHandler = async (taskId) => {
     console.log('----- background fetch handler');
     console.log(taskId);
