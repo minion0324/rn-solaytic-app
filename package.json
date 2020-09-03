@@ -34,6 +34,7 @@
     "react-native-reanimated": "^1.11.0",
     "react-native-restart": "^0.0.17",
     "react-native-signature-canvas": "^2.7.0",
+    "react-native-simple-toast": "^1.1.2",
     "react-native-svg": "^12.1.0",
     "react-native-tab-view": "^2.15.1",
     "react-native-webview": "^10.3.2",
