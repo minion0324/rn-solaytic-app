@@ -1,6 +1,7 @@
-import { Alert } from 'react-native';
+import { Alert, AppState } from 'react-native';
 import { select } from 'redux-saga/effects';
 import BackgroundFetch from 'react-native-background-fetch';
+import RNRestart from 'react-native-restart';
 
 import {
   ViewStore,
@@ -25,7 +26,8 @@ function* onError(error, backgroundFetch) {
   if (!isNetworkConnected) {
     message = 'Network problem. ' +
       (backgroundFetch
-      ? 'The process goes into background mode.'
+      ? 'The process goes into background mode. ' +
+        'Please don\'t terminate the app. You can lost some data if you terminate the app.'
       : 'Please check your network connection.');
 
     if (backgroundFetch) {
@@ -48,6 +50,26 @@ function onBackgroundFetch(backgroundFetch) {
       const { api, params } = backgroundFetch;
 
       await api(...params);
+
+      if (AppState.currentState === 'active') {
+        Alert.alert(
+          'Alert',
+          'The background process is completed. ' +
+          'You need to restart the app to sync your data. Would you like to restart the app now?',
+          [
+            {
+              text: 'Cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => RNRestart.Restart(),
+            },
+          ],
+          { cancelable: false },
+        );
+      } else {
+        RNRestart.Restart();
+      }
 
       BackgroundFetch.finish(taskId);
     } catch (err) {
