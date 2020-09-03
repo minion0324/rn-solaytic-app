@@ -65,16 +65,6 @@ function onBackgroundFetch(backgroundFetch) {
   BackgroundFetch.configure(
     {
       minimumFetchInterval: 15,
-
-      // forceAlarmManager: false,
-      // stopOnTerminate: false,
-      // startOnBoot: true,
-
-      // requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE,
-      // requiresCharging: false,
-      // requiresDeviceIdle: false,
-      // requiresBatteryNotLow: false,
-      // requiresStorageNotLow: false,
     },
     backgroundFetchHandler,
     backgroundErrorHandler,
