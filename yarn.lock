@@ -5259,6 +5259,10 @@ react-native-reanimated@^1.11.0:
   dependencies:
     fbjs "^1.0.0"
 
+react-native-restart@^0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/react-native-restart/-/react-native-restart-0.0.17.tgz#c1f38e019d1a2114248d496698e7951e9435ba91"
+
 react-native-signature-canvas@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-2.7.0.tgz#5d93d46c222fd86ba4fd7d947a91407a3605d367"

@@ -32,6 +32,7 @@
     "react-native-navigation": "^6.7.3",
     "react-native-navigation-hooks": "^6.1.0",
     "react-native-reanimated": "^1.11.0",
+    "react-native-restart": "^0.0.17",
     "react-native-signature-canvas": "^2.7.0",
     "react-native-svg": "^12.1.0",
     "react-native-tab-view": "^2.15.1",
