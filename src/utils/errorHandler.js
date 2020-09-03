@@ -44,11 +44,17 @@ function onBackgroundFetch(backgroundFetch) {
     console.log('----- background fetch handler');
     console.log(taskId);
 
-    const { api, params } = backgroundFetch;
+    try {
+      const { api, params } = backgroundFetch;
 
-    await api(...params);
+      await api(...params);
 
-    BackgroundFetch.finish(taskId);
+      BackgroundFetch.finish(taskId);
+    } catch (err) {
+      console.log('----- err');
+      console.log(err);
+      console.log(err.response);
+    }
   };
 
   const backgroundErrorHandler = (error) => {
@@ -58,7 +64,7 @@ function onBackgroundFetch(backgroundFetch) {
 
   BackgroundFetch.configure(
     {
-      minimumFetchInterval: 1,
+      minimumFetchInterval: 15,
 
       // forceAlarmManager: false,
       // stopOnTerminate: false,
