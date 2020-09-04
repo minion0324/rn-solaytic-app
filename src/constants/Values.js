@@ -66,6 +66,9 @@ const JOB_TYPE = {
   THROW_AT_CUSTOMER: 'ThrowAtCustomer',
 };
 
+const COMPLETE_JOBS_KEY = '@complete_jobs';
+const BACKGROUND_FETCH_KEY = '@background_fetch';
+
 export {
   PLATFORM,
   WIDTH,
@@ -94,4 +97,6 @@ export {
   JOB_DATE,
   JOB_STATUS,
   JOB_TYPE,
+  COMPLETE_JOBS_KEY,
+  BACKGROUND_FETCH_KEY,
 };
