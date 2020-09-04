@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export const addItem = async(key, id, value) => {
+export const addItem = async (key, id, value) => {
   try {
     const str = await AsyncStorage.getItem(key);
     const data = str ? JSON.parse(str) : [];
@@ -19,7 +19,7 @@ export const addItem = async(key, id, value) => {
   }
 };
 
-export const removeItem = async(key, id) => {
+export const removeItem = async (key, id) => {
   try {
     const str = await AsyncStorage.getItem(key);
     const data = str ? JSON.parse(str) : [];
@@ -35,12 +35,23 @@ export const removeItem = async(key, id) => {
   }
 };
 
-export const getItems = async(key) => {
+export const getItems = async (key) => {
   try {
     const str = await AsyncStorage.getItem(key);
     const data = str ? JSON.parse(str) : [];
 
     return data;
+  } catch (error) {
+    return [];
+  }
+};
+
+export const getIds = async (key) => {
+  try {
+    const items = await getItems(key);
+    const ids = items.map(item => item.id);
+
+    return ids;
   } catch (error) {
     return [];
   }
