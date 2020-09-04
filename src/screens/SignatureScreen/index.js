@@ -3,7 +3,6 @@ import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
-import moment from 'moment';
 
 import {
   dismissOverlay,
@@ -16,6 +15,9 @@ import {
   PLATFORM,
   COLORS,
 } from 'src/constants';
+import {
+  getTimestamp,
+} from 'src/utils';
 
 import {
   ShadowWrap,
@@ -55,7 +57,7 @@ const SignatureScreen = ({
       }
 
       const uri = PLATFORM === 'ios' ? '' : 'file://' +
-        RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
+        RNFS.DocumentDirectoryPath + `/sign${getTimestamp()}.jpg`;
       const data = signature.replace('data:image/png;base64,', '');
 
       await RNFS.writeFile(uri, data, 'base64');
