@@ -1,4 +1,4 @@
-import { Alert, AppState } from 'react-native';
+import { Alert } from 'react-native';
 import { select } from 'redux-saga/effects';
 import BackgroundFetch from 'react-native-background-fetch';
 import RNRestart from 'react-native-restart';
@@ -11,8 +11,9 @@ import {
   removeItem,
   getItems,
 } from 'src/utils';
-
-const key = '@background_fetch';
+import {
+  BACKGROUND_FETCH_KEY,
+} from 'src/constants';
 
 function* onError(error, backgroundFetch, fetchInfo) {
   const isNetworkConnected = yield select(
@@ -53,9 +54,9 @@ function onBackgroundFetch(backgroundFetch, fetchInfo) {
     try {
       const { api, params } = backgroundFetch;
 
-      await addItem(key, fetchInfo, params);
+      await addItem(BACKGROUND_FETCH_KEY, fetchInfo, params);
 
-      const fetchData = await getItems(key);
+      const fetchData = await getItems(BACKGROUND_FETCH_KEY);
 
       if (fetchData.length === 0) {
         BackgroundFetch.finish(taskId);
@@ -67,7 +68,7 @@ function onBackgroundFetch(backgroundFetch, fetchInfo) {
           try {
             const { id, value } = data;
             await api(...value);
-            await removeItem(key, id);
+            await removeItem(BACKGROUND_FETCH_KEY, id);
             count++;
           } catch (e) {
             //
@@ -84,25 +85,21 @@ function onBackgroundFetch(backgroundFetch, fetchInfo) {
         return;
       }
 
-      if (AppState.currentState === 'active') {
-        Alert.alert(
-          'Alert',
-          'The background process is completed. ' +
-          'You need to restart the app to sync your data. Would you like to restart the app now?',
-          [
-            {
-              text: 'Cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => RNRestart.Restart(),
-            },
-          ],
-          { cancelable: false },
-        );
-      } else {
-        RNRestart.Restart();
-      }
+      Alert.alert(
+        'Alert',
+        'The background process is completed. ' +
+        'You need to restart the app to sync your data. Would you like to restart the app now?',
+        [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => RNRestart.Restart(),
+          },
+        ],
+        { cancelable: false },
+      );
     } catch (err) {
       console.log('----- err');
       console.log(err);
