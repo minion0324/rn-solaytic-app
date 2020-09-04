@@ -14,11 +14,15 @@ async function openUrl(url) {
   }
 
   Linking.openURL(url);
-}
+};
 
 function delay(milliseconds) {
   return new Promise((rs) => setTimeout(rs, milliseconds));
-}
+};
+
+function getTimestamp() {
+  return moment().format('x');
+};
 
 function getDate(date) {
   return moment(date).format(APP_DATE_FORMAT);
@@ -39,6 +43,7 @@ function getEndDate(date, key, format) {
 export {
   openUrl,
   delay,
+  getTimestamp,
   getDate,
   getStartDate,
   getEndDate,
