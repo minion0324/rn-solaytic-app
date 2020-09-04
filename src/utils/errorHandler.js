@@ -70,7 +70,7 @@ async function onBackgroundFetch(backgroundFetch, fetchInfo) {
               const { id, value } = data;
               await api(...value);
               await removeItem(BACKGROUND_FETCH_KEY, id);
-              count++;
+              count = count + 1;
             } catch (e) {
               //
               console.log('----- e');
