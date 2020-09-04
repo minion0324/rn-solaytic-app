@@ -6,8 +6,15 @@ import RNRestart from 'react-native-restart';
 import {
   ViewStore,
 } from 'src/redux';
+import {
+  addItem,
+  removeItem,
+  getItems,
+} from 'src/utils';
 
-function* onError(error, backgroundFetch) {
+const key = '@background_fetch';
+
+function* onError(error, backgroundFetch, fetchInfo) {
   const isNetworkConnected = yield select(
     ViewStore.selectors.getIsNetworkConnected
   );
@@ -31,17 +38,14 @@ function* onError(error, backgroundFetch) {
       : 'Please check your network connection.');
 
     if (backgroundFetch) {
-      onBackgroundFetch(backgroundFetch);
+      onBackgroundFetch(backgroundFetch, fetchInfo);
     }
   }
 
   Alert.alert('Warning', message);
 }
 
-function onBackgroundFetch(backgroundFetch) {
-  console.log('----- background fetch content');
-  console.log(backgroundFetch);
-
+function onBackgroundFetch(backgroundFetch, fetchInfo) {
   const backgroundFetchHandler = async (taskId) => {
     console.log('----- background fetch handler');
     console.log(taskId);
@@ -49,7 +53,36 @@ function onBackgroundFetch(backgroundFetch) {
     try {
       const { api, params } = backgroundFetch;
 
-      await api(...params);
+      await addItem(key, fetchInfo, params);
+
+      const fetchData = await getItems(key);
+
+      if (fetchData.length === 0) {
+        BackgroundFetch.finish(taskId);
+      }
+
+      let count = 0;
+      await Promise.all(
+        fetchData.map(async (data) => {
+          try {
+            const { id, value } = data;
+            await api(...value);
+            await removeItem(key, id);
+            count++;
+          } catch (e) {
+            //
+            console.log('----- e');
+            console.log(e);
+            console.log(e.response);
+          }
+
+          return Promise.resolve();
+        })
+      );
+
+      if (!count) {
+        return;
+      }
 
       if (AppState.currentState === 'active') {
         Alert.alert(
@@ -70,8 +103,6 @@ function onBackgroundFetch(backgroundFetch) {
       } else {
         RNRestart.Restart();
       }
-
-      BackgroundFetch.finish(taskId);
     } catch (err) {
       console.log('----- err');
       console.log(err);
