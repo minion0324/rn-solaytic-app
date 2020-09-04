@@ -3,9 +3,11 @@ import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
+import Toast from 'react-native-simple-toast';
 
 import {
   JOB_STATUS,
+  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   showOverlay,
@@ -18,6 +20,10 @@ import {
   Jobs,
   ViewStore,
 } from 'src/redux';
+import {
+  removeItem,
+  getIds,
+} from 'src/utils';
 
 import JobDetailsScreenView from './view';
 
@@ -38,6 +44,8 @@ const JobDetailsScreen = ({
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+
+  const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
 
   const [ photos, setPhotos ] = useState(photosAndSign.photos);
   const [ sign, setSign ] = useState(photosAndSign.sign);
@@ -69,10 +77,35 @@ const JobDetailsScreen = ({
       componentType: 'push',
     });
 
+    checkIsInBackgroundMode();
+
     return () => {
       setCoreScreenInfo({});
     };
   }, []);
+
+  const checkIsInBackgroundMode = async () => {
+    try {
+      const { jobId, jobNumber } = focusedJob;
+
+      const ids = await getIds(BACKGROUND_FETCH_KEY);
+      const index = ids.findIndex(id => id.jobId === jobId);
+      if (index !== -1) {
+        if (
+          jobStatus === JOB_STATUS.COMPLETED ||
+          jobStatus === JOB_STATUS.FAILED ||
+          jobStatus === JOB_STATUS.CANCELLED
+        ) {
+          await removeItem(BACKGROUND_FETCH_KEY, { jobId, jobNumber });
+        } else {
+          setIsInBackgroundMode(true);
+          Toast.show('This job is in background mode.');
+        }
+      }
+    } catch (error) {
+      //
+    }
+  };
 
   const onBack = () => {
     popScreen(componentId);
