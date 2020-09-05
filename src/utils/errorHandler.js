@@ -57,7 +57,7 @@ async function onBackgroundFetch(backgroundFetch, fetchInfo) {
 
     await addItem(COMPLETE_JOBS_KEY, fetchInfo, {
       timestamp: getTimestamp(),
-      status: 'In Background Mode',
+      status: 'Uploading... \n(In Background)',
     });
 
     const backgroundFetchHandler = async (taskId) => {
