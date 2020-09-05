@@ -102,6 +102,11 @@ export function pushScreen(componentId, screenName, passProps = {}, options = {}
         ...passProps,
       },
       options: {
+        sideMenu: {
+          left: {
+            enabled: false,
+          },
+        },
         ...options,
       },
     },
