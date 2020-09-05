@@ -10,8 +10,11 @@ import {
   addItem,
   removeItem,
   getItems,
+  getTimestamp,
 } from 'src/utils';
 import {
+  JOB_STATUS,
+  COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 
@@ -52,6 +55,11 @@ async function onBackgroundFetch(backgroundFetch, fetchInfo) {
 
     await addItem(BACKGROUND_FETCH_KEY, fetchInfo, params);
 
+    await addItem(COMPLETE_JOBS_KEY, fetchInfo, {
+      timestamp: getTimestamp(),
+      status: 'In Background Mode',
+    });
+
     const backgroundFetchHandler = async (taskId) => {
       console.log('----- background fetch handler');
       console.log(taskId);
@@ -68,8 +76,16 @@ async function onBackgroundFetch(backgroundFetch, fetchInfo) {
           fetchData.map(async (data) => {
             try {
               const { id, value } = data;
+
               await api(...value);
+
               await removeItem(BACKGROUND_FETCH_KEY, id);
+
+              await addItem(COMPLETE_JOBS_KEY, id, {
+                timestamp: getTimestamp(),
+                status: JOB_STATUS.COMPLETED,
+              });
+
               count = count + 1;
             } catch (e) {
               //
