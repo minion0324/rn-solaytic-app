@@ -96,6 +96,15 @@ const JobDetailsScreen = ({
           jobStatus === JOB_STATUS.CANCELLED
         ) {
           await removeItem(BACKGROUND_FETCH_KEY, { jobId, jobNumber });
+
+          await addItem(
+            COMPLETE_JOBS_KEY,
+            { jobId, jobNumber },
+            {
+              timestamp: getTimestamp(),
+              status: JOB_STATUS.COMPLETED,
+            }
+          );
         } else {
           setIsInBackgroundMode(true);
           Toast.show('This job is in background mode.');
