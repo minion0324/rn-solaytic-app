@@ -75,8 +75,6 @@ const UploadHistoryScreen = ({
     try {
       const allLogs = await getItems(COMPLETE_JOBS_KEY);
 
-      console.log(allLogs);
-
       setJobLogs(allLogs);
     } catch (error) {
       //
