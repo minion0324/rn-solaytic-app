@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
   HeaderBar,
@@ -67,6 +68,7 @@ const JobsScreen = ({
   reloadJobsAndAlerts,
   getJobById,
   updateDateForJobs,
+  setCoreScreenInfo,
   setIsNetworkConnected,
   componentId,
 }) => {
@@ -102,6 +104,13 @@ const JobsScreen = ({
   useEffect(() => {
     pushNotifications.setNotificationHandlerForJobs(onNotification);
   }, [coreScreenInfo]);
+
+  useNavigationComponentDidAppear(() => {
+    setCoreScreenInfo({
+      componentId,
+      componentType: 'tab',
+    });
+  });
 
   const onNotification = async (jobId) => {
     try {
@@ -291,6 +300,7 @@ JobsScreen.propTypes = {
   reloadJobsAndAlerts: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
   updateDateForJobs: PropTypes.func.isRequired,
+  setCoreScreenInfo: PropTypes.func.isRequired,
   setIsNetworkConnected: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -311,6 +321,7 @@ const mapDispatchToProps = {
   reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   getJobById: Jobs.actionCreators.getJobById,
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
+  setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsNetworkConnected: ViewStore.actionCreators.setIsNetworkConnected,
 };
 
