@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ActivityIndicator, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   SVGS,
   COLORS,
+  SIZE1,
+  JOB_STATUS,
   COMPLETE_JOBS_KEY,
 } from 'src/constants';
 import {
@@ -30,12 +33,19 @@ import {
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
+  FlexWrap,
+  SpaceView,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
   EmptyWrap,
   BackButton,
 } from 'src/styles/header.styles';
+
+import {
+  Item,
+  ItemText,
+} from './styled';
 
 const { SearchIcon } = SVGS;
 
@@ -109,8 +119,42 @@ const UploadHistoryScreen = ({
     }, 2500);
   };
 
-  const renderItem = ({ item, index }) => {
-    return null;
+  const renderItem = ({ item }) => {
+    const {
+      id: { jobNumber },
+      value: { status, timestamp },
+    } = item;
+
+    const color = status === JOB_STATUS.COMPLETED
+      ? COLORS.GREEN1
+      : status === JOB_STATUS.FAILED
+        ? COLORS.RED1
+        : COLORS.BLACK2;
+
+    return (
+      <Item>
+        <FlexWrap flex={0.7}>
+          <ItemText numberOfLines={1}>
+            {
+              'Uploaded: ' +
+              moment(timestamp, 'x').format('DD-MMM-YY hh:mm A')
+            }
+          </ItemText>
+          <SpaceView mTop={SIZE1} />
+          <ItemText numberOfLines={1}>
+            {jobNumber}
+          </ItemText>
+        </FlexWrap>
+        <FlexWrap flex={0.3}>
+          <ItemText
+            numberOfLines={2}
+            color={color}
+          >
+            {status}
+          </ItemText>
+        </FlexWrap>
+      </Item>
+    );
   };
 
   return (
@@ -143,7 +187,7 @@ const UploadHistoryScreen = ({
 
         <ListWrap
           data={jobLogs}
-          keyExtractor={(item) => `${item.driverNoteId}`}
+          keyExtractor={(item) => `${item.id.jobId}`}
           renderItem={renderItem}
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
