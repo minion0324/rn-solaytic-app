@@ -7,6 +7,7 @@ import Toast from 'react-native-simple-toast';
 
 import {
   JOB_STATUS,
+  COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
@@ -21,8 +22,10 @@ import {
   ViewStore,
 } from 'src/redux';
 import {
+  addItem,
   removeItem,
   getIds,
+  getTimestamp,
 } from 'src/utils';
 
 import JobDetailsScreenView from './view';
@@ -180,6 +183,48 @@ const JobDetailsScreen = ({
       return;
     }
 
+    if (isInBackgroundMode) {
+      Alert.alert(
+        'Warning',
+        'This job is in background mode. Are you sure?',
+        [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'OK',
+            onPress: onCompleteJobs,
+          },
+        ],
+        { cancelable: false },
+      )
+    } else {
+      onCompleteJobs();
+    }
+  };
+
+  const onCompleteJobsSuccess = async () => {
+    try {
+      const { jobId, jobNumber } = focusedJob;
+
+      await removeItem(BACKGROUND_FETCH_KEY, { jobId, jobNumber });
+
+      await addItem(
+        COMPLETE_JOBS_KEY,
+        { jobId, jobNumber },
+        {
+          timestamp: getTimestamp(),
+          status: JOB_STATUS.COMPLETED,
+        }
+      );
+
+      onBack();
+    } catch (error) {
+      //
+    }
+  };
+
+  const onCompleteJobs = () => {
     setLoading(true);
 
     completeJobs({
@@ -190,7 +235,7 @@ const JobDetailsScreen = ({
       signedUserName,
       signedUserContact,
       amountCollected,
-      success: onBack,
+      success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });
   };
