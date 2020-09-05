@@ -90,13 +90,7 @@ const FailJobScreen = ({
   useEffect(() => {
     checkIsInBackgroundMode();
 
-    setReloading(true);
-
-    getDriverNotes({
-      search: searchText,
-      success: () => setReloading(false),
-      failure: () => setReloading(false),
-    });
+    onReload();
   }, []);
 
   const checkIsInBackgroundMode = async () => {
@@ -183,17 +177,22 @@ const FailJobScreen = ({
     });
   };
 
-  const onSearch = () => {
-    Keyboard.dismiss();
-
+  const onReload = () => {
     setReloading(true);
-    setSelectedIndex(-1);
 
     getDriverNotes({
       search: searchText,
       success: () => setReloading(false),
       failure: () => setReloading(false),
     });
+  };
+
+  const onSearch = () => {
+    Keyboard.dismiss();
+
+    setSelectedIndex(-1);
+
+    onReload();
   };
 
   const onChangeSearchText = (text) => {
