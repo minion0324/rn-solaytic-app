@@ -81,10 +81,6 @@ const JobDetailsScreen = ({
     });
 
     checkIsInBackgroundMode();
-
-    return () => {
-      setCoreScreenInfo({});
-    };
   }, []);
 
   const checkIsInBackgroundMode = async () => {
