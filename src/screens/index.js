@@ -6,3 +6,4 @@ export { default as JobDetailsScreen } from './JobDetailsScreen';
 export { default as SignatureScreen } from './SignatureScreen';
 export { default as FailJobScreen } from './FailJobScreen';
 export { default as CustomModalScreen } from './CustomModalScreen';
+export { default as UploadHistoryScreen } from './UploadHistoryScreen';
