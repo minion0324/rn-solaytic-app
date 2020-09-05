@@ -73,6 +73,7 @@ const AlertScreen = ({
   acknowledgeJobs,
   getJobById,
   updateDateForJobs,
+  setCoreScreenInfo,
   setIsRequiredUpdateTab,
   componentId,
 }) => {
@@ -93,6 +94,11 @@ const AlertScreen = ({
   }, [coreScreenInfo]);
 
   useNavigationComponentDidAppear(() => {
+    setCoreScreenInfo({
+      componentId,
+      componentType: 'tab',
+    });
+
     if (isRequiredUpdateTab) {
       changeTabIndex(componentId, 1);
       setIsRequiredUpdateTab(false);
@@ -303,6 +309,7 @@ AlertScreen.propTypes = {
   acknowledgeJobs: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
   updateDateForJobs: PropTypes.func.isRequired,
+  setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -326,6 +333,7 @@ const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   getJobById: Jobs.actionCreators.getJobById,
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
+  setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
 };
 
