@@ -9,6 +9,7 @@ const apiInstance = axios.create({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   },
+  timeout: 10000,
 });
 
 function setAuthToken(token) {
