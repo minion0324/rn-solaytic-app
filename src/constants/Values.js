@@ -40,6 +40,7 @@ const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 const DATE_KEY = 'date';
 const MONTH_KEY = 'month';
 
+//
 const JOB_DATE = 'jobTimeSpecific';
 
 const JOB_STATUS = {
@@ -66,8 +67,14 @@ const JOB_TYPE = {
   THROW_AT_CUSTOMER: 'ThrowAtCustomer',
 };
 
+//
 const COMPLETE_JOBS_KEY = '@complete_jobs';
 const BACKGROUND_FETCH_KEY = '@background_fetch';
+
+//
+const API_BASE_URL =
+  'https://staging-tms-dispatch.logisfleet.com/';
+  // 'https://tms-dispatch-api.wasteporter.com/';
 
 export {
   PLATFORM,
@@ -99,4 +106,5 @@ export {
   JOB_TYPE,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
+  API_BASE_URL,
 };
