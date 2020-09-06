@@ -56,3 +56,11 @@ export const getCacheIds = async (key) => {
     return [];
   }
 };
+
+export const cleanCache = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (error) {
+    //
+  }
+};
