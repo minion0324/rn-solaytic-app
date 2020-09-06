@@ -12,11 +12,16 @@ import {
 import {
   SVGS,
   COLORS,
+  COMPLETE_JOBS_KEY,
+  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   User,
   ViewStore,
 } from 'src/redux';
+import {
+  cleanCache,
+} from 'src/utils';
 
 import {
   Container,
@@ -45,9 +50,16 @@ const DrawerScreen = ({
   logout,
   componentId,
 }) => {
-  const onLogout = () => {
-    logout();
-    pushSingleScreenApp();
+  const onLogout = async () => {
+    try {
+      await cleanCache(COMPLETE_JOBS_KEY);
+      await cleanCache(BACKGROUND_FETCH_KEY);
+
+      logout();
+      pushSingleScreenApp();
+    } catch (error) {
+      //
+    }
   };
 
   const onUploadHistory = () => {
