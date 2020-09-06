@@ -22,9 +22,9 @@ import {
   ViewStore,
 } from 'src/redux';
 import {
-  addItem,
-  removeItem,
-  getIds,
+  addItemToCache,
+  removeItemFromCache,
+  getCacheIds,
   getTimestamp,
 } from 'src/utils';
 
@@ -87,7 +87,7 @@ const JobDetailsScreen = ({
     try {
       const { jobId, jobNumber } = focusedJob;
 
-      const ids = await getIds(BACKGROUND_FETCH_KEY);
+      const ids = await getCacheIds(BACKGROUND_FETCH_KEY);
       const index = ids.findIndex(id => id.jobId === jobId);
       if (index !== -1) {
         if (
@@ -95,9 +95,12 @@ const JobDetailsScreen = ({
           jobStatus === JOB_STATUS.FAILED ||
           jobStatus === JOB_STATUS.CANCELLED
         ) {
-          await removeItem(BACKGROUND_FETCH_KEY, { jobId, jobNumber });
+          await removeItemFromCache(
+            BACKGROUND_FETCH_KEY,
+            { jobId, jobNumber },
+          );
 
-          await addItem(
+          await addItemToCache(
             COMPLETE_JOBS_KEY,
             { jobId, jobNumber },
             {
@@ -212,9 +215,12 @@ const JobDetailsScreen = ({
     try {
       const { jobId, jobNumber } = focusedJob;
 
-      await removeItem(BACKGROUND_FETCH_KEY, { jobId, jobNumber });
+      await removeItemFromCache(
+        BACKGROUND_FETCH_KEY,
+        { jobId, jobNumber },
+      );
 
-      await addItem(
+      await addItemToCache(
         COMPLETE_JOBS_KEY,
         { jobId, jobNumber },
         {

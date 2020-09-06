@@ -22,7 +22,7 @@ import {
   ViewStore,
 } from 'src/redux';
 import {
-  getItems,
+  getCacheItems,
 } from 'src/utils';
 
 import {
@@ -73,7 +73,7 @@ const UploadHistoryScreen = ({
 
   const getJobLogs = async () => {
     try {
-      const allLogs = await getItems(COMPLETE_JOBS_KEY);
+      const allLogs = await getCacheItems(COMPLETE_JOBS_KEY);
 
       setJobLogs(allLogs);
     } catch (error) {

@@ -31,9 +31,9 @@ import {
   ViewStore,
 } from 'src/redux';
 import {
-  addItem,
-  removeItem,
-  getIds,
+  addItemToCache,
+  removeItemFromCache,
+  getCacheIds,
   getTimestamp,
 } from 'src/utils';
 
@@ -97,7 +97,7 @@ const FailJobScreen = ({
     try {
       const { jobId } = focusedJob;
 
-      const ids = await getIds(BACKGROUND_FETCH_KEY);
+      const ids = await getCacheIds(BACKGROUND_FETCH_KEY);
       const index = ids.findIndex(id => id.jobId === jobId);
       if (index !== -1) {
         setIsInBackgroundMode(true);
@@ -116,9 +116,12 @@ const FailJobScreen = ({
     try {
       const { jobId, jobNumber } = focusedJob;
 
-      await removeItem(BACKGROUND_FETCH_KEY, { jobId, jobNumber });
+      await removeItemFromCache(
+        BACKGROUND_FETCH_KEY,
+        { jobId, jobNumber },
+      );
 
-      await addItem(
+      await addItemToCache(
         COMPLETE_JOBS_KEY,
         { jobId, jobNumber },
         {

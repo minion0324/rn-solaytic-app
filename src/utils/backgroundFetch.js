@@ -3,9 +3,9 @@ import BackgroundFetch from 'react-native-background-fetch';
 import RNRestart from 'react-native-restart';
 
 import {
-  addItem,
-  removeItem,
-  getItems,
+  addItemToCache,
+  removeItemFromCache,
+  getCacheItems,
   getTimestamp,
 } from 'src/utils';
 import {
@@ -44,7 +44,7 @@ const fetchHandler = async () => {
   console.log('----- fetch handler');
 
   try {
-    const fetches = await getItems(BACKGROUND_FETCH_KEY);
+    const fetches = await getCacheItems(BACKGROUND_FETCH_KEY);
 
     if (fetches.length === 0) {
       BackgroundFetch.finish(taskId);
@@ -58,9 +58,9 @@ const fetchHandler = async () => {
 
           await fetchCompleteJobs(token, ...fetchData);
 
-          await removeItem(BACKGROUND_FETCH_KEY, id);
+          await removeItemFromCache(BACKGROUND_FETCH_KEY, id);
 
-          await addItem(COMPLETE_JOBS_KEY, id, {
+          await addItemToCache(COMPLETE_JOBS_KEY, id, {
             timestamp: getTimestamp(),
             status: JOB_STATUS.COMPLETED,
           });
@@ -115,12 +115,12 @@ export const headlessTask = () => {
 
 export const backgroundFetch = async (token, fetchInfo, fetchData) => {
   try {
-    await addItem(BACKGROUND_FETCH_KEY, fetchInfo, {
+    await addItemToCache(BACKGROUND_FETCH_KEY, fetchInfo, {
       token,
       fetchData,
     });
 
-    await addItem(COMPLETE_JOBS_KEY, fetchInfo, {
+    await addItemToCache(COMPLETE_JOBS_KEY, fetchInfo, {
       timestamp: getTimestamp(),
       status: 'Uploading... \n(In Background)',
     });
