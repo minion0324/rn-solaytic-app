@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import BackgroundFetch from 'react-native-background-fetch';
 import RNRestart from 'react-native-restart';
 
