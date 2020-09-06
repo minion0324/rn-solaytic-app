@@ -512,13 +512,14 @@ export function* asyncCompleteJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    yield onError(error, {
-      api: apiCompleteJobs,
-      params: [jobIds, stepBinUpdate, attempt],
-    }, {
-      jobId: focusedJob.jobId,
-      jobNumber: focusedJob.jobNumber,
-    });
+    yield onError(
+      error,
+      {
+        jobId: focusedJob.jobId,
+        jobNumber: focusedJob.jobNumber,
+      },
+      [jobIds, stepBinUpdate, attempt],
+    );
     failure && failure();
   }
 }
