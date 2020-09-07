@@ -68,7 +68,8 @@ const {
   CameraIcon,
   SignIcon,
   EditIcon,
-  CashIcon,
+  ActiveCashIcon,
+  DeactiveCashIcon,
   ArrowLocationIcon,
 } = SVGS;
 
@@ -367,8 +368,14 @@ const DetailsTab = ({
           </InfoWrap>
           {
             !!focusedJob.amountToCollect &&
-            <CashButton onPress={() => setTabIndex(1)}>
-              <CashIcon />
+            <CashButton
+              onPress={() => setTabIndex(1)}
+              disabled={focusedJob.collectedAmount}
+            >
+              {
+                focusedJob.collectedAmount
+                ? <DeactiveCashIcon /> : <ActiveCashIcon />
+              }
             </CashButton>
           }
         </RowWrap>
