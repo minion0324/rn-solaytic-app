@@ -4,15 +4,14 @@ import produce from 'immer';
 
 import {
   SET_CORE_SCREEN_INFO,
-  UPLOAD_PHOTOS_SUCCESS,
-  UPLOAD_SIGN_SUCCESS,
-  INIT_JOB_PHOTOS_AND_SIGN,
   GET_DRIVER_NOTES_SUCCESS,
   GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
+  SET_IS_REQUIRED_UPDATE_TAB,
+  SET_IS_NETWORK_CONNECTED,
 } from './actions';
 
 const DEFAULT = {
-  //
+  isNetworkConnected: true,
 };
 
 const viewPersistConfig = {
@@ -20,9 +19,9 @@ const viewPersistConfig = {
   storage: AsyncStorage,
   blacklist: [
     'coreScreenInfo',
-    'jobPhotos',
-    'jobSign',
     'driverNotes',
+    'isRequiredUpdateTab',
+    'isNetworkConnected',
   ],
 };
 
@@ -35,21 +34,17 @@ function View(state = DEFAULT, action = {}) {
       case SET_CORE_SCREEN_INFO:
         draft.coreScreenInfo = payload;
         break;
-      case UPLOAD_PHOTOS_SUCCESS:
-        draft.jobPhotos = payload;
-        break;
-      case UPLOAD_SIGN_SUCCESS:
-        draft.jobSign = payload;
-        break;
-      case INIT_JOB_PHOTOS_AND_SIGN:
-        draft.jobPhotos = [];
-        draft.jobSign = '';
-        break;
       case GET_DRIVER_NOTES_SUCCESS:
         draft.driverNotes = payload.data;
         break;
       case GET_DRIVER_NOTES_BY_PAGE_SUCCESS:
         draft.driverNotes.concat(payload.data);
+        break;
+      case SET_IS_REQUIRED_UPDATE_TAB:
+        draft.isRequiredUpdateTab = payload;
+        break;
+      case SET_IS_NETWORK_CONNECTED:
+        draft.isNetworkConnected = payload;
         break;
     }
   });

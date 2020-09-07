@@ -2,12 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Toast from 'react-native-simple-toast';
 
 import {
   SVGS,
   COLORS,
   SIZE1,
   SIZE10,
+  JOB_STATUS,
+  COMPLETE_JOBS_KEY,
+  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   showOverlay,
@@ -26,6 +30,12 @@ import {
   Jobs,
   ViewStore,
 } from 'src/redux';
+import {
+  addItemToCache,
+  removeItemFromCache,
+  getCacheIds,
+  getTimestamp,
+} from 'src/utils';
 
 import {
   Container,
@@ -68,23 +78,63 @@ const FailJobScreen = ({
   const [ loading, setLoading ] = useState(false);
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
+
   const [ searchText, setSearchText ] = useState('');
+
   const [ selectedIndex, setSelectedIndex ] = useState(-1);
 
   const timerId = useRef(null);
 
   useEffect(() => {
-    setReloading(true);
+    checkIsInBackgroundMode();
 
-    getDriverNotes({
-      search: searchText,
-      success: () => setReloading(false),
-      failure: () => setReloading(false),
-    });
+    onReload();
   }, []);
+
+  const checkIsInBackgroundMode = async () => {
+    try {
+      const { jobId } = focusedJob;
+
+      const ids = await getCacheIds(BACKGROUND_FETCH_KEY);
+      const index = ids.findIndex(id => id.jobId === jobId);
+      if (index !== -1) {
+        setIsInBackgroundMode(true);
+        Toast.show('This job is in background mode.');
+      }
+    } catch (error) {
+      //
+    }
+  };
 
   const onBack = () => {
     popScreen(componentId);
+  };
+
+  const onFailJobSuccess = async () => {
+    try {
+      const { jobId, jobNumber } = focusedJob;
+
+      await removeItemFromCache(
+        BACKGROUND_FETCH_KEY,
+        { jobId, jobNumber },
+      );
+
+      await addItemToCache(
+        COMPLETE_JOBS_KEY,
+        { jobId, jobNumber },
+        {
+          timestamp: getTimestamp(),
+          status: JOB_STATUS.FAILED,
+        }
+      );
+
+      setLoading(false);
+      popToRootScreen(componentId);
+    } catch (error) {
+      //
+    }
   };
 
   const onFailJob = () => {
@@ -93,10 +143,7 @@ const FailJobScreen = ({
     failJobs({
       jobIds: `${focusedJob.jobId}`,
       driverNote: driverNotes[selectedIndex].note,
-      success: () => {
-        setLoading(false);
-        popToRootScreen(componentId);
-      },
+      success: onFailJobSuccess,
       failure: () => setLoading(false),
     });
   }
@@ -133,17 +180,22 @@ const FailJobScreen = ({
     });
   };
 
-  const onSearch = () => {
-    Keyboard.dismiss();
-
+  const onReload = () => {
     setReloading(true);
-    setSelectedIndex(-1);
 
     getDriverNotes({
       search: searchText,
       success: () => setReloading(false),
       failure: () => setReloading(false),
     });
+  };
+
+  const onSearch = () => {
+    Keyboard.dismiss();
+
+    setSelectedIndex(-1);
+
+    onReload();
   };
 
   const onChangeSearchText = (text) => {
@@ -172,7 +224,11 @@ const FailJobScreen = ({
     return (
       <ModalWrap>
         <AlertText>
-          Fail this Job. Are you sure?
+          {
+            isInBackgroundMode
+            ? 'This job is in background mode. Are you sure?'
+            : 'Fail this Job. Are you sure?'
+          }
         </AlertText>
         <AlertButtonRow>
           <AlertButton onPress={() => dismissOverlay(containerId)}>

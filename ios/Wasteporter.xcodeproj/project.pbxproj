@@ -13,6 +13,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		183063C024FD79C90010310F /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 183063BF24FD79C90010310F /* RNBackgroundFetch+AppDelegate.m */; };
 		188FD8CB24ADD3C2004B3CDF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 188FD8CA24ADD3BF004B3CDF /* GoogleService-Info.plist */; };
 		1DB5EE87346851AE948E0CA0 /* libPods-Wasteporter-WasteporterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 829E802F84A645307D2553D5 /* libPods-Wasteporter-WasteporterTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -54,6 +55,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Wasteporter/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Wasteporter/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Wasteporter/main.m; sourceTree = "<group>"; };
+		183063BF24FD79C90010310F /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		1857C41E24ADDC1200205B82 /* Wasteporter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Wasteporter.entitlements; path = Wasteporter/Wasteporter.entitlements; sourceTree = "<group>"; };
 		188FD8CA24ADD3BF004B3CDF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Wasteporter/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Wasteporter-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wasteporter-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +130,7 @@
 		13B07FAE1A68108700A75B9A /* Wasteporter */ = {
 			isa = PBXGroup;
 			children = (
+				183063BF24FD79C90010310F /* RNBackgroundFetch+AppDelegate.m */,
 				1857C41E24ADDC1200205B82 /* Wasteporter.entitlements */,
 				188FD8CA24ADD3BF004B3CDF /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -535,6 +538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				183063C024FD79C90010310F /* RNBackgroundFetch+AppDelegate.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

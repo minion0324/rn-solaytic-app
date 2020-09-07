@@ -4,11 +4,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import ActionSheet from 'react-native-actionsheet';
+import { showLocation } from 'react-native-map-link';
 
 import {
   SVGS,
@@ -21,6 +21,9 @@ import {
   DefaultButton,
   ItemWrap,
 } from 'src/components';
+import {
+  openUrl,
+} from 'src/utils';
 
 import {
   ShadowWrap,
@@ -65,7 +68,8 @@ const {
   CameraIcon,
   SignIcon,
   EditIcon,
-  CashIcon,
+  ActiveCashIcon,
+  DeactiveCashIcon,
   ArrowLocationIcon,
 } = SVGS;
 
@@ -98,8 +102,12 @@ const DetailsTab = ({
 
   const inputBinWeight = useRef(null);
 
+  const onLocation = (latitude, longitude) => {
+    showLocation({ latitude, longitude });
+  };
+
   const onContact = (phoneNumber) => {
-    Linking.openURL(`tel:${phoneNumber}`);
+    openUrl(`tel:${phoneNumber}`);
   };
 
   const onActionSheetPress = (index) => {
@@ -193,7 +201,7 @@ const DetailsTab = ({
   };
 
   const renderLocationInfo = () => {
-    const locations = focusedJob.steps.map(item => item.address);
+    const { steps } = focusedJob;
 
     return (
       <View>
@@ -204,30 +212,42 @@ const DetailsTab = ({
               <Location1Icon />
             </IconWrap>
             <InfoText numberOfLines={1}>
-              {locations[0]}
+              {steps[0].address}
             </InfoText>
+            <SpaceView mLeft={SIZE2} />
+            {
+              !!steps[0].customerSiteId &&
+              <TouchableOpacity
+                onPress={() => onLocation(steps[0].latitude, steps[0].longitude)}
+              >
+                <ArrowLocationIcon />
+              </TouchableOpacity>
+            }
           </LocationRow>
 
-          {
-            locations.length === 3 &&
-            <View>
-              <Border />
-              <LocationRow>
-                <IconWrap>
-                  <Location2Icon />
-                </IconWrap>
-                <InfoText numberOfLines={1}>
-                  {locations[1]}
-                </InfoText>
-                <SpaceView mLeft={SIZE2} />
-                <TouchableOpacity>
+          <View>
+            <Border />
+            <LocationRow>
+              <IconWrap>
+                <Location2Icon />
+              </IconWrap>
+              <InfoText numberOfLines={1}>
+                {steps[1].address}
+              </InfoText>
+              <SpaceView mLeft={SIZE2} />
+              {
+                !!steps[1].customerSiteId &&
+                <TouchableOpacity
+                  onPress={() => onLocation(steps[1].latitude, steps[1].longitude)}
+                >
                   <ArrowLocationIcon />
                 </TouchableOpacity>
-              </LocationRow>
-            </View>
-          }
+              }
+            </LocationRow>
+          </View>
 
           {
+            steps.length === 3 &&
             <View>
               <Border />
               <LocationRow>
@@ -235,8 +255,17 @@ const DetailsTab = ({
                   <Location3Icon />
                 </IconWrap>
                 <InfoText numberOfLines={1}>
-                  {locations.length === 3 ? locations[2] : locations[1]}
+                  {steps[2].address}
                 </InfoText>
+                <SpaceView mLeft={SIZE2} />
+                {
+                  !!steps[2].customerSiteId &&
+                  <TouchableOpacity
+                    onPress={() => onLocation(steps[2].latitude, steps[2].longitude)}
+                  >
+                    <ArrowLocationIcon />
+                  </TouchableOpacity>
+                }
               </LocationRow>
             </View>
           }
@@ -246,35 +275,28 @@ const DetailsTab = ({
   };
 
   const renderContactInfo = () => {
-    let stepIndex = focusedJob.steps.length - 1;
+    const { steps } = focusedJob;
+
+    let stepIndex = steps.length - 1;
     if (
       jobStatus === JOB_STATUS.ACKNOWLEDGED ||
       jobStatus === JOB_STATUS.IN_PROGRESS1 ||
       jobStatus === JOB_STATUS.CANCELLED ||
       JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
     ) {
-      if (
-        focusedJob.steps[0].contactPersonOne &&
-        focusedJob.steps[0].contactNumberOne
-      ) {
+      if (steps[0].contactPersonOne && steps[0].contactNumberOne) {
         stepIndex = 0;
       } else {
         stepIndex = 1;
       }
     } else if (jobStatus === JOB_STATUS.IN_PROGRESS2) {
-      if (
-        focusedJob.steps[2].contactPersonOne &&
-        focusedJob.steps[2].contactNumberOne
-      ) {
+      if (steps[2].contactPersonOne && steps[2].contactNumberOne) {
         stepIndex = 2;
       } else {
         stepIndex = 1;
       }
     } else {
-      if (
-        focusedJob.steps[stepIndex].contactPersonOne &&
-        focusedJob.steps[stepIndex].contactNumberOne
-      ) {
+      if (steps[stepIndex].contactPersonOne && steps[stepIndex].contactNumberOne) {
         stepIndex = stepIndex;
       } else {
         stepIndex = stepIndex - 1;
@@ -297,8 +319,8 @@ const DetailsTab = ({
             <RowWrap>
               <InfoText>
                 {
-                  focusedJob.steps[stepIndex].contactPersonOne
-                  || focusedJob.customer.contactPerson
+                  steps[stepIndex].contactPersonOne ||
+                  focusedJob.customer.contactPerson
                 }
               </InfoText>
               <InfoText>
@@ -306,38 +328,38 @@ const DetailsTab = ({
               </InfoText>
               <TouchableOpacity
                 onPress={() => onContact(
-                  focusedJob.steps[stepIndex].contactNumberOne
-                  || focusedJob.customer.contactNumber
+                  steps[stepIndex].contactNumberOne ||
+                  focusedJob.customer.contactNumber
                 )}
               >
                 <NumberText>
                   {
-                    focusedJob.steps[stepIndex].contactNumberOne
-                    || focusedJob.customer.contactNumber
+                    steps[stepIndex].contactNumberOne ||
+                    focusedJob.customer.contactNumber
                   }
                 </NumberText>
               </TouchableOpacity>
             </RowWrap>
 
             {
-              !!focusedJob.steps[stepIndex].contactPersonTwo &&
-              !!focusedJob.steps[stepIndex].contactNumberTwo &&
+              !!steps[stepIndex].contactPersonTwo &&
+              !!steps[stepIndex].contactNumberTwo &&
               <View>
                 <SpaceView mTop={SIZE1} />
                 <RowWrap>
                   <InfoText>
-                    {focusedJob.steps[stepIndex].contactPersonTwo}
+                    {steps[stepIndex].contactPersonTwo}
                   </InfoText>
                   <InfoText>
                     {'  |  '}
                   </InfoText>
                   <TouchableOpacity
                     onPress={() => onContact(
-                      focusedJob.steps[stepIndex].contactNumberTwo
+                      steps[stepIndex].contactNumberTwo
                     )}
                   >
                     <NumberText>
-                      {focusedJob.steps[stepIndex].contactNumberTwo}
+                      {steps[stepIndex].contactNumberTwo}
                     </NumberText>
                   </TouchableOpacity>
                 </RowWrap>
@@ -345,9 +367,15 @@ const DetailsTab = ({
             }
           </InfoWrap>
           {
-            !focusedJob.collectedAmount &&
-            <CashButton onPress={() => setTabIndex(1)}>
-              <CashIcon />
+            !!focusedJob.amountToCollect &&
+            <CashButton
+              onPress={() => setTabIndex(1)}
+              disabled={focusedJob.collectedAmount}
+            >
+              {
+                focusedJob.collectedAmount
+                ? <DeactiveCashIcon /> : <ActiveCashIcon />
+              }
             </CashButton>
           }
         </RowWrap>
@@ -402,7 +430,7 @@ const DetailsTab = ({
             <FlexWrap flex={0.5}>
               <LabelText>Waste Type</LabelText>
             </FlexWrap>
-            <BinInfoRow>
+            <BinInfoRow editable={editable}>
               <BinText
                 numberOfLines={2}
                 editable={editable}
@@ -427,7 +455,7 @@ const DetailsTab = ({
             <FlexWrap flex={0.5}>
               <LabelText>Bin Type</LabelText>
             </FlexWrap>
-            <BinInfoRow>
+            <BinInfoRow editable={editable}>
               <BinText
                 numberOfLines={2}
                 editable={editable}
@@ -450,9 +478,16 @@ const DetailsTab = ({
 
           <RowWrap>
             <FlexWrap flex={0.5}>
-              <LabelText>Bin ID</LabelText>
+              <LabelText
+                required={focusedJob.isRequireBinNumberToStart}
+              >
+                {
+                  focusedJob.isRequireBinNumberToStart
+                  ? 'Bin ID *' : 'Bin ID'
+                }
+              </LabelText>
             </FlexWrap>
-            <BinInfoRow>
+            <BinInfoRow editable={editable}>
               <BinInput
                 underlineColorAndroid={COLORS.TRANSPARENT1}
                 autoCapitalize={'none'}
@@ -482,7 +517,7 @@ const DetailsTab = ({
               <FlexWrap flex={0.5}>
                 <LabelText>Bin Weight</LabelText>
               </FlexWrap>
-              <BinInfoRow>
+              <BinInfoRow editable={editable}>
                 <BinInput
                   ref={inputBinWeight}
                   underlineColorAndroid={COLORS.TRANSPARENT1}
@@ -524,20 +559,20 @@ const DetailsTab = ({
     return (
       <View>
         {
-          photos.map(imageUri =>
-            <ItemWrap key={imageUri} mLeft={0} mRight={0}>
+          photos.map(photo =>
+            <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
               <AttachmentWrap>
-                <FullImage source={{ uri: imageUri }} />
+                <FullImage source={{ uri: photo.uri }} />
               </AttachmentWrap>
             </ItemWrap>
           )
         }
         {
-          !!sign &&
+          !!sign.uri &&
           <ItemWrap mLeft={0} mRight={0}>
             <AttachmentWrap>
               <HalfWrap>
-                <FullImage source={{ uri: sign }} />
+                <FullImage source={{ uri: sign.uri }} />
               </HalfWrap>
               <HalfWrap>
                 <SignInfo>
@@ -617,7 +652,7 @@ const DetailsTab = ({
 DetailsTab.propTypes = {
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
-  sign: PropTypes.string,
+  sign: PropTypes.object,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
@@ -634,7 +669,7 @@ DetailsTab.propTypes = {
 };
 
 DetailsTab.defaultProps = {
-  sign: '',
+  sign: null,
   signedUserName: '',
   signedUserContact: '',
 };

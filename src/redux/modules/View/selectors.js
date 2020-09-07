@@ -9,20 +9,6 @@ const getCoreScreenInfo = createSelector(
   },
 );
 
-const getJobPhotos = createSelector(
-  getViewStore,
-  (view) => {
-    return view.jobPhotos || [];
-  },
-);
-
-const getJobSign = createSelector(
-  getViewStore,
-  (view) => {
-    return view.jobSign || '';
-  },
-);
-
 const getDriverNotes = createSelector(
   getViewStore,
   (view) => {
@@ -44,11 +30,25 @@ const getPageOfDriverNotes = createSelector(
   },
 );
 
+const getIsRequiredUpdateTab = createSelector(
+  getViewStore,
+  (view) => {
+    return view.isRequiredUpdateTab || false;
+  },
+);
+
+const getIsNetworkConnected = createSelector(
+  getViewStore,
+  (view) => {
+    return view.isNetworkConnected;
+  },
+);
+
 export default {
   getCoreScreenInfo,
-  getJobPhotos,
-  getJobSign,
   getDriverNotes,
   getCountOfDriverNotes,
   getPageOfDriverNotes,
+  getIsRequiredUpdateTab,
+  getIsNetworkConnected,
 };

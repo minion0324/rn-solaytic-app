@@ -5,13 +5,22 @@ import { connect } from 'react-redux';
 
 import {
   dismissDrawer,
+  pushScreen,
   pushSingleScreenApp,
+  UPLOAD_HISTORY_SCREEN,
 } from 'src/navigation';
 import {
   SVGS,
   COLORS,
+  COMPLETE_JOBS_KEY,
 } from 'src/constants';
-import { User } from 'src/redux';
+import {
+  User,
+  ViewStore,
+} from 'src/redux';
+import {
+  cleanCache,
+} from 'src/utils';
 
 import {
   Container,
@@ -36,12 +45,26 @@ const { AvatarIcon, CloseIcon } = SVGS;
 
 const DrawerScreen = ({
   driverName,
+  coreScreenInfo,
   logout,
   componentId,
 }) => {
-  const onLogout = () => {
-    logout();
-    pushSingleScreenApp();
+  const onLogout = async () => {
+    try {
+      await cleanCache(COMPLETE_JOBS_KEY);
+
+      logout();
+      pushSingleScreenApp();
+    } catch (error) {
+      //
+    }
+  };
+
+  const onUploadHistory = () => {
+    pushScreen(
+      coreScreenInfo.componentId,
+      UPLOAD_HISTORY_SCREEN,
+    );
   };
 
   return (
@@ -59,15 +82,23 @@ const DrawerScreen = ({
               <CloseIcon />
             </TouchableOpacity>
           </ProfileWrap>
-          {
-            ['Help & Support', 'Send Feedback', 'Upload History'].map((item) => (
-              <ItemWrap key={item}>
-                <Item>
-                  <ItemText>{item}</ItemText>
-                </Item>
-              </ItemWrap>
-            ))
-          }
+
+          <ItemWrap>
+            <Item onPress={() => {}}>
+              <ItemText>Help & Support</ItemText>
+            </Item>
+          </ItemWrap>
+          <ItemWrap>
+            <Item onPress={() => {}}>
+              <ItemText>Send Feedback</ItemText>
+            </Item>
+          </ItemWrap>
+          <ItemWrap>
+            <Item onPress={onUploadHistory}>
+              <ItemText>Upload History</ItemText>
+            </Item>
+          </ItemWrap>
+
           <VersionWrap>
             <VersionText>v 2.2</VersionText>
           </VersionWrap>
@@ -82,6 +113,7 @@ const DrawerScreen = ({
 
 DrawerScreen.propTypes = {
   driverName: PropTypes.string.isRequired,
+  coreScreenInfo: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -89,6 +121,7 @@ DrawerScreen.propTypes = {
 const mapStateToProps = (state) => {
   return {
     driverName: User.selectors.getDriverName(state),
+    coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
 };
 

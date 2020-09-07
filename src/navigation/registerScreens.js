@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigation } from 'react-native-navigation';
+import { NavigationProvider } from 'react-native-navigation-hooks';
 
 import { Provider } from 'src/redux';
 
@@ -12,6 +13,7 @@ import {
   SignatureScreen,
   FailJobScreen,
   CustomModalScreen,
+  UploadHistoryScreen,
 } from 'src/screens';
 
 import {
@@ -23,13 +25,18 @@ import {
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
   CUSTOM_MODAL_SCREEN,
+  UPLOAD_HISTORY_SCREEN,
 } from './Screens';
 
 function WrappedComponent(Component) {
   return function inject(props) {
     const EnhancedComponent = () => (
       <Provider>
-        <Component {...props} />
+        <NavigationProvider
+          value={{ componentId: props.componentId }}
+        >
+          <Component {...props} />
+        </NavigationProvider>
       </Provider>
     );
 
@@ -46,4 +53,5 @@ export default function () {
   Navigation.registerComponent(SIGNATURE_SCREEN, () => WrappedComponent(SignatureScreen));
   Navigation.registerComponent(FAIL_JOB_SCREEN, () => WrappedComponent(FailJobScreen));
   Navigation.registerComponent(CUSTOM_MODAL_SCREEN, () => WrappedComponent(CustomModalScreen));
+  Navigation.registerComponent(UPLOAD_HISTORY_SCREEN, () => WrappedComponent(UploadHistoryScreen));
 }

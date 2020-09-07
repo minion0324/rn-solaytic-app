@@ -1,3 +1,4 @@
+import { Alert, Linking } from 'react-native';
 import moment from 'moment';
 
 import {
@@ -5,9 +6,23 @@ import {
   DEFAULT_DATE_FORMAT,
 } from 'src/constants';
 
+async function openUrl(url) {
+  const canOpen = await Linking.canOpenURL(url);
+  if (!canOpen) {
+    Alert.alert('Warning', 'Something went wrong.');
+    return;
+  }
+
+  Linking.openURL(url);
+};
+
 function delay(milliseconds) {
   return new Promise((rs) => setTimeout(rs, milliseconds));
-}
+};
+
+function getTimestamp() {
+  return moment().format('x');
+};
 
 function getDate(date) {
   return moment(date).format(APP_DATE_FORMAT);
@@ -26,7 +41,9 @@ function getEndDate(date, key, format) {
 };
 
 export {
+  openUrl,
   delay,
+  getTimestamp,
   getDate,
   getStartDate,
   getEndDate,

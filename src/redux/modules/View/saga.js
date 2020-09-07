@@ -3,64 +3,14 @@ import {
 } from 'redux-saga/effects';
 
 import {
-  apiUploadFile,
   apiGetDriverNotes,
 } from 'src/services';
 
 import {
-  UPLOAD_PHOTOS,
-  UPLOAD_SIGN,
   GET_DRIVER_NOTES,
   GET_DRIVER_NOTES_BY_PAGE,
   actionCreators,
 } from './actions';
-
-export function* asyncUploadPhotos({ payload }) {
-  const {
-    photos, success, failure,
-  } = payload;
-
-  try {
-    const response = yield all(
-      photos.map(photo => call(apiUploadFile, photo))
-    );
-    const data = response.map(item => item.data);
-    yield put(actionCreators.uploadPhotosSuccess(data));
-
-    success && success();
-  } catch (error) {
-    failure && failure();
-  }
-}
-
-export function* watchUploadPhotos() {
-  while (true) {
-    const action = yield take(UPLOAD_PHOTOS);
-    yield* asyncUploadPhotos(action);
-  }
-}
-
-export function* asyncUploadSign({ payload }) {
-  const {
-    sign, success, failure,
-  } = payload;
-
-  try {
-    const { data } = yield call(apiUploadFile, sign);
-    yield put(actionCreators.uploadSignSuccess(data));
-
-    success && success();
-  } catch (error) {
-    failure && failure();
-  }
-}
-
-export function* watchUploadSign() {
-  while (true) {
-    const action = yield take(UPLOAD_SIGN);
-    yield* asyncUploadSign(action);
-  }
-}
 
 export function* asyncGetDriverNotes({ payload }) {
   const {
@@ -130,8 +80,6 @@ export function* fetchData() {
 
 export default function* () {
   yield all([
-    fork(watchUploadPhotos),
-    fork(watchUploadSign),
     fork(watchGetDriverNotes),
     fork(watchGetDriverNotesByPage),
   ]);

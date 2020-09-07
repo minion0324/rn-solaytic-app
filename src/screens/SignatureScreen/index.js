@@ -3,7 +3,6 @@ import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
-import moment from 'moment';
 
 import {
   dismissOverlay,
@@ -16,6 +15,9 @@ import {
   PLATFORM,
   COLORS,
 } from 'src/constants';
+import {
+  getTimestamp,
+} from 'src/utils';
 
 import {
   ShadowWrap,
@@ -47,18 +49,21 @@ const SignatureScreen = ({
     dismissOverlay(componentId);
   };
 
-  const onSign = async (base64) => {
+  const onSign = async (signature) => {
     try {
       if (!name || !contact) {
         Alert.alert('Warning', 'Please type signed user name & contact.');
         return;
       }
 
-      const path = PLATFORM === 'ios' ? '' : 'file://' +
-        RNFS.DocumentDirectoryPath + `/sign${moment().format('x')}.jpg`;
-      await RNFS.writeFile(path, base64.replace('data:image/png;base64,', ''), 'base64');
+      const uri = PLATFORM === 'ios' ? '' : 'file://' +
+        RNFS.DocumentDirectoryPath + `/sign${getTimestamp()}.jpg`;
+      const data = signature.replace('data:image/png;base64,', '');
 
-      setSign(path);
+      await RNFS.writeFile(uri, data, 'base64');
+
+      setSign({ uri, data });
+
       setSignedUserName(name);
       setSignedUserContact(contact);
 

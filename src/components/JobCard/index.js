@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
+import { sortBy } from 'lodash';
 
 import {
   SVGS,
@@ -111,7 +112,7 @@ const TIME_FORMAT = 'hh:mm A ';
 
 const JobCard = ({
   jobInfo: {
-    steps,
+    steps: originSteps,
     customerName,
     statusName,
     jobDate,
@@ -120,6 +121,7 @@ const JobCard = ({
     jobTypeName,
   },
 }) => {
+  const steps = sortBy(originSteps, 'stepOrder');
 
   const getLocation = () => {
     switch (jobTypeName) {
@@ -142,53 +144,45 @@ const JobCard = ({
   }
 
   const renderStatus = () => {
+    let res = null;
+
     switch (statusName) {
       case JOB_STATUS.UNASSIGNED:
       case JOB_STATUS.DISPATCHED:
-        return null;
+        break;
 
       case JOB_STATUS.ASSIGNED:
       case JOB_STATUS.ACKNOWLEDGED:
-        return (
-          <StatusWrap color={COLORS.BLUE1}>
-            <StatusText color={COLORS.BLUE1}>
-              Started
-            </StatusText>
-          </StatusWrap>
-        );
+        res = { color: COLORS.BLUE1, text: 'Started' };
+        break;
 
       case JOB_STATUS.IN_PROGRESS1:
       case JOB_STATUS.IN_PROGRESS2:
-        return (
-          <StatusWrap color={COLORS.PURPLE1}>
-            <StatusText color={COLORS.PURPLE1}>
-              In Progress
-            </StatusText>
-          </StatusWrap>
-        );
+        res = { color: COLORS.PURPLE1, text: 'In Progress' };
+        break;
 
       case JOB_STATUS.COMPLETED:
-        return (
-          <StatusWrap color={COLORS.GREEN1}>
-            <StatusText color={COLORS.GREEN1}>
-              Completed
-            </StatusText>
-          </StatusWrap>
-        );
+        res = { color: COLORS.GREEN1, text: 'Completed' };
+        break;
 
       case JOB_STATUS.FAILED:
       case JOB_STATUS.CANCELLED:
-        return (
-          <StatusWrap color={COLORS.RED1}>
-            <StatusText color={COLORS.RED1}>
-              Failed
-            </StatusText>
-          </StatusWrap>
-        );
+        res = { color: COLORS.RED1, text: statusName };
+        break;
 
       default:
-        return null;
+        break;
     };
+
+    if (!res) return null;
+
+    return (
+      <StatusWrap color={res.color}>
+        <StatusText color={res.color}>
+          {res.text}
+        </StatusText>
+      </StatusWrap>
+    );
   };
 
   return (

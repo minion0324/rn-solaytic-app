@@ -257,7 +257,7 @@ const JobDetailsScreenView = ({
 JobDetailsScreenView.propTypes = {
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
-  sign: PropTypes.string,
+  sign: PropTypes.object,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
@@ -288,7 +288,7 @@ JobDetailsScreenView.propTypes = {
 };
 
 JobDetailsScreenView.defaultProps = {
-  sign: '',
+  sign: null,
   signedUserName: '',
   signedUserContact: '',
   amountCollected: '',

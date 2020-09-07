@@ -26,7 +26,6 @@ import {
 } from 'src/services';
 import {
   Jobs,
-  ViewStore,
 } from 'src/redux';
 import {
   DATE_KEY,
@@ -341,7 +340,7 @@ export function* asyncAcknowledgeJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -382,7 +381,7 @@ export function* asyncStartJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -423,7 +422,7 @@ export function* asyncExchangeJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -439,6 +438,8 @@ export function* asyncCompleteJobs({ payload }) {
   const {
     jobIds,
     stepBinUpdate,
+    photos,
+    sign,
     signedUserName,
     signedUserContact,
     amountCollected,
@@ -446,14 +447,15 @@ export function* asyncCompleteJobs({ payload }) {
     failure,
   } = payload;
 
+  let focusedJob = null;
+  let attempt = null;
+
   try {
-    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
-    const jobPhotos = yield select(ViewStore.selectors.getJobPhotos);
-    const jobSign = yield select(ViewStore.selectors.getJobSign);
+    focusedJob = yield select(Jobs.selectors.getFocusedJob);
 
     const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
 
-    const attempt = {
+    attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
       amountCollected,
@@ -470,16 +472,18 @@ export function* asyncCompleteJobs({ payload }) {
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
-      signatureUrl: jobSign,
+      base64Signature: sign.data,
+      signatureFileName: sign.uri.split('/').pop(),
       signedUserName,
       signedUserContact,
       driverName: '', //
       vehicleName: '', //
       remarks: focusedJob.remarks,
-      jobPhotos: jobPhotos.map((photo) => {
+      jobPhotos: photos.map((photo) => {
         return {
           jobStepId: lastJobStep.jobStepId,
-          photoUrl: photo,
+          base64Image: photo.data,
+          fileName: photo.uri.split('/').pop(),
           photoCaption: '', //
         }
       }),
@@ -508,7 +512,14 @@ export function* asyncCompleteJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(
+      error,
+      {
+        jobId: focusedJob.jobId,
+        jobNumber: focusedJob.jobNumber,
+      },
+      [jobIds, stepBinUpdate, attempt],
+    );
     failure && failure();
   }
 }
@@ -575,7 +586,7 @@ export function* asyncFailJobs({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -603,7 +614,7 @@ export function* asyncGetJobById({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -639,7 +650,7 @@ export function* asyncAddService({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -675,7 +686,7 @@ export function* asyncRemoveService({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -722,7 +733,7 @@ export function* asyncAddMessage({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }
@@ -750,7 +761,7 @@ export function* asyncUpdateAmountCollected({ payload }) {
 
     success && success();
   } catch (error) {
-    onError(error);
+    yield onError(error);
     failure && failure();
   }
 }

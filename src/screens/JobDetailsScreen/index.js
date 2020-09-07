@@ -3,9 +3,12 @@ import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
+import Toast from 'react-native-simple-toast';
 
 import {
   JOB_STATUS,
+  COMPLETE_JOBS_KEY,
+  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   showOverlay,
@@ -18,6 +21,12 @@ import {
   Jobs,
   ViewStore,
 } from 'src/redux';
+import {
+  addItemToCache,
+  removeItemFromCache,
+  getCacheIds,
+  getTimestamp,
+} from 'src/utils';
 
 import JobDetailsScreenView from './view';
 
@@ -34,12 +43,12 @@ const JobDetailsScreen = ({
   addMessage,
   updateAmountCollected,
   setCoreScreenInfo,
-  uploadPhotos,
-  uploadSign,
-  initJobPhotosAndSign,
+  setIsRequiredUpdateTab,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+
+  const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
 
   const [ photos, setPhotos ] = useState(photosAndSign.photos);
   const [ sign, setSign ] = useState(photosAndSign.sign);
@@ -71,12 +80,43 @@ const JobDetailsScreen = ({
       componentType: 'push',
     });
 
-    initJobPhotosAndSign();
-
-    return () => {
-      setCoreScreenInfo({});
-    };
+    checkIsInBackgroundMode();
   }, []);
+
+  const checkIsInBackgroundMode = async () => {
+    try {
+      const { jobId, jobNumber } = focusedJob;
+
+      const ids = await getCacheIds(BACKGROUND_FETCH_KEY);
+      const index = ids.findIndex(id => id.jobId === jobId);
+      if (index !== -1) {
+        if (
+          jobStatus === JOB_STATUS.COMPLETED ||
+          jobStatus === JOB_STATUS.FAILED ||
+          jobStatus === JOB_STATUS.CANCELLED
+        ) {
+          await removeItemFromCache(
+            BACKGROUND_FETCH_KEY,
+            { jobId, jobNumber },
+          );
+
+          await addItemToCache(
+            COMPLETE_JOBS_KEY,
+            { jobId, jobNumber },
+            {
+              timestamp: getTimestamp(),
+              status: JOB_STATUS.COMPLETED,
+            }
+          );
+        } else {
+          setIsInBackgroundMode(true);
+          Toast.show('This job is in background mode.');
+        }
+      }
+    } catch (error) {
+      //
+    }
+  };
 
   const onBack = () => {
     popScreen(componentId);
@@ -90,6 +130,7 @@ const JobDetailsScreen = ({
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.ACKNOWLEDGED);
+        setIsRequiredUpdateTab(true);
       },
       failure: () => setLoading(false),
     });
@@ -139,49 +180,6 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onFailure = () => {
-    setLoading(false);
-    initJobPhotosAndSign();
-  };
-
-  const onUploadPhotos = () => {
-    if (photos.length === 0) {
-      onUploadSign();
-      return;
-    }
-
-    uploadPhotos({
-      photos,
-      success: onUploadSign,
-      failure: onFailure,
-    });
-  };
-
-  const onUploadSign = () => {
-    if (!sign) {
-      onCompleteJob();
-      return;
-    }
-
-    uploadSign({
-      sign,
-      success: onCompleteJob,
-      failure: onFailure,
-    });
-  };
-
-  const onCompleteJob = () => {
-    completeJobs({
-      jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      signedUserName,
-      signedUserContact,
-      amountCollected,
-      success: onBack,
-      failure: onFailure,
-    });
-  };
-
   const onComplete = () => {
     if (focusedJob.mustTakePhoto && photos.length === 0) {
       Alert.alert('Warning', 'Please upload photos.');
@@ -193,8 +191,64 @@ const JobDetailsScreen = ({
       return;
     }
 
+    if (isInBackgroundMode) {
+      Alert.alert(
+        'Warning',
+        'This job is in background mode. Are you sure?',
+        [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'OK',
+            onPress: onCompleteJobs,
+          },
+        ],
+        { cancelable: false },
+      )
+    } else {
+      onCompleteJobs();
+    }
+  };
+
+  const onCompleteJobsSuccess = async () => {
+    try {
+      const { jobId, jobNumber } = focusedJob;
+
+      await removeItemFromCache(
+        BACKGROUND_FETCH_KEY,
+        { jobId, jobNumber },
+      );
+
+      await addItemToCache(
+        COMPLETE_JOBS_KEY,
+        { jobId, jobNumber },
+        {
+          timestamp: getTimestamp(),
+          status: JOB_STATUS.COMPLETED,
+        }
+      );
+
+      onBack();
+    } catch (error) {
+      //
+    }
+  };
+
+  const onCompleteJobs = () => {
     setLoading(true);
-    onUploadPhotos();
+
+    completeJobs({
+      jobIds: `${focusedJob.jobId}`,
+      stepBinUpdate: getUpdatedBinInfo(),
+      photos,
+      sign,
+      signedUserName,
+      signedUserContact,
+      amountCollected,
+      success: onCompleteJobsSuccess,
+      failure: () => setLoading(false),
+    });
   };
 
   const onPhoto = () => {
@@ -212,7 +266,8 @@ const JobDetailsScreen = ({
       } else if (response.error) {
         //
       } else {
-        setPhotos([ ...photos, response.uri ]);
+        const { uri, data } = response;
+        setPhotos([ ...photos, { uri, data } ]);
       }
     });
   };
@@ -336,9 +391,7 @@ JobDetailsScreen.propTypes = {
   addMessage: PropTypes.func.isRequired,
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
-  uploadPhotos: PropTypes.func.isRequired,
-  uploadSign: PropTypes.func.isRequired,
-  initJobPhotosAndSign: PropTypes.func.isRequired,
+  setIsRequiredUpdateTab: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -364,9 +417,7 @@ const mapDispatchToProps = {
   addMessage: Jobs.actionCreators.addMessage,
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
-  uploadPhotos: ViewStore.actionCreators.uploadPhotos,
-  uploadSign: ViewStore.actionCreators.uploadSign,
-  initJobPhotosAndSign: ViewStore.actionCreators.initJobPhotosAndSign,
+  setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
 };
 
 export default connect(
