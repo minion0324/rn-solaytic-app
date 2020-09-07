@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 import {
   HeaderBar,
@@ -13,18 +12,16 @@ import {
   DatePicker,
 } from 'src/components';
 import {
-  SVGS,
-  COLORS,
-  JOB_DATE,
-} from 'src/constants';
-import {
+  showDrawer,
+  showOverlay,
+  dismissOverlay,
   changeTabIndex,
   pushScreen,
   popToRootScreen,
   JOB_DETAILS_SCREEN,
+  CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
 import {
-  User,
   Jobs,
   ViewStore,
 } from 'src/redux';
@@ -33,34 +30,32 @@ import {
 } from 'src/services';
 import {
   delay,
-  getJobCustomerAddress,
 } from 'src/utils';
+import {
+  JOB_STATUS,
+} from 'src/constants';
 
 import {
   Container,
+  Content,
   ShadowWrap,
   LoadingWrap,
-  FlexWrap,
 } from 'src/styles/common.styles';
 import {
-  HelloText,
+  ScreenText,
+  SideMenu,
+  Calendar,
 } from 'src/styles/header.styles';
-import {
-  CardRow,
-  DateWrap,
-  DateText1,
-  DateText2,
-} from 'src/styles/card.styles';
 
 import {
   TabWrap,
   TabItem,
+  TabText,
 } from './styled';
 
-const { SideMenuIcon } = SVGS;
+const tabs = ['All', 'Open', 'Closed'];
 
 const JobsScreen = ({
-  driverName,
   allJobs,
   pageOfJobs,
   dateForJobs,
@@ -69,16 +64,23 @@ const JobsScreen = ({
   getJobsByPage,
   reloadJobsAndAlerts,
   getJobById,
+  updateDateForJobs,
   componentId,
 }) => {
-  const [ tabs ] = useState([
-    { key: 'first', color: COLORS.GRAY2 },
-    { key: 'second', color: COLORS.BLUE1 },
-    { key: 'third', color: COLORS.GREEN1 },
-    { key: 'fourth', color: COLORS.RED1 },
-  ]);
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
+
+  const [ tabIndex, setTabIndex ] = useState(0);
+
+  useEffect(() => {
+    setReloading(true);
+
+    getJobsByDate({
+      dateForJobs,
+      success: () => setReloading(false),
+      failure: () => setReloading(false),
+    });
+  }, [dateForJobs]);
 
   useEffect(() => {
     pushNotifications.setNotificationHandlerForJobs(onNotification);
@@ -105,16 +107,6 @@ const JobsScreen = ({
 
     reloadJobsAndAlerts({
       success: () => onJobDetails(jobId),
-      failure: () => setReloading(false),
-    });
-  };
-
-  const onDateSelect = (selectedDate) => {
-    setReloading(true);
-
-    getJobsByDate({
-      dateForJobs: selectedDate,
-      success: () => setReloading(false),
       failure: () => setReloading(false),
     });
   };
@@ -159,41 +151,78 @@ const JobsScreen = ({
     });
   };
 
+  const getFilteredJobs = () => {
+    if (tabIndex === 0) {
+      return allJobs;
+    }
+
+    if (tabIndex === 1) {
+      return allJobs.filter((job) => (
+        job.statusName === JOB_STATUS.ASSIGNED ||
+        job.statusName === JOB_STATUS.ACKNOWLEDGED ||
+        job.statusName === JOB_STATUS.IN_PROGRESS1 ||
+        job.statusName === JOB_STATUS.IN_PROGRESS2
+      ));
+    }
+
+    if (tabIndex === 2) {
+      return allJobs.filter((job) => (
+        job.statusName === JOB_STATUS.COMPLETED ||
+        job.statusName === JOB_STATUS.FAILED ||
+        job.statusName === JOB_STATUS.CANCELLED
+      ));
+    }
+
+    return allJobs;
+  };
+
   const onItemPress = (job) => {
     onJobDetails(job.jobId);
   };
 
-  const renderItem = ({ item, index }) => {
-    const jobDate = moment(item[JOB_DATE[0]] || item[JOB_DATE[1]]);
+  const onCalendar = () => {
+    showOverlay(CUSTOM_MODAL_SCREEN, {
+      getContent: renderCalendarModal,
+    });
+  };
 
-    const showDate =
-      index === 0 ||
-      jobDate.format('DD ddd') !== moment(allJobs[index - 1][JOB_DATE[0]]).format('DD ddd');
-
+  const renderCalendarModal = (containerId) => {
     return (
-      <CardRow>
+      <DatePicker
+        date={dateForJobs}
+        onSelect={(date) => {
+          updateDateForJobs(date);
+          dismissOverlay(containerId);
+        }}
+      />
+    );
+  };
+
+  const renderTabs = () => {
+    return (
+      <TabWrap>
         {
-          showDate
-          ? <DateWrap>
-              <DateText1>{jobDate.format('DD')}</DateText1>
-              <DateText2>{jobDate.format('ddd')}</DateText2>
-            </DateWrap>
-          : <DateWrap />
+          tabs.map((tab, index) => (
+            <TabItem
+              key={tab}
+              selected={index === tabIndex}
+              onPress={() => setTabIndex(index)}
+            >
+              <TabText>{tab}</TabText>
+            </TabItem>
+          ))
         }
-        <FlexWrap>
-          <ItemWrap
-            onPress={() => onItemPress(item)}
-          >
-            <JobCard
-              customer={item.customerName}
-              type={item.jobTemplateName || item.jobTypeName}
-              location={getJobCustomerAddress(item)}
-              time={jobDate.format('hh:mm A')}
-              status={item.statusName}
-            />
-          </ItemWrap>
-        </FlexWrap>
-      </CardRow>
+      </TabWrap>
+    );
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <ItemWrap
+        onPress={() => onItemPress(item)}
+      >
+        <JobCard jobInfo={item} />
+      </ItemWrap>
     );
   };
 
@@ -201,27 +230,19 @@ const JobsScreen = ({
     <Container>
       <ShadowWrap>
         <HeaderBar
-          leftIcon={<SideMenuIcon />}
-          centerIcon={
-            <DatePicker date={dateForJobs} onSelect={onDateSelect} />
-          }
-          rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
+          centerIcon={<ScreenText>Jobs</ScreenText>}
+          leftIcon={<SideMenu />}
+          onPressLeft={() => showDrawer(componentId)}
+          rightIcon={<Calendar />}
+          onPressRight={onCalendar}
         />
-        <TabWrap>
-          {
-            tabs.map((item) => (
-              <TabItem
-                key={item.key}
-                color={item.color}
-              />
-            ))
-          }
-        </TabWrap>
       </ShadowWrap>
 
-      <FlexWrap>
+      <Content>
+        { renderTabs() }
+
         <ListWrap
-          data={allJobs}
+          data={getFilteredJobs()}
           keyExtractor={(item) => `${item.jobId}`}
           renderItem={renderItem}
           onEndProcess={onEnd}
@@ -235,7 +256,7 @@ const JobsScreen = ({
             <ActivityIndicator size={'large'} />
           </LoadingWrap>
         }
-      </FlexWrap>
+      </Content>
 
       <BottomBar componentId={componentId} activeIndex={1} />
     </Container>
@@ -243,7 +264,6 @@ const JobsScreen = ({
 };
 
 JobsScreen.propTypes = {
-  driverName: PropTypes.string.isRequired,
   allJobs: PropTypes.array.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
@@ -252,12 +272,12 @@ JobsScreen.propTypes = {
   getJobsByPage: PropTypes.func.isRequired,
   reloadJobsAndAlerts: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
+  updateDateForJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    driverName: User.selectors.getDriverName(state),
     allJobs: Jobs.selectors.getAllJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
@@ -270,6 +290,7 @@ const mapDispatchToProps = {
   getJobsByPage: Jobs.actionCreators.getJobsByPage,
   reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   getJobById: Jobs.actionCreators.getJobById,
+  updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
 };
 
 export default connect(

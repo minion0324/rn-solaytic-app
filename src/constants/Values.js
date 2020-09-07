@@ -29,7 +29,6 @@ const SIZE24 = SIZE1 * 24; // 120
 const SIZE30 = SIZE1 * 30; // 150
 const SIZE40 = SIZE1 * 40; // 200
 
-
 //
 const scale = size => WIDTH / 360 * size; // 360
 const FONT = (size, factor = 0.5) => (size + (scale(size) - size) * factor);
@@ -41,7 +40,7 @@ const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 const DATE_KEY = 'date';
 const MONTH_KEY = 'month';
 
-const JOB_DATE = ['jobTimeSpecific', 'jobDate'];
+const JOB_DATE = 'jobTimeSpecific';
 
 const JOB_STATUS = {
   UNASSIGNED: 'Unassigned',

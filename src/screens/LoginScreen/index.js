@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Keyboard, Alert } from 'react-native';
+import {
+  Alert,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -11,6 +14,9 @@ import {
   IMAGES,
   COLORS,
 } from 'src/constants';
+import {
+  DefaultButton,
+} from 'src/components';
 import { User } from 'src/redux';
 
 import {
@@ -19,7 +25,10 @@ import {
 
 import {
   Content,
+  LogoWrap,
   Logo,
+  FormWrap,
+  InputRow,
   InputWrap,
   Input,
   LeftWrap,
@@ -27,8 +36,7 @@ import {
   RememberWrap,
   RememberText,
   ButtonWrap,
-  LoginButton,
-  LoginText,
+  PoweredByText,
 } from './styled';
 
 const {
@@ -43,6 +51,7 @@ const {
 const LoginScreen = ({
   isRehydrated,
   token,
+  appLogo,
   rememberedUser,
   login,
   setRememberedUser,
@@ -131,73 +140,89 @@ const LoginScreen = ({
   };
 
   return (
-    <Container color={COLORS.WHITE1}>
+    <Container>
       <Content>
-        <Logo source={IMAGES.APP_LOGO} />
-
-        <InputWrap>
-          <LeftWrap>
-            <UserIcon />
-          </LeftWrap>
-          <Input
-            ref={inputUserName}
-            placeholder={'Username'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'next'}
-            onSubmitEditing={() => inputPassword.current.focus()}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangeUserName(text)}
-            value={userName}
-          />
-          <RightWrap />
-        </InputWrap>
-
-        <InputWrap>
-          <LeftWrap>
-            <LockIcon />
-          </LeftWrap>
-          <Input
-            ref={inputPassword}
-            placeholder={'Password'}
-            secureTextEntry={!visibility}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'go'}
-            onSubmitEditing={onLogin}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangePassword(text)}
-            value={password}
-          />
-          <RightWrap
-            onPress={() => setVisibility(!visibility)}
-          >
-            {
-              visibility
-              ? <VisibilityOnIcon />
-              : <VisibilityOffIcon />
+        <LogoWrap>
+          <Logo
+            resizeMode={'contain'}
+            source={
+              appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
             }
-          </RightWrap>
-        </InputWrap>
+          />
+        </LogoWrap>
 
-        <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
-          {
-            rememberCheck
-            ? <ActiveCheckIcon />
-            : <DeactiveCheckIcon />
-          }
-          <RememberText>Remember me</RememberText>
-        </RememberWrap>
+        <FormWrap>
+          <InputRow>
+            <LeftWrap>
+              <UserIcon />
+            </LeftWrap>
+            <InputWrap>
+              <Input
+                ref={inputUserName}
+                placeholder={'Username'}
+                underlineColorAndroid={COLORS.TRANSPARENT1}
+                returnKeyType={'next'}
+                onSubmitEditing={() => inputPassword.current.focus()}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => onChangeUserName(text)}
+                value={userName}
+              />
+              <RightWrap />
+            </InputWrap>
+          </InputRow>
 
-        <ButtonWrap>
-          <LoginButton onPress={onLogin} disabled={loading}>
+          <InputRow>
+            <LeftWrap>
+              <LockIcon />
+            </LeftWrap>
+            <InputWrap>
+              <Input
+                ref={inputPassword}
+                placeholder={'Password'}
+                secureTextEntry={!visibility}
+                underlineColorAndroid={COLORS.TRANSPARENT1}
+                returnKeyType={'go'}
+                onSubmitEditing={onLogin}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => onChangePassword(text)}
+                value={password}
+              />
+              <RightWrap
+                onPress={() => setVisibility(!visibility)}
+              >
+                {
+                  visibility
+                  ? <VisibilityOnIcon />
+                  : <VisibilityOffIcon />
+                }
+              </RightWrap>
+            </InputWrap>
+          </InputRow>
+
+          <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
             {
-              loading
-              ? <ActivityIndicator size={'small'} color={COLORS.WHITE1} />
-              : <LoginText>SIGN IN</LoginText>
+              rememberCheck
+              ? <ActiveCheckIcon />
+              : <DeactiveCheckIcon />
             }
-          </LoginButton>
-        </ButtonWrap>
+            <RememberText>Remember me</RememberText>
+          </RememberWrap>
+
+          <ButtonWrap>
+            <DefaultButton
+              onPress={onLogin}
+              text={'Sign in'}
+              color={COLORS.BLUE1}
+              loading={loading}
+            />
+          </ButtonWrap>
+        </FormWrap>
+
+        <PoweredByText>
+          Powered by wasteporter.com
+        </PoweredByText>
       </Content>
     </Container>
   );
@@ -206,6 +231,7 @@ const LoginScreen = ({
 LoginScreen.propTypes = {
   isRehydrated: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
+  appLogo: PropTypes.string.isRequired,
   rememberedUser: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   setRememberedUser: PropTypes.func.isRequired,
@@ -217,6 +243,7 @@ const mapStateToProps = (state) => {
   return {
     isRehydrated: User.selectors.getIsRehydrated(state),
     token: User.selectors.getToken(state),
+    appLogo: User.selectors.getAppLogo(state),
     rememberedUser: User.selectors.getRememberedUser(state),
   };
 };

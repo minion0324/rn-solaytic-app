@@ -35,6 +35,7 @@ export const ADD_MESSAGE = 'JOBS/ADD_MESSAGE';
 export const ADD_MESSAGE_SUCCESS = 'JOBS/ADD_MESSAGE_SUCCESS';
 export const UPDATE_AMOUNT_COLLECTED = 'JOBS/UPDATE_AMOUNT_COLLECTED';
 export const UPDATE_AMOUNT_COLLECTED_SUCCESS = 'JOBS/UPDATE_AMOUNT_COLLECTED_SUCCESS';
+export const UPDATE_DATE_FOR_JOBS = 'JOBS/UPDATE_DATE_FOR_JOBS';
 
 export const actionCreators = {
   getJobsSuccess: createAction(GET_JOBS_SUCCESS),
@@ -71,4 +72,5 @@ export const actionCreators = {
   addMessageSuccess: createAction(ADD_MESSAGE_SUCCESS),
   updateAmountCollected: createAction(UPDATE_AMOUNT_COLLECTED),
   updateAmountCollectedSuccess: createAction(UPDATE_AMOUNT_COLLECTED_SUCCESS),
+  updateDateForJobs: createAction(UPDATE_DATE_FOR_JOBS),
 };

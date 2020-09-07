@@ -29,6 +29,7 @@ import {
 
 import {
   Container,
+  Content,
   ShadowWrap,
   LoadingWrap,
   SearchBarWrap,
@@ -219,46 +220,48 @@ const FailJobScreen = ({
         />
       </ShadowWrap>
 
-      <SearchBarWrap>
-        <SearchIconWrap>
-          <SearchIcon />
-        </SearchIconWrap>
-        <SearchInput
-          placeholder={'Search ...'}
-          underlineColorAndroid={COLORS.TRANSPARENT1}
-          returnKeyType={'go'}
-          onSubmitEditing={onSearch}
-          autoCapitalize={'none'}
-          autoCorrect={false}
-          onChangeText={text => onChangeSearchText(text)}
-          value={searchText}
+      <Content>
+        <SearchBarWrap>
+          <SearchIconWrap>
+            <SearchIcon />
+          </SearchIconWrap>
+          <SearchInput
+            placeholder={'Search ...'}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
+            returnKeyType={'go'}
+            onSubmitEditing={onSearch}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            onChangeText={text => onChangeSearchText(text)}
+            value={searchText}
+          />
+        </SearchBarWrap>
+
+        <ListWrap
+          data={driverNotes}
+          keyExtractor={(item) => `${item.driverNoteId}`}
+          renderItem={renderItem}
+          onEndProcess={onEnd}
+          onRefreshProcess={onRefresh}
+          refreshing={refreshing}
         />
-      </SearchBarWrap>
 
-      <ListWrap
-        data={driverNotes}
-        keyExtractor={(item) => `${item.driverNoteId}`}
-        renderItem={renderItem}
-        onEndProcess={onEnd}
-        onRefreshProcess={onRefresh}
-        refreshing={refreshing}
-      />
+        {
+          reloading &&
+          <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        }
 
-      {
-        reloading &&
-        <LoadingWrap>
-          <ActivityIndicator size={'large'} />
-        </LoadingWrap>
-      }
-
-      <ButtonWrap>
-        <DefaultButton
-          text={'Fail Job'}
-          color={COLORS.RED1}
-          onPress={onFail}
-          loading={loading}
-        />
-      </ButtonWrap>
+        <ButtonWrap>
+          <DefaultButton
+            text={'Fail Job'}
+            color={COLORS.RED1}
+            onPress={onFail}
+            loading={loading}
+          />
+        </ButtonWrap>
+      </Content>
     </Container>
   );
 };

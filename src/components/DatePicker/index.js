@@ -1,87 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Picker from 'react-native-picker';
-import moment from 'moment';
+import { Calendar } from 'react-native-calendars';
 
 import {
-  SVGS,
   COLORS,
-  SIZE2,
-  FONT,
-  APP_DATE_FORMAT,
+  WIDTH,
+  DATE_KEY,
 } from 'src/constants';
+import {
+  getDate,
+  getStartDate,
+} from 'src/utils';
 
-const { ArrowDateIcon } = SVGS;
-
-const Container = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-start;
-`;
-
-const DateText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK2};
-  margin-horizontal: ${SIZE2}px;
+const Container = styled.View`
+  height: ${WIDTH * 0.9}px;
+  background-color: ${COLORS.WHITE1};
 `;
 
 const DatePicker = ({
   date,
   onSelect,
 }) => {
-  const onPicker = () => {
-    Picker.isPickerShow((status) => {
-      if (status) {
-        Picker.hide();
-        return;
-      }
+  const getSelectedDate = () => {
+    const selectedDate = getStartDate(date, DATE_KEY);
 
-      const pickerData = [-2, -1, 0, 1].map((index) => {
-        const year = moment().add(index, 'years').format('YYYY');
+    return {
+      [selectedDate]: {
+        selected: true,
+        selectedColor: COLORS.BLUE1,
+      },
+    };
+  }
 
-        return {
-          [year]: moment.months().map((month) => {
-            return {
-              [month]: Array(moment(`${year}-${month}`, 'YYYY-MMMM').daysInMonth())
-                .fill(0)
-                .map((e, i) => i < 9 ? `0${i + 1}` : `${i + 1}`)
-            }
-          })
-        };
-      });
-
-      const selectedValue = [
-        moment(date, APP_DATE_FORMAT).format('YYYY'),
-        moment(date, APP_DATE_FORMAT).format('MMMM'),
-        moment(date, APP_DATE_FORMAT).format( 'DD' ),
-      ];
-
-      Picker.init({
-        pickerData: pickerData,
-        selectedValue: selectedValue,
-        pickerBg: [255, 255, 255, 1],
-        pickerTitleText: 'Pick a Month',
-        onPickerConfirm: ([year, month, day]) => {
-          onSelect(`${day} ${moment(month, 'MMMM').format('MMM')} ${year}`);
-        },
-        onPickerCancel: () => {
-          Picker.hide();
-        },
-      });
-
-      Picker.show();
-    });
+  const onDateSelect = (day) => {
+    onSelect(getDate(day.dateString));
   };
 
   return (
-    <Container onPress={onPicker}>
-      <DateText>{date}</DateText>
-      <ArrowDateIcon />
+    <Container>
+      <Calendar
+        onDayPress={onDateSelect}
+        onDayLongPress={onDateSelect}
+        monthFormat={'MMMM yyyy'}
+        markedDates={getSelectedDate()}
+      />
     </Container>
   );
-}
+};
 
 DatePicker.propTypes = {
   date: PropTypes.string.isRequired,

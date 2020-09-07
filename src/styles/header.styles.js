@@ -6,19 +6,17 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
-  SIZE4,
+  SIZE8,
   SIZE12,
   FONT,
 } from 'src/constants';
 
-const { ArrowBackIcon, FailIcon } = SVGS;
-
-const HelloText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK2};
-  margin-horizontal: ${SIZE4}px;
-`;
+const {
+  ArrowBackIcon,
+  FailIcon,
+  SideMenuIcon,
+  CalendarIcon,
+} = SVGS;
 
 const ScreenText = styled.Text`
   font-size: ${FONT(15)}px;
@@ -30,12 +28,16 @@ const EmptyWrap = styled.View`
   width: ${SIZE12}px;
 `;
 
+const EmptyIcon = styled.View`
+  width: ${SIZE8}px;
+`;
+
 //
 const BackButtonWrap = styled.View`
   width: ${SIZE12}px;
   flex-direction: row;
   align-items: center;
-  margin-left: ${SIZE2}px;
+  padding-left: ${SIZE2}px;
 `;
 
 const BackButtonText = styled.Text`
@@ -50,7 +52,7 @@ const BackButton = () => (
     <ArrowBackIcon />
     <BackButtonText>Back</BackButtonText>
   </BackButtonWrap>
-)
+);
 
 //
 const FailJobWrap = styled.View`
@@ -72,12 +74,28 @@ const FailJob = () => (
     <FailIcon />
     <FailJobText>Fail</FailJobText>
   </FailJobWrap>
-)
+);
+
+//
+const SideMenu = () => (
+  <EmptyIcon>
+    <SideMenuIcon />
+  </EmptyIcon>
+);
+
+//
+const Calendar = () => (
+  <EmptyIcon>
+    <CalendarIcon />
+  </EmptyIcon>
+);
 
 export {
-  HelloText,
   ScreenText,
   EmptyWrap,
+  EmptyIcon,
   BackButton,
   FailJob,
+  SideMenu,
+  Calendar,
 };

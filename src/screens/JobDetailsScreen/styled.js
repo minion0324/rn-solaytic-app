@@ -9,7 +9,7 @@ import {
   SIZE6,
   SIZE8,
   SIZE12,
-  SIZE24,
+  SIZE20,
   FONT,
 } from 'src/constants';
 
@@ -18,7 +18,6 @@ const ButtonWrap = styled.View`
   align-items: center;
   justify-content: center;
   padding-horizontal: ${SIZE6}px;
-  background-color: ${COLORS.WHITE2};
 `;
 
 const JobDetails = styled.View`
@@ -39,7 +38,7 @@ const LabelText = styled.Text`
 `;
 
 const InfoText = styled.Text`
-  max-width: 88%;
+  max-width: 80%;
   font-size: ${FONT(15)}px;
   font-weight: 700,
   color: ${COLORS.BLACK2};
@@ -73,13 +72,14 @@ const ContactInfo = styled.View`
 `;
 
 const InfoWrap = styled.View`
+  max-width: 75%;
   margin-vertical: ${SIZE2}px;
 `;
 
 const NumberText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700,
-  color: ${COLORS.BLACK2};
+  color: ${COLORS.BLUE1};
   text-decoration-line: underline;
 `;
 
@@ -88,7 +88,13 @@ const RowWrap = styled.View`
   align-items: center;
 `;
 
+const CashButton = styled.TouchableOpacity`
+  top: ${SIZE1}px;
+  margin-left: ${SIZE4}px;
+`;
+
 const BinButtonWrap = styled.View`
+  width: 80%;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -96,21 +102,23 @@ const BinButtonWrap = styled.View`
 `;
 
 const BinButton = styled.TouchableOpacity`
-  width: ${SIZE24}px;
+  width: ${SIZE20}px;
   height: ${SIZE8}px;
   align-items: center;
   justify-content: center;
-  border-radius: ${SIZE1}px;
+  border-radius: ${SIZE4}px;
   background-color: ${(props) => (
-    props.active ? COLORS.BLUE3 : COLORS.TRANSPARENT1
+    props.active ? COLORS.BLUE1 : COLORS.TRANSPARENT1
   )};
+  border-width: 2px;
+  border-color: ${COLORS.BLUE1};
 `;
 
 const BinButtonText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600;
   color: ${(props) => (
-    props.active ? COLORS.BLUE1 : COLORS.BLACK2
+    props.active ? COLORS.WHITE1 : COLORS.BLUE1
   )};
 `;
 
@@ -119,6 +127,7 @@ const BinInfoWrap = styled.View`
 `;
 
 const BinInfoRow = styled.View`
+  flex: 1;
   height: ${SIZE8}px;
   flex-direction: row;
   align-items: center;
@@ -133,13 +142,10 @@ const BinText = styled.Text`
   flex: 1;
   font-size: ${FONT(15)}px;
   font-weight: 600,
-  color: ${COLORS.BLUE1};
+  color: ${COLORS.BLACK2};
   margin-right: ${(props) => (
     props.editable ? SIZE4 : 0
   )}px;
-  text-align: ${(props) => (
-    props.editable ? 'left' : 'center'
-  )};
 `;
 
 const BinInput = styled.TextInput`
@@ -147,13 +153,10 @@ const BinInput = styled.TextInput`
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600,
-  color: ${COLORS.BLUE1};
+  color: ${COLORS.BLACK2};
   margin-right: ${(props) => (
     props.editable ? SIZE4 : 0
   )}px;
-  text-align: ${(props) => (
-    props.editable ? 'left' : 'center'
-  )};
 `;
 
 const PhotoAndSignWrap = styled.View`
@@ -295,6 +298,7 @@ export {
   InfoWrap,
   NumberText,
   RowWrap,
+  CashButton,
   BinButtonWrap,
   BinButton,
   BinButtonText,

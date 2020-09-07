@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {
   COLORS,
   SIZE2,
-  SIZE4,
   SIZE12,
 } from 'src/constants';
 
@@ -15,9 +14,8 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${props => props.color || COLORS.WHITE2};
-  padding-left: ${SIZE2}px;
-  padding-right: ${SIZE4}px;
+  background-color: ${props => props.color || COLORS.WHITE1};
+  padding-horizontal: ${SIZE2}px;
 `;
 
 const CenterIconWrap = styled.View`

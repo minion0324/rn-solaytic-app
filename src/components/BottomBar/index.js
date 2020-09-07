@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import {
   SVGS,
   COLORS,
-  SIZE3,
+  SIZE1,
   SIZE8,
-  SIZE14,
+  SIZE10,
+  SIZE12,
   FONT,
 } from 'src/constants';
 import { changeTabIndex } from 'src/navigation';
@@ -17,36 +18,32 @@ const {
   ActiveAlertIcon,
   JobsIcon,
   ActiveJobsIcon,
-  ProfileIcon,
-  ActiveProfileIcon,
 } = SVGS;
 
 const Container = styled.View`
   width: 100%;
-  height: ${SIZE14}px;
+  height: ${SIZE10}px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  background-color: ${COLORS.BLUE1};
-  border-top-left-radius: ${SIZE3}px;
-  border-top-right-radius: ${SIZE3}px;
-  padding-horizontal: ${SIZE8}px;
+  justify-content: space-around;
+  background-color: ${COLORS.WHITE1};
 `;
 
 const Tab = styled.TouchableOpacity`
-  width: ${SIZE8}px;
+  width: ${SIZE12}px;
   height: ${SIZE8}px;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 `;
 
 const Text = styled.Text`
-  margin-top: 3px;
   font-size: ${FONT(13)}px;
   font-weight: 500;
   color: ${(props) => (
-    props.active ? COLORS.WHITE1 : COLORS.BLUE3
+    props.active ? COLORS.BLUE1 : COLORS.GRAY3
   )};
+  margin-left: ${SIZE1}px;
 `;
 
 const BottomBar = ({
@@ -70,14 +67,6 @@ const BottomBar = ({
           : <JobsIcon />
         }
         <Text active={activeIndex === 1}>Jobs</Text>
-      </Tab>
-      <Tab onPress={() => changeTabIndex(componentId, 2)}>
-        {
-          activeIndex === 2
-          ? <ActiveProfileIcon />
-          : <ProfileIcon />
-        }
-        <Text active={activeIndex === 2}>Profile</Text>
       </Tab>
     </Container>
   );

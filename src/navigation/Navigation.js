@@ -3,6 +3,7 @@ import { Navigation } from 'react-native-navigation';
 import {
   IMAGES,
   COLORS,
+  WIDTH,
   FONT,
 } from 'src/constants';
 
@@ -10,12 +11,34 @@ import {
   LOGIN_SCREEN,
   ALERT_SCREEN,
   JOBS_SCREEN,
-  PROFILE_SCREEN,
+  DRAWER_SCREEN,
 } from './Screens';
 
 import registerScreens from './registerScreens';
 
 registerScreens();
+
+export const DRAWER_COMPONENT_ID = 'left.NavigationDrawer';
+
+export function showDrawer(componentId) {
+  Navigation.mergeOptions(componentId, {
+    sideMenu: {
+      left: {
+        visible: true,
+      },
+    },
+  });
+}
+
+export function dismissDrawer(componentId) {
+  Navigation.mergeOptions(componentId, {
+    sideMenu: {
+      left: {
+        visible: false,
+      },
+    },
+  });
+}
 
 export function showOverlay(screenName, passProps = {}, options = {}) {
   return Navigation.showOverlay({
@@ -108,7 +131,7 @@ export function pushSingleScreenApp() {
       drawBehind: true,
       animate: false,
       titleDisplayMode: 'alwaysShow',
-      currentTabIndex: 1,
+      currentTabIndex: 0,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -149,7 +172,7 @@ export function pushMultiScreensApp() {
       drawBehind: true,
       animate: false,
       titleDisplayMode: 'alwaysShow',
-      currentTabIndex: 1,
+      currentTabIndex: 0,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -204,26 +227,24 @@ export function pushMultiScreensApp() {
                   },
                 },
               },
-              {
-                stack: {
-                  children: [
-                    {
-                      component: {
-                        name: PROFILE_SCREEN,
-                      },
-                    },
-                  ],
-                  options: {
-                    bottomTab: {
-                      text: 'Profile',
-                      icon: IMAGES.THIRD_TAB,
-                      selectedIcon: IMAGES.THIRD_TAB_ACTIVE,
-                      testID: 'THIRD_TAB_BAR_BUTTON',
-                    },
-                  },
-                },
-              },
             ],
+          },
+        },
+        id: 'sideMenu',
+        left: {
+          component: {
+            id: DRAWER_COMPONENT_ID,
+            name: DRAWER_SCREEN,
+            passProps: {
+              componentId: DRAWER_COMPONENT_ID,
+            },
+          },
+        },
+        options: {
+          sideMenu: {
+            left: {
+              width: WIDTH * 0.6,
+            },
           },
         },
       },

@@ -10,6 +10,11 @@ import {
 
 const Container = styled.SafeAreaView`
   flex: 1;
+  background-color: ${props => props.color || COLORS.WHITE1};
+`;
+
+const Content = styled.View`
+  flex: 1;
   background-color: ${props => props.color || COLORS.WHITE2};
 `;
 
@@ -92,6 +97,7 @@ const OkCancelText = styled.Text`
 
 export {
   Container,
+  Content,
   ShadowWrap,
   LoadingWrap,
   FullImage,

@@ -15,9 +15,10 @@ import {
 import {
   SVGS,
   COLORS,
-  JOB_DATE,
+  SIZE4,
 } from 'src/constants';
 import {
+  showDrawer,
   changeTabIndex,
   pushScreen,
   popToRootScreen,
@@ -33,33 +34,31 @@ import {
 } from 'src/services';
 import {
   delay,
-  getJobCustomerAddress,
+  getDate,
 } from 'src/utils';
 
 import {
   Container,
+  Content,
   ShadowWrap,
   LoadingWrap,
-  FlexWrap,
 } from 'src/styles/common.styles';
 import {
-  HelloText,
+  ScreenText,
+  EmptyIcon,
+  SideMenu,
 } from 'src/styles/header.styles';
-import {
-  CardRow,
-  DateWrap,
-  DateText1,
-  DateText2,
-} from 'src/styles/card.styles';
 
 import {
   ButtonWrap,
+  NoAlertsWrap,
+  NoAlertsText,
+  NoAlertsIcon,
 } from './styled';
 
-const { SideMenuIcon } = SVGS;
+const { HappyIcon } = SVGS;
 
 const AlertScreen = ({
-  driverName,
   allAlerts,
   countOfAlerts,
   pageOfAlerts,
@@ -71,6 +70,7 @@ const AlertScreen = ({
   reloadJobsAndAlerts,
   acknowledgeJobs,
   getJobById,
+  updateDateForJobs,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -167,40 +167,63 @@ const AlertScreen = ({
   };
 
   const onItemPress = (job) => {
-    onJobDetails(job.jobId)
+    onJobDetails(job.jobId);
   };
 
-  const renderItem = ({ item, index }) => {
-    const jobDate = moment(item[JOB_DATE[0]] || item[JOB_DATE[1]]);
+  const onTodayJobs = () => {
+    const date = getDate();
+    updateDateForJobs(date);
 
-    const showDate =
-      index === 0 ||
-      jobDate.format('DD ddd') !== moment(allAlerts[index - 1][JOB_DATE[0]]).format('DD ddd');
+    changeTabIndex(componentId, 1);
+  };
 
+  const onTomorrowJobs = () => {
+    const date = getDate(moment().add(1, 'd'));
+    updateDateForJobs(date);
+
+    changeTabIndex(componentId, 1);
+  };
+
+  const renderNoAlerts = () => {
     return (
-      <CardRow>
-        {
-          showDate
-          ? <DateWrap>
-              <DateText1>{jobDate.format('DD')}</DateText1>
-              <DateText2>{jobDate.format('ddd')}</DateText2>
-            </DateWrap>
-          : <DateWrap />
-        }
-        <FlexWrap>
-          <ItemWrap
-            onPress={() => onItemPress(item)}
-          >
-            <JobCard
-              customer={item.customerName}
-              type={item.jobTemplateName || item.jobTypeName}
-              location={getJobCustomerAddress(item)}
-              time={jobDate.format('hh:mm A')}
-              status={item.statusName}
-            />
-          </ItemWrap>
-        </FlexWrap>
-      </CardRow>
+      <NoAlertsWrap>
+        <NoAlertsText>
+          {'Great!\nYou have no more alerts.'}
+        </NoAlertsText>
+
+        <NoAlertsIcon>
+          <HappyIcon />
+        </NoAlertsIcon>
+
+        <NoAlertsText>
+          {'View your jobs for'}
+        </NoAlertsText>
+
+        <DefaultButton
+          text={'Today'}
+          color={COLORS.BLUE1}
+          onPress={onTodayJobs}
+          mTop={SIZE4}
+        />
+
+        <DefaultButton
+          text={'Tomorrow'}
+          color={COLORS.WHITE1}
+          onPress={onTomorrowJobs}
+          textColor={COLORS.BLACK2}
+          mTop={SIZE4}
+        />
+      </NoAlertsWrap>
+    );
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <ItemWrap
+        onPress={() => onItemPress(item)}
+      >
+        <JobCard jobInfo={item} />
+      </ItemWrap>
     );
   };
 
@@ -208,25 +231,34 @@ const AlertScreen = ({
     <Container>
       <ShadowWrap>
         <HeaderBar
-          leftIcon={<SideMenuIcon />}
-          rightIcon={<HelloText>{`Hello ${driverName}`}</HelloText>}
+          centerIcon={<ScreenText>Notifications</ScreenText>}
+          leftIcon={<SideMenu />}
+          onPressLeft={() => showDrawer(componentId)}
+          rightIcon={<EmptyIcon />}
         />
 
-        {
-          countOfAlerts > 0 &&
-          <ButtonWrap>
-            <DefaultButton
-              text={`Acknowledge (${countOfAlerts})`}
-              color={COLORS.BLUE1}
-              onPress={onAcknowledge}
-              loading={loading}
-              mTop={-8}
-            />
-          </ButtonWrap>
-        }
+        <ButtonWrap>
+          <DefaultButton
+            text={
+              countOfAlerts > 0
+              ? `Acknowledge (${countOfAlerts})`
+              : 'Acknowledge'
+            }
+            color={
+              countOfAlerts > 0
+              ? COLORS.BLUE1 : COLORS.GRAY3
+            }
+            onPress={
+              countOfAlerts > 0
+              ? onAcknowledge : null
+            }
+            loading={loading}
+            mTop={-8}
+          />
+        </ButtonWrap>
       </ShadowWrap>
 
-      <FlexWrap>
+      <Content>
         <ListWrap
           data={allAlerts}
           keyExtractor={(item) => `${item.jobId}`}
@@ -237,12 +269,17 @@ const AlertScreen = ({
         />
 
         {
+          countOfAlerts === 0 &&
+          renderNoAlerts()
+        }
+
+        {
           reloading &&
           <LoadingWrap>
             <ActivityIndicator size={'large'} />
           </LoadingWrap>
         }
-      </FlexWrap>
+      </Content>
 
       <BottomBar componentId={componentId} activeIndex={0} />
     </Container>
@@ -250,7 +287,6 @@ const AlertScreen = ({
 };
 
 AlertScreen.propTypes = {
-  driverName: PropTypes.string.isRequired,
   allAlerts: PropTypes.array.isRequired,
   countOfAlerts: PropTypes.number.isRequired,
   pageOfAlerts: PropTypes.number.isRequired,
@@ -262,12 +298,12 @@ AlertScreen.propTypes = {
   reloadJobsAndAlerts: PropTypes.func.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   getJobById: PropTypes.func.isRequired,
+  updateDateForJobs: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    driverName: User.selectors.getDriverName(state),
     allAlerts: Jobs.selectors.getAllAlerts(state),
     countOfAlerts: Jobs.selectors.getCountOfAlerts(state),
     pageOfAlerts: Jobs.selectors.getPageOfAlerts(state),
@@ -283,6 +319,7 @@ const mapDispatchToProps = {
   reloadJobsAndAlerts: Jobs.actionCreators.reloadJobsAndAlerts,
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   getJobById: Jobs.actionCreators.getJobById,
+  updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
 };
 
 export default connect(

@@ -39,6 +39,7 @@ function User(state = DEFAULT, action = {}) {
       case AUTH_TOKEN_SUCCESS:
         draft.token = payload.token;
         draft.userInfo = payload.user;
+        draft.appLogo = payload.logoImageUrl;
         break;
       case LOGOUT:
         draft.token = '';
