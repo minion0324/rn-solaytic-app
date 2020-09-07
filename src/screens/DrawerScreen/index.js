@@ -13,7 +13,6 @@ import {
   SVGS,
   COLORS,
   COMPLETE_JOBS_KEY,
-  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   User,
@@ -53,7 +52,6 @@ const DrawerScreen = ({
   const onLogout = async () => {
     try {
       await cleanCache(COMPLETE_JOBS_KEY);
-      await cleanCache(BACKGROUND_FETCH_KEY);
 
       logout();
       pushSingleScreenApp();
