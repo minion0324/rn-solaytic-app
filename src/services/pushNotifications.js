@@ -97,21 +97,22 @@ class PushNotifications {
   }
 
   notificationHandler = (notification) => {
-    if (this.forHandler) {
+    const {
+      notificationId,
+      data: { jobId, message },
+    } = notification;
+
+    if (this.handledNotification === notificationId) {
       return;
     }
 
-    this.forHandler = true;
+    this.handledNotification = notificationId;
 
-    setTimeout(() => {
-      this.forHandler = false;
-    }, 1500);
-
-    const { data: { jobId } } = notification;
+    setTimeout(() => { this.handledNotification = null; }, 1500);
 
     if (jobId) {
       this.notificationHandlerForJobs && // eslint-disable-line
-      this.notificationHandlerForJobs(jobId);
+      this.notificationHandlerForJobs(jobId, message);
     } else {
       this.notificationHandlerForAlerts && // eslint-disable-line
       this.notificationHandlerForAlerts();
