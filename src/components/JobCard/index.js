@@ -147,16 +147,10 @@ const JobCard = ({
     let res = null;
 
     switch (statusName) {
-      case JOB_STATUS.UNASSIGNED:
-      case JOB_STATUS.DISPATCHED:
-        break;
-
-      case JOB_STATUS.ASSIGNED:
-      case JOB_STATUS.ACKNOWLEDGED:
+      case JOB_STATUS.IN_PROGRESS1:
         res = { color: COLORS.BLUE1, text: 'Started' };
         break;
 
-      case JOB_STATUS.IN_PROGRESS1:
       case JOB_STATUS.IN_PROGRESS2:
         res = { color: COLORS.PURPLE1, text: 'In Progress' };
         break;
