@@ -44,6 +44,13 @@ const getIsNetworkConnected = createSelector(
   },
 );
 
+const getNewCommentInfo = createSelector(
+  getViewStore,
+  (view) => {
+    return view.newCommentInfo || {};
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getDriverNotes,
@@ -51,4 +58,5 @@ export default {
   getPageOfDriverNotes,
   getIsRequiredUpdateTab,
   getIsNetworkConnected,
+  getNewCommentInfo,
 };

@@ -8,6 +8,7 @@ import {
   GET_DRIVER_NOTES_BY_PAGE_SUCCESS,
   SET_IS_REQUIRED_UPDATE_TAB,
   SET_IS_NETWORK_CONNECTED,
+  SET_NEW_COMMENT_INFO,
 } from './actions';
 
 const DEFAULT = {
@@ -22,6 +23,7 @@ const viewPersistConfig = {
     'driverNotes',
     'isRequiredUpdateTab',
     'isNetworkConnected',
+    'newCommentInfo',
   ],
 };
 
@@ -45,6 +47,9 @@ function View(state = DEFAULT, action = {}) {
         break;
       case SET_IS_NETWORK_CONNECTED:
         draft.isNetworkConnected = payload;
+        break;
+      case SET_NEW_COMMENT_INFO:
+        draft.newCommentInfo = payload;
         break;
     }
   });
