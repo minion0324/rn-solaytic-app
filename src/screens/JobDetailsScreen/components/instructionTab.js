@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  ScrollView,
+  FlatList,
   Keyboard,
   Alert,
 } from 'react-native';
@@ -50,6 +50,7 @@ import {
   AddServices,
   ServicesWrap,
   ServiceRow,
+  ListStyle,
 } from '../styled';
 
 const {
@@ -161,6 +162,22 @@ const InstructionTab = ({
     );
   };
 
+  const renderCommentItem = ({ item }) => {
+    return (
+      !!item.message &&
+      <Comment
+        key={item.jobMessageId}
+        pos={item.type && 'right'}
+      >
+        <CommentText
+          pos={item.type && 'right'}
+        >
+          {item.message}
+        </CommentText>
+      </Comment>
+    );
+  };
+
   const renderComments = () => {
     if (active !== COMMENT) {
       return (
@@ -185,21 +202,14 @@ const InstructionTab = ({
           {
             focusedJob.messages.length > 0 &&
             <CommentsWrap>
-              {
-                focusedJob.messages.map((item) => (
-                  !!item.message &&
-                  <Comment
-                    key={item.jobMessageId}
-                    pos={item.type && 'right'}
-                  >
-                    <CommentText
-                      pos={item.type && 'right'}
-                    >
-                      {item.message}
-                    </CommentText>
-                  </Comment>
-                ))
-              }
+              <FlatList
+                bounces={false}
+                data={focusedJob.messages}
+                keyExtractor={(item) => `${item.jobMessageId}`}
+                showsVerticalScrollIndicator={false}
+                renderItem={renderCommentItem}
+                style={ListStyle}
+              />
             </CommentsWrap>
           }
           <AddComment onPress={onShowCommentModal}>
@@ -256,6 +266,23 @@ const InstructionTab = ({
     );
   };
 
+  const renderServiceItem = ({ item }) => {
+    return (
+      <ServiceRow
+        key={`${item.serviceAdditionalChargeId}`}
+        onPress={() => onUpdateService(item)}
+      >
+        {
+          item.isSelected
+          ? <ActiveCircleCheckIcon />
+          : <DeactiveCircleCheckIcon />
+        }
+        <SpaceView mLeft={SIZE2} />
+        <InfoText>{item.serviceAdditionalChargeName}</InfoText>
+      </ServiceRow>
+    );
+  };
+
   const renderServices = () => {
     return (
       <View>
@@ -270,22 +297,14 @@ const InstructionTab = ({
             {
               active === SERVICES &&
               <ServicesWrap>
-                {
-                  focusedJob.additionalCharges.map((item) => (
-                    <ServiceRow
-                      key={`${item.serviceAdditionalChargeId}`}
-                      onPress={() => onUpdateService(item)}
-                    >
-                      {
-                        item.isSelected
-                        ? <ActiveCircleCheckIcon />
-                        : <DeactiveCircleCheckIcon />
-                      }
-                      <SpaceView mLeft={SIZE2} />
-                      <InfoText>{item.serviceAdditionalChargeName}</InfoText>
-                    </ServiceRow>
-                  ))
-                }
+                <FlatList
+                  bounces={false}
+                  data={focusedJob.additionalCharges}
+                  keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={renderServiceItem}
+                  style={ListStyle}
+                />
               </ServicesWrap>
             }
           </Content>
@@ -295,23 +314,19 @@ const InstructionTab = ({
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-    >
-      <JobInstruction>
-        { renderComments() }
+    <JobInstruction>
+      { renderComments() }
 
-        {
-          focusedJob.isEnabledCashCollection &&
-          renderCollect()
-        }
+      {
+        focusedJob.isEnabledCashCollection &&
+        renderCollect()
+      }
 
-        {
-          focusedJob.additionalCharges.length > 0 &&
-          renderServices()
-        }
-      </JobInstruction>
-    </ScrollView>
+      {
+        focusedJob.additionalCharges.length > 0 &&
+        renderServices()
+      }
+    </JobInstruction>
   );
 };
 
