@@ -208,7 +208,7 @@ const InstructionTab = ({
                 keyExtractor={(item) => `${item.jobMessageId}`}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderCommentItem}
-                style={ListStyle}
+                style={ListStyle()}
               />
             </CommentsWrap>
           }
@@ -303,7 +303,7 @@ const InstructionTab = ({
                   keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
                   showsVerticalScrollIndicator={false}
                   renderItem={renderServiceItem}
-                  style={ListStyle}
+                  style={ListStyle()}
                 />
               </ServicesWrap>
             }
