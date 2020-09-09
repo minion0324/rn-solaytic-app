@@ -93,9 +93,12 @@ const AlertScreen = ({
     pushNotifications.setNotificationHandlerForAlerts(onNotification);
   }, [coreScreenInfo]);
 
-  useNavigationComponentDidAppear(() => {
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
     setCoreScreenInfo({
       componentId,
+      componentName,
       componentType: 'tab',
     });
 
