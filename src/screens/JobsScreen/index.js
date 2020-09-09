@@ -61,6 +61,7 @@ const JobsScreen = ({
   allJobs,
   pageOfJobs,
   dateForJobs,
+  focusedJobId,
   coreScreenInfo,
   isNetworkConnected,
   getJobsByDate,
@@ -118,6 +119,13 @@ const JobsScreen = ({
   const onNotification = async (jobId, message) => {
     try {
       if (coreScreenInfo.componentType === 'push') {
+        if (
+          message && jobId === focusedJobId &&
+          coreScreenInfo.componentName === JOB_DETAILS_SCREEN
+        ) {
+          return;
+        }
+
         popToRootScreen(coreScreenInfo.componentId);
         await delay(100);
       }
@@ -296,6 +304,7 @@ JobsScreen.propTypes = {
   allJobs: PropTypes.array.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
+  focusedJobId: PropTypes.number,
   coreScreenInfo: PropTypes.object.isRequired,
   isNetworkConnected: PropTypes.bool.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
@@ -308,11 +317,16 @@ JobsScreen.propTypes = {
   componentId: PropTypes.string.isRequired,
 };
 
+JobsScreen.defaultProps = {
+  focusedJobId: null,
+};
+
 const mapStateToProps = (state) => {
   return {
     allJobs: Jobs.selectors.getAllJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
+    focusedJobId: Jobs.selectors.getFocusedJobId(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
     isNetworkConnected: ViewStore.selectors.getIsNetworkConnected(state),
   };
