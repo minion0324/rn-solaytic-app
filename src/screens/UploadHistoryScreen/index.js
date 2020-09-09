@@ -3,6 +3,7 @@ import { ActivityIndicator, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
   SVGS,
@@ -63,13 +64,18 @@ const UploadHistoryScreen = ({
   const timerId = useRef(null);
 
   useEffect(() => {
-    setCoreScreenInfo({
-      componentId,
-      componentType: 'push',
-    });
-
     onReload();
   }, []);
+
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
+    setCoreScreenInfo({
+      componentId,
+      componentName,
+      componentType: 'push',
+    });
+  });
 
   const getJobLogs = async () => {
     try {
