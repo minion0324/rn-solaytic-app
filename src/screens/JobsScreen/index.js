@@ -125,7 +125,7 @@ const JobsScreen = ({
 
       if (coreScreenInfo.componentType === 'push') {
         if (
-          message && jobId === focusedJobId &&
+          message && +jobId === focusedJobId &&
           coreScreenInfo.componentName === JOB_DETAILS_SCREEN
         ) {
           getJobById({
