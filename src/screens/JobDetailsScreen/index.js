@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
   JOB_STATUS,
@@ -75,13 +76,18 @@ const JobDetailsScreen = ({
   );
 
   useEffect(() => {
-    setCoreScreenInfo({
-      componentId,
-      componentType: 'push',
-    });
-
     checkIsInBackgroundMode();
   }, []);
+
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
+    setCoreScreenInfo({
+      componentId,
+      componentName,
+      componentType: 'push',
+    });
+  });
 
   const checkIsInBackgroundMode = async () => {
     try {
