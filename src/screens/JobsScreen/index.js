@@ -71,6 +71,7 @@ const JobsScreen = ({
   updateDateForJobs,
   setCoreScreenInfo,
   setIsNetworkConnected,
+  setNewCommentInfo,
   componentId,
 }) => {
   const [ reloading, setReloading ] = useState(false);
@@ -118,11 +119,21 @@ const JobsScreen = ({
 
   const onNotification = async (jobId, message) => {
     try {
+      if (message) {
+        setNewCommentInfo({ jobId, message });
+      }
+
       if (coreScreenInfo.componentType === 'push') {
         if (
           message && jobId === focusedJobId &&
           coreScreenInfo.componentName === JOB_DETAILS_SCREEN
         ) {
+          getJobById({
+            jobId,
+            success: () => {},
+            failure: () => {},
+          });
+
           return;
         }
 
@@ -314,6 +325,7 @@ JobsScreen.propTypes = {
   updateDateForJobs: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsNetworkConnected: PropTypes.func.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -340,6 +352,7 @@ const mapDispatchToProps = {
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsNetworkConnected: ViewStore.actionCreators.setIsNetworkConnected,
+  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
 };
 
 export default connect(
