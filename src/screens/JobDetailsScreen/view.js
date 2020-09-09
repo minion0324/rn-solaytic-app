@@ -53,6 +53,8 @@ const JobDetailsScreenView = ({
   setAmountCollected,
 
   focusedJob,
+  newCommentInfo,
+  setNewCommentInfo,
 
   onBack,
   onAcknowledge,
@@ -195,10 +197,14 @@ const JobDetailsScreenView = ({
       : <InstructionTab
           amountCollected={amountCollected}
           setAmountCollected={setAmountCollected}
+          setTabIndex={setTabIndex}
 
           focusedJob={focusedJob}
+          newCommentInfo={newCommentInfo}
+          setNewCommentInfo={setNewCommentInfo}
 
           onUpdateService={onUpdateService}
+          onReadMessages={onReadMessages}
           onNewComment={onNewComment}
           onUpdateAmountCollected={onUpdateAmountCollected}
           isInProgress={isInProgress}
@@ -270,6 +276,8 @@ JobDetailsScreenView.propTypes = {
   setAmountCollected: PropTypes.func.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
 
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,

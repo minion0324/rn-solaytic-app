@@ -34,6 +34,7 @@ import JobDetailsScreenView from './view';
 const JobDetailsScreen = ({
   focusedJob,
   photosAndSign,
+  newCommentInfo,
   acknowledgeJobs,
   startJobs,
   exchangeJobs,
@@ -45,6 +46,7 @@ const JobDetailsScreen = ({
   updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
+  setNewCommentInfo,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -365,6 +367,8 @@ const JobDetailsScreen = ({
       setAmountCollected={setAmountCollected}
 
       focusedJob={focusedJob}
+      newCommentInfo={newCommentInfo}
+      setNewCommentInfo={setNewCommentInfo}
 
       onBack={onBack}
       onAcknowledge={onAcknowledge}
@@ -387,6 +391,7 @@ const JobDetailsScreen = ({
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   photosAndSign: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
@@ -398,6 +403,7 @@ JobDetailsScreen.propTypes = {
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -409,6 +415,7 @@ const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),
+    newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
   };
 };
 
@@ -424,6 +431,7 @@ const mapDispatchToProps = {
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
+  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
 };
 
 export default connect(
