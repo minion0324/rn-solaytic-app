@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  HEIGHT,
   SIZE1,
   SIZE2,
   SIZE3,
@@ -288,6 +289,10 @@ const ServiceRow = styled.TouchableOpacity`
   margin-vertical: ${SIZE2}px;
 `;
 
+const ListStyle = {
+  maxHeight: HEIGHT - SIZE1 * 70,
+};
+
 export {
   ButtonWrap,
   JobDetails,
@@ -328,4 +333,5 @@ export {
   AddServices,
   ServicesWrap,
   ServiceRow,
+  ListStyle,
 };
