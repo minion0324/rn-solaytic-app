@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -67,16 +67,43 @@ const UNIT = '$ ';
 const InstructionTab = ({
   amountCollected,
   setAmountCollected,
+  setTabIndex,
 
   focusedJob,
+  newCommentInfo,
+  setNewCommentInfo,
 
   onUpdateService,
+  onReadMessages,
   onNewComment,
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
 }) => {
   const [ active, setActive ] = useState(COMMENT);
+
+  useEffect(() => {
+    onNewCommentInfo();
+  }, [newCommentInfo]);
+
+  const onNewCommentInfo = async () => {
+    try {
+      const { jobId } = newCommentInfo;
+
+      if (+jobId === focusedJob.jobId) {
+        setTabIndex(1);
+        await delay(100);
+
+        setActive(COMMENT);
+        await delay(100);
+
+        onReadMessages();
+        setNewCommentInfo({});
+      }
+    } catch (error) {
+      //
+    }
+  };
 
   const onShowCommentModal = () => {
     if (!onAlertNotProgress()) {
@@ -294,10 +321,14 @@ InstructionTab.propTypes = {
     PropTypes.string,
   ]),
   setAmountCollected: PropTypes.func.isRequired,
+  setTabIndex: PropTypes.func.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
 
   onUpdateService: PropTypes.func.isRequired,
+  onReadMessages: PropTypes.func.isRequired,
   onNewComment: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
