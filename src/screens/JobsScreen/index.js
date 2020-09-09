@@ -105,14 +105,17 @@ const JobsScreen = ({
     pushNotifications.setNotificationHandlerForJobs(onNotification);
   }, [coreScreenInfo]);
 
-  useNavigationComponentDidAppear(() => {
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
     setCoreScreenInfo({
       componentId,
+      componentName,
       componentType: 'tab',
     });
   });
 
-  const onNotification = async (jobId) => {
+  const onNotification = async (jobId, message) => {
     try {
       if (coreScreenInfo.componentType === 'push') {
         popToRootScreen(coreScreenInfo.componentId);
