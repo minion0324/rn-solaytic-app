@@ -185,20 +185,20 @@ const JobCard = ({
       <FlexWrap flex={2}>
         <ContentWrap hasBorder>
           <FlexWrap flex={2}>
-            <TimeText>
+            <TimeText numberOfLines={1}>
               {
                 moment(jobTimeSpecific || jobDate).format(DATE_FORMAT)
               }
             </TimeText>
             <SpaceView mTop={SIZE1} />
-            <TimeText>
+            <TimeText numberOfLines={1}>
               {
                 jobTimeSpecific
                 ? moment(jobTimeSpecific).format(TIME_FORMAT) : ''
               }
             </TimeText>
           </FlexWrap>
-          <SpaceView mLeft={SIZE2} />
+          <SpaceView mLeft={SIZE1} />
           <FlexWrap flex={7}>
             <CustomerText numberOfLines={1}>
               {customerName}
