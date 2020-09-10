@@ -289,9 +289,13 @@ const ServiceRow = styled.TouchableOpacity`
   margin-vertical: ${SIZE2}px;
 `;
 
-const ListStyle = () => ({
+const ListStyle1 = {
+  maxHeight: HEIGHT - SIZE1 * 100,
+};
+
+const ListStyle2 = {
   maxHeight: HEIGHT - SIZE1 * 70,
-});
+};
 
 export {
   ButtonWrap,
@@ -333,5 +337,6 @@ export {
   AddServices,
   ServicesWrap,
   ServiceRow,
-  ListStyle,
+  ListStyle1,
+  ListStyle2,
 };

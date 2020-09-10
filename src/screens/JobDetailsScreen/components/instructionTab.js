@@ -50,7 +50,8 @@ import {
   AddServices,
   ServicesWrap,
   ServiceRow,
-  ListStyle,
+  ListStyle1,
+  ListStyle2,
 } from '../styled';
 
 const {
@@ -208,7 +209,11 @@ const InstructionTab = ({
                 keyExtractor={(item) => `${item.jobMessageId}`}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderCommentItem}
-                style={ListStyle()}
+                style={
+                  // focusedJob.isEnabledCashCollection
+                  true
+                  ? ListStyle1 : ListStyle2
+                }
               />
             </CommentsWrap>
           }
@@ -303,7 +308,11 @@ const InstructionTab = ({
                   keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
                   showsVerticalScrollIndicator={false}
                   renderItem={renderServiceItem}
-                  style={ListStyle()}
+                  style={
+                    // focusedJob.isEnabledCashCollection
+                    true
+                    ? ListStyle1 : ListStyle2
+                  }
                 />
               </ServicesWrap>
             }
@@ -318,7 +327,7 @@ const InstructionTab = ({
       { renderComments() }
 
       {
-        focusedJob.isEnabledCashCollection &&
+        // focusedJob.isEnabledCashCollection &&
         renderCollect()
       }
 
