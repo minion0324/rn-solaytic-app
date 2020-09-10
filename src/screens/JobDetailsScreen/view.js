@@ -197,6 +197,7 @@ const JobDetailsScreenView = ({
       : <InstructionTab
           amountCollected={amountCollected}
           setAmountCollected={setAmountCollected}
+          tabIndex={tabIndex}
           setTabIndex={setTabIndex}
 
           focusedJob={focusedJob}

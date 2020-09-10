@@ -67,6 +67,7 @@ const UNIT = '$ ';
 const InstructionTab = ({
   amountCollected,
   setAmountCollected,
+  tabIndex,
   setTabIndex,
 
   focusedJob,
@@ -84,8 +85,14 @@ const InstructionTab = ({
 
   const [ maxHeight, setMaxHeight ] = useState(0);
 
+  const listRef = useRef(null);
+
   const wrap1Height = useRef(null);
   const wrap2Height = useRef(null);
+
+  useEffect(() => {
+    onCommentActive();
+  }, [tabIndex, active]);
 
   useEffect(() => {
     onNewCommentInfo();
@@ -98,6 +105,17 @@ const InstructionTab = ({
       setMaxHeight(result);
     }
   }, [wrap1Height.current, wrap2Height.current]);
+
+  const onCommentActive = async () => {
+    try {
+      if (tabIndex === 1 && active === COMMENT) {
+        await delay(1000);
+        listRef.current.scrollToEnd();
+      }
+    } catch (error) {
+      //
+    }
+  };
 
   const onNewCommentInfo = async () => {
     try {
@@ -215,6 +233,7 @@ const InstructionTab = ({
             focusedJob.messages.length > 0 &&
             <CommentsWrap>
               <FlatList
+                ref={listRef}
                 bounces={false}
                 data={focusedJob.messages}
                 keyExtractor={(item) => `${item.jobMessageId}`}
@@ -360,6 +379,7 @@ InstructionTab.propTypes = {
     PropTypes.string,
   ]),
   setAmountCollected: PropTypes.func.isRequired,
+  tabIndex: PropTypes.number.isRequired,
   setTabIndex: PropTypes.func.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
