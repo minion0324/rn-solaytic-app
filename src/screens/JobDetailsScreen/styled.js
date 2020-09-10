@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  HEIGHT,
   SIZE1,
   SIZE2,
   SIZE3,
@@ -22,6 +21,7 @@ const ButtonWrap = styled.View`
 `;
 
 const JobDetails = styled.View`
+  flex: 1;
   margin-bottom: ${SIZE2}px;
   margin-horizontal: ${SIZE2}px;
 `;
@@ -208,7 +208,7 @@ const SignInfoText = styled.Text`
 `;
 
 const JobInstruction = styled.View`
-flex: 1;
+  flex: 1;
   margin-bottom: ${SIZE2}px;
   margin-horizontal: ${SIZE2}px;
 `;
@@ -290,14 +290,6 @@ const ServiceRow = styled.TouchableOpacity`
   margin-vertical: ${SIZE2}px;
 `;
 
-const ListStyle1 = {
-  maxHeight: HEIGHT - SIZE1 * 100,
-};
-
-const ListStyle2 = {
-  maxHeight: HEIGHT - SIZE1 * 70,
-};
-
 export {
   ButtonWrap,
   JobDetails,
@@ -338,6 +330,4 @@ export {
   AddServices,
   ServicesWrap,
   ServiceRow,
-  ListStyle1,
-  ListStyle2,
 };
