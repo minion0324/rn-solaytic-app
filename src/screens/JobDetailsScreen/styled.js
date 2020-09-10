@@ -208,6 +208,7 @@ const SignInfoText = styled.Text`
 `;
 
 const JobInstruction = styled.View`
+flex: 1;
   margin-bottom: ${SIZE2}px;
   margin-horizontal: ${SIZE2}px;
 `;
