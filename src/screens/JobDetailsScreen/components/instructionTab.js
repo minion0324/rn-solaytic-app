@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   FlatList,
@@ -50,8 +50,6 @@ import {
   AddServices,
   ServicesWrap,
   ServiceRow,
-  ListStyle1,
-  ListStyle2,
 } from '../styled';
 
 const {
@@ -84,18 +82,22 @@ const InstructionTab = ({
 }) => {
   const [ active, setActive ] = useState(COMMENT);
 
-  const [ wrapHeight1, setWrapHeight1 ] = useState(0);
-  const [ wrapHeight2, setWrapHeight2 ] = useState(0);
-
   const [ maxHeight, setMaxHeight ] = useState(0);
+
+  const wrap1Height = useRef(null);
+  const wrap2Height = useRef(null);
 
   useEffect(() => {
     onNewCommentInfo();
   }, [newCommentInfo]);
 
   useEffect(() => {
-    setMaxHeight(wrapHeight1 - wrapHeight2 - SIZE1 * 30);
-  }, [wrapHeight1, wrapHeight2]);
+    const result = wrap1Height.current - wrap2Height.current - SIZE1 * 28;
+
+    if (result > 0) {
+      setMaxHeight(result);
+    }
+  }, [wrap1Height.current, wrap2Height.current]);
 
   const onNewCommentInfo = async () => {
     try {
@@ -189,15 +191,9 @@ const InstructionTab = ({
   };
 
   const renderComments = () => {
-    console.log(wrapHeight1);
-    console.log(wrapHeight2);
-
-    console.log(maxHeight);
-
     if (active !== COMMENT) {
       return (
-        <View
-        >
+        <View>
           <SpaceView mTop={SIZE2} />
           <ShadowWrap>
             <Content>
@@ -213,8 +209,7 @@ const InstructionTab = ({
     }
 
     return (
-      <ShadowWrap
-      >
+      <ShadowWrap>
         <Content>
           {
             focusedJob.messages.length > 0 &&
@@ -225,18 +220,11 @@ const InstructionTab = ({
                 keyExtractor={(item) => `${item.jobMessageId}`}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderCommentItem}
-                style={
-                  { maxHeight: maxHeight }
-                //   // focusedJob.isEnabledCashCollection
-                //   // true
-                //   // ? ListStyle1 : ListStyle2
-                }
+                style={{ maxHeight }}
               />
             </CommentsWrap>
           }
-          <AddComment onPress={onShowCommentModal}
-            style={{ backgroundColor: 'purple' }}
-          >
+          <AddComment onPress={onShowCommentModal}>
             <CommentIcon />
             <SpaceView mLeft={SIZE1} />
             <InfoText>ADD COMMENT</InfoText>
@@ -250,7 +238,9 @@ const InstructionTab = ({
     return (
       <View
         onLayout={({ nativeEvent: { layout } }) => {
-          setWrapHeight2(layout.height);
+          if (Math.abs(wrap2Height.current - layout.height) > SIZE1) {
+            wrap2Height.current = layout.height;
+          }
         }}
       >
         <SpaceView mTop={SIZE2} />
@@ -313,8 +303,7 @@ const InstructionTab = ({
 
   const renderServices = () => {
     return (
-      <View
-      >
+      <View>
         <SpaceView mTop={SIZE2} />
         <ShadowWrap>
           <Content>
@@ -332,12 +321,7 @@ const InstructionTab = ({
                   keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
                   showsVerticalScrollIndicator={false}
                   renderItem={renderServiceItem}
-                  style={
-                    {  }
-                    // focusedJob.isEnabledCashCollection
-                    // true
-                    // ? ListStyle1 : ListStyle2
-                  }
+                  style={{ maxHeight }}
                 />
               </ServicesWrap>
             }
@@ -350,13 +334,15 @@ const InstructionTab = ({
   return (
     <JobInstruction
       onLayout={({ nativeEvent: { layout } }) => {
-        setWrapHeight1(layout.height);
+        if (Math.abs(wrap1Height.current - layout.height) > SIZE1) {
+          wrap1Height.current = layout.height;
+        }
       }}
     >
       { renderComments() }
 
       {
-        // focusedJob.isEnabledCashCollection &&
+        focusedJob.isEnabledCashCollection &&
         renderCollect()
       }
 
