@@ -30,6 +30,7 @@ import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
 import ServiceIcon from 'src/assets/svgs/icon-service.svg';
+import CancelIcon from 'src/assets/svgs/icon-cancel.svg';
 
 export default {
   ActiveCheckIcon,
@@ -64,4 +65,5 @@ export default {
   HappyIcon,
   CalendarIcon,
   ServiceIcon,
+  CancelIcon,
 };
