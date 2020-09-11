@@ -207,6 +207,13 @@ const SignInfoText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const CancelButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: ${SIZE1}px;
+`;
+
 const JobInstruction = styled.View`
   flex: 1;
   margin-bottom: ${SIZE2}px;
@@ -318,6 +325,7 @@ export {
   HalfWrap,
   SignInfo,
   SignInfoText,
+  CancelButton,
 
   JobInstruction,
   CommentsWrap,
