@@ -290,6 +290,20 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onCancelPhoto = (index) => {
+    const newPhotos = photos.slice(0);
+    newPhotos.splice(index, 1);
+
+    setPhotos(newPhotos);
+  };
+
+  const onCancelSign = () => {
+    setSign(photosAndSign.sign);
+
+    setSignedUserName(photosAndSign.signedUserName);
+    setSignedUserContact(photosAndSign.signedUserContact);
+  };
+
   const onFail = () => {
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
@@ -377,6 +391,8 @@ const JobDetailsScreen = ({
       onComplete={onComplete}
       onPhoto={onPhoto}
       onSign={onSign}
+      onCancelPhoto={onCancelPhoto}
+      onCancelSign={onCancelSign}
       onFail={onFail}
       onUpdateService={onUpdateService}
       onReadMessages={onReadMessages}

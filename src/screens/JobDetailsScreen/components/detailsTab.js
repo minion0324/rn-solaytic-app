@@ -59,6 +59,7 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
+  CancelButton,
 } from '../styled';
 
 const {
@@ -71,6 +72,7 @@ const {
   ActiveCashIcon,
   DeactiveCashIcon,
   ArrowLocationIcon,
+  CancelIcon,
 } = SVGS;
 
 const DetailsTab = ({
@@ -89,6 +91,8 @@ const DetailsTab = ({
   onAcknowledge,
   onPhoto,
   onSign,
+  onCancelPhoto,
+  onCancelSign,
   isInProgress,
 }) => {
   const [ binIndex, setBinIndex ] = useState(0);
@@ -198,6 +202,13 @@ const DetailsTab = ({
     };
 
     setBinInfo(newBinInfo);
+  };
+
+  const isForComplete = () => {
+    return (
+      (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+      (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2))
+    );
   };
 
   const renderLocationInfo = () => {
@@ -559,10 +570,18 @@ const DetailsTab = ({
     return (
       <View>
         {
-          photos.map(photo =>
+          photos.map((photo, index) =>
             <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
               <AttachmentWrap>
                 <FullImage source={{ uri: photo.uri }} />
+                {
+                  isForComplete() &&
+                  <CancelButton
+                    onPress={() => onCancelPhoto(index)}
+                  >
+                    <CancelIcon />
+                  </CancelButton>
+                }
               </AttachmentWrap>
             </ItemWrap>
           )
@@ -586,6 +605,12 @@ const DetailsTab = ({
                   </SignInfoText>
                 </SignInfo>
               </HalfWrap>
+              {
+                isForComplete() &&
+                <CancelButton onPress={onCancelSign}>
+                  <CancelIcon />
+                </CancelButton>
+              }
             </AttachmentWrap>
           </ItemWrap>
         }
@@ -641,8 +666,7 @@ const DetailsTab = ({
         </JobDetails>
       </ScrollView>
       {
-        (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-        (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+        isForComplete() &&
         renderPhotoAndSign()
       }
     </FlexWrap>
@@ -665,6 +689,8 @@ DetailsTab.propTypes = {
   onAcknowledge: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
+  onCancelPhoto: PropTypes.func.isRequired,
+  onCancelSign: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
 };
 

@@ -63,6 +63,8 @@ const JobDetailsScreenView = ({
   onComplete,
   onPhoto,
   onSign,
+  onCancelPhoto,
+  onCancelSign,
   onFail,
   onUpdateService,
   onReadMessages,
@@ -192,6 +194,8 @@ const JobDetailsScreenView = ({
           onAcknowledge={onAcknowledge}
           onPhoto={onPhoto}
           onSign={onSign}
+          onCancelPhoto={onCancelPhoto}
+          onCancelSign={onCancelSign}
           isInProgress={isInProgress}
         />
       : <InstructionTab
@@ -287,6 +291,8 @@ JobDetailsScreenView.propTypes = {
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
+  onCancelPhoto: PropTypes.func.isRequired,
+  onCancelSign: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onUpdateService: PropTypes.func.isRequired,
   onReadMessages: PropTypes.func.isRequired,
