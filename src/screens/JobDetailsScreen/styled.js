@@ -96,35 +96,6 @@ const CashButton = styled.TouchableOpacity`
   margin-left: ${SIZE4}px;
 `;
 
-const BinButtonWrap = styled.View`
-  width: 80%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin-vertical: ${SIZE4}px;
-`;
-
-const BinButton = styled.TouchableOpacity`
-  width: ${SIZE20}px;
-  height: ${SIZE8}px;
-  align-items: center;
-  justify-content: center;
-  border-radius: ${SIZE4}px;
-  background-color: ${(props) => (
-    props.active ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-  )};
-  border-width: 2px;
-  border-color: ${COLORS.BLUE1};
-`;
-
-const BinButtonText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${(props) => (
-    props.active ? COLORS.WHITE1 : COLORS.BLUE1
-  )};
-`;
-
 const BinInfoWrap = styled.View`
   margin-bottom: ${SIZE4}px;
 `;
@@ -312,9 +283,6 @@ export {
   NumberText,
   RowWrap,
   CashButton,
-  BinButtonWrap,
-  BinButton,
-  BinButtonText,
   BinInfoWrap,
   BinInfoRow,
   BinText,
