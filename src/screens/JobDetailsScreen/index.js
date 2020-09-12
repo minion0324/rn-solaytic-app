@@ -62,11 +62,11 @@ const JobDetailsScreen = ({
   const [ binInfo, setBinInfo ] = useState(
     [0, 1].map((index) => {
       const {
-        wasteType, binType, binNumber, binWeight,
+        jobStepId, wasteType, binType, binNumber, binWeight,
       } = focusedJob.steps[index];
 
       return {
-        wasteType, binType, binNumber, binWeight,
+        jobStepId, wasteType, binType, binNumber, binWeight,
       };
     })
   );
@@ -147,11 +147,11 @@ const JobDetailsScreen = ({
   const getUpdatedBinInfo = () => {
     return [0, 1].map((index) => {
       const {
-        wasteType, binType, binNumber, binWeight,
+        jobStepId, wasteType, binType, binNumber, binWeight,
       } = binInfo[index];
 
       return {
-        jobStepId: focusedJob.steps[index].jobStepId,
+        jobStepId: jobStepId,
         wasteTypeId: wasteType && wasteType.wasteTypeId,
         binTypeId: binType && binType.binTypeId,
         binNumber: binNumber,
