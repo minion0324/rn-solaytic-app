@@ -97,7 +97,9 @@ const CashButton = styled.TouchableOpacity`
 `;
 
 const BinInfoWrap = styled.View`
-  margin-bottom: ${SIZE4}px;
+  padding-vertical: ${SIZE4}px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
 `;
 
 const BinInfoRow = styled.View`
