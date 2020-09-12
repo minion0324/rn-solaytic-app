@@ -412,6 +412,9 @@ const DetailsTab = ({
           binInfo.map((item, index) => (
             (item.wasteType || item.binType) &&
             <BinInfoWrap key={`${item.jobStepId}`}>
+              <InfoText numberOfLines={1}>
+                {`BIN ${index + 1}`}
+              </InfoText>
               <RowWrap>
                 <FlexWrap flex={0.5}>
                   <LabelText>Waste Type</LabelText>
