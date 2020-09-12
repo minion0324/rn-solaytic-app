@@ -46,9 +46,6 @@ import {
   NumberText,
   RowWrap,
   CashButton,
-  BinButtonWrap,
-  BinButton,
-  BinButtonText,
   BinInfoWrap,
   BinInfoRow,
   BinText,
@@ -412,148 +409,124 @@ const DetailsTab = ({
     return (
       <View>
         {
-          binInfo[1].wasteType || binInfo[1].binType
-          ? <BinButtonWrap>
-              <BinButton
-                active={binIndex === 0}
-                onPress={() => setBinIndex(0)}
-              >
-                <BinButtonText active={binIndex === 0}>Bin1</BinButtonText>
-              </BinButton>
-              <BinButton
-                active={binIndex === 1}
-                onPress={() => setBinIndex(1)}
-              >
-                <BinButtonText active={binIndex === 1}>Bin2</BinButtonText>
-              </BinButton>
-            </BinButtonWrap>
-          : <BinButtonWrap>
-              <BinButton
-                active={binIndex === 0}
-                onPress={() => setBinIndex(0)}
-              >
-                <BinButtonText active={binIndex === 0}>Bin</BinButtonText>
-              </BinButton>
-            </BinButtonWrap>
-        }
-        <BinInfoWrap>
-          <RowWrap>
-            <FlexWrap flex={0.5}>
-              <LabelText>Waste Type</LabelText>
-            </FlexWrap>
-            <BinInfoRow editable={editable}>
-              <BinText
-                numberOfLines={2}
-                editable={editable}
-              >
-                {
-                  binInfo[binIndex]['wasteType'] &&
-                  binInfo[binIndex]['wasteType']['wasteTypeName']
-                }
-              </BinText>
-              {
-                editable &&
-                <TouchableOpacity
-                  onPress={() => onShowActionSheet('wasteType')}
-                >
-                  <EditIcon />
-                </TouchableOpacity>
-              }
-            </BinInfoRow>
-          </RowWrap>
-
-          <RowWrap>
-            <FlexWrap flex={0.5}>
-              <LabelText>Bin Type</LabelText>
-            </FlexWrap>
-            <BinInfoRow editable={editable}>
-              <BinText
-                numberOfLines={2}
-                editable={editable}
-              >
-                {
-                  binInfo[binIndex]['binType'] &&
-                  binInfo[binIndex]['binType']['binTypeName']
-                }
-              </BinText>
-              {
-                editable &&
-                <TouchableOpacity
-                  onPress={() => onShowActionSheet('binType')}
-                >
-                  <EditIcon />
-                </TouchableOpacity>
-              }
-            </BinInfoRow>
-          </RowWrap>
-
-          <RowWrap>
-            <FlexWrap flex={0.5}>
-              <LabelText
-                required={focusedJob.isRequireBinNumberToStart}
-              >
-                {
-                  focusedJob.isRequireBinNumberToStart
-                  ? 'Bin ID *' : 'Bin ID'
-                }
-              </LabelText>
-            </FlexWrap>
-            <BinInfoRow editable={editable}>
-              <BinInput
-                underlineColorAndroid={COLORS.TRANSPARENT1}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                placeholder={'BIN NUMBER'}
-                value={
-                  `${binInfo[binIndex]['binNumber'] || ''}`
-                }
-                onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
-                editable={editable}
-              />
-              {
-                editable &&
-                <TouchableOpacity
-                  onPress={() => onShowActionSheet('binNumber')}
-                >
-                  <EditIcon />
-                </TouchableOpacity>
-              }
-            </BinInfoRow>
-          </RowWrap>
-
-          {
-            focusedJob.isEnabledBinWeight &&
-            (!!binInfo[binIndex]['binWeight'] || editable) &&
-            <RowWrap>
-              <FlexWrap flex={0.5}>
-                <LabelText>Bin Weight</LabelText>
-              </FlexWrap>
-              <BinInfoRow editable={editable}>
-                <BinInput
-                  ref={inputBinWeight}
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  placeholder={'BIN WEIGHT'}
-                  keyboardType={'numeric'}
-                  value={
-                    `${binInfo[binIndex]['binWeight'] || ''}`
-                  }
-                  onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
-                  editable={editable}
-                />
-                {
-                  editable &&
-                  <TouchableOpacity
-                    onPress={() => inputBinWeight.current.focus()}
+          binInfo.map((item, index) => (
+            (item.wasteType || item.binType) &&
+            <BinInfoWrap key={`${item.jobStepId}`}>
+              <RowWrap>
+                <FlexWrap flex={0.5}>
+                  <LabelText>Waste Type</LabelText>
+                </FlexWrap>
+                <BinInfoRow editable={editable}>
+                  <BinText
+                    numberOfLines={2}
+                    editable={editable}
                   >
-                    <EditIcon />
-                  </TouchableOpacity>
-                }
-              </BinInfoRow>
-            </RowWrap>
-          }
-        </BinInfoWrap>
+                    {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                  </BinText>
+                  {
+                    editable &&
+                    <TouchableOpacity
+                      onPress={() => onShowActionSheet('wasteType')}
+                    >
+                      <EditIcon />
+                    </TouchableOpacity>
+                  }
+                </BinInfoRow>
+              </RowWrap>
+
+              <RowWrap>
+                <FlexWrap flex={0.5}>
+                  <LabelText>Bin Type</LabelText>
+                </FlexWrap>
+                <BinInfoRow editable={editable}>
+                  <BinText
+                    numberOfLines={2}
+                    editable={editable}
+                  >
+                    {item['binType'] && item['binType']['binTypeName']}
+                  </BinText>
+                  {
+                    editable &&
+                    <TouchableOpacity
+                      onPress={() => onShowActionSheet('binType')}
+                    >
+                      <EditIcon />
+                    </TouchableOpacity>
+                  }
+                </BinInfoRow>
+              </RowWrap>
+
+              <RowWrap>
+                <FlexWrap flex={0.5}>
+                  <LabelText
+                    required={focusedJob.isRequireBinNumberToStart}
+                  >
+                    {
+                      focusedJob.isRequireBinNumberToStart
+                      ? 'Bin ID *' : 'Bin ID'
+                    }
+                  </LabelText>
+                </FlexWrap>
+                <BinInfoRow editable={editable}>
+                  <BinInput
+                    underlineColorAndroid={COLORS.TRANSPARENT1}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    placeholder={'BIN NUMBER'}
+                    value={`${item['binNumber'] || ''}`}
+                    onChangeText={(text) => {
+                      setBinIndex(index);
+                      onUpdateBinInfo({ binNumber: text });
+                    }}
+                    editable={editable}
+                  />
+                  {
+                    editable &&
+                    <TouchableOpacity
+                      onPress={() => onShowActionSheet('binNumber')}
+                    >
+                      <EditIcon />
+                    </TouchableOpacity>
+                  }
+                </BinInfoRow>
+              </RowWrap>
+
+              {
+                focusedJob.isEnabledBinWeight &&
+                (!!item['binWeight'] || editable) &&
+                <RowWrap>
+                  <FlexWrap flex={0.5}>
+                    <LabelText>Bin Weight</LabelText>
+                  </FlexWrap>
+                  <BinInfoRow editable={editable}>
+                    <BinInput
+                      ref={inputBinWeight}
+                      underlineColorAndroid={COLORS.TRANSPARENT1}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      placeholder={'BIN WEIGHT'}
+                      keyboardType={'numeric'}
+                      value={`${item['binWeight'] || ''}`}
+                      onChangeText={(text) => {
+                        setBinIndex(index);
+                        onUpdateBinInfo({ binWeight: text });
+                      }}
+                      editable={editable}
+                    />
+                    {
+                      editable &&
+                      <TouchableOpacity
+                        onPress={() => inputBinWeight.current.focus()}
+                      >
+                        <EditIcon />
+                      </TouchableOpacity>
+                    }
+                  </BinInfoRow>
+                </RowWrap>
+              }
+            </BinInfoWrap>
+          ))
+        }
 
         <ActionSheet
           ref={actionSheetRef}
