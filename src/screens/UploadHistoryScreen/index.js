@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Keyboard } from 'react-native';
+import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -11,6 +11,7 @@ import {
   SIZE1,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
+  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   popScreen,
@@ -20,10 +21,15 @@ import {
   ListWrap,
 } from 'src/components';
 import {
+  Jobs,
   ViewStore,
 } from 'src/redux';
 import {
+  addItemToCache,
+  removeItemFromCache,
+  getCacheItemById,
   getCacheItems,
+  getTimestamp,
 } from 'src/utils';
 
 import {
@@ -46,11 +52,14 @@ import {
 import {
   Item,
   ItemText,
+  StatusWrap,
+  RetryButton,
 } from './styled';
 
-const { SearchIcon } = SVGS;
+const { SearchIcon, RetryIcon } = SVGS;
 
 const UploadHistoryScreen = ({
+  completeJobs,
   setCoreScreenInfo,
   componentId,
 }) => {
@@ -123,6 +132,41 @@ const UploadHistoryScreen = ({
     }, 2500);
   };
 
+  const onRetrySuccess = async (id) => {
+    try {
+      await removeItemFromCache(BACKGROUND_FETCH_KEY, id);
+
+      await addItemToCache(COMPLETE_JOBS_KEY, id, {
+        timestamp: getTimestamp(),
+        status: JOB_STATUS.COMPLETED,
+      });
+
+      onRefresh();
+    } catch (error) {
+      //
+    }
+  };
+
+  const onRetry = async (item) => {
+    try {
+      const {
+        value: { fetchData },
+      } = await getCacheItemById(BACKGROUND_FETCH_KEY, item.id);
+
+      const [ jobIds, stepBinUpdate, attempt ] = fetchData;
+
+      completeJobs({
+        jobIds,
+        stepBinUpdate,
+        attempt,
+        success: () => onRetrySuccess(item.id),
+        failure: () => {},
+      });
+    } catch (error) {
+      Alert.alert('Warning', 'Something went wrong.');
+    }
+  };
+
   const renderItem = ({ item }) => {
     const {
       id: { jobNumber },
@@ -137,7 +181,7 @@ const UploadHistoryScreen = ({
 
     return (
       <Item>
-        <FlexWrap flex={0.7}>
+        <FlexWrap flex={5}>
           <ItemText numberOfLines={1}>
             {
               'Uploaded: ' +
@@ -149,13 +193,26 @@ const UploadHistoryScreen = ({
             {jobNumber}
           </ItemText>
         </FlexWrap>
-        <FlexWrap flex={0.3}>
-          <ItemText
-            numberOfLines={2}
-            color={color}
-          >
-            {status}
-          </ItemText>
+        <FlexWrap flex={4}>
+          <StatusWrap>
+            <ItemText numberOfLines={2} color={color}>
+              {status}
+            </ItemText>
+            {
+              status !== JOB_STATUS.FAILED &&
+              status !== JOB_STATUS.COMPLETED &&
+              <RetryButton onPress={() => onRetry(item)}>
+                <RetryIcon />
+                <SpaceView mLeft={SIZE1} />
+                <ItemText
+                  numberOfLines={1}
+                  color={COLORS.GRAY3}
+                >
+                  Retry
+                </ItemText>
+              </RetryButton>
+            }
+          </StatusWrap>
         </FlexWrap>
       </Item>
     );
@@ -209,6 +266,7 @@ const UploadHistoryScreen = ({
 };
 
 UploadHistoryScreen.propTypes = {
+  completeJobs: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -224,6 +282,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  completeJobs: Jobs.actionCreators.completeJobs,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
 };
 
