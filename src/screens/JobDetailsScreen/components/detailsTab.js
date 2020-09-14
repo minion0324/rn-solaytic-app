@@ -14,6 +14,7 @@ import {
   SVGS,
   COLORS,
   JOB_STATUS,
+  JOB_TYPE,
   SIZE1,
   SIZE2,
 } from 'src/constants';
@@ -206,6 +207,80 @@ const DetailsTab = ({
       (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
       (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2))
     );
+  };
+
+  const getBinInOut = (index) => {
+    const { steps, jobTypeName } = focusedJob;
+
+    switch (jobTypeName) {
+      case JOB_TYPE.PULL:
+        if (index === 0) {
+          if (steps[index].customerSiteId) {
+            return ' (OUT)';
+          }
+        }
+        return '';
+
+      case JOB_TYPE.PUT:
+        if (index === 0) {
+          if (steps[index].customerSiteId) {
+            return ' (OUT)';
+          } else {
+            return ' (IN)';
+          }
+        }
+        return '';
+
+      case JOB_TYPE.EXCHANGE:
+        if (index === 0) {
+          if (steps[index].customerSiteId) {
+            return ' (IN)';
+          }
+        }
+
+        if (index === 1) {
+          if (steps[index].customerSiteId) {
+            return ' (OUT)';
+          }
+        }
+        return '';
+
+      case JOB_TYPE.ON_THE_SPOT:
+        if (index === 0) {
+          if (!steps[index].customerSiteId) {
+            return ' (OUT)';
+          }
+        }
+        return '';
+
+      case JOB_TYPE.OUT:
+        if (index === 0) {
+          if (!steps[index].customerSiteId) {
+            return ' (OUT)';
+          }
+        }
+        return '';
+
+      case JOB_TYPE.SHIFT:
+        if (index === 0) {
+          if (steps[index].customerSiteId) {
+            return ' (OUT)';
+          }
+        }
+
+        if (index === 1) {
+          if (steps[index].customerSiteId) {
+            return ' (IN)';
+          }
+        }
+        return '';
+
+      case JOB_TYPE.THROW_AT_CUSTOMER:
+        return '';
+
+      default:
+        return '';
+    };
   };
 
   const renderLocationInfo = () => {
@@ -413,7 +488,9 @@ const DetailsTab = ({
             (item.wasteType || item.binType) &&
             <BinInfoWrap key={`${item.jobStepId}`}>
               <InfoText numberOfLines={1}>
-                {`BIN ${index + 1}`}
+                {
+                  `BIN ${index + 1}` + getBinInOut(index)
+                }
               </InfoText>
               <RowWrap>
                 <FlexWrap flex={0.5}>
