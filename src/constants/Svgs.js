@@ -31,6 +31,7 @@ import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
 import ServiceIcon from 'src/assets/svgs/icon-service.svg';
 import CancelIcon from 'src/assets/svgs/icon-cancel.svg';
+import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 
 export default {
   ActiveCheckIcon,
@@ -66,4 +67,5 @@ export default {
   CalendarIcon,
   ServiceIcon,
   CancelIcon,
+  RetryIcon,
 };
