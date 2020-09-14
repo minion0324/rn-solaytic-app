@@ -35,6 +35,23 @@ export const removeItemFromCache = async (key, id) => {
   }
 };
 
+export const getCacheItemById = async (key, id) => {
+  try {
+    const str = await AsyncStorage.getItem(key);
+    const data = str ? JSON.parse(str) : [];
+
+    const index = data.findIndex(el => isEqual(el.id, id));
+
+    if (index !== -1) {
+      return data[index];
+    }
+
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
 export const getCacheItems = async (key) => {
   try {
     const str = await AsyncStorage.getItem(key);
