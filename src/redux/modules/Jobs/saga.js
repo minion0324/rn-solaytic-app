@@ -443,51 +443,54 @@ export function* asyncCompleteJobs({ payload }) {
     signedUserName,
     signedUserContact,
     amountCollected,
+    attempt: attemptData,
     success,
     failure,
   } = payload;
 
   let focusedJob = null;
-  let attempt = null;
+  let attempt = attemptData;
 
   try {
-    focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    if (!attempt) {
+      focusedJob = yield select(Jobs.selectors.getFocusedJob);
 
-    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+      const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
 
-    attempt = {
-      jobStepId: lastJobStep.jobStepId,
-      customerName: focusedJob.customer.customerName,
-      amountCollected,
-      siteName: lastJobStep.siteName,
-      address: lastJobStep.address,
-      wasteTypeId: focusedJob.steps[0].wasteTypeId,
-      binTypeId: focusedJob.steps[0].binTypeId,
-      binNumber: focusedJob.steps[0].binNumber,
-      binWeight: focusedJob.steps[0].binWeight,
-      wasteType2Id: focusedJob.steps[1].wasteTypeId,
-      binType2Id: focusedJob.steps[1].binTypeId,
-      binNumber2: focusedJob.steps[1].binNumber,
-      binWeight2: focusedJob.steps[1].binWeight,
-      submittedLat: lastJobStep.latitude,
-      submittedLng: lastJobStep.longitude,
-      submittedLocation: '', //
-      base64Signature: sign.data,
-      signatureFileName: sign.uri.split('/').pop(),
-      signedUserName,
-      signedUserContact,
-      driverName: '', //
-      vehicleName: '', //
-      remarks: focusedJob.remarks,
-      jobPhotos: photos.map((photo) => {
-        return {
-          jobStepId: lastJobStep.jobStepId,
-          base64Image: photo.data,
-          fileName: photo.uri.split('/').pop(),
-          photoCaption: '', //
-        }
-      }),
-    };
+      attempt = {
+        jobStepId: lastJobStep.jobStepId,
+        customerName: focusedJob.customer.customerName,
+        amountCollected,
+        siteName: lastJobStep.siteName,
+        address: lastJobStep.address,
+        wasteTypeId: focusedJob.steps[0].wasteTypeId,
+        binTypeId: focusedJob.steps[0].binTypeId,
+        binNumber: focusedJob.steps[0].binNumber,
+        binWeight: focusedJob.steps[0].binWeight,
+        wasteType2Id: focusedJob.steps[1].wasteTypeId,
+        binType2Id: focusedJob.steps[1].binTypeId,
+        binNumber2: focusedJob.steps[1].binNumber,
+        binWeight2: focusedJob.steps[1].binWeight,
+        submittedLat: lastJobStep.latitude,
+        submittedLng: lastJobStep.longitude,
+        submittedLocation: '', //
+        base64Signature: sign.data,
+        signatureFileName: sign.uri.split('/').pop(),
+        signedUserName,
+        signedUserContact,
+        driverName: '', //
+        vehicleName: '', //
+        remarks: focusedJob.remarks,
+        jobPhotos: photos.map((photo) => {
+          return {
+            jobStepId: lastJobStep.jobStepId,
+            base64Image: photo.data,
+            fileName: photo.uri.split('/').pop(),
+            photoCaption: '', //
+          }
+        }),
+      };
+    }
 
     const { data } = yield call(apiCompleteJobs, jobIds, stepBinUpdate, attempt);
 
