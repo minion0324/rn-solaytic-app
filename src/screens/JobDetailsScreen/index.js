@@ -194,7 +194,7 @@ const JobDetailsScreen = ({
       return;
     }
 
-    if (focusedJob.mustTakeSignature && !sign) {
+    if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
       Alert.alert('Warning', 'Please upload signature.');
       return;
     }
