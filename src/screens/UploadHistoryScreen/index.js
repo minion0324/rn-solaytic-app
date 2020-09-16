@@ -3,6 +3,7 @@ import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Toast from 'react-native-simple-toast';
 import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
@@ -53,6 +54,7 @@ import {
   Item,
   ItemText,
   StatusWrap,
+  RetryWrap,
   RetryButton,
 } from './styled';
 
@@ -132,23 +134,43 @@ const UploadHistoryScreen = ({
     }, 2500);
   };
 
-  const onRetrySuccess = async (id) => {
+  const updateJobLogs = (index, id, value, loading) => {
+    const newJobLogs = jobLogs.slice(0);
+    newJobLogs[index] = { id, value, loading };
+    setJobLogs(newJobLogs);
+  };
+
+  const onRetrySuccess = async (item, index) => {
     try {
+      const { id } = item;
+
       await removeItemFromCache(BACKGROUND_FETCH_KEY, id);
 
-      await addItemToCache(COMPLETE_JOBS_KEY, id, {
+      const value = {
         timestamp: getTimestamp(),
         status: JOB_STATUS.COMPLETED,
-      });
+      };
 
-      onRefresh();
+      await addItemToCache(COMPLETE_JOBS_KEY, id, value);
+
+      Toast.show('This job is completed.');
+
+      updateJobLogs(index, id, value, false);
     } catch (error) {
-      //
+      onRetryFailure(item, index);
     }
   };
 
-  const onRetry = async (item) => {
+  const onRetryFailure = (item, index) => {
+    Alert.alert('Warning', 'Something went wrong.');
+
+    updateJobLogs(index, item.id, item.value, false);
+  }
+
+  const onRetry = async (item, index) => {
     try {
+      updateJobLogs(index, item.id, item.value, true);
+
       const {
         value: { fetchData },
       } = await getCacheItemById(BACKGROUND_FETCH_KEY, item.id);
@@ -159,18 +181,19 @@ const UploadHistoryScreen = ({
         jobIds,
         stepBinUpdate,
         attempt,
-        success: () => onRetrySuccess(item.id),
-        failure: () => {},
+        success: () => onRetrySuccess(item, index),
+        failure: () => onRetryFailure(item, index),
       });
     } catch (error) {
-      Alert.alert('Warning', 'Something went wrong.');
+      onRetryFailure(item, index);
     }
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const {
       id: { jobNumber },
       value: { status, timestamp },
+      loading,
     } = item;
 
     const color = status === JOB_STATUS.COMPLETED
@@ -201,16 +224,27 @@ const UploadHistoryScreen = ({
             {
               status !== JOB_STATUS.FAILED &&
               status !== JOB_STATUS.COMPLETED &&
-              <RetryButton onPress={() => onRetry(item)}>
-                <RetryIcon />
-                <SpaceView mLeft={SIZE1} />
-                <ItemText
-                  numberOfLines={1}
-                  color={COLORS.GRAY3}
-                >
-                  Retry
-                </ItemText>
-              </RetryButton>
+              <RetryWrap>
+                {
+                  loading
+                  ? <ActivityIndicator
+                      size={'small'}
+                      color={COLORS.GRAY3}
+                    />
+                  : <RetryButton
+                      onPress={() => onRetry(item, index)}
+                    >
+                      <RetryIcon />
+                      <SpaceView mLeft={SIZE1} />
+                      <ItemText
+                        numberOfLines={1}
+                        color={COLORS.GRAY3}
+                      >
+                        Retry
+                      </ItemText>
+                    </RetryButton>
+                }
+              </RetryWrap>
             }
           </StatusWrap>
         </FlexWrap>
