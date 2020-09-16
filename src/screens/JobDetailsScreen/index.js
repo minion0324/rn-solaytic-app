@@ -160,12 +160,29 @@ const JobDetailsScreen = ({
     });
   };
 
+  const getUpdatedPricings = () => {
+    const pricings = services.reduce((result, item) => {
+      if (item.isSelected) {
+        result.push({
+          ...item,
+          jobId: focusedJob.jobId,
+          quantity: 1,
+        })
+      }
+
+      return result;
+    }, []);
+
+    return pricings;
+  };
+
   const onStart = () => {
     setLoading(true);
 
     startJobs({
       jobIds: `${focusedJob.jobId}`,
       stepBinUpdate: getUpdatedBinInfo(),
+      pricings: getUpdatedPricings(),
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.IN_PROGRESS1);
@@ -180,6 +197,7 @@ const JobDetailsScreen = ({
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
       stepBinUpdate: getUpdatedBinInfo(),
+      pricings: getUpdatedPricings(),
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.IN_PROGRESS2);
@@ -249,6 +267,7 @@ const JobDetailsScreen = ({
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
       stepBinUpdate: getUpdatedBinInfo(),
+      pricings: getUpdatedPricings(),
       photos,
       sign,
       signedUserName,
