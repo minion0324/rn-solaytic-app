@@ -39,8 +39,6 @@ const JobDetailsScreen = ({
   startJobs,
   exchangeJobs,
   completeJobs,
-  addService,
-  removeService,
   markMessagesAsRead,
   addMessage,
   updateAmountCollected,
@@ -76,6 +74,8 @@ const JobDetailsScreen = ({
   const [ amountCollected, setAmountCollected ] = useState(
     focusedJob.collectedAmount || focusedJob.amountToCollect
   );
+
+  const [ services, setServices ] = useState(focusedJob.additionalCharges);
 
   useEffect(() => {
     checkIsInBackgroundMode();
@@ -308,22 +308,19 @@ const JobDetailsScreen = ({
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
 
-  const onUpdateService = (service) => {
+  const onUpdateService = (item, index) => {
     if (!onAlertNotProgress()) {
       return;
     }
 
-    if (service.isSelected) {
-      removeService({
-        jobId: focusedJob.jobId,
-        serviceId: service.serviceAdditionalChargeTemplateId,
-      });
-    } else {
-      addService({
-        jobId: focusedJob.jobId,
-        serviceId: service.serviceAdditionalChargeTemplateId,
-      });
-    }
+    const newServices = services.slice(0);
+
+    newServices[index] = {
+      ...item,
+      isSelected: !item.isSelected,
+    };
+
+    setServices(newServices);
   };
 
   const onReadMessages = () => {
@@ -379,6 +376,7 @@ const JobDetailsScreen = ({
       jobStatus={jobStatus}
       amountCollected={amountCollected}
       setAmountCollected={setAmountCollected}
+      services={services}
 
       focusedJob={focusedJob}
       newCommentInfo={newCommentInfo}
@@ -412,8 +410,6 @@ JobDetailsScreen.propTypes = {
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  addService: PropTypes.func.isRequired,
-  removeService: PropTypes.func.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
   updateAmountCollected: PropTypes.func.isRequired,
@@ -440,8 +436,6 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  addService: Jobs.actionCreators.addService,
-  removeService: Jobs.actionCreators.removeService,
   markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
   addMessage: Jobs.actionCreators.addMessage,
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,

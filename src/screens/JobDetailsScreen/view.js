@@ -51,6 +51,7 @@ const JobDetailsScreenView = ({
   jobStatus,
   amountCollected,
   setAmountCollected,
+  services,
 
   focusedJob,
   newCommentInfo,
@@ -203,6 +204,7 @@ const JobDetailsScreenView = ({
           setAmountCollected={setAmountCollected}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
+          services={services}
 
           focusedJob={focusedJob}
           newCommentInfo={newCommentInfo}
@@ -279,6 +281,7 @@ JobDetailsScreenView.propTypes = {
     PropTypes.string,
   ]),
   setAmountCollected: PropTypes.func.isRequired,
+  services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
