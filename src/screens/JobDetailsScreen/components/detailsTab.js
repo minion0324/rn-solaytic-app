@@ -210,73 +210,70 @@ const DetailsTab = ({
   };
 
   const getBinInOut = (index) => {
-    const { steps, jobTypeName } = focusedJob;
-
-    switch (jobTypeName) {
+    switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
-        if (index === 0) {
-          if (steps[index].customerSiteId) {
-            return ' (OUT)';
-          }
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS2
+        ) {
+          return '';
         }
-        return '';
+
+        if (
+          jobStatus === JOB_STATUS.DISPATCHED ||
+          jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+          jobStatus === JOB_STATUS.IN_PROGRESS1
+        ) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
 
       case JOB_TYPE.PUT:
-        if (index === 0) {
-          if (steps[index].customerSiteId) {
-            return ' (OUT)';
-          } else {
-            return ' (IN)';
-          }
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS2
+        ) {
+          return '';
         }
-        return '';
+
+        if (jobStatus === JOB_STATUS.COMPLETED) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
 
       case JOB_TYPE.EXCHANGE:
-        if (index === 0) {
-          if (steps[index].customerSiteId) {
-            return ' (IN)';
-          }
+        if (jobStatus === JOB_STATUS.COMPLETED) {
+          return index === 0 ? ' (IN)' : ' (OUT)';
+        } else {
+          return index === 0 ? ' (OUT)' : ' (IN)';
         }
-
-        if (index === 1) {
-          if (steps[index].customerSiteId) {
-            return ' (OUT)';
-          }
-        }
-        return '';
-
-      case JOB_TYPE.ON_THE_SPOT:
-        if (index === 0) {
-          if (!steps[index].customerSiteId) {
-            return ' (OUT)';
-          }
-        }
-        return '';
 
       case JOB_TYPE.OUT:
-        if (index === 0) {
-          if (!steps[index].customerSiteId) {
-            return ' (OUT)';
-          }
+        if (index !== 0) {
+          return '';
         }
-        return '';
+
+        if (jobStatus === JOB_STATUS.COMPLETED) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
 
       case JOB_TYPE.SHIFT:
-        if (index === 0) {
-          if (steps[index].customerSiteId) {
-            return ' (OUT)';
-          }
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS2
+        ) {
+          return '';
         }
 
-        if (index === 1) {
-          if (steps[index].customerSiteId) {
-            return ' (IN)';
-          }
+        if (jobStatus === JOB_STATUS.IN_PROGRESS1) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
         }
-        return '';
-
-      case JOB_TYPE.THROW_AT_CUSTOMER:
-        return '';
 
       default:
         return '';
