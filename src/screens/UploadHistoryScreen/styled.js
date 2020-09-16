@@ -4,6 +4,8 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE5,
+  SIZE10,
   FONT,
 } from 'src/constants';
 
@@ -29,19 +31,27 @@ const StatusWrap = styled.View`
   justify-content: space-between;
 `;
 
-const RetryButton = styled.TouchableOpacity`
-  padding: ${SIZE1}px;
+const RetryWrap = styled.View`
+  width: ${SIZE10}px;
+  height: ${SIZE5}px;
   margin-left: ${SIZE2}px;
-  flex-direction: row;
   align-items: center;
+  justify-content: center;
   border-radius: ${SIZE1}px;
   border-width: 1px;
   border-color: ${COLORS.GRAY3};
+`;
+
+const RetryButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
 
 export {
   Item,
   ItemText,
   StatusWrap,
+  RetryWrap,
   RetryButton,
 };
