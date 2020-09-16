@@ -291,7 +291,7 @@ const DetailsTab = ({
             <IconWrap>
               <Location1Icon />
             </IconWrap>
-            <InfoText numberOfLines={1}>
+            <InfoText>
               {steps[0].address}
             </InfoText>
             <SpaceView mLeft={SIZE2} />
@@ -311,7 +311,7 @@ const DetailsTab = ({
               <IconWrap>
                 <Location2Icon />
               </IconWrap>
-              <InfoText numberOfLines={1}>
+              <InfoText>
                 {steps[1].address}
               </InfoText>
               <SpaceView mLeft={SIZE2} />
@@ -334,7 +334,7 @@ const DetailsTab = ({
                 <IconWrap>
                   <Location3Icon />
                 </IconWrap>
-                <InfoText numberOfLines={1}>
+                <InfoText>
                   {steps[2].address}
                 </InfoText>
                 <SpaceView mLeft={SIZE2} />
