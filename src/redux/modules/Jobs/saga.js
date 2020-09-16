@@ -475,7 +475,7 @@ export function* asyncCompleteJobs({ payload }) {
         submittedLng: lastJobStep.longitude,
         submittedLocation: '', //
         base64Signature: sign.data,
-        signatureFileName: sign.uri.split('/').pop(),
+        signatureFileName: (sign.uri || '').split('/').pop(),
         signedUserName,
         signedUserContact,
         driverName: '', //
@@ -485,7 +485,7 @@ export function* asyncCompleteJobs({ payload }) {
           return {
             jobStepId: lastJobStep.jobStepId,
             base64Image: photo.data,
-            fileName: photo.uri.split('/').pop(),
+            fileName: (photo.uri || '').split('/').pop(),
             photoCaption: '', //
           }
         }),
