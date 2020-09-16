@@ -16,7 +16,7 @@ import {
 } from 'src/constants';
 
 //
-const fetchCompleteJobs = async (token, jobIds, stepBinUpdate, attempt) => {
+const fetchCompleteJobs = async (token, jobIds, stepBinUpdate, pricings, attempt) => {
   try {
     const response = await fetch(
       `${API_BASE_URL}api/mobile/driver/jobs/Complete`,
@@ -27,7 +27,9 @@ const fetchCompleteJobs = async (token, jobIds, stepBinUpdate, attempt) => {
           'Content-Type': 'application/json',
           'Authorization': token,
         },
-        body: JSON.stringify({ jobIds, stepBinUpdate, attempt }),
+        body: JSON.stringify({
+          jobIds, stepBinUpdate, pricings, attempt,
+        }),
       }
     );
 
