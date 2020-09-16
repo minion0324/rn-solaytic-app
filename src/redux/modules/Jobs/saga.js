@@ -524,7 +524,9 @@ export function* asyncCompleteJobs({ payload }) {
         jobId: focusedJob.jobId,
         jobNumber: focusedJob.jobNumber,
       },
-      [jobIds, stepBinUpdate, attempt],
+      [
+        jobIds, stepBinUpdate, pricings, attempt,
+      ],
     );
     failure && failure();
   }
