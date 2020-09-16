@@ -16,8 +16,6 @@ import {
   COMPLETE_JOBS_SUCCESS,
   FAIL_JOBS_SUCCESS,
   GET_JOB_BY_ID_SUCCESS,
-  ADD_SERVICE_SUCCESS,
-  REMOVE_SERVICE_SUCCESS,
   MARK_MESSAGES_AS_READ_SUCCESS,
   ADD_MESSAGE_SUCCESS,
   UPDATE_AMOUNT_COLLECTED_SUCCESS,
@@ -80,10 +78,6 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case GET_JOB_BY_ID_SUCCESS:
         draft.focusedJob = payload;
-        break;
-      case ADD_SERVICE_SUCCESS:
-      case REMOVE_SERVICE_SUCCESS:
-        draft.focusedJob.additionalCharges = payload;
         break;
       case MARK_MESSAGES_AS_READ_SUCCESS:
         draft.focusedJob.haveUnreadMessage = false;

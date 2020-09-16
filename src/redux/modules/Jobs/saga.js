@@ -18,8 +18,6 @@ import {
   apiCompleteJobs,
   apiFailJobs,
   apiGetJobById,
-  apiAddService,
-  apiRemoveService,
   apiMarkMessagesAsRead,
   apiAddMessage,
   apiUpdateAmountCollected,
@@ -46,8 +44,6 @@ import {
   COMPLETE_JOBS,
   FAIL_JOBS,
   GET_JOB_BY_ID,
-  ADD_SERVICE,
-  REMOVE_SERVICE,
   MARK_MESSAGES_AS_READ,
   ADD_MESSAGE,
   UPDATE_AMOUNT_COLLECTED,
@@ -637,78 +633,6 @@ export function* watchGetJobById() {
   }
 }
 
-export function* asyncAddService({ payload }) {
-  const {
-    jobId, serviceId, success, failure,
-  } = payload;
-
-  try {
-    yield call(apiAddService, jobId, serviceId);
-
-    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
-    const services = focusedJob.additionalCharges.slice(0);
-
-    const index = services.findIndex((item) => {
-      return item.serviceAdditionalChargeTemplateId === serviceId;
-    });
-
-    services[index] = {
-      ...services[index],
-      isSelected: true,
-    };
-
-    yield put(actionCreators.addServiceSuccess(services));
-
-    success && success();
-  } catch (error) {
-    yield onError(error);
-    failure && failure();
-  }
-}
-
-export function* watchAddService() {
-  while (true) {
-    const action = yield take(ADD_SERVICE);
-    yield* asyncAddService(action);
-  }
-}
-
-export function* asyncRemoveService({ payload }) {
-  const {
-    jobId, serviceId, success, failure,
-  } = payload;
-
-  try {
-    yield call(apiRemoveService, jobId, serviceId);
-
-    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
-    const services = focusedJob.additionalCharges.slice(0);
-
-    const index = services.findIndex((item) => {
-      return item.serviceAdditionalChargeTemplateId === serviceId;
-    });
-
-    services[index] = {
-      ...services[index],
-      isSelected: false,
-    };
-
-    yield put(actionCreators.removeServiceSuccess(services));
-
-    success && success();
-  } catch (error) {
-    yield onError(error);
-    failure && failure();
-  }
-}
-
-export function* watchRemoveService() {
-  while (true) {
-    const action = yield take(REMOVE_SERVICE);
-    yield* asyncRemoveService(action);
-  }
-}
-
 export function* asyncMarkMessagesAsRead({ payload }) {
   const {
     jobId, success, failure,
@@ -820,8 +744,6 @@ export default function* () {
     fork(watchCompleteJobs),
     fork(watchFailJobs),
     fork(watchGetJobById),
-    fork(watchAddService),
-    fork(watchRemoveService),
     fork(watchMarkMessagesAsRead),
     fork(watchAddMessage),
     fork(watchUpdateAmountCollected),

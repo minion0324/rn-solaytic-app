@@ -25,10 +25,6 @@ export const FAIL_JOBS = 'JOBS/FAIL_JOBS';
 export const FAIL_JOBS_SUCCESS = 'JOBS/FAIL_JOBS_SUCCESS';
 export const GET_JOB_BY_ID = 'JOBS/GET_JOB_BY_ID';
 export const GET_JOB_BY_ID_SUCCESS = 'JOBS/GET_JOB_BY_ID_SUCCESS';
-export const ADD_SERVICE = 'JOBS/ADD_SERVICE';
-export const ADD_SERVICE_SUCCESS = 'JOBS/ADD_SERVICE_SUCCESS';
-export const REMOVE_SERVICE = 'JOBS/REMOVE_SERVICE';
-export const REMOVE_SERVICE_SUCCESS = 'JOBS/REMOVE_SERVICE_SUCCESS';
 export const MARK_MESSAGES_AS_READ = 'JOBS/MARK_MESSAGES_AS_READ';
 export const MARK_MESSAGES_AS_READ_SUCCESS = 'JOBS/MARK_MESSAGES_AS_READ_SUCCESS';
 export const ADD_MESSAGE = 'JOBS/ADD_MESSAGE';
@@ -62,10 +58,6 @@ export const actionCreators = {
   failJobsSuccess: createAction(FAIL_JOBS_SUCCESS),
   getJobById: createAction(GET_JOB_BY_ID),
   getJobByIdSuccess: createAction(GET_JOB_BY_ID_SUCCESS),
-  addService: createAction(ADD_SERVICE),
-  addServiceSuccess: createAction(ADD_SERVICE_SUCCESS),
-  removeService: createAction(REMOVE_SERVICE),
-  removeServiceSuccess: createAction(REMOVE_SERVICE_SUCCESS),
   markMessagesAsRead: createAction(MARK_MESSAGES_AS_READ),
   markMessagesAsReadSuccess: createAction(MARK_MESSAGES_AS_READ_SUCCESS),
   addMessage: createAction(ADD_MESSAGE),
