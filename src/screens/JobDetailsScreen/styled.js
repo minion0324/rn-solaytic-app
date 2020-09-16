@@ -9,7 +9,6 @@ import {
   SIZE6,
   SIZE8,
   SIZE12,
-  SIZE20,
   FONT,
 } from 'src/constants';
 
