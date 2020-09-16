@@ -89,7 +89,7 @@ const getPhotosAndSign = createSelector(
     } catch (error) {
       return {
         photos: [],
-        sign: null,
+        sign: { uri: null },
         signedUserName: '',
         signedUserContact: '',
       };
