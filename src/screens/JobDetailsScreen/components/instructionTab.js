@@ -69,6 +69,7 @@ const InstructionTab = ({
   setAmountCollected,
   tabIndex,
   setTabIndex,
+  services,
 
   focusedJob,
   newCommentInfo,
@@ -303,11 +304,11 @@ const InstructionTab = ({
     );
   };
 
-  const renderServiceItem = ({ item }) => {
+  const renderServiceItem = ({ item, index }) => {
     return (
       <ServiceRow
         key={`${item.serviceAdditionalChargeId}`}
-        onPress={() => onUpdateService(item)}
+        onPress={() => onUpdateService(item, index)}
       >
         {
           item.isSelected
@@ -336,7 +337,7 @@ const InstructionTab = ({
               <ServicesWrap>
                 <FlatList
                   bounces={false}
-                  data={focusedJob.additionalCharges}
+                  data={services}
                   keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
                   showsVerticalScrollIndicator={false}
                   renderItem={renderServiceItem}
@@ -381,6 +382,7 @@ InstructionTab.propTypes = {
   setAmountCollected: PropTypes.func.isRequired,
   tabIndex: PropTypes.number.isRequired,
   setTabIndex: PropTypes.func.isRequired,
+  services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
