@@ -367,10 +367,12 @@ export function* asyncStartJobs({ payload }) {
     const result = successJobIds.reduce((res, id) => {
       const index = res.newJobs.findIndex(item => item.jobId === id);
 
-      res.newJobs.splice(index, 1, {
-        ...res.newJobs[index],
-        statusName: JOB_STATUS.IN_PROGRESS1,
-      });
+      if (index !== -1) {
+        res.newJobs.splice(index, 1, {
+          ...res.newJobs[index],
+          statusName: JOB_STATUS.IN_PROGRESS1,
+        });
+      }
 
       return res;
     }, {
@@ -408,10 +410,12 @@ export function* asyncExchangeJobs({ payload }) {
     const result = successJobIds.reduce((res, id) => {
       const index = res.newJobs.findIndex(item => item.jobId === id);
 
-      res.newJobs.splice(index, 1, {
-        ...res.newJobs[index],
-        statusName: JOB_STATUS.IN_PROGRESS2,
-      });
+      if (index !== -1) {
+        res.newJobs.splice(index, 1, {
+          ...res.newJobs[index],
+          statusName: JOB_STATUS.IN_PROGRESS2,
+        });
+      }
 
       return res;
     }, {
@@ -501,10 +505,12 @@ export function* asyncCompleteJobs({ payload }) {
     const result = successJobIds.reduce((res, id) => {
       const index = res.newJobs.findIndex(item => item.jobId === id);
 
-      res.newJobs.splice(index, 1, {
-        ...res.newJobs[index],
-        statusName: JOB_STATUS.COMPLETED,
-      });
+      if (index !== -1) {
+        res.newJobs.splice(index, 1, {
+          ...res.newJobs[index],
+          statusName: JOB_STATUS.COMPLETED,
+        });
+      }
 
       return res;
     }, {
@@ -575,10 +581,12 @@ export function* asyncFailJobs({ payload }) {
     const result = successJobIds.reduce((res, id) => {
       const index = res.newJobs.findIndex(item => item.jobId === id);
 
-      res.newJobs.splice(index, 1, {
-        ...res.newJobs[index],
-        statusName: JOB_STATUS.FAILED,
-      });
+      if (index !== -1) {
+        res.newJobs.splice(index, 1, {
+          ...res.newJobs[index],
+          statusName: JOB_STATUS.FAILED,
+        });
+      }
 
       return res;
     }, {
