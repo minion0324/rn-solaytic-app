@@ -10,6 +10,8 @@ import {
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
+  JOB_DETAILS_KEY,
+  JOB_DETAILS_LIMIT,
 } from 'src/constants';
 import {
   showOverlay,
@@ -79,6 +81,10 @@ const JobDetailsScreen = ({
 
   useEffect(() => {
     checkIsInBackgroundMode();
+
+    return () => {
+      saveJobDetailsInfo();
+    };
   }, []);
 
   useNavigationComponentDidAppear((event) => {
@@ -121,6 +127,19 @@ const JobDetailsScreen = ({
           Toast.show('This job is in background mode.');
         }
       }
+    } catch (error) {
+      //
+    }
+  };
+
+  const saveJobDetailsInfo = async () => {
+    try {
+      await addItemToCache(
+        JOB_DETAILS_KEY,
+        { jobId: focusedJob.jobId },
+        focusedJob,
+        JOB_DETAILS_LIMIT,
+      );
     } catch (error) {
       //
     }
