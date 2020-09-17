@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -77,6 +77,15 @@ const UploadHistoryScreen = ({
   useEffect(() => {
     onReload();
   }, []);
+
+  const hasRetryJobs = useCallback(
+    () => {
+      const index = jobLogs.findIndex(item => item.loading);
+
+      return (index !== -1);
+    },
+    [jobLogs],
+  );
 
   useNavigationComponentDidAppear((event) => {
     const { componentName } = event;
@@ -236,6 +245,7 @@ const UploadHistoryScreen = ({
                     />
                   : <RetryButton
                       onPress={() => onRetry(item, index)}
+                      disabled={hasRetryJobs()}
                     >
                       <RetryIcon />
                       <SpaceView mLeft={SIZE1} />
