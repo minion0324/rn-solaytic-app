@@ -75,7 +75,7 @@ const InfoWrap = styled.View`
 `;
 
 const TimeText = styled.Text`
-  font-size: ${FONT(15)}px;
+  font-size: ${FONT(13)}px;
   font-weight: 500;
   color: ${COLORS.BLACK2};
 `;
