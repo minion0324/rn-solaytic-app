@@ -70,6 +70,9 @@ const JOB_TYPE = {
 //
 const COMPLETE_JOBS_KEY = '@complete_jobs';
 const BACKGROUND_FETCH_KEY = '@background_fetch';
+const JOB_DETAILS_KEY = '@job_details';
+
+const JOB_DETAILS_LIMIT = 10;
 
 //
 const API_BASE_URL =
@@ -106,5 +109,7 @@ export {
   JOB_TYPE,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
+  JOB_DETAILS_KEY,
+  JOB_DETAILS_LIMIT,
   API_BASE_URL,
 };
