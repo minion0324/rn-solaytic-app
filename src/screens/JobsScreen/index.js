@@ -34,6 +34,7 @@ import {
   delay,
 } from 'src/utils';
 import {
+  SVGS,
   JOB_STATUS,
 } from 'src/constants';
 
@@ -53,12 +54,18 @@ import {
   TabWrap,
   TabItem,
   TabText,
+  NoJobsWrap,
+  NoJobsText,
+  NoJobsIcon,
 } from './styled';
+
+const { HappyIcon } = SVGS;
 
 const tabs = ['All', 'Open', 'Closed'];
 
 const JobsScreen = ({
   allJobs,
+  countOfJobs,
   pageOfJobs,
   dateForJobs,
   focusedJobId,
@@ -246,6 +253,24 @@ const JobsScreen = ({
     );
   };
 
+  const renderNoJobs = () => {
+    return (
+      <NoJobsWrap>
+        <NoJobsText>
+          {'There is no jobs.'}
+        </NoJobsText>
+
+        <NoJobsIcon>
+          <HappyIcon />
+        </NoJobsIcon>
+
+        <NoJobsText>
+          {'Please check other dates.'}
+        </NoJobsText>
+      </NoJobsWrap>
+    );
+  };
+
   const renderTabs = () => {
     return (
       <TabWrap>
@@ -299,6 +324,11 @@ const JobsScreen = ({
         />
 
         {
+          countOfJobs === 0 &&
+          renderNoJobs()
+        }
+
+        {
           reloading &&
           <LoadingWrap>
             <ActivityIndicator size={'large'} />
@@ -313,6 +343,7 @@ const JobsScreen = ({
 
 JobsScreen.propTypes = {
   allJobs: PropTypes.array.isRequired,
+  countOfJobs: PropTypes.number.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
   focusedJobId: PropTypes.number,
@@ -336,6 +367,7 @@ JobsScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     allJobs: Jobs.selectors.getAllJobs(state),
+    countOfJobs: Jobs.selectors.getCountOfJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
     focusedJobId: Jobs.selectors.getFocusedJobId(state),
