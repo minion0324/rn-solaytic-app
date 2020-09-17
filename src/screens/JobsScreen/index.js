@@ -77,7 +77,7 @@ const JobsScreen = ({
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
-  const [ tabIndex, setTabIndex ] = useState(0);
+  const [ tabIndex, setTabIndex ] = useState(1);
 
   useEffect(() => {
     const networkEventListener = NetInfo.addEventListener(({ isConnected }) => {
@@ -286,9 +286,9 @@ const JobsScreen = ({
         />
       </ShadowWrap>
 
-      <Content>
-        { renderTabs() }
+      { renderTabs() }
 
+      <Content>
         <ListWrap
           data={getFilteredJobs()}
           keyExtractor={(item) => `${item.jobId}`}
