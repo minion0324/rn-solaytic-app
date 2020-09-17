@@ -1,16 +1,19 @@
 import { isEqual } from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export const addItemToCache = async (key, id, value) => {
+export const addItemToCache = async (key, id, value, limit) => {
   try {
     const str = await AsyncStorage.getItem(key);
     const data = str ? JSON.parse(str) : [];
 
     const index = data.findIndex(el => isEqual(el.id, id));
-    if (index === -1) {
-      data.push({ id, value });
-    } else {
-      data.splice(index, 1, { id, value });
+    if (index !== -1) {
+      data.splice(index, 1);
+    }
+    data.splice(0, 0, { id, value });
+
+    if (limit && limit < data.length) {
+      data.splice(limit, data.length - limit);
     }
 
     await AsyncStorage.setItem(key, JSON.stringify(data));
