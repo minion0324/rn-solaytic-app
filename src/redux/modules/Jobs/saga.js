@@ -9,6 +9,7 @@ import {
   getDate,
   getStartDate,
   getEndDate,
+  getCacheItemById,
 } from 'src/utils';
 import {
   apiGetJobs,
@@ -30,6 +31,7 @@ import {
   MONTH_KEY,
   JOB_DATE,
   JOB_STATUS,
+  JOB_DETAILS_KEY,
 } from 'src/constants';
 
 import {
@@ -624,8 +626,15 @@ export function* asyncGetJobById({ payload }) {
 
     success && success();
   } catch (error) {
-    yield onError(error);
-    failure && failure();
+    const item = yield call(getCacheItemById, JOB_DETAILS_KEY, { jobId });
+
+    if (item && item.value) {
+      yield put(actionCreators.getJobByIdSuccess(item.value));
+      success && success();
+    } else {
+      yield onError(error);
+      failure && failure();
+    }
   }
 }
 
