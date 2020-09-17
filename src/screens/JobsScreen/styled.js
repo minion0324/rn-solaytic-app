@@ -13,6 +13,7 @@ const TabWrap = styled.View`
   align-items: center;
   justify-content: space-around;
   padding-vertical: ${SIZE2}px;
+  background-color: ${COLORS.WHITE2};
 `;
 
 const TabItem = styled.TouchableOpacity`
