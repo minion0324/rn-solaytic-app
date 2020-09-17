@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  HEIGHT,
   SIZE1,
   SIZE2,
+  SIZE4,
   SIZE10,
   FONT,
 } from 'src/constants';
@@ -34,8 +36,31 @@ const TabText = styled.Text`
   text-transform: uppercase;
 `;
 
+const NoJobsWrap = styled.View`
+  align-self: center;
+  position: absolute;
+  top: ${HEIGHT * 0.15}px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${COLORS.WHITE2};
+`;
+
+const NoJobsText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
+  color: ${COLORS.BLACK2};
+  text-align: center;
+`;
+
+const NoJobsIcon = styled.View`
+  margin-vertical: ${SIZE4}px;
+`;
+
 export {
   TabWrap,
   TabItem,
   TabText,
+  NoJobsWrap,
+  NoJobsText,
+  NoJobsIcon,
 };
