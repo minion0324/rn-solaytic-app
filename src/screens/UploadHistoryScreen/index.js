@@ -37,7 +37,6 @@ import {
   Container,
   Content,
   ShadowWrap,
-  LoadingWrap,
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
@@ -65,18 +64,22 @@ const UploadHistoryScreen = ({
   setCoreScreenInfo,
   componentId,
 }) => {
-  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const [ jobLogs, setJobLogs ] = useState([]);
+  const [ searchedJobLogs, setSearchedJobLogs ] = useState([]);
 
   const [ searchText, setSearchText ] = useState('');
 
   const timerId = useRef(null);
 
   useEffect(() => {
-    onReload();
+    getJobLogs();
   }, []);
+
+  useEffect(() => {
+    getSearchedJobLogs();
+  }, [jobLogs]);
 
   const hasRetryJobs = useCallback(
     () => {
@@ -99,6 +102,10 @@ const UploadHistoryScreen = ({
 
   const getJobLogs = async () => {
     try {
+      if (hasRetryJobs()) {
+        return;
+      }
+
       const allLogs = await getCacheItems(COMPLETE_JOBS_KEY);
 
       if (allLogs.length > 0) {
@@ -109,26 +116,43 @@ const UploadHistoryScreen = ({
     }
   };
 
+  const getSearchedJobLogs = () => {
+    const searchedLogs = jobLogs.map((item) => {
+      const {
+        value: { status },
+        id: { jobNumber },
+      } = item;
+
+      if (
+        status.toLowerCase().includes(searchText.toLowerCase()) ||
+        jobNumber.toLowerCase().includes(searchText.toLowerCase())
+      ) {
+        return item;
+      } else {
+        return { ...item, notShow: true };
+      }
+    });
+
+    setSearchedJobLogs(searchedLogs);
+  };
+
   const onBack = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await getJobLogs();
-    setRefreshing(false);
-  };
 
-  const onReload = async () => {
-    setReloading(true);
     await getJobLogs();
-    setReloading(false);
+
+    setRefreshing(false);
   };
 
   const onSearch = () => {
     Keyboard.dismiss();
 
-    onReload();
+    getSearchedJobLogs();
   };
 
   const onChangeSearchText = (text) => {
@@ -206,7 +230,12 @@ const UploadHistoryScreen = ({
       id: { jobNumber },
       value: { status, timestamp },
       loading,
+      notShow,
     } = item;
+
+    if (notShow) {
+      return null;
+    }
 
     const color = status === JOB_STATUS.COMPLETED
       ? COLORS.GREEN1
@@ -294,19 +323,12 @@ const UploadHistoryScreen = ({
         </SearchBarWrap>
 
         <ListWrap
-          data={jobLogs}
+          data={searchedJobLogs}
           keyExtractor={(item) => `${item.id.jobId}`}
           renderItem={renderItem}
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
         />
-
-        {
-          reloading &&
-          <LoadingWrap>
-            <ActivityIndicator size={'large'} />
-          </LoadingWrap>
-        }
       </Content>
     </Container>
   );
