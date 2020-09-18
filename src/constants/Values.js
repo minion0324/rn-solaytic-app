@@ -72,7 +72,7 @@ const COMPLETE_JOBS_KEY = '@complete_jobs';
 const BACKGROUND_FETCH_KEY = '@background_fetch';
 const JOB_DETAILS_KEY = '@job_details';
 
-const JOB_DETAILS_LIMIT = 10;
+const JOB_DETAILS_LIMIT = 20;
 
 //
 const API_BASE_URL =
