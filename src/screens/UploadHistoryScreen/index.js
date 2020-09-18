@@ -26,11 +26,11 @@ import {
   ViewStore,
 } from 'src/redux';
 import {
+  getTimestamp,
   addItemToCache,
   removeItemFromCache,
   getCacheItemById,
   getCacheItems,
-  getTimestamp,
 } from 'src/utils';
 
 import {
@@ -78,10 +78,6 @@ const UploadHistoryScreen = ({
   }, []);
 
   useEffect(() => {
-    getSearchedJobLogs();
-  }, [jobLogs]);
-
-  useEffect(() => {
     if (timerId.current) {
       clearTimeout(timerId.current);
       timerId.current = null;
@@ -90,8 +86,8 @@ const UploadHistoryScreen = ({
     timerId.current = setTimeout(() => {
       timerId.current = null;
       onSearch();
-    }, 2500);
-  }, [searchText]);
+    }, 1500);
+  }, [searchText, jobLogs]);
 
   const hasRetryJobs = useCallback(
     () => {
@@ -129,6 +125,11 @@ const UploadHistoryScreen = ({
   };
 
   const getSearchedJobLogs = () => {
+    if (!searchText) {
+      setSearchedJobLogs(jobLogs);
+      return;
+    }
+
     const searchedLogs = jobLogs.map((item) => {
       const {
         value: { status },
