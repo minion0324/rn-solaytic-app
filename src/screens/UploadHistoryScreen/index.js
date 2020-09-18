@@ -81,6 +81,18 @@ const UploadHistoryScreen = ({
     getSearchedJobLogs();
   }, [jobLogs]);
 
+  useEffect(() => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+
+    timerId.current = setTimeout(() => {
+      timerId.current = null;
+      onSearch();
+    }, 2500);
+  }, [searchText]);
+
   const hasRetryJobs = useCallback(
     () => {
       const index = jobLogs.findIndex(item => item.loading);
@@ -157,16 +169,6 @@ const UploadHistoryScreen = ({
 
   const onChangeSearchText = (text) => {
     setSearchText(text);
-
-    if (timerId.current) {
-      clearTimeout(timerId.current);
-      timerId.current = null;
-    }
-
-    timerId.current = setTimeout(() => {
-      timerId.current = null;
-      onSearch();
-    }, 2500);
   };
 
   const updateJobLogs = (index, id, value, loading) => {
