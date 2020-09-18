@@ -61,22 +61,28 @@ const JobDetailsScreen = ({
   const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
 
   const [ binInfo, setBinInfo ] = useState(
-    [0, 1].map((index) => {
-      const {
-        jobStepId, wasteType, binType, binNumber, binWeight,
-      } = focusedJob.steps[index];
+    focusedJob.appExtraData
+    ? focusedJob.appExtraData.binInfo
+    : [0, 1].map((index) => {
+        const {
+          jobStepId, wasteType, binType, binNumber, binWeight,
+        } = focusedJob.steps[index];
 
-      return {
-        jobStepId, wasteType, binType, binNumber, binWeight,
-      };
-    })
+        return {
+          jobStepId, wasteType, binType, binNumber, binWeight,
+        };
+      })
   );
 
   const [ amountCollected, setAmountCollected ] = useState(
     focusedJob.collectedAmount || focusedJob.amountToCollect
   );
 
-  const [ services, setServices ] = useState(focusedJob.additionalCharges);
+  const [ services, setServices ] = useState(
+    focusedJob.appExtraData
+    ? focusedJob.appExtraData.services
+    : focusedJob.additionalCharges
+  );
 
   useEffect(() => {
     checkIsInBackgroundMode();
