@@ -365,7 +365,10 @@ export function* asyncAcknowledgeJobs({ payload }) {
       newAlerts: allAlerts.slice(0),
     });
 
-    yield put(actionCreators.acknowledgeJobsSuccess(result));
+    yield put(actionCreators.acknowledgeJobsSuccess({
+      ...result,
+      statusName: JOB_STATUS.ACKNOWLEDGED,
+    }));
 
     success && success();
   } catch (error) {
@@ -411,7 +414,11 @@ export function* asyncStartJobs({ payload }) {
       newJobs: allJobs.slice(0),
     });
 
-    yield put(actionCreators.startJobsSuccess(result));
+    yield put(actionCreators.startJobsSuccess({
+      ...result,
+      statusName: JOB_STATUS.IN_PROGRESS1,
+      appExtraData: { binInfo, services },
+    }));
 
     success && success();
   } catch (error) {
@@ -457,7 +464,11 @@ export function* asyncExchangeJobs({ payload }) {
       newJobs: allJobs.slice(0),
     });
 
-    yield put(actionCreators.exchangeJobsSuccess(result));
+    yield put(actionCreators.exchangeJobsSuccess({
+      ...result,
+      statusName: JOB_STATUS.IN_PROGRESS2,
+      appExtraData: { binInfo, services },
+    }));
 
     success && success();
   } catch (error) {
@@ -556,7 +567,11 @@ export function* asyncCompleteJobs({ payload }) {
       newJobs: allJobs.slice(0),
     });
 
-    yield put(actionCreators.completeJobsSuccess(result));
+    yield put(actionCreators.completeJobsSuccess({
+      ...result,
+      statusName: JOB_STATUS.COMPLETED,
+      appExtraData: { binInfo, services },
+    }));
 
     success && success();
   } catch (error) {
@@ -634,7 +649,10 @@ export function* asyncFailJobs({ payload }) {
       newJobs: allJobs.slice(0),
     });
 
-    yield put(actionCreators.failJobsSuccess(result));
+    yield put(actionCreators.failJobsSuccess({
+      ...result,
+      statusName: JOB_STATUS.FAILED,
+    }));
 
     success && success();
   } catch (error) {
