@@ -35,6 +35,7 @@ import JobDetailsScreenView from './view';
 
 const JobDetailsScreen = ({
   focusedJob,
+  jobStatus,
   photosAndSign,
   newCommentInfo,
   acknowledgeJobs,
@@ -70,8 +71,6 @@ const JobDetailsScreen = ({
       };
     })
   );
-
-  const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
   const [ amountCollected, setAmountCollected ] = useState(
     focusedJob.collectedAmount || focusedJob.amountToCollect
@@ -156,7 +155,6 @@ const JobDetailsScreen = ({
       jobIds: `${focusedJob.jobId}`,
       success: () => {
         setLoading(false);
-        setJobStatus(JOB_STATUS.ACKNOWLEDGED);
         setIsRequiredUpdateTab(true);
       },
       failure: () => setLoading(false),
@@ -170,10 +168,7 @@ const JobDetailsScreen = ({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
-      success: () => {
-        setLoading(false);
-        setJobStatus(JOB_STATUS.IN_PROGRESS1);
-      },
+      success: () => setLoading(false),
       failure: () => setLoading(false),
     });
   };
@@ -185,10 +180,7 @@ const JobDetailsScreen = ({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
-      success: () => {
-        setLoading(false);
-        setJobStatus(JOB_STATUS.IN_PROGRESS2);
-      },
+      success: () => setLoading(false),
       failure: () => setLoading(false),
     });
   };
@@ -410,6 +402,7 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  jobStatus: PropTypes.string,
   photosAndSign: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
@@ -426,12 +419,13 @@ JobDetailsScreen.propTypes = {
 };
 
 JobDetailsScreen.defaultProps = {
-  //
+  jobStatus: '',
 };
 
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    jobStatus: Jobs.selectors.getJobStatus(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),
     newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
   };
