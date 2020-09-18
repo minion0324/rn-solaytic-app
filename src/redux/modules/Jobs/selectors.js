@@ -72,6 +72,17 @@ const getFocusedJobId = createSelector(
   },
 );
 
+const getJobStatus = createSelector(
+  getFocusedJob,
+  (focusedJob) => {
+    try {
+      return focusedJob.status.jobStatusName;
+    } catch (error) {
+      return '';
+    }
+  },
+);
+
 const getPhotosAndSign = createSelector(
   getFocusedJob,
   (focusedJob) => {
@@ -108,5 +119,6 @@ export default {
   getDateForAlerts,
   getFocusedJob,
   getFocusedJobId,
+  getJobStatus,
   getPhotosAndSign,
 };
