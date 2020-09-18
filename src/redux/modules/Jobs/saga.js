@@ -52,6 +52,37 @@ import {
   actionCreators,
 } from './actions';
 
+//
+const getUpdatedBinInfo = (binInfo) => {
+  return [0, 1].map((index) => {
+    const {
+      jobStepId, wasteType, binType, binNumber, binWeight,
+    } = binInfo[index];
+
+    return {
+      jobStepId: jobStepId,
+      wasteTypeId: wasteType && wasteType.wasteTypeId,
+      binTypeId: binType && binType.binTypeId,
+      binNumber: binNumber,
+      binWeight: binWeight,
+    }
+  });
+};
+
+const getUpdatedServices = (services) => {
+  return services.reduce((result, item) => {
+    if (item.isSelected) {
+      result.push({
+        ...item,
+        jobId: focusedJob.jobId,
+        quantity: 1,
+      })
+    }
+
+    return result;
+  }, []);
+};
+
 export function* asyncGetJobs() {
   try {
     const dateForJobs = getDate();
@@ -352,10 +383,13 @@ export function* watchAcknowledgeJobs() {
 
 export function* asyncStartJobs({ payload }) {
   const {
-    jobIds, stepBinUpdate, pricings, success, failure,
+    jobIds, binInfo, services, success, failure,
   } = payload;
 
   try {
+    const stepBinUpdate = getUpdatedBinInfo(binInfo);
+    const pricings = getUpdatedServices(services);
+
     const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate, pricings);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
@@ -395,10 +429,13 @@ export function* watchStartJobs() {
 
 export function* asyncExchangeJobs({ payload }) {
   const {
-    jobIds, stepBinUpdate, pricings, success, failure,
+    jobIds, binInfo, services, success, failure,
   } = payload;
 
   try {
+    const stepBinUpdate = getUpdatedBinInfo(binInfo);
+    const pricings = getUpdatedServices(services);
+
     const { data } = yield call(apiExchangeJobs, jobIds, stepBinUpdate, pricings);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
@@ -439,8 +476,8 @@ export function* watchExchangeJobs() {
 export function* asyncCompleteJobs({ payload }) {
   const {
     jobIds,
-    stepBinUpdate,
-    pricings,
+    binInfo,
+    services,
     photos,
     sign,
     signedUserName,
@@ -455,6 +492,9 @@ export function* asyncCompleteJobs({ payload }) {
   let attempt = attemptData;
 
   try {
+    const stepBinUpdate = getUpdatedBinInfo(binInfo);
+    const pricings = getUpdatedServices(services);
+
     if (!attempt) {
       focusedJob = yield select(Jobs.selectors.getFocusedJob);
 
