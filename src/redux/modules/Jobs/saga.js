@@ -9,6 +9,8 @@ import {
   getDate,
   getStartDate,
   getEndDate,
+  getUpdatedBinInfo,
+  getUpdatedServices,
   getCacheItemById,
 } from 'src/utils';
 import {
@@ -51,37 +53,6 @@ import {
   UPDATE_AMOUNT_COLLECTED,
   actionCreators,
 } from './actions';
-
-//
-const getUpdatedBinInfo = (binInfo) => {
-  return [0, 1].map((index) => {
-    const {
-      jobStepId, wasteType, binType, binNumber, binWeight,
-    } = binInfo[index];
-
-    return {
-      jobStepId: jobStepId,
-      wasteTypeId: wasteType && wasteType.wasteTypeId,
-      binTypeId: binType && binType.binTypeId,
-      binNumber: binNumber,
-      binWeight: binWeight,
-    }
-  });
-};
-
-const getUpdatedServices = (services) => {
-  return services.reduce((result, item) => {
-    if (item.isSelected) {
-      result.push({
-        ...item,
-        jobId: focusedJob.jobId,
-        quantity: 1,
-      })
-    }
-
-    return result;
-  }, []);
-};
 
 export function* asyncGetJobs() {
   try {
@@ -582,7 +553,7 @@ export function* asyncCompleteJobs({ payload }) {
         jobNumber: focusedJob.jobNumber,
       },
       [
-        jobIds, stepBinUpdate, pricings, attempt,
+        jobIds, binInfo, services, attempt,
       ],
     );
     failure && failure();
