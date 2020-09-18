@@ -69,12 +69,21 @@ function Jobs(state = DEFAULT, action = {}) {
       case ACKNOWLEDGE_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
         draft.allAlerts = payload.newAlerts;
+
+        if (draft.focusedJob) {
+          draft.focusedJob.status.jobStatusName = payload.statusName;
+        }
         break;
       case START_JOBS_SUCCESS:
       case EXCHANGE_JOBS_SUCCESS:
       case COMPLETE_JOBS_SUCCESS:
       case FAIL_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
+
+        if (draft.focusedJob) {
+          draft.focusedJob.status.jobStatusName = payload.statusName;
+          draft.focusedJob.appExtraData = payload.appExtraData;
+        }
         break;
       case GET_JOB_BY_ID_SUCCESS:
         draft.focusedJob = payload;
