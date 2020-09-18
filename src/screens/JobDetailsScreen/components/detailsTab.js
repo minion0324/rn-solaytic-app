@@ -571,6 +571,10 @@ const DetailsTab = ({
               {
                 focusedJob.isEnabledBinWeight &&
                 (!!item['binWeight'] || editable) &&
+                (
+                  index !== 0 ||
+                  focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+                ) &&
                 <RowWrap>
                   <FlexWrap flex={0.5}>
                     <LabelText>Bin Weight</LabelText>
