@@ -3,10 +3,12 @@ import BackgroundFetch from 'react-native-background-fetch';
 import RNRestart from 'react-native-restart';
 
 import {
+  getTimestamp,
+  getUpdatedBinInfo,
+  getUpdatedServices,
   addItemToCache,
   removeItemFromCache,
   getCacheItems,
-  getTimestamp,
 } from 'src/utils';
 import {
   JOB_STATUS,
@@ -16,8 +18,11 @@ import {
 } from 'src/constants';
 
 //
-const fetchCompleteJobs = async (token, jobIds, stepBinUpdate, pricings, attempt) => {
+const fetchCompleteJobs = async (token, jobIds, binInfo, services, attempt) => {
   try {
+    const stepBinUpdate = getUpdatedBinInfo(binInfo);
+    const pricings = getUpdatedServices(services);
+
     const response = await fetch(
       `${API_BASE_URL}api/mobile/driver/jobs/Complete`,
       {
