@@ -30,6 +30,7 @@ import {
 import {
   addItemToCache,
   removeItemFromCache,
+  getCacheItemById,
   getCacheIds,
   getTimestamp,
 } from 'src/utils';
@@ -64,7 +65,7 @@ const JobDetailsScreen = ({
   const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
 
   const [ binInfo, setBinInfo ] = useState(
-    focusedJob.appExtraData
+    focusedJob.appExtraData && focusedJob.appExtraData.binInfo
     ? focusedJob.appExtraData.binInfo
     : [0, 1].map((index) => {
         const {
@@ -82,12 +83,12 @@ const JobDetailsScreen = ({
   );
 
   const [ services, setServices ] = useState(
-    focusedJob.appExtraData
-    ? focusedJob.appExtraData.services
-    : focusedJob.additionalCharges
+    focusedJob.appExtraData && focusedJob.appExtraData.services
+    ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
   useEffect(() => {
+    getSavedPhotosAndSign();
     checkIsInBackgroundMode();
   }, []);
 
@@ -140,12 +141,55 @@ const JobDetailsScreen = ({
     }
   };
 
+  const getSavedPhotosAndSign = async () => {
+    try {
+      const {
+        value: { appExtraData },
+      } = await getCacheItemById(JOB_DETAILS_KEY, { jobId: focusedJob.jobId });
+
+      const {
+        photosAndSign: {
+          photos: savedPhotos,
+          sign: savedSign,
+          signedUserName: savedSignedUserName,
+          signedUserContact: savedSignedUserContact,
+        }
+      } = appExtraData;
+
+      if (photos.length <= 0 && savedPhotos.length > 0) {
+        setPhotos(savedPhotos);
+      }
+
+      if (!sign.uri && savedSign.uri) {
+        setSign(savedSign);
+
+        setSignedUserName(savedSignedUserName);
+        setSignedUserContact(savedSignedUserContact);
+      }
+    } catch (error) {
+      //
+    }
+  };
+
   const saveJobDetailsInfo = async () => {
     try {
+      const data = {
+        ...focusedJob,
+        appExtraData: {
+          ...(focusedJob.appExtraData || {}),
+          photosAndSign: {
+            photos,
+            sign,
+            signedUserName,
+            signedUserContact,
+          },
+        },
+      };
+
       await addItemToCache(
         JOB_DETAILS_KEY,
         { jobId: focusedJob.jobId },
-        focusedJob,
+        data,
         JOB_DETAILS_LIMIT,
       );
     } catch (error) {
