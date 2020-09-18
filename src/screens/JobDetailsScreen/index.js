@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
-import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
+import {
+  useNavigationComponentDidAppear,
+  useNavigationComponentDidDisappear,
+} from 'react-native-navigation-hooks';
 
 import {
   JOB_STATUS,
@@ -86,10 +89,6 @@ const JobDetailsScreen = ({
 
   useEffect(() => {
     checkIsInBackgroundMode();
-
-    return () => {
-      saveJobDetailsInfo();
-    };
   }, []);
 
   useNavigationComponentDidAppear((event) => {
@@ -100,6 +99,10 @@ const JobDetailsScreen = ({
       componentName,
       componentType: 'push',
     });
+  });
+
+  useNavigationComponentDidDisappear(() => {
+    saveJobDetailsInfo();
   });
 
   const checkIsInBackgroundMode = async () => {
