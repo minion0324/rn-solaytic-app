@@ -102,7 +102,7 @@ const FailJobScreen = ({
     timerId.current = setTimeout(() => {
       timerId.current = null;
       onSearch();
-    }, 2500);
+    }, 1500);
   }, [searchText]);
 
   const checkIsInBackgroundMode = async () => {
