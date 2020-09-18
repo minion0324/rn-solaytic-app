@@ -109,6 +109,7 @@ const FailJobScreen = ({
   };
 
   const onBack = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
   };
 
