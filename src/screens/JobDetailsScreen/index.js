@@ -163,45 +163,13 @@ const JobDetailsScreen = ({
     });
   };
 
-  const getUpdatedBinInfo = () => {
-    return [0, 1].map((index) => {
-      const {
-        jobStepId, wasteType, binType, binNumber, binWeight,
-      } = binInfo[index];
-
-      return {
-        jobStepId: jobStepId,
-        wasteTypeId: wasteType && wasteType.wasteTypeId,
-        binTypeId: binType && binType.binTypeId,
-        binNumber: binNumber,
-        binWeight: binWeight,
-      }
-    });
-  };
-
-  const getUpdatedPricings = () => {
-    const pricings = services.reduce((result, item) => {
-      if (item.isSelected) {
-        result.push({
-          ...item,
-          jobId: focusedJob.jobId,
-          quantity: 1,
-        })
-      }
-
-      return result;
-    }, []);
-
-    return pricings;
-  };
-
   const onStart = () => {
     setLoading(true);
 
     startJobs({
       jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      pricings: getUpdatedPricings(),
+      binInfo,
+      services,
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.IN_PROGRESS1);
@@ -215,8 +183,8 @@ const JobDetailsScreen = ({
 
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      pricings: getUpdatedPricings(),
+      binInfo,
+      services,
       success: () => {
         setLoading(false);
         setJobStatus(JOB_STATUS.IN_PROGRESS2);
@@ -285,8 +253,8 @@ const JobDetailsScreen = ({
 
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      pricings: getUpdatedPricings(),
+      binInfo,
+      services,
       photos,
       sign,
       signedUserName,
