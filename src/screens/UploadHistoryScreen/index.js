@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Keyboard } from 'react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ActivityIndicator, Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Toast from 'react-native-simple-toast';
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
   SVGS,
@@ -10,6 +12,7 @@ import {
   SIZE1,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
+  BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
   popScreen,
@@ -19,9 +22,14 @@ import {
   ListWrap,
 } from 'src/components';
 import {
+  Jobs,
   ViewStore,
 } from 'src/redux';
 import {
+  getTimestamp,
+  addItemToCache,
+  removeItemFromCache,
+  getCacheItemById,
   getCacheItems,
 } from 'src/utils';
 
@@ -29,7 +37,6 @@ import {
   Container,
   Content,
   ShadowWrap,
-  LoadingWrap,
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
@@ -45,67 +52,32 @@ import {
 import {
   Item,
   ItemText,
+  StatusWrap,
+  RetryWrap,
+  RetryButton,
 } from './styled';
 
-const { SearchIcon } = SVGS;
+const { SearchIcon, RetryIcon } = SVGS;
 
 const UploadHistoryScreen = ({
+  completeJobs,
   setCoreScreenInfo,
   componentId,
 }) => {
-  const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const [ jobLogs, setJobLogs ] = useState([]);
+  const [ searchedJobLogs, setSearchedJobLogs ] = useState([]);
 
   const [ searchText, setSearchText ] = useState('');
 
   const timerId = useRef(null);
 
   useEffect(() => {
-    setCoreScreenInfo({
-      componentId,
-      componentType: 'push',
-    });
-
-    onReload();
+    getJobLogs();
   }, []);
 
-  const getJobLogs = async () => {
-    try {
-      const allLogs = await getCacheItems(COMPLETE_JOBS_KEY);
-
-      setJobLogs(allLogs.reverse());
-    } catch (error) {
-      //
-    }
-  };
-
-  const onBack = () => {
-    popScreen(componentId);
-  };
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await getJobLogs();
-    setRefreshing(false);
-  };
-
-  const onReload = async () => {
-    setReloading(true);
-    await getJobLogs();
-    setReloading(false);
-  };
-
-  const onSearch = () => {
-    Keyboard.dismiss();
-
-    onReload();
-  };
-
-  const onChangeSearchText = (text) => {
-    setSearchText(text);
-
+  useEffect(() => {
     if (timerId.current) {
       clearTimeout(timerId.current);
       timerId.current = null;
@@ -114,14 +86,159 @@ const UploadHistoryScreen = ({
     timerId.current = setTimeout(() => {
       timerId.current = null;
       onSearch();
-    }, 2500);
+    }, 1500);
+  }, [searchText, jobLogs]);
+
+  const hasRetryJobs = useCallback(
+    () => {
+      const index = jobLogs.findIndex(item => item.loading);
+
+      return (index !== -1);
+    },
+    [jobLogs],
+  );
+
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
+    setCoreScreenInfo({
+      componentId,
+      componentName,
+      componentType: 'push',
+    });
+  });
+
+  const getJobLogs = async () => {
+    try {
+      if (hasRetryJobs()) {
+        return;
+      }
+
+      const allLogs = await getCacheItems(COMPLETE_JOBS_KEY);
+
+      if (allLogs.length > 0) {
+        setJobLogs(allLogs);
+      }
+    } catch (error) {
+      //
+    }
   };
 
-  const renderItem = ({ item }) => {
+  const getSearchedJobLogs = () => {
+    if (!searchText) {
+      setSearchedJobLogs(jobLogs);
+      return;
+    }
+
+    const searchedLogs = jobLogs.map((item) => {
+      const {
+        value: { status },
+        id: { jobNumber },
+      } = item;
+
+      if (
+        status.toLowerCase().includes(searchText.toLowerCase()) ||
+        jobNumber.toLowerCase().includes(searchText.toLowerCase())
+      ) {
+        return item;
+      } else {
+        return { ...item, notShow: true };
+      }
+    });
+
+    setSearchedJobLogs(searchedLogs);
+  };
+
+  const onBack = () => {
+    Keyboard.dismiss();
+    popScreen(componentId);
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+
+    await getJobLogs();
+
+    setRefreshing(false);
+  };
+
+  const onSearch = () => {
+    Keyboard.dismiss();
+
+    getSearchedJobLogs();
+  };
+
+  const onChangeSearchText = (text) => {
+    setSearchText(text);
+  };
+
+  const updateJobLogs = (index, id, value, loading) => {
+    const newJobLogs = jobLogs.slice(0);
+    newJobLogs[index] = { id, value, loading };
+    setJobLogs(newJobLogs);
+  };
+
+  const onRetrySuccess = async (item, index) => {
+    try {
+      const { id } = item;
+
+      await removeItemFromCache(BACKGROUND_FETCH_KEY, id);
+
+      const value = {
+        timestamp: getTimestamp(),
+        status: JOB_STATUS.COMPLETED,
+      };
+
+      await addItemToCache(COMPLETE_JOBS_KEY, id, value);
+
+      Toast.show('This job is completed.');
+
+      updateJobLogs(index, id, value, false);
+    } catch (error) {
+      onRetryFailure(item, index);
+    }
+  };
+
+  const onRetryFailure = (item, index) => {
+    Alert.alert('Warning', 'Something went wrong.');
+
+    updateJobLogs(index, item.id, item.value, false);
+  }
+
+  const onRetry = async (item, index) => {
+    try {
+      updateJobLogs(index, item.id, item.value, true);
+
+      const {
+        value: { fetchData },
+      } = await getCacheItemById(BACKGROUND_FETCH_KEY, item.id);
+
+      const [ jobIds, binInfo, services, attempt ] = fetchData;
+
+      completeJobs({
+        jobIds,
+        binInfo,
+        services,
+        attempt,
+        success: () => onRetrySuccess(item, index),
+        failure: () => onRetryFailure(item, index),
+      });
+    } catch (error) {
+      onRetryFailure(item, index);
+    }
+  };
+
+  const renderItem = ({ item, index }) => {
     const {
       id: { jobNumber },
       value: { status, timestamp },
+      loading,
+      notShow,
     } = item;
+
+    if (notShow) {
+      return null;
+    }
 
     const color = status === JOB_STATUS.COMPLETED
       ? COLORS.GREEN1
@@ -131,7 +248,7 @@ const UploadHistoryScreen = ({
 
     return (
       <Item>
-        <FlexWrap flex={0.7}>
+        <FlexWrap flex={5}>
           <ItemText numberOfLines={1}>
             {
               'Uploaded: ' +
@@ -143,13 +260,38 @@ const UploadHistoryScreen = ({
             {jobNumber}
           </ItemText>
         </FlexWrap>
-        <FlexWrap flex={0.3}>
-          <ItemText
-            numberOfLines={2}
-            color={color}
-          >
-            {status}
-          </ItemText>
+        <FlexWrap flex={4}>
+          <StatusWrap>
+            <ItemText numberOfLines={2} color={color}>
+              {status}
+            </ItemText>
+            {
+              status !== JOB_STATUS.FAILED &&
+              status !== JOB_STATUS.COMPLETED &&
+              <RetryWrap>
+                {
+                  loading
+                  ? <ActivityIndicator
+                      size={'small'}
+                      color={COLORS.GRAY3}
+                    />
+                  : <RetryButton
+                      onPress={() => onRetry(item, index)}
+                      disabled={hasRetryJobs()}
+                    >
+                      <RetryIcon />
+                      <SpaceView mLeft={SIZE1} />
+                      <ItemText
+                        numberOfLines={1}
+                        color={COLORS.GRAY3}
+                      >
+                        Retry
+                      </ItemText>
+                    </RetryButton>
+                }
+              </RetryWrap>
+            }
+          </StatusWrap>
         </FlexWrap>
       </Item>
     );
@@ -184,25 +326,19 @@ const UploadHistoryScreen = ({
         </SearchBarWrap>
 
         <ListWrap
-          data={jobLogs}
+          data={searchedJobLogs}
           keyExtractor={(item) => `${item.id.jobId}`}
           renderItem={renderItem}
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
         />
-
-        {
-          reloading &&
-          <LoadingWrap>
-            <ActivityIndicator size={'large'} />
-          </LoadingWrap>
-        }
       </Content>
     </Container>
   );
 };
 
 UploadHistoryScreen.propTypes = {
+  completeJobs: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -218,6 +354,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  completeJobs: Jobs.actionCreators.completeJobs,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
 };
 

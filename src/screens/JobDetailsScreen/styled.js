@@ -9,7 +9,6 @@ import {
   SIZE6,
   SIZE8,
   SIZE12,
-  SIZE20,
   FONT,
 } from 'src/constants';
 
@@ -21,6 +20,7 @@ const ButtonWrap = styled.View`
 `;
 
 const JobDetails = styled.View`
+  flex: 1;
   margin-bottom: ${SIZE2}px;
   margin-horizontal: ${SIZE2}px;
 `;
@@ -95,37 +95,10 @@ const CashButton = styled.TouchableOpacity`
   margin-left: ${SIZE4}px;
 `;
 
-const BinButtonWrap = styled.View`
-  width: 80%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin-vertical: ${SIZE4}px;
-`;
-
-const BinButton = styled.TouchableOpacity`
-  width: ${SIZE20}px;
-  height: ${SIZE8}px;
-  align-items: center;
-  justify-content: center;
-  border-radius: ${SIZE4}px;
-  background-color: ${(props) => (
-    props.active ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-  )};
-  border-width: 2px;
-  border-color: ${COLORS.BLUE1};
-`;
-
-const BinButtonText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${(props) => (
-    props.active ? COLORS.WHITE1 : COLORS.BLUE1
-  )};
-`;
-
 const BinInfoWrap = styled.View`
-  margin-bottom: ${SIZE4}px;
+  padding-vertical: ${SIZE4}px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
 `;
 
 const BinInfoRow = styled.View`
@@ -206,7 +179,15 @@ const SignInfoText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const CancelButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: ${SIZE1}px;
+`;
+
 const JobInstruction = styled.View`
+  flex: 1;
   margin-bottom: ${SIZE2}px;
   margin-horizontal: ${SIZE2}px;
 `;
@@ -303,9 +284,6 @@ export {
   NumberText,
   RowWrap,
   CashButton,
-  BinButtonWrap,
-  BinButton,
-  BinButtonText,
   BinInfoWrap,
   BinInfoRow,
   BinText,
@@ -316,6 +294,7 @@ export {
   HalfWrap,
   SignInfo,
   SignInfoText,
+  CancelButton,
 
   JobInstruction,
   CommentsWrap,

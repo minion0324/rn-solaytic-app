@@ -4,11 +4,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
+import {
+  useNavigationComponentDidAppear,
+  useNavigationComponentDidDisappear,
+} from 'react-native-navigation-hooks';
 
 import {
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
+  JOB_DETAILS_KEY,
+  JOB_DETAILS_LIMIT,
 } from 'src/constants';
 import {
   showOverlay,
@@ -24,6 +30,7 @@ import {
 import {
   addItemToCache,
   removeItemFromCache,
+  getCacheItemById,
   getCacheIds,
   getTimestamp,
 } from 'src/utils';
@@ -32,18 +39,19 @@ import JobDetailsScreenView from './view';
 
 const JobDetailsScreen = ({
   focusedJob,
+  jobStatus,
   photosAndSign,
+  newCommentInfo,
   acknowledgeJobs,
   startJobs,
   exchangeJobs,
   completeJobs,
-  addService,
-  removeService,
   markMessagesAsRead,
   addMessage,
   updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
+  setNewCommentInfo,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -57,31 +65,46 @@ const JobDetailsScreen = ({
   const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
 
   const [ binInfo, setBinInfo ] = useState(
-    [0, 1].map((index) => {
-      const {
-        wasteType, binType, binNumber, binWeight,
-      } = focusedJob.steps[index];
+    focusedJob.appExtraData && focusedJob.appExtraData.binInfo
+    ? focusedJob.appExtraData.binInfo
+    : [0, 1].map((index) => {
+        const {
+          jobStepId, wasteType, binType, binNumber, binWeight,
+        } = focusedJob.steps[index];
 
-      return {
-        wasteType, binType, binNumber, binWeight,
-      };
-    })
+        return {
+          jobStepId, wasteType, binType, binNumber, binWeight,
+        };
+      })
   );
-
-  const [ jobStatus, setJobStatus ] = useState(focusedJob.status.jobStatusName);
 
   const [ amountCollected, setAmountCollected ] = useState(
     focusedJob.collectedAmount || focusedJob.amountToCollect
   );
 
-  useEffect(() => {
-    setCoreScreenInfo({
-      componentId,
-      componentType: 'push',
-    });
+  const [ services, setServices ] = useState(
+    focusedJob.appExtraData && focusedJob.appExtraData.services
+    ? focusedJob.appExtraData.services : focusedJob.additionalCharges
+  );
 
+  useEffect(() => {
+    getSavedPhotosAndSign();
     checkIsInBackgroundMode();
   }, []);
+
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
+    setCoreScreenInfo({
+      componentId,
+      componentName,
+      componentType: 'push',
+    });
+  });
+
+  useNavigationComponentDidDisappear(() => {
+    saveJobDetailsInfo();
+  });
 
   const checkIsInBackgroundMode = async () => {
     try {
@@ -118,6 +141,62 @@ const JobDetailsScreen = ({
     }
   };
 
+  const getSavedPhotosAndSign = async () => {
+    try {
+      const {
+        value: { appExtraData },
+      } = await getCacheItemById(JOB_DETAILS_KEY, { jobId: focusedJob.jobId });
+
+      const {
+        photosAndSign: {
+          photos: savedPhotos,
+          sign: savedSign,
+          signedUserName: savedSignedUserName,
+          signedUserContact: savedSignedUserContact,
+        }
+      } = appExtraData;
+
+      if (photos.length <= 0 && savedPhotos.length > 0) {
+        setPhotos(savedPhotos);
+      }
+
+      if (!sign.uri && savedSign.uri) {
+        setSign(savedSign);
+
+        setSignedUserName(savedSignedUserName);
+        setSignedUserContact(savedSignedUserContact);
+      }
+    } catch (error) {
+      //
+    }
+  };
+
+  const saveJobDetailsInfo = async () => {
+    try {
+      const data = {
+        ...focusedJob,
+        appExtraData: {
+          ...(focusedJob.appExtraData || {}),
+          photosAndSign: {
+            photos,
+            sign,
+            signedUserName,
+            signedUserContact,
+          },
+        },
+      };
+
+      await addItemToCache(
+        JOB_DETAILS_KEY,
+        { jobId: focusedJob.jobId },
+        data,
+        JOB_DETAILS_LIMIT,
+      );
+    } catch (error) {
+      //
+    }
+  };
+
   const onBack = () => {
     popScreen(componentId);
   };
@@ -129,26 +208,9 @@ const JobDetailsScreen = ({
       jobIds: `${focusedJob.jobId}`,
       success: () => {
         setLoading(false);
-        setJobStatus(JOB_STATUS.ACKNOWLEDGED);
         setIsRequiredUpdateTab(true);
       },
       failure: () => setLoading(false),
-    });
-  };
-
-  const getUpdatedBinInfo = () => {
-    return [0, 1].map((index) => {
-      const {
-        wasteType, binType, binNumber, binWeight,
-      } = binInfo[index];
-
-      return {
-        jobStepId: focusedJob.steps[index].jobStepId,
-        wasteTypeId: wasteType && wasteType.wasteTypeId,
-        binTypeId: binType && binType.binTypeId,
-        binNumber: binNumber,
-        binWeight: binWeight,
-      }
     });
   };
 
@@ -157,11 +219,9 @@ const JobDetailsScreen = ({
 
     startJobs({
       jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      success: () => {
-        setLoading(false);
-        setJobStatus(JOB_STATUS.IN_PROGRESS1);
-      },
+      binInfo,
+      services,
+      success: () => setLoading(false),
       failure: () => setLoading(false),
     });
   };
@@ -171,11 +231,9 @@ const JobDetailsScreen = ({
 
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
-      success: () => {
-        setLoading(false);
-        setJobStatus(JOB_STATUS.IN_PROGRESS2);
-      },
+      binInfo,
+      services,
+      success: () => setLoading(false),
       failure: () => setLoading(false),
     });
   };
@@ -186,7 +244,7 @@ const JobDetailsScreen = ({
       return;
     }
 
-    if (focusedJob.mustTakeSignature && !sign) {
+    if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
       Alert.alert('Warning', 'Please upload signature.');
       return;
     }
@@ -240,7 +298,8 @@ const JobDetailsScreen = ({
 
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
-      stepBinUpdate: getUpdatedBinInfo(),
+      binInfo,
+      services,
       photos,
       sign,
       signedUserName,
@@ -282,26 +341,37 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onCancelPhoto = (index) => {
+    const newPhotos = photos.slice(0);
+    newPhotos.splice(index, 1);
+
+    setPhotos(newPhotos);
+  };
+
+  const onCancelSign = () => {
+    setSign(photosAndSign.sign);
+
+    setSignedUserName(photosAndSign.signedUserName);
+    setSignedUserContact(photosAndSign.signedUserContact);
+  };
+
   const onFail = () => {
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
 
-  const onUpdateService = (service) => {
+  const onUpdateService = (item, index) => {
     if (!onAlertNotProgress()) {
       return;
     }
 
-    if (service.isSelected) {
-      removeService({
-        jobId: focusedJob.jobId,
-        serviceId: service.serviceAdditionalChargeTemplateId,
-      });
-    } else {
-      addService({
-        jobId: focusedJob.jobId,
-        serviceId: service.serviceAdditionalChargeTemplateId,
-      });
-    }
+    const newServices = services.slice(0);
+
+    newServices[index] = {
+      ...item,
+      isSelected: !item.isSelected,
+    };
+
+    setServices(newServices);
   };
 
   const onReadMessages = () => {
@@ -357,8 +427,11 @@ const JobDetailsScreen = ({
       jobStatus={jobStatus}
       amountCollected={amountCollected}
       setAmountCollected={setAmountCollected}
+      services={services}
 
       focusedJob={focusedJob}
+      newCommentInfo={newCommentInfo}
+      setNewCommentInfo={setNewCommentInfo}
 
       onBack={onBack}
       onAcknowledge={onAcknowledge}
@@ -367,6 +440,8 @@ const JobDetailsScreen = ({
       onComplete={onComplete}
       onPhoto={onPhoto}
       onSign={onSign}
+      onCancelPhoto={onCancelPhoto}
+      onCancelSign={onCancelSign}
       onFail={onFail}
       onUpdateService={onUpdateService}
       onReadMessages={onReadMessages}
@@ -380,29 +455,32 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  jobStatus: PropTypes.string,
   photosAndSign: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  addService: PropTypes.func.isRequired,
-  removeService: PropTypes.func.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 JobDetailsScreen.defaultProps = {
-  //
+  jobStatus: '',
 };
 
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    jobStatus: Jobs.selectors.getJobStatus(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),
+    newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
   };
 };
 
@@ -411,13 +489,12 @@ const mapDispatchToProps = {
   startJobs: Jobs.actionCreators.startJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  addService: Jobs.actionCreators.addService,
-  removeService: Jobs.actionCreators.removeService,
   markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
   addMessage: Jobs.actionCreators.addMessage,
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
+  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
 };
 
 export default connect(

@@ -34,6 +34,7 @@ import {
   delay,
 } from 'src/utils';
 import {
+  SVGS,
   JOB_STATUS,
 } from 'src/constants';
 
@@ -53,14 +54,21 @@ import {
   TabWrap,
   TabItem,
   TabText,
+  NoJobsWrap,
+  NoJobsText,
+  NoJobsIcon,
 } from './styled';
+
+const { HappyIcon } = SVGS;
 
 const tabs = ['All', 'Open', 'Closed'];
 
 const JobsScreen = ({
   allJobs,
+  countOfJobs,
   pageOfJobs,
   dateForJobs,
+  focusedJobId,
   coreScreenInfo,
   isNetworkConnected,
   getJobsByDate,
@@ -70,12 +78,13 @@ const JobsScreen = ({
   updateDateForJobs,
   setCoreScreenInfo,
   setIsNetworkConnected,
+  setNewCommentInfo,
   componentId,
 }) => {
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
-  const [ tabIndex, setTabIndex ] = useState(0);
+  const [ tabIndex, setTabIndex ] = useState(1);
 
   useEffect(() => {
     const networkEventListener = NetInfo.addEventListener(({ isConnected }) => {
@@ -105,16 +114,36 @@ const JobsScreen = ({
     pushNotifications.setNotificationHandlerForJobs(onNotification);
   }, [coreScreenInfo]);
 
-  useNavigationComponentDidAppear(() => {
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
     setCoreScreenInfo({
       componentId,
+      componentName,
       componentType: 'tab',
     });
   });
 
-  const onNotification = async (jobId) => {
+  const onNotification = async (jobId, message) => {
     try {
+      if (message) {
+        setNewCommentInfo({ jobId, message });
+      }
+
       if (coreScreenInfo.componentType === 'push') {
+        if (
+          message && +jobId === focusedJobId &&
+          coreScreenInfo.componentName === JOB_DETAILS_SCREEN
+        ) {
+          getJobById({
+            jobId,
+            success: () => {},
+            failure: () => {},
+          });
+
+          return;
+        }
+
         popToRootScreen(coreScreenInfo.componentId);
         await delay(100);
       }
@@ -224,6 +253,24 @@ const JobsScreen = ({
     );
   };
 
+  const renderNoJobs = () => {
+    return (
+      <NoJobsWrap>
+        <NoJobsText>
+          {'There is no jobs.'}
+        </NoJobsText>
+
+        <NoJobsIcon>
+          <HappyIcon />
+        </NoJobsIcon>
+
+        <NoJobsText>
+          {'Please check other dates.'}
+        </NoJobsText>
+      </NoJobsWrap>
+    );
+  };
+
   const renderTabs = () => {
     return (
       <TabWrap>
@@ -264,9 +311,9 @@ const JobsScreen = ({
         />
       </ShadowWrap>
 
-      <Content>
-        { renderTabs() }
+      { renderTabs() }
 
+      <Content>
         <ListWrap
           data={getFilteredJobs()}
           keyExtractor={(item) => `${item.jobId}`}
@@ -275,6 +322,11 @@ const JobsScreen = ({
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
         />
+
+        {
+          countOfJobs === 0 &&
+          renderNoJobs()
+        }
 
         {
           reloading &&
@@ -291,8 +343,10 @@ const JobsScreen = ({
 
 JobsScreen.propTypes = {
   allJobs: PropTypes.array.isRequired,
+  countOfJobs: PropTypes.number.isRequired,
   pageOfJobs: PropTypes.number.isRequired,
   dateForJobs: PropTypes.string.isRequired,
+  focusedJobId: PropTypes.number,
   coreScreenInfo: PropTypes.object.isRequired,
   isNetworkConnected: PropTypes.bool.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
@@ -302,14 +356,21 @@ JobsScreen.propTypes = {
   updateDateForJobs: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsNetworkConnected: PropTypes.func.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
+};
+
+JobsScreen.defaultProps = {
+  focusedJobId: null,
 };
 
 const mapStateToProps = (state) => {
   return {
     allJobs: Jobs.selectors.getAllJobs(state),
+    countOfJobs: Jobs.selectors.getCountOfJobs(state),
     pageOfJobs: Jobs.selectors.getPageOfJobs(state),
     dateForJobs: Jobs.selectors.getDateForJobs(state),
+    focusedJobId: Jobs.selectors.getFocusedJobId(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
     isNetworkConnected: ViewStore.selectors.getIsNetworkConnected(state),
   };
@@ -323,6 +384,7 @@ const mapDispatchToProps = {
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsNetworkConnected: ViewStore.actionCreators.setIsNetworkConnected,
+  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
 };
 
 export default connect(

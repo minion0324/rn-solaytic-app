@@ -65,6 +65,24 @@ const getFocusedJob = createSelector(
   },
 );
 
+const getFocusedJobId = createSelector(
+  getFocusedJob,
+  (focusedJob) => {
+    return focusedJob.jobId;
+  },
+);
+
+const getJobStatus = createSelector(
+  getFocusedJob,
+  (focusedJob) => {
+    try {
+      return focusedJob.status.jobStatusName;
+    } catch (error) {
+      return '';
+    }
+  },
+);
+
 const getPhotosAndSign = createSelector(
   getFocusedJob,
   (focusedJob) => {
@@ -82,7 +100,7 @@ const getPhotosAndSign = createSelector(
     } catch (error) {
       return {
         photos: [],
-        sign: null,
+        sign: { uri: null },
         signedUserName: '',
         signedUserContact: '',
       };
@@ -100,5 +118,7 @@ export default {
   getPageOfAlerts,
   getDateForAlerts,
   getFocusedJob,
+  getFocusedJobId,
+  getJobStatus,
   getPhotosAndSign,
 };

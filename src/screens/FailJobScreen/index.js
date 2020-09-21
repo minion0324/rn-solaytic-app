@@ -93,6 +93,18 @@ const FailJobScreen = ({
     onReload();
   }, []);
 
+  useEffect(() => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+      timerId.current = null;
+    }
+
+    timerId.current = setTimeout(() => {
+      timerId.current = null;
+      onSearch();
+    }, 1500);
+  }, [searchText]);
+
   const checkIsInBackgroundMode = async () => {
     try {
       const { jobId } = focusedJob;
@@ -109,6 +121,7 @@ const FailJobScreen = ({
   };
 
   const onBack = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
   };
 
@@ -200,16 +213,6 @@ const FailJobScreen = ({
 
   const onChangeSearchText = (text) => {
     setSearchText(text);
-
-    if (timerId.current) {
-      clearTimeout(timerId.current);
-      timerId.current = null;
-    }
-
-    timerId.current = setTimeout(() => {
-      timerId.current = null;
-      onSearch();
-    }, 2500);
   };
 
   const onItemPress = (index) => {

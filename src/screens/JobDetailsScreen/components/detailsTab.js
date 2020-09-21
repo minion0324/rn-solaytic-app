@@ -14,6 +14,7 @@ import {
   SVGS,
   COLORS,
   JOB_STATUS,
+  JOB_TYPE,
   SIZE1,
   SIZE2,
 } from 'src/constants';
@@ -46,9 +47,6 @@ import {
   NumberText,
   RowWrap,
   CashButton,
-  BinButtonWrap,
-  BinButton,
-  BinButtonText,
   BinInfoWrap,
   BinInfoRow,
   BinText,
@@ -59,6 +57,7 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
+  CancelButton,
 } from '../styled';
 
 const {
@@ -71,6 +70,7 @@ const {
   ActiveCashIcon,
   DeactiveCashIcon,
   ArrowLocationIcon,
+  CancelIcon,
 } = SVGS;
 
 const DetailsTab = ({
@@ -89,6 +89,8 @@ const DetailsTab = ({
   onAcknowledge,
   onPhoto,
   onSign,
+  onCancelPhoto,
+  onCancelSign,
   isInProgress,
 }) => {
   const [ binIndex, setBinIndex ] = useState(0);
@@ -200,6 +202,84 @@ const DetailsTab = ({
     setBinInfo(newBinInfo);
   };
 
+  const isForComplete = () => {
+    return (
+      (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+      (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2))
+    );
+  };
+
+  const getBinInOut = (index) => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PULL:
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS2
+        ) {
+          return '';
+        }
+
+        if (
+          jobStatus === JOB_STATUS.DISPATCHED ||
+          jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+          jobStatus === JOB_STATUS.IN_PROGRESS1
+        ) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
+
+      case JOB_TYPE.PUT:
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS2
+        ) {
+          return '';
+        }
+
+        if (jobStatus === JOB_STATUS.COMPLETED) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
+
+      case JOB_TYPE.EXCHANGE:
+        if (jobStatus === JOB_STATUS.COMPLETED) {
+          return index === 0 ? ' (IN)' : ' (OUT)';
+        } else {
+          return index === 0 ? ' (OUT)' : ' (IN)';
+        }
+
+      case JOB_TYPE.OUT:
+        if (index !== 0) {
+          return '';
+        }
+
+        if (jobStatus === JOB_STATUS.COMPLETED) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
+
+      case JOB_TYPE.SHIFT:
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS2
+        ) {
+          return '';
+        }
+
+        if (jobStatus === JOB_STATUS.IN_PROGRESS1) {
+          return ' (IN)';
+        } else {
+          return ' (OUT)';
+        }
+
+      default:
+        return '';
+    };
+  };
+
   const renderLocationInfo = () => {
     const { steps } = focusedJob;
 
@@ -211,7 +291,7 @@ const DetailsTab = ({
             <IconWrap>
               <Location1Icon />
             </IconWrap>
-            <InfoText numberOfLines={1}>
+            <InfoText>
               {steps[0].address}
             </InfoText>
             <SpaceView mLeft={SIZE2} />
@@ -231,7 +311,7 @@ const DetailsTab = ({
               <IconWrap>
                 <Location2Icon />
               </IconWrap>
-              <InfoText numberOfLines={1}>
+              <InfoText>
                 {steps[1].address}
               </InfoText>
               <SpaceView mLeft={SIZE2} />
@@ -254,7 +334,7 @@ const DetailsTab = ({
                 <IconWrap>
                   <Location3Icon />
                 </IconWrap>
-                <InfoText numberOfLines={1}>
+                <InfoText>
                   {steps[2].address}
                 </InfoText>
                 <SpaceView mLeft={SIZE2} />
@@ -401,148 +481,133 @@ const DetailsTab = ({
     return (
       <View>
         {
-          binInfo[1].wasteType || binInfo[1].binType
-          ? <BinButtonWrap>
-              <BinButton
-                active={binIndex === 0}
-                onPress={() => setBinIndex(0)}
-              >
-                <BinButtonText active={binIndex === 0}>Bin1</BinButtonText>
-              </BinButton>
-              <BinButton
-                active={binIndex === 1}
-                onPress={() => setBinIndex(1)}
-              >
-                <BinButtonText active={binIndex === 1}>Bin2</BinButtonText>
-              </BinButton>
-            </BinButtonWrap>
-          : <BinButtonWrap>
-              <BinButton
-                active={binIndex === 0}
-                onPress={() => setBinIndex(0)}
-              >
-                <BinButtonText active={binIndex === 0}>Bin</BinButtonText>
-              </BinButton>
-            </BinButtonWrap>
-        }
-        <BinInfoWrap>
-          <RowWrap>
-            <FlexWrap flex={0.5}>
-              <LabelText>Waste Type</LabelText>
-            </FlexWrap>
-            <BinInfoRow editable={editable}>
-              <BinText
-                numberOfLines={2}
-                editable={editable}
-              >
+          binInfo.map((item, index) => (
+            (item.wasteType || item.binType) &&
+            <BinInfoWrap key={`${item.jobStepId}`}>
+              <InfoText numberOfLines={1}>
                 {
-                  binInfo[binIndex]['wasteType'] &&
-                  binInfo[binIndex]['wasteType']['wasteTypeName']
+                  `BIN ${index + 1}` + getBinInOut(index)
                 }
-              </BinText>
-              {
-                editable &&
-                <TouchableOpacity
-                  onPress={() => onShowActionSheet('wasteType')}
-                >
-                  <EditIcon />
-                </TouchableOpacity>
-              }
-            </BinInfoRow>
-          </RowWrap>
-
-          <RowWrap>
-            <FlexWrap flex={0.5}>
-              <LabelText>Bin Type</LabelText>
-            </FlexWrap>
-            <BinInfoRow editable={editable}>
-              <BinText
-                numberOfLines={2}
-                editable={editable}
-              >
-                {
-                  binInfo[binIndex]['binType'] &&
-                  binInfo[binIndex]['binType']['binTypeName']
-                }
-              </BinText>
-              {
-                editable &&
-                <TouchableOpacity
-                  onPress={() => onShowActionSheet('binType')}
-                >
-                  <EditIcon />
-                </TouchableOpacity>
-              }
-            </BinInfoRow>
-          </RowWrap>
-
-          <RowWrap>
-            <FlexWrap flex={0.5}>
-              <LabelText
-                required={focusedJob.isRequireBinNumberToStart}
-              >
-                {
-                  focusedJob.isRequireBinNumberToStart
-                  ? 'Bin ID *' : 'Bin ID'
-                }
-              </LabelText>
-            </FlexWrap>
-            <BinInfoRow editable={editable}>
-              <BinInput
-                underlineColorAndroid={COLORS.TRANSPARENT1}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                placeholder={'BIN NUMBER'}
-                value={
-                  `${binInfo[binIndex]['binNumber'] || ''}`
-                }
-                onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
-                editable={editable}
-              />
-              {
-                editable &&
-                <TouchableOpacity
-                  onPress={() => onShowActionSheet('binNumber')}
-                >
-                  <EditIcon />
-                </TouchableOpacity>
-              }
-            </BinInfoRow>
-          </RowWrap>
-
-          {
-            focusedJob.isEnabledBinWeight &&
-            (!!binInfo[binIndex]['binWeight'] || editable) &&
-            <RowWrap>
-              <FlexWrap flex={0.5}>
-                <LabelText>Bin Weight</LabelText>
-              </FlexWrap>
-              <BinInfoRow editable={editable}>
-                <BinInput
-                  ref={inputBinWeight}
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  placeholder={'BIN WEIGHT'}
-                  keyboardType={'numeric'}
-                  value={
-                    `${binInfo[binIndex]['binWeight'] || ''}`
-                  }
-                  onChangeText={(text) => onUpdateBinInfo({ binWeight: text })}
-                  editable={editable}
-                />
-                {
-                  editable &&
-                  <TouchableOpacity
-                    onPress={() => inputBinWeight.current.focus()}
+              </InfoText>
+              <RowWrap>
+                <FlexWrap flex={0.5}>
+                  <LabelText>Waste Type</LabelText>
+                </FlexWrap>
+                <BinInfoRow editable={editable}>
+                  <BinText
+                    numberOfLines={2}
+                    editable={editable}
                   >
-                    <EditIcon />
-                  </TouchableOpacity>
-                }
-              </BinInfoRow>
-            </RowWrap>
-          }
-        </BinInfoWrap>
+                    {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                  </BinText>
+                  {
+                    editable &&
+                    <TouchableOpacity
+                      onPress={() => onShowActionSheet('wasteType')}
+                    >
+                      <EditIcon />
+                    </TouchableOpacity>
+                  }
+                </BinInfoRow>
+              </RowWrap>
+
+              <RowWrap>
+                <FlexWrap flex={0.5}>
+                  <LabelText>Bin Type</LabelText>
+                </FlexWrap>
+                <BinInfoRow editable={editable}>
+                  <BinText
+                    numberOfLines={2}
+                    editable={editable}
+                  >
+                    {item['binType'] && item['binType']['binTypeName']}
+                  </BinText>
+                  {
+                    editable &&
+                    <TouchableOpacity
+                      onPress={() => onShowActionSheet('binType')}
+                    >
+                      <EditIcon />
+                    </TouchableOpacity>
+                  }
+                </BinInfoRow>
+              </RowWrap>
+
+              <RowWrap>
+                <FlexWrap flex={0.5}>
+                  <LabelText
+                    required={focusedJob.isRequireBinNumberToStart}
+                  >
+                    {
+                      focusedJob.isRequireBinNumberToStart
+                      ? 'Bin ID *' : 'Bin ID'
+                    }
+                  </LabelText>
+                </FlexWrap>
+                <BinInfoRow editable={editable}>
+                  <BinInput
+                    underlineColorAndroid={COLORS.TRANSPARENT1}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    placeholder={'BIN NUMBER'}
+                    value={`${item['binNumber'] || ''}`}
+                    onChangeText={(text) => {
+                      setBinIndex(index);
+                      onUpdateBinInfo({ binNumber: text });
+                    }}
+                    editable={editable}
+                  />
+                  {
+                    editable &&
+                    <TouchableOpacity
+                      onPress={() => onShowActionSheet('binNumber')}
+                    >
+                      <EditIcon />
+                    </TouchableOpacity>
+                  }
+                </BinInfoRow>
+              </RowWrap>
+
+              {
+                focusedJob.isEnabledBinWeight &&
+                (!!item['binWeight'] || editable) &&
+                (
+                  index !== 0 ||
+                  focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+                ) &&
+                <RowWrap>
+                  <FlexWrap flex={0.5}>
+                    <LabelText>Bin Weight</LabelText>
+                  </FlexWrap>
+                  <BinInfoRow editable={editable}>
+                    <BinInput
+                      ref={inputBinWeight}
+                      underlineColorAndroid={COLORS.TRANSPARENT1}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      placeholder={'BIN WEIGHT'}
+                      keyboardType={'numeric'}
+                      value={`${item['binWeight'] || ''}`}
+                      onChangeText={(text) => {
+                        setBinIndex(index);
+                        onUpdateBinInfo({ binWeight: text });
+                      }}
+                      editable={editable}
+                    />
+                    {
+                      editable &&
+                      <TouchableOpacity
+                        onPress={() => inputBinWeight.current.focus()}
+                      >
+                        <EditIcon />
+                      </TouchableOpacity>
+                    }
+                  </BinInfoRow>
+                </RowWrap>
+              }
+            </BinInfoWrap>
+          ))
+        }
 
         <ActionSheet
           ref={actionSheetRef}
@@ -559,10 +624,18 @@ const DetailsTab = ({
     return (
       <View>
         {
-          photos.map(photo =>
+          photos.map((photo, index) =>
             <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
               <AttachmentWrap>
                 <FullImage source={{ uri: photo.uri }} />
+                {
+                  isForComplete() &&
+                  <CancelButton
+                    onPress={() => onCancelPhoto(index)}
+                  >
+                    <CancelIcon />
+                  </CancelButton>
+                }
               </AttachmentWrap>
             </ItemWrap>
           )
@@ -586,6 +659,12 @@ const DetailsTab = ({
                   </SignInfoText>
                 </SignInfo>
               </HalfWrap>
+              {
+                isForComplete() &&
+                <CancelButton onPress={onCancelSign}>
+                  <CancelIcon />
+                </CancelButton>
+              }
             </AttachmentWrap>
           </ItemWrap>
         }
@@ -641,8 +720,7 @@ const DetailsTab = ({
         </JobDetails>
       </ScrollView>
       {
-        (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-        (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2)) &&
+        isForComplete() &&
         renderPhotoAndSign()
       }
     </FlexWrap>
@@ -665,6 +743,8 @@ DetailsTab.propTypes = {
   onAcknowledge: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
+  onCancelPhoto: PropTypes.func.isRequired,
+  onCancelSign: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
 };
 

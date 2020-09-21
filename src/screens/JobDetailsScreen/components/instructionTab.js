@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
-  ScrollView,
+  FlatList,
   Keyboard,
   Alert,
 } from 'react-native';
@@ -67,16 +67,75 @@ const UNIT = '$ ';
 const InstructionTab = ({
   amountCollected,
   setAmountCollected,
+  tabIndex,
+  setTabIndex,
+  services,
 
   focusedJob,
+  newCommentInfo,
+  setNewCommentInfo,
 
   onUpdateService,
+  onReadMessages,
   onNewComment,
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
 }) => {
   const [ active, setActive ] = useState(COMMENT);
+
+  const [ maxHeight, setMaxHeight ] = useState(0);
+
+  const listRef = useRef(null);
+
+  const wrap1Height = useRef(null);
+  const wrap2Height = useRef(null);
+
+  useEffect(() => {
+    onCommentActive();
+  }, [tabIndex, active]);
+
+  useEffect(() => {
+    onNewCommentInfo();
+  }, [newCommentInfo]);
+
+  useEffect(() => {
+    const result = wrap1Height.current - wrap2Height.current - SIZE1 * 28;
+
+    if (result > 0) {
+      setMaxHeight(result);
+    }
+  }, [wrap1Height.current, wrap2Height.current]);
+
+  const onCommentActive = async () => {
+    try {
+      if (tabIndex === 1 && active === COMMENT) {
+        await delay(1000);
+        listRef.current.scrollToEnd();
+      }
+    } catch (error) {
+      //
+    }
+  };
+
+  const onNewCommentInfo = async () => {
+    try {
+      const { jobId } = newCommentInfo;
+
+      if (+jobId === focusedJob.jobId) {
+        setTabIndex(1);
+        await delay(100);
+
+        setActive(COMMENT);
+        await delay(100);
+
+        onReadMessages();
+        setNewCommentInfo({});
+      }
+    } catch (error) {
+      //
+    }
+  };
 
   const onShowCommentModal = () => {
     if (!onAlertNotProgress()) {
@@ -134,6 +193,22 @@ const InstructionTab = ({
     );
   };
 
+  const renderCommentItem = ({ item }) => {
+    return (
+      !!item.message &&
+      <Comment
+        key={item.jobMessageId}
+        pos={item.type && 'right'}
+      >
+        <CommentText
+          pos={item.type && 'right'}
+        >
+          {item.message}
+        </CommentText>
+      </Comment>
+    );
+  };
+
   const renderComments = () => {
     if (active !== COMMENT) {
       return (
@@ -158,21 +233,15 @@ const InstructionTab = ({
           {
             focusedJob.messages.length > 0 &&
             <CommentsWrap>
-              {
-                focusedJob.messages.map((item) => (
-                  !!item.message &&
-                  <Comment
-                    key={item.jobMessageId}
-                    pos={item.type && 'right'}
-                  >
-                    <CommentText
-                      pos={item.type && 'right'}
-                    >
-                      {item.message}
-                    </CommentText>
-                  </Comment>
-                ))
-              }
+              <FlatList
+                ref={listRef}
+                bounces={false}
+                data={focusedJob.messages}
+                keyExtractor={(item) => `${item.jobMessageId}`}
+                showsVerticalScrollIndicator={false}
+                renderItem={renderCommentItem}
+                style={{ maxHeight }}
+              />
             </CommentsWrap>
           }
           <AddComment onPress={onShowCommentModal}>
@@ -187,7 +256,13 @@ const InstructionTab = ({
 
   const renderCollect = () => {
     return (
-      <View>
+      <View
+        onLayout={({ nativeEvent: { layout } }) => {
+          if (Math.abs(wrap2Height.current - layout.height) > SIZE1) {
+            wrap2Height.current = layout.height;
+          }
+        }}
+      >
         <SpaceView mTop={SIZE2} />
         <ShadowWrap>
           <Content>
@@ -229,6 +304,23 @@ const InstructionTab = ({
     );
   };
 
+  const renderServiceItem = ({ item, index }) => {
+    return (
+      <ServiceRow
+        key={`${item.serviceAdditionalChargeId}`}
+        onPress={() => onUpdateService(item, index)}
+      >
+        {
+          item.isSelected
+          ? <ActiveCircleCheckIcon />
+          : <DeactiveCircleCheckIcon />
+        }
+        <SpaceView mLeft={SIZE2} />
+        <InfoText>{item.serviceAdditionalChargeName}</InfoText>
+      </ServiceRow>
+    );
+  };
+
   const renderServices = () => {
     return (
       <View>
@@ -243,22 +335,14 @@ const InstructionTab = ({
             {
               active === SERVICES &&
               <ServicesWrap>
-                {
-                  focusedJob.additionalCharges.map((item) => (
-                    <ServiceRow
-                      key={`${item.serviceAdditionalChargeId}`}
-                      onPress={() => onUpdateService(item)}
-                    >
-                      {
-                        item.isSelected
-                        ? <ActiveCircleCheckIcon />
-                        : <DeactiveCircleCheckIcon />
-                      }
-                      <SpaceView mLeft={SIZE2} />
-                      <InfoText>{item.serviceAdditionalChargeName}</InfoText>
-                    </ServiceRow>
-                  ))
-                }
+                <FlatList
+                  bounces={false}
+                  data={services}
+                  keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={renderServiceItem}
+                  style={{ maxHeight }}
+                />
               </ServicesWrap>
             }
           </Content>
@@ -268,23 +352,25 @@ const InstructionTab = ({
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
+    <JobInstruction
+      onLayout={({ nativeEvent: { layout } }) => {
+        if (Math.abs(wrap1Height.current - layout.height) > SIZE1) {
+          wrap1Height.current = layout.height;
+        }
+      }}
     >
-      <JobInstruction>
-        { renderComments() }
+      { renderComments() }
 
-        {
-          focusedJob.isEnabledCashCollection &&
-          renderCollect()
-        }
+      {
+        focusedJob.isEnabledCashCollection &&
+        renderCollect()
+      }
 
-        {
-          focusedJob.additionalCharges.length > 0 &&
-          renderServices()
-        }
-      </JobInstruction>
-    </ScrollView>
+      {
+        focusedJob.additionalCharges.length > 0 &&
+        renderServices()
+      }
+    </JobInstruction>
   );
 };
 
@@ -294,10 +380,16 @@ InstructionTab.propTypes = {
     PropTypes.string,
   ]),
   setAmountCollected: PropTypes.func.isRequired,
+  tabIndex: PropTypes.number.isRequired,
+  setTabIndex: PropTypes.func.isRequired,
+  services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
 
   onUpdateService: PropTypes.func.isRequired,
+  onReadMessages: PropTypes.func.isRequired,
   onNewComment: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,

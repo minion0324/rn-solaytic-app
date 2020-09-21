@@ -26,7 +26,7 @@ export function* onError(error, fetchInfo, fetchData) {
     //
   }
 
-  if (!isNetworkConnected) {
+  if (!error.response || !isNetworkConnected) {
     message = fetchInfo && fetchData
       ? 'Network problem. This job goes into background mode.'
       : 'Network problem. Please check your network connection.';

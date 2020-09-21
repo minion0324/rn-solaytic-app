@@ -49,6 +49,10 @@ const DrawerScreen = ({
   logout,
   componentId,
 }) => {
+  const closeDrawer = () => {
+    dismissDrawer(componentId);
+  };
+
   const onLogout = async () => {
     try {
       await cleanCache(COMPLETE_JOBS_KEY);
@@ -65,6 +69,8 @@ const DrawerScreen = ({
       coreScreenInfo.componentId,
       UPLOAD_HISTORY_SCREEN,
     );
+
+    closeDrawer();
   };
 
   return (
@@ -76,9 +82,7 @@ const DrawerScreen = ({
               <AvatarIcon />
               <UserName>{driverName}</UserName>
             </Profile>
-            <TouchableOpacity
-              onPress={() => dismissDrawer(componentId)}
-            >
+            <TouchableOpacity onPress={closeDrawer}>
               <CloseIcon />
             </TouchableOpacity>
           </ProfileWrap>

@@ -75,7 +75,7 @@ const InfoWrap = styled.View`
 `;
 
 const TimeText = styled.Text`
-  font-size: ${FONT(15)}px;
+  font-size: ${FONT(13)}px;
   font-weight: 500;
   color: ${COLORS.BLACK2};
 `;
@@ -147,16 +147,10 @@ const JobCard = ({
     let res = null;
 
     switch (statusName) {
-      case JOB_STATUS.UNASSIGNED:
-      case JOB_STATUS.DISPATCHED:
-        break;
-
-      case JOB_STATUS.ASSIGNED:
-      case JOB_STATUS.ACKNOWLEDGED:
+      case JOB_STATUS.IN_PROGRESS1:
         res = { color: COLORS.BLUE1, text: 'Started' };
         break;
 
-      case JOB_STATUS.IN_PROGRESS1:
       case JOB_STATUS.IN_PROGRESS2:
         res = { color: COLORS.PURPLE1, text: 'In Progress' };
         break;
@@ -191,20 +185,20 @@ const JobCard = ({
       <FlexWrap flex={2}>
         <ContentWrap hasBorder>
           <FlexWrap flex={2}>
-            <TimeText>
+            <TimeText numberOfLines={1}>
               {
                 moment(jobTimeSpecific || jobDate).format(DATE_FORMAT)
               }
             </TimeText>
             <SpaceView mTop={SIZE1} />
-            <TimeText>
+            <TimeText numberOfLines={1}>
               {
                 jobTimeSpecific
                 ? moment(jobTimeSpecific).format(TIME_FORMAT) : ''
               }
             </TimeText>
           </FlexWrap>
-          <SpaceView mLeft={SIZE2} />
+          <SpaceView mLeft={SIZE1} />
           <FlexWrap flex={7}>
             <CustomerText numberOfLines={1}>
               {customerName}

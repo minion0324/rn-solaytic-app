@@ -51,8 +51,11 @@ const JobDetailsScreenView = ({
   jobStatus,
   amountCollected,
   setAmountCollected,
+  services,
 
   focusedJob,
+  newCommentInfo,
+  setNewCommentInfo,
 
   onBack,
   onAcknowledge,
@@ -61,6 +64,8 @@ const JobDetailsScreenView = ({
   onComplete,
   onPhoto,
   onSign,
+  onCancelPhoto,
+  onCancelSign,
   onFail,
   onUpdateService,
   onReadMessages,
@@ -190,15 +195,23 @@ const JobDetailsScreenView = ({
           onAcknowledge={onAcknowledge}
           onPhoto={onPhoto}
           onSign={onSign}
+          onCancelPhoto={onCancelPhoto}
+          onCancelSign={onCancelSign}
           isInProgress={isInProgress}
         />
       : <InstructionTab
           amountCollected={amountCollected}
           setAmountCollected={setAmountCollected}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          services={services}
 
           focusedJob={focusedJob}
+          newCommentInfo={newCommentInfo}
+          setNewCommentInfo={setNewCommentInfo}
 
           onUpdateService={onUpdateService}
+          onReadMessages={onReadMessages}
           onNewComment={onNewComment}
           onUpdateAmountCollected={onUpdateAmountCollected}
           isInProgress={isInProgress}
@@ -268,8 +281,11 @@ JobDetailsScreenView.propTypes = {
     PropTypes.string,
   ]),
   setAmountCollected: PropTypes.func.isRequired,
+  services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
 
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,
@@ -278,6 +294,8 @@ JobDetailsScreenView.propTypes = {
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
+  onCancelPhoto: PropTypes.func.isRequired,
+  onCancelSign: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onUpdateService: PropTypes.func.isRequired,
   onReadMessages: PropTypes.func.isRequired,

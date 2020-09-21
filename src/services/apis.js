@@ -63,29 +63,32 @@ function apiAcknowledgeJobs(jobIds) {
   });
 };
 
-function apiStartJobs(jobIds, stepBinUpdate) {
+function apiStartJobs(jobIds, stepBinUpdate, pricings) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
+      pricings,
     },
   });
 };
 
-function apiExchangeJobs(jobIds, stepBinUpdate) {
+function apiExchangeJobs(jobIds, stepBinUpdate, pricings) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
+      pricings,
     },
   });
 };
 
-function apiCompleteJobs(jobIds, stepBinUpdate, attempt) {
+function apiCompleteJobs(jobIds, stepBinUpdate, pricings, attempt) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
+      pricings,
       attempt,
     },
   });
@@ -120,24 +123,6 @@ function apiFailJobs(jobIds, attempt) {
 
 function apiGetJobById(jobId) {
   return apiCall(`api/mobile/driver/jobs/${jobId}`, 'get', {});
-};
-
-function apiAddService(jobId, serviceId) {
-  return apiCall('api/mobile/driver/jobs/add-additional-service', 'post', {
-    data: {
-      jobId,
-      serviceAdditionalChargeTemplateId: serviceId,
-    },
-  });
-};
-
-function apiRemoveService(jobId, serviceId) {
-  return apiCall('api/mobile/driver/jobs/remove-additional-service', 'post', {
-    data: {
-      jobId,
-      serviceAdditionalChargeTemplateId: serviceId,
-    },
-  });
 };
 
 function apiMarkMessagesAsRead(jobId) {
@@ -178,8 +163,6 @@ export {
   apiGetDriverNotes,
   apiFailJobs,
   apiGetJobById,
-  apiAddService,
-  apiRemoveService,
   apiMarkMessagesAsRead,
   apiAddMessage,
   apiUpdateAmountCollected,

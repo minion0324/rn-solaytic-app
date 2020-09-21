@@ -40,6 +40,36 @@ function getEndDate(date, key, format) {
     .format(DEFAULT_DATE_FORMAT);
 };
 
+//
+function getUpdatedBinInfo(binInfo) {
+  return [0, 1].map((index) => {
+    const {
+      jobStepId, wasteType, binType, binNumber, binWeight,
+    } = binInfo[index];
+
+    return {
+      jobStepId: jobStepId,
+      wasteTypeId: wasteType && wasteType.wasteTypeId,
+      binTypeId: binType && binType.binTypeId,
+      binNumber: binNumber,
+      binWeight: binWeight,
+    }
+  });
+};
+
+function getUpdatedServices(services) {
+  return services.reduce((result, item) => {
+    if (item.isSelected) {
+      result.push({
+        ...item,
+        quantity: 1,
+      })
+    }
+
+    return result;
+  }, []);
+};
+
 export {
   openUrl,
   delay,
@@ -47,4 +77,7 @@ export {
   getDate,
   getStartDate,
   getEndDate,
+
+  getUpdatedBinInfo,
+  getUpdatedServices,
 };
