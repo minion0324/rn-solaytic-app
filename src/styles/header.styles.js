@@ -5,7 +5,6 @@ import {
   SVGS,
   COLORS,
   SIZE1,
-  SIZE2,
   SIZE8,
   SIZE12,
   FONT,
