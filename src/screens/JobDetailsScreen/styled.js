@@ -8,16 +8,8 @@ import {
   SIZE4,
   SIZE6,
   SIZE8,
-  SIZE12,
   FONT,
 } from 'src/constants';
-
-const ButtonWrap = styled.View`
-  height: ${SIZE12}px;
-  align-items: center;
-  justify-content: center;
-  padding-horizontal: ${SIZE6}px;
-`;
 
 const JobDetails = styled.View`
   flex: 1;
@@ -270,7 +262,6 @@ const ServiceRow = styled.TouchableOpacity`
 `;
 
 export {
-  ButtonWrap,
   JobDetails,
   Content,
   LabelText,
