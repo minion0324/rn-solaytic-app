@@ -46,7 +46,7 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
-  EmptyIcon,
+  EmptyWrap,
   SideMenu,
 } from 'src/styles/header.styles';
 
@@ -253,7 +253,7 @@ const AlertScreen = ({
           centerIcon={<ScreenText>Notifications</ScreenText>}
           leftIcon={<SideMenu />}
           onPressLeft={() => showDrawer(componentId)}
-          rightIcon={<EmptyIcon />}
+          rightIcon={<EmptyWrap />}
         />
 
         {

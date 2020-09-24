@@ -49,7 +49,7 @@ import {
 import {
   ScreenText,
   EmptyWrap,
-  BackButton,
+  Back,
 } from 'src/styles/header.styles';
 import {
   ModalWrap,
@@ -273,7 +273,7 @@ const FailJobScreen = ({
       <ShadowWrap>
         <HeaderBar
           centerIcon={<ScreenText>Fail Job</ScreenText>}
-          leftIcon={<BackButton />}
+          leftIcon={<Back />}
           rightIcon={<EmptyWrap />}
           onPressLeft={onBack}
         />

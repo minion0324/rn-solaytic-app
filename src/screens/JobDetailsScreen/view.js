@@ -19,7 +19,7 @@ import {
 import {
   ScreenText,
   EmptyWrap,
-  BackButton,
+  Back,
   FailJob,
 } from 'src/styles/header.styles';
 import {
@@ -147,7 +147,7 @@ const JobDetailsScreenView = ({
           centerIcon={
             <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
           }
-          leftIcon={<BackButton />}
+          leftIcon={<Back />}
           rightIcon={<EmptyWrap />}
           onPressLeft={onBack}
         />
@@ -156,7 +156,7 @@ const JobDetailsScreenView = ({
             centerIcon={
               <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
             }
-            leftIcon={<BackButton />}
+            leftIcon={<Back />}
             rightIcon={
               jobStatus === JOB_STATUS.IN_PROGRESS1 ||
               jobStatus === JOB_STATUS.IN_PROGRESS2

@@ -46,7 +46,7 @@ import {
 import {
   ScreenText,
   EmptyWrap,
-  BackButton,
+  Back,
 } from 'src/styles/header.styles';
 
 import {
@@ -302,7 +302,7 @@ const UploadHistoryScreen = ({
       <ShadowWrap>
         <HeaderBar
           centerIcon={<ScreenText>History</ScreenText>}
-          leftIcon={<BackButton />}
+          leftIcon={<Back />}
           rightIcon={<EmptyWrap />}
           onPressLeft={onBack}
         />
