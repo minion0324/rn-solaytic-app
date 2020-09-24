@@ -82,11 +82,6 @@ const RowWrap = styled.View`
   align-items: center;
 `;
 
-const CashButton = styled.TouchableOpacity`
-  top: ${SIZE1}px;
-  margin-left: ${SIZE4}px;
-`;
-
 const BinInfoWrap = styled.View`
   padding-vertical: ${SIZE4}px;
   border-top-width: 1px;
@@ -274,7 +269,6 @@ export {
   InfoWrap,
   NumberText,
   RowWrap,
-  CashButton,
   BinInfoWrap,
   BinInfoRow,
   BinText,
