@@ -45,7 +45,6 @@ import {
   InfoWrap,
   NumberText,
   RowWrap,
-  CashButton,
   BinInfoWrap,
   BinInfoRow,
   BinText,
@@ -66,8 +65,6 @@ const {
   CameraIcon,
   SignIcon,
   EditIcon,
-  ActiveCashIcon,
-  DeactiveCashIcon,
   ArrowLocationIcon,
   CancelIcon,
 } = SVGS;
@@ -80,7 +77,6 @@ const DetailsTab = ({
   binInfo,
   setBinInfo,
   jobStatus,
-  setTabIndex,
 
   focusedJob,
 
@@ -390,72 +386,58 @@ const DetailsTab = ({
           <LabelText>Customer</LabelText>
           <InfoText>{focusedJob.customer.customerName}</InfoText>
         </InfoWrap>
-        <RowWrap>
-          <InfoWrap>
-            <LabelText>Customer Contact & Phone Number</LabelText>
-            <RowWrap>
-              <InfoText>
+        <InfoWrap>
+          <LabelText>Customer Contact & Phone Number</LabelText>
+          <RowWrap>
+            <InfoText>
+              {
+                steps[stepIndex].contactPersonOne ||
+                focusedJob.customer.contactPerson
+              }
+            </InfoText>
+            <InfoText>
+              {'  |  '}
+            </InfoText>
+            <TouchableOpacity
+              onPress={() => onContact(
+                steps[stepIndex].contactNumberOne ||
+                focusedJob.customer.contactNumber
+              )}
+            >
+              <NumberText>
                 {
-                  steps[stepIndex].contactPersonOne ||
-                  focusedJob.customer.contactPerson
-                }
-              </InfoText>
-              <InfoText>
-                {'  |  '}
-              </InfoText>
-              <TouchableOpacity
-                onPress={() => onContact(
                   steps[stepIndex].contactNumberOne ||
                   focusedJob.customer.contactNumber
-                )}
-              >
-                <NumberText>
-                  {
-                    steps[stepIndex].contactNumberOne ||
-                    focusedJob.customer.contactNumber
-                  }
-                </NumberText>
-              </TouchableOpacity>
-            </RowWrap>
+                }
+              </NumberText>
+            </TouchableOpacity>
+          </RowWrap>
 
-            {
-              !!steps[stepIndex].contactPersonTwo &&
-              !!steps[stepIndex].contactNumberTwo &&
-              <View>
-                <SpaceView mTop={SIZE1} />
-                <RowWrap>
-                  <InfoText>
-                    {steps[stepIndex].contactPersonTwo}
-                  </InfoText>
-                  <InfoText>
-                    {'  |  '}
-                  </InfoText>
-                  <TouchableOpacity
-                    onPress={() => onContact(
-                      steps[stepIndex].contactNumberTwo
-                    )}
-                  >
-                    <NumberText>
-                      {steps[stepIndex].contactNumberTwo}
-                    </NumberText>
-                  </TouchableOpacity>
-                </RowWrap>
-              </View>
-            }
-          </InfoWrap>
           {
-            !!focusedJob.amountToCollect &&
-            <CashButton
-              onPress={() => setTabIndex(1)}
-              disabled={focusedJob.collectedAmount}
-            >
-              {
-                focusedJob.collectedAmount
-                ? <DeactiveCashIcon /> : <ActiveCashIcon />
-              }
-            </CashButton>
+            !!steps[stepIndex].contactPersonTwo &&
+            !!steps[stepIndex].contactNumberTwo &&
+            <View>
+              <SpaceView mTop={SIZE1} />
+              <RowWrap>
+                <InfoText>
+                  {steps[stepIndex].contactPersonTwo}
+                </InfoText>
+                <InfoText>
+                  {'  |  '}
+                </InfoText>
+                <TouchableOpacity
+                  onPress={() => onContact(
+                    steps[stepIndex].contactNumberTwo
+                  )}
+                >
+                  <NumberText>
+                    {steps[stepIndex].contactNumberTwo}
+                  </NumberText>
+                </TouchableOpacity>
+              </RowWrap>
+            </View>
           }
-        </RowWrap>
+        </InfoWrap>
         <InfoWrap>
           <LabelText>Date & Time</LabelText>
           <InfoText>
@@ -723,7 +705,6 @@ DetailsTab.propTypes = {
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  setTabIndex: PropTypes.func.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
