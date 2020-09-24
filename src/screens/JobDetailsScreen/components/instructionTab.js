@@ -67,8 +67,6 @@ const UNIT = '$ ';
 const InstructionTab = ({
   amountCollected,
   setAmountCollected,
-  tabIndex,
-  setTabIndex,
   services,
 
   focusedJob,
@@ -92,10 +90,6 @@ const InstructionTab = ({
   const wrap2Height = useRef(null);
 
   useEffect(() => {
-    onCommentActive();
-  }, [tabIndex, active]);
-
-  useEffect(() => {
     onNewCommentInfo();
   }, [newCommentInfo]);
 
@@ -107,23 +101,20 @@ const InstructionTab = ({
     }
   }, [wrap1Height.current, wrap2Height.current]);
 
-  const onCommentActive = async () => {
-    try {
-      if (tabIndex === 1 && active === COMMENT) {
-        await delay(1000);
-        listRef.current.scrollToEnd();
-      }
-    } catch (error) {
-      //
-    }
-  };
+  // const onCommentActive = async () => {
+  //   try {
+  //     await delay(1000);
+  //     listRef.current.scrollToEnd();
+  //   } catch (error) {
+  //     //
+  //   }
+  // };
 
   const onNewCommentInfo = async () => {
     try {
       const { jobId } = newCommentInfo;
 
       if (+jobId === focusedJob.jobId) {
-        setTabIndex(1);
         await delay(100);
 
         setActive(COMMENT);
@@ -380,8 +371,6 @@ InstructionTab.propTypes = {
     PropTypes.string,
   ]),
   setAmountCollected: PropTypes.func.isRequired,
-  tabIndex: PropTypes.number.isRequired,
-  setTabIndex: PropTypes.func.isRequired,
   services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
