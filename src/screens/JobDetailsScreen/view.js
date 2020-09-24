@@ -1,9 +1,15 @@
 import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
+  SVGS,
   COLORS,
+  SIZE1,
+  SIZE2,
+  SIZE4,
   JOB_STATUS,
+  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -14,6 +20,8 @@ import {
   Container,
   Content,
   ShadowWrap,
+  FlexWrap,
+  SpaceView,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -22,6 +30,19 @@ import {
 } from 'src/styles/header.styles';
 
 import { DetailsTab, InstructionTab } from './components';
+import {
+  ContentWrap,
+  WrapBorder,
+  InfoText,
+  RowWrap,
+} from './styled';
+
+const {
+  PersonContactIcon,
+  NumberContactIcon,
+  BlueRightArrowIcon,
+  RedRightArrowIcon,
+} = SVGS;
 
 const JobDetailsScreenView = ({
   loading,
@@ -57,6 +78,78 @@ const JobDetailsScreenView = ({
   isInProgress,
   onAlertNotProgress,
 }) => {
+
+  const getContactStepIndex = () => {
+    const { steps } = focusedJob;
+
+    let stepIndex = steps.length - 1;
+    if (
+      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.CANCELLED ||
+      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+    ) {
+      if (steps[0].contactPersonOne && steps[0].contactNumberOne) {
+        stepIndex = 0;
+      } else {
+        stepIndex = 1;
+      }
+    } else if (jobStatus === JOB_STATUS.IN_PROGRESS2) {
+      if (steps[2].contactPersonOne && steps[2].contactNumberOne) {
+        stepIndex = 2;
+      } else {
+        stepIndex = 1;
+      }
+    } else {
+      if (steps[stepIndex].contactPersonOne && steps[stepIndex].contactNumberOne) {
+        stepIndex = stepIndex;
+      } else {
+        stepIndex = stepIndex - 1;
+      }
+    }
+
+    return stepIndex;
+  };
+
+  const getLocationStepIndex = () => {
+    const { steps, jobTypeName } = focusedJob;
+
+    if (jobTypeName === JOB_TYPE.PULL) {
+      return 0;
+    }
+
+    if (jobTypeName === JOB_TYPE.PUT) {
+      return 1;
+    }
+
+    if (steps.length === 2) {
+      if (
+        jobStatus === JOB_STATUS.DISPATCHED ||
+        jobStatus === JOB_STATUS.ACKNOWLEDGED
+      ) {
+        return 0;
+      }
+
+      if (jobStatus === JOB_STATUS.IN_PROGRESS1) {
+        return 1;
+      }
+
+      return 2;
+    }
+
+    if (steps.length === 3) {
+      if (
+        jobStatus === JOB_STATUS.DISPATCHED ||
+        jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+        jobStatus === JOB_STATUS.IN_PROGRESS1
+      ) {
+        return 0;
+      }
+
+      return 1;
+    }
+  };
+
   const renderButton = () => {
     if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
       return (
@@ -124,47 +217,109 @@ const JobDetailsScreenView = ({
     );
   };
 
+  const renderLocation = () => {
+    const { steps } = focusedJob;
+
+    const locationStepIndex = getLocationStepIndex();
+
+    return (
+      <ContentWrap mTop={SIZE1}>
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              {steps[locationStepIndex].address}
+            </InfoText>
+          </FlexWrap>
+          <SpaceView mLeft={SIZE2} />
+          <BlueRightArrowIcon />
+        </RowWrap>
+      </ContentWrap>
+    );
+  };
+
+  const renderContact = () => {
+    const { steps } = focusedJob;
+
+    const contactStepIndex = getContactStepIndex();
+
+    return (
+      <View>
+        <RowWrap>
+          <SpaceView mLeft={SIZE4} />
+          <WrapBorder />
+        </RowWrap>
+        <ContentWrap>
+          <RowWrap>
+            <FlexWrap>
+              <RowWrap>
+                <PersonContactIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText numberOfLines={1}>
+                  {steps[contactStepIndex].contactPersonOne}
+                </InfoText>
+              </RowWrap>
+            </FlexWrap>
+            <FlexWrap>
+              <RowWrap>
+                <NumberContactIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText numberOfLines={1}>
+                  {steps[contactStepIndex].contactNumberOne}
+                </InfoText>
+              </RowWrap>
+            </FlexWrap>
+          </RowWrap>
+        </ContentWrap>
+      </View>
+    );
+  };
+
   return (
     <Container>
       <ShadowWrap>
         { renderHeader() }
+        { renderLocation() }
+        { renderContact() }
       </ShadowWrap>
 
       <Content>
-        <DetailsTab
-          photos={photos}
-          sign={sign}
-          signedUserName={signedUserName}
-          signedUserContact={signedUserContact}
-          binInfo={binInfo}
-          setBinInfo={setBinInfo}
-          jobStatus={jobStatus}
+      {
+        // <DetailsTab
+        //   photos={photos}
+        //   sign={sign}
+        //   signedUserName={signedUserName}
+        //   signedUserContact={signedUserContact}
+        //   binInfo={binInfo}
+        //   setBinInfo={setBinInfo}
+        //   jobStatus={jobStatus}
 
-          focusedJob={focusedJob}
+        //   focusedJob={focusedJob}
 
-          onPhoto={onPhoto}
-          onSign={onSign}
-          onCancelPhoto={onCancelPhoto}
-          onCancelSign={onCancelSign}
-          isInProgress={isInProgress}
-        />
+        //   onPhoto={onPhoto}
+        //   onSign={onSign}
+        //   onCancelPhoto={onCancelPhoto}
+        //   onCancelSign={onCancelSign}
+        //   isInProgress={isInProgress}
+        // />
 
-        <InstructionTab
-          amountCollected={amountCollected}
-          setAmountCollected={setAmountCollected}
-          services={services}
+        // <InstructionTab
+        //   amountCollected={amountCollected}
+        //   setAmountCollected={setAmountCollected}
+        //   services={services}
 
-          focusedJob={focusedJob}
-          newCommentInfo={newCommentInfo}
-          setNewCommentInfo={setNewCommentInfo}
+        //   focusedJob={focusedJob}
+        //   newCommentInfo={newCommentInfo}
+        //   setNewCommentInfo={setNewCommentInfo}
 
-          onUpdateService={onUpdateService}
-          onReadMessages={onReadMessages}
-          onNewComment={onNewComment}
-          onUpdateAmountCollected={onUpdateAmountCollected}
-          isInProgress={isInProgress}
-          onAlertNotProgress={onAlertNotProgress}
-        />
+        //   onUpdateService={onUpdateService}
+        //   onReadMessages={onReadMessages}
+        //   onNewComment={onNewComment}
+        //   onUpdateAmountCollected={onUpdateAmountCollected}
+        //   isInProgress={isInProgress}
+        //   onAlertNotProgress={onAlertNotProgress}
+        // />
+      }
+
       </Content>
     </Container>
   );
