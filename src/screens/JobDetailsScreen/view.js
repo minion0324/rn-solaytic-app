@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { TabView, TabBar } from 'react-native-tab-view';
 
 import {
   COLORS,
@@ -21,19 +20,8 @@ import {
   EmptyWrap,
   Back,
 } from 'src/styles/header.styles';
-import {
-  TabBarBadge,
-  TabBarStyle,
-  TabBarIndicatorStyle,
-  TabBarLabelStyle,
-  TabBarActiveColor,
-  TabBarInactiveColor,
-} from 'src/styles/tab.styles';
 
 import { DetailsTab, InstructionTab } from './components';
-
-const TAB1 = 'Details';
-const TAB2 = 'Instruction';
 
 const JobDetailsScreenView = ({
   loading,
@@ -69,23 +57,6 @@ const JobDetailsScreenView = ({
   isInProgress,
   onAlertNotProgress,
 }) => {
-  const [ tabIndex, setTabIndex ] = useState(0);
-  const [ tabRoutes ] = useState([
-    { key: TAB1, title: TAB1 },
-    { key: TAB2, title: TAB2 },
-  ]);
-
-  const onTapPress = ({ route }) => {
-    if (
-      route.key === TAB1 ||
-      !focusedJob.haveUnreadMessage
-    ) {
-      return;
-    }
-
-    onReadMessages();
-  };
-
   const renderButton = () => {
     if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
       return (
@@ -153,9 +124,14 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderScene = ({ route }) => {
-    return route.key === TAB1
-      ? <DetailsTab
+  return (
+    <Container>
+      <ShadowWrap>
+        { renderHeader() }
+      </ShadowWrap>
+
+      <Content>
+        <DetailsTab
           photos={photos}
           sign={sign}
           signedUserName={signedUserName}
@@ -163,7 +139,6 @@ const JobDetailsScreenView = ({
           binInfo={binInfo}
           setBinInfo={setBinInfo}
           jobStatus={jobStatus}
-          setTabIndex={setTabIndex}
 
           focusedJob={focusedJob}
 
@@ -173,11 +148,10 @@ const JobDetailsScreenView = ({
           onCancelSign={onCancelSign}
           isInProgress={isInProgress}
         />
-      : <InstructionTab
+
+        <InstructionTab
           amountCollected={amountCollected}
           setAmountCollected={setAmountCollected}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
           services={services}
 
           focusedJob={focusedJob}
@@ -190,53 +164,6 @@ const JobDetailsScreenView = ({
           onUpdateAmountCollected={onUpdateAmountCollected}
           isInProgress={isInProgress}
           onAlertNotProgress={onAlertNotProgress}
-        />
-  };
-
-  const renderBadge = ({ route }) => {
-    if (
-      route.key === TAB1 ||
-      !focusedJob.haveUnreadMessage
-    ) {
-      return null;
-    }
-
-    return (
-      <TabBarBadge />
-    );
-  };
-
-  const renderTabBar = (props) => {
-    return (
-      <TabBar
-        {...props}
-        getLabelText={({ route }) => route.title}
-        style={TabBarStyle}
-        indicatorStyle={TabBarIndicatorStyle}
-        labelStyle={TabBarLabelStyle}
-        activeColor={TabBarActiveColor}
-        inactiveColor={TabBarInactiveColor}
-        renderBadge={renderBadge}
-        onTabPress={onTapPress}
-      />
-    );
-  };
-
-  return (
-    <Container>
-      <ShadowWrap>
-        { renderHeader() }
-      </ShadowWrap>
-
-      <Content>
-        <TabView
-          navigationState={{
-            index: tabIndex, routes: tabRoutes
-          }}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={idx => setTabIndex(idx)}
-          useNativeDriver
         />
       </Content>
     </Container>
