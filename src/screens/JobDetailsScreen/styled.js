@@ -11,6 +11,20 @@ import {
   FONT,
 } from 'src/constants';
 
+const ContentWrap = styled.View`
+  margin-horizontal: ${SIZE1}px;
+  padding-top: ${props => props.mTop || SIZE3}px;
+  padding-horizontal: ${SIZE3}px;
+  padding-bottom: ${SIZE3}px;
+`;
+
+const WrapBorder = styled.View`
+  width: 100%;
+  height: 0px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
+`;
+
 const JobDetails = styled.View`
   flex: 1;
   margin-bottom: ${SIZE2}px;
@@ -32,7 +46,7 @@ const LabelText = styled.Text`
 `;
 
 const InfoText = styled.Text`
-  max-width: 75%;
+
   font-size: ${FONT(15)}px;
   font-weight: 700,
   color: ${COLORS.BLACK2};
@@ -257,6 +271,9 @@ const ServiceRow = styled.TouchableOpacity`
 `;
 
 export {
+  ContentWrap,
+  WrapBorder,
+
   JobDetails,
   Content,
   LabelText,
