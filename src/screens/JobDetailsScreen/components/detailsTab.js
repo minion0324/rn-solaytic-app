@@ -19,7 +19,6 @@ import {
   SIZE2,
 } from 'src/constants';
 import {
-  DefaultButton,
   ItemWrap,
 } from 'src/components';
 import {
@@ -74,7 +73,6 @@ const {
 } = SVGS;
 
 const DetailsTab = ({
-  loading,
   photos,
   sign,
   signedUserName,
@@ -86,7 +84,6 @@ const DetailsTab = ({
 
   focusedJob,
 
-  onAcknowledge,
   onPhoto,
   onSign,
   onCancelPhoto,
@@ -706,15 +703,6 @@ const DetailsTab = ({
               { renderBinInfo() }
               { renderAttachments() }
 
-              {
-                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
-                <DefaultButton
-                  text={'Acknowledge'}
-                  color={COLORS.BLUE1}
-                  onPress={onAcknowledge}
-                  loading={loading}
-                />
-              }
             </Content>
           </ShadowWrap>
         </JobDetails>
@@ -728,7 +716,6 @@ const DetailsTab = ({
 };
 
 DetailsTab.propTypes = {
-  loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
   sign: PropTypes.object,
   signedUserName: PropTypes.string,
@@ -740,7 +727,6 @@ DetailsTab.propTypes = {
 
   focusedJob: PropTypes.object.isRequired,
 
-  onAcknowledge: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
   onCancelPhoto: PropTypes.func.isRequired,
