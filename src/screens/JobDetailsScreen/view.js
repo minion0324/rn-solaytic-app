@@ -20,7 +20,6 @@ import {
   ScreenText,
   EmptyWrap,
   Back,
-  FailJob,
 } from 'src/styles/header.styles';
 import {
   TabBarBadge,
@@ -30,10 +29,6 @@ import {
   TabBarActiveColor,
   TabBarInactiveColor,
 } from 'src/styles/tab.styles';
-
-import {
-  ButtonWrap,
-} from './styled';
 
 import { DetailsTab, InstructionTab } from './components';
 
@@ -92,32 +87,39 @@ const JobDetailsScreenView = ({
   };
 
   const renderButton = () => {
+    if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
+      return (
+        <DefaultButton
+          color={COLORS.BLUE1}
+          text={'Acknowledge'}
+          onPress={onAcknowledge}
+          loading={loading}
+        />
+      );
+    }
+
     if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
       return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.BLUE1}
-            text={'Start'}
-            onPress={onStart}
-            loading={loading}
-          />
-        </ButtonWrap>
+        <DefaultButton
+          color={COLORS.BLUE1}
+          text={'Start'}
+          onPress={onStart}
+          loading={loading}
+        />
       );
     }
 
     if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
-      focusedJob.steps.length === 3
+      focusedJob.steps.length === 3 &&
+      jobStatus === JOB_STATUS.IN_PROGRESS1
     ) {
       return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.PURPLE1}
-            text={'Exchange'}
-            onPress={onExchange}
-            loading={loading}
-          />
-        </ButtonWrap>
+        <DefaultButton
+          color={COLORS.PURPLE1}
+          text={'Exchange'}
+          onPress={onExchange}
+          loading={loading}
+        />
       );
     }
 
@@ -126,61 +128,34 @@ const JobDetailsScreenView = ({
       jobStatus === JOB_STATUS.IN_PROGRESS2
     ) {
       return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.GREEN1}
-            text={'Complete'}
-            onPress={onComplete}
-            loading={loading}
-          />
-        </ButtonWrap>
+        <DefaultButton
+          color={COLORS.GREEN1}
+          text={'Complete'}
+          onPress={onComplete}
+          loading={loading}
+        />
       );
     }
 
-    return null;
+    return (
+      <ScreenText>{jobStatus}</ScreenText>
+    );
   };
 
   const renderHeader = () => {
     return (
-      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-      ? <HeaderBar
-          centerIcon={
-            <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-          }
-          leftIcon={<Back />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
-        />
-      : <ShadowWrap>
-          <HeaderBar
-            centerIcon={
-              <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-            }
-            leftIcon={<Back />}
-            rightIcon={
-              jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-              jobStatus === JOB_STATUS.IN_PROGRESS2
-              ? <FailJob />
-              : <EmptyWrap />
-            }
-            onPressLeft={onBack}
-            onPressRight={
-              jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-              jobStatus === JOB_STATUS.IN_PROGRESS2
-              ? onFail
-              : null
-            }
-          />
-
-          { renderButton() }
-        </ShadowWrap>
+      <HeaderBar
+        centerIcon={renderButton()}
+        leftIcon={<Back />}
+        rightIcon={<EmptyWrap />}
+        onPressLeft={onBack}
+      />
     );
   };
 
   const renderScene = ({ route }) => {
     return route.key === TAB1
       ? <DetailsTab
-          loading={loading}
           photos={photos}
           sign={sign}
           signedUserName={signedUserName}
@@ -192,7 +167,6 @@ const JobDetailsScreenView = ({
 
           focusedJob={focusedJob}
 
-          onAcknowledge={onAcknowledge}
           onPhoto={onPhoto}
           onSign={onSign}
           onCancelPhoto={onCancelPhoto}
@@ -250,7 +224,9 @@ const JobDetailsScreenView = ({
 
   return (
     <Container>
-      { renderHeader() }
+      <ShadowWrap>
+        { renderHeader() }
+      </ShadowWrap>
 
       <Content>
         <TabView
