@@ -16,6 +16,7 @@ const ContentWrap = styled.View`
   padding-top: ${props => props.mTop || SIZE3}px;
   padding-horizontal: ${SIZE3}px;
   padding-bottom: ${SIZE3}px;
+  background-color: ${COLORS.WHITE1};
 `;
 
 const WrapBorder = styled.View`
@@ -25,6 +26,25 @@ const WrapBorder = styled.View`
   border-color: ${COLORS.GRAY2};
 `;
 
+const TitleText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700;
+  color: ${props => props.color || COLORS.BLACK2};
+`;
+
+const InfoText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
+  color: ${props => props.color || COLORS.BLACK2};
+`;
+
+const LabelText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 600;
+  color: ${props => props.color || COLORS.BLACK2};
+`;
+
+//
 const JobDetails = styled.View`
   flex: 1;
   margin-bottom: ${SIZE2}px;
@@ -35,21 +55,6 @@ const Content = styled.View`
   padding-vertical: ${SIZE3}px;
   padding-horizontal: ${SIZE4}px;
   background-color: ${COLORS.WHITE1};
-`;
-
-const LabelText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 500,
-  color:  ${(props) => (
-    props.required ? COLORS.RED1 : COLORS.GRAY3
-  )};
-`;
-
-const InfoText = styled.Text`
-
-  font-size: ${FONT(15)}px;
-  font-weight: 700,
-  color: ${COLORS.BLACK2};
 `;
 
 const LocationInfo = styled.View`
@@ -273,11 +278,13 @@ const ServiceRow = styled.TouchableOpacity`
 export {
   ContentWrap,
   WrapBorder,
+  TitleText,
+  InfoText,
+  LabelText,
 
   JobDetails,
   Content,
-  LabelText,
-  InfoText,
+
   LocationInfo,
   LocationRow,
   IconWrap,
