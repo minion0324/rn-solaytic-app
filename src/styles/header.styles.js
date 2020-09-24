@@ -12,7 +12,7 @@ import {
 } from 'src/constants';
 
 const {
-  ArrowBackIcon,
+  BackIcon,
   FailIcon,
   SideMenuIcon,
   CalendarIcon,
@@ -25,34 +25,9 @@ const ScreenText = styled.Text`
 `;
 
 const EmptyWrap = styled.View`
-  width: ${SIZE12}px;
-`;
-
-const EmptyIcon = styled.View`
   width: ${SIZE8}px;
+  align-items: ${props => props.align || 'flex-start'};
 `;
-
-//
-const BackButtonWrap = styled.View`
-  width: ${SIZE12}px;
-  flex-direction: row;
-  align-items: center;
-  padding-left: ${SIZE2}px;
-`;
-
-const BackButtonText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 600;
-  color: ${COLORS.BLACK2};
-  margin-left: ${SIZE1}px;
-`;
-
-const BackButton = () => (
-  <BackButtonWrap>
-    <ArrowBackIcon />
-    <BackButtonText>Back</BackButtonText>
-  </BackButtonWrap>
-);
 
 //
 const FailJobWrap = styled.View`
@@ -77,25 +52,30 @@ const FailJob = () => (
 );
 
 //
+const Back = () => (
+  <EmptyWrap align={'center'}>
+    <BackIcon />
+  </EmptyWrap>
+);
+
 const SideMenu = () => (
-  <EmptyIcon>
+  <EmptyWrap>
     <SideMenuIcon />
-  </EmptyIcon>
+  </EmptyWrap>
 );
 
 //
 const Calendar = () => (
-  <EmptyIcon>
+  <EmptyWrap>
     <CalendarIcon />
-  </EmptyIcon>
+  </EmptyWrap>
 );
 
 export {
   ScreenText,
   EmptyWrap,
-  EmptyIcon,
-  BackButton,
   FailJob,
+  Back,
   SideMenu,
   Calendar,
 };
