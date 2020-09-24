@@ -4,15 +4,12 @@ import styled from 'styled-components';
 import {
   SVGS,
   COLORS,
-  SIZE1,
   SIZE8,
-  SIZE12,
   FONT,
 } from 'src/constants';
 
 const {
   BackIcon,
-  FailIcon,
   SideMenuIcon,
   CalendarIcon,
 } = SVGS;
@@ -29,28 +26,6 @@ const EmptyWrap = styled.View`
 `;
 
 //
-const FailJobWrap = styled.View`
-  width: ${SIZE12}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FailJobText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 700;
-  color: ${COLORS.BLACK2};
-  margin-left: ${SIZE1}px;
-`;
-
-const FailJob = () => (
-  <FailJobWrap>
-    <FailIcon />
-    <FailJobText>Fail</FailJobText>
-  </FailJobWrap>
-);
-
-//
 const Back = () => (
   <EmptyWrap align={'center'}>
     <BackIcon />
@@ -63,7 +38,6 @@ const SideMenu = () => (
   </EmptyWrap>
 );
 
-//
 const Calendar = () => (
   <EmptyWrap>
     <CalendarIcon />
@@ -73,7 +47,6 @@ const Calendar = () => (
 export {
   ScreenText,
   EmptyWrap,
-  FailJob,
   Back,
   SideMenu,
   Calendar,
