@@ -2,7 +2,7 @@ import ActiveCheckIcon from 'src/assets/svgs/icon-check-active.svg';
 import DeactiveCheckIcon from 'src/assets/svgs/icon-check-deactive.svg';
 import SideMenuIcon from 'src/assets/svgs/icon-side-menu.svg';
 import LocationIcon from 'src/assets/svgs/icon-location.svg';
-import ArrowBackIcon from 'src/assets/svgs/icon-back-arrow.svg';
+import BackIcon from 'src/assets/svgs/icon-back.svg';
 import VisibilityOnIcon from 'src/assets/svgs/icon-visibility-on.svg';
 import VisibilityOffIcon from 'src/assets/svgs/icon-visibility-off.svg';
 import AlertIcon from 'src/assets/svgs/icon-alert.svg';
@@ -38,7 +38,7 @@ export default {
   DeactiveCheckIcon,
   SideMenuIcon,
   LocationIcon,
-  ArrowBackIcon,
+  BackIcon,
   VisibilityOnIcon,
   VisibilityOffIcon,
   AlertIcon,
