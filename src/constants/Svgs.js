@@ -34,6 +34,15 @@ import PersonContactIcon from 'src/assets/svgs/icon-contact-person.svg';
 import NumberContactIcon from 'src/assets/svgs/icon-contact-number.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
 import RedRightArrowIcon from 'src/assets/svgs/icon-arrow-right-red.svg';
+import DateIcon from 'src/assets/svgs/icon-date.svg';
+import TimeIcon from 'src/assets/svgs/icon-time.svg';
+import ChatIcon from 'src/assets/svgs/icon-chat.svg';
+import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
+import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
+import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
+import DeactiveBinOutIcon from 'src/assets/svgs/icon-out-bin-deactive.svg';
+import PaymentIcon from 'src/assets/svgs/icon-payment.svg';
+import ImageIcon from 'src/assets/svgs/icon-image.svg';
 
 export default {
   ActiveCheckIcon,
@@ -72,4 +81,13 @@ export default {
   NumberContactIcon,
   BlueRightArrowIcon,
   RedRightArrowIcon,
+  DateIcon,
+  TimeIcon,
+  ChatIcon,
+  ActiveBinInIcon,
+  DeactiveBinInIcon,
+  ActiveBinOutIcon,
+  DeactiveBinOutIcon,
+  PaymentIcon,
+  ImageIcon,
 };
