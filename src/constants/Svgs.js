@@ -23,8 +23,6 @@ import EditIcon from 'src/assets/svgs/icon-edit.svg';
 import CommentIcon from 'src/assets/svgs/icon-comment.svg';
 import ActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
-import ActiveCashIcon from 'src/assets/svgs/icon-cash-active.svg';
-import DeactiveCashIcon from 'src/assets/svgs/icon-cash-deactive.svg';
 import ArrowLocationIcon from 'src/assets/svgs/icon-location-arrow.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
@@ -59,8 +57,6 @@ export default {
   CommentIcon,
   ActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  ActiveCashIcon,
-  DeactiveCashIcon,
   ArrowLocationIcon,
   CloseIcon,
   HappyIcon,
