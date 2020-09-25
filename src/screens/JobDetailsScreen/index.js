@@ -23,6 +23,7 @@ import {
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
   ADDRESS_SCREEN,
+  DRIVER_NOTE_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -420,6 +421,10 @@ const JobDetailsScreen = ({
     pushScreen(componentId, ADDRESS_SCREEN, { stepIndex });
   };
 
+  const onDriverNote = () => {
+    pushScreen(componentId, DRIVER_NOTE_SCREEN);
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -455,6 +460,7 @@ const JobDetailsScreen = ({
       isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
       onAddress={onAddress}
+      onDriverNote={onDriverNote}
     />
   );
 };

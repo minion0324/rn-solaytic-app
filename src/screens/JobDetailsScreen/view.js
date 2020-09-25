@@ -88,6 +88,7 @@ const JobDetailsScreenView = ({
   isInProgress,
   onAlertNotProgress,
   onAddress,
+  onDriverNote,
 }) => {
 
   const getBinInOutIndex = (index) => {
@@ -544,25 +545,29 @@ const JobDetailsScreenView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <ContentWrap>
-          <RowWrap>
-            <ChatIcon />
-            <SpaceView mLeft={SIZE2} />
-            <TitleText>Driver Note</TitleText>
-          </RowWrap>
-        </ContentWrap>
+        <TouchableOpacity onPress={onDriverNote}>
+          <ContentWrap>
+            <RowWrap>
+              <ChatIcon />
+              <SpaceView mLeft={SIZE2} />
+              <TitleText>Driver Note</TitleText>
+            </RowWrap>
+          </ContentWrap>
+        </TouchableOpacity>
         <WrapBorder />
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap>
-              <InfoText>
-                {focusedJob.instructions}
-              </InfoText>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <BlueRightArrowIcon />
-          </RowWrap>
-        </ContentWrap>
+        <TouchableOpacity onPress={onDriverNote}>
+          <ContentWrap>
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {focusedJob.instructions}
+                </InfoText>
+              </FlexWrap>
+              <SpaceView mLeft={SIZE2} />
+              <BlueRightArrowIcon />
+            </RowWrap>
+          </ContentWrap>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -618,28 +623,32 @@ const JobDetailsScreenView = ({
           <SpaceView mLeft={SIZE4} />
           <WrapBorder />
         </RowWrap>
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap>
-              <RowWrap>
-                <PersonContactIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText numberOfLines={1}>
-                  {steps[contactStepIndex].contactPersonOne}
-                </InfoText>
-              </RowWrap>
-            </FlexWrap>
-            <FlexWrap>
-              <RowWrap>
-                <NumberContactIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText numberOfLines={1}>
-                  {steps[contactStepIndex].contactNumberOne}
-                </InfoText>
-              </RowWrap>
-            </FlexWrap>
-          </RowWrap>
-        </ContentWrap>
+        <TouchableOpacity
+          onPress={() => onAddress(contactStepIndex)}
+        >
+          <ContentWrap>
+            <RowWrap>
+              <FlexWrap>
+                <RowWrap>
+                  <PersonContactIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText numberOfLines={1}>
+                    {steps[contactStepIndex].contactPersonOne}
+                  </InfoText>
+                </RowWrap>
+              </FlexWrap>
+              <FlexWrap>
+                <RowWrap>
+                  <NumberContactIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText numberOfLines={1}>
+                    {steps[contactStepIndex].contactNumberOne}
+                  </InfoText>
+                </RowWrap>
+              </FlexWrap>
+            </RowWrap>
+          </ContentWrap>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -650,7 +659,9 @@ const JobDetailsScreenView = ({
     const locationStepIndex = getLocationStepIndex();
 
     return (
-      <TouchableOpacity onPress={() => onAddress(locationStepIndex)}>
+      <TouchableOpacity
+        onPress={() => onAddress(locationStepIndex)}
+      >
         <ContentWrap mTop={SIZE1}>
           <RowWrap>
             <FlexWrap>
@@ -832,6 +843,7 @@ JobDetailsScreenView.propTypes = {
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,
+  onDriverNote: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
