@@ -4,6 +4,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE3,
   SIZE12,
   FONT,
 } from 'src/constants';
@@ -16,6 +17,21 @@ const Container = styled.SafeAreaView`
 const Content = styled.View`
   flex: 1;
   background-color: ${props => props.color || COLORS.WHITE2};
+`;
+
+const ContentWrap = styled.View`
+  margin-horizontal: ${SIZE1}px;
+  padding-top: ${props => props.mTop || SIZE3}px;
+  padding-horizontal: ${SIZE3}px;
+  padding-bottom: ${SIZE3}px;
+  background-color: ${COLORS.WHITE1};
+`;
+
+const WrapBorder = styled.View`
+  width: 100%;
+  height: 0px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
 `;
 
 const ShadowWrap = styled.View`
@@ -65,6 +81,11 @@ const SearchInput = styled.TextInput`
   color: ${COLORS.BLACK2};
 `;
 
+const RowWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const FlexWrap = styled.View`
   flex: ${props => props.flex || 1};
 `;
@@ -98,12 +119,15 @@ const OkCancelText = styled.Text`
 export {
   Container,
   Content,
+  ContentWrap,
+  WrapBorder,
   ShadowWrap,
   LoadingWrap,
   FullImage,
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
+  RowWrap,
   FlexWrap,
   SpaceView,
   OkCancelRow,
