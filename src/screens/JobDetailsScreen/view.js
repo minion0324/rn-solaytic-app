@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -20,7 +20,10 @@ import {
 import {
   Container,
   Content,
+  ContentWrap,
+  WrapBorder,
   ShadowWrap,
+  RowWrap,
   FlexWrap,
   SpaceView,
 } from 'src/styles/common.styles';
@@ -29,16 +32,11 @@ import {
   EmptyWrap,
   Back,
 } from 'src/styles/header.styles';
-
-import { DetailsTab, InstructionTab } from './components';
 import {
-  ContentWrap,
-  WrapBorder,
   TitleText,
   InfoText,
   LabelText,
-  RowWrap,
-} from './styled';
+} from 'src/styles/text.styles';
 
 const {
   PersonContactIcon,
@@ -89,6 +87,7 @@ const JobDetailsScreenView = ({
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
+  onAddress,
 }) => {
 
   const getBinInOutIndex = (index) => {
@@ -651,17 +650,19 @@ const JobDetailsScreenView = ({
     const locationStepIndex = getLocationStepIndex();
 
     return (
-      <ContentWrap mTop={SIZE1}>
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              {steps[locationStepIndex].address}
-            </InfoText>
-          </FlexWrap>
-          <SpaceView mLeft={SIZE2} />
-          <BlueRightArrowIcon />
-        </RowWrap>
-      </ContentWrap>
+      <TouchableOpacity onPress={() => onAddress(locationStepIndex)}>
+        <ContentWrap mTop={SIZE1}>
+          <RowWrap>
+            <FlexWrap>
+              <InfoText>
+                {steps[locationStepIndex].address}
+              </InfoText>
+            </FlexWrap>
+            <SpaceView mLeft={SIZE2} />
+            <BlueRightArrowIcon />
+          </RowWrap>
+        </ContentWrap>
+      </TouchableOpacity>
     );
   };
 
@@ -740,8 +741,8 @@ const JobDetailsScreenView = ({
         { renderContact() }
       </ShadowWrap>
 
-      <ScrollView>
-        <Content>
+      <Content>
+        <ScrollView>
           { renderType() }
           { renderDriverNote() }
           { renderBinInfo() }
@@ -788,8 +789,8 @@ const JobDetailsScreenView = ({
           // />
         }
 
-        </Content>
-      </ScrollView>
+        </ScrollView>
+      </Content>
     </Container>
   );
 };
@@ -830,6 +831,7 @@ JobDetailsScreenView.propTypes = {
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
+  onAddress: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {

@@ -22,6 +22,7 @@ import {
   popScreen,
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
+  ADDRESS_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -415,6 +416,10 @@ const JobDetailsScreen = ({
     return true;
   };
 
+  const onAddress = (stepIndex) => {
+    pushScreen(componentId, ADDRESS_SCREEN, { stepIndex });
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -449,6 +454,7 @@ const JobDetailsScreen = ({
       onUpdateAmountCollected={onUpdateAmountCollected}
       isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
+      onAddress={onAddress}
     />
   );
 };

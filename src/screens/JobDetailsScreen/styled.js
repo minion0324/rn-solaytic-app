@@ -11,40 +11,6 @@ import {
   FONT,
 } from 'src/constants';
 
-const ContentWrap = styled.View`
-  margin-horizontal: ${SIZE1}px;
-  padding-top: ${props => props.mTop || SIZE3}px;
-  padding-horizontal: ${SIZE3}px;
-  padding-bottom: ${SIZE3}px;
-  background-color: ${COLORS.WHITE1};
-`;
-
-const WrapBorder = styled.View`
-  width: 100%;
-  height: 0px;
-  border-top-width: 1px;
-  border-color: ${COLORS.GRAY2};
-`;
-
-const TitleText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 700;
-  color: ${props => props.color || COLORS.BLACK2};
-`;
-
-const InfoText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600;
-  color: ${props => props.color || COLORS.BLACK2};
-`;
-
-const LabelText = styled.Text`
-  font-size: ${FONT(12)}px;
-  font-weight: 600;
-  color: ${props => props.color || COLORS.BLACK2};
-`;
-
-//
 const JobDetails = styled.View`
   flex: 1;
   margin-bottom: ${SIZE2}px;
@@ -276,12 +242,6 @@ const ServiceRow = styled.TouchableOpacity`
 `;
 
 export {
-  ContentWrap,
-  WrapBorder,
-  TitleText,
-  InfoText,
-  LabelText,
-
   JobDetails,
   Content,
 
