@@ -7,3 +7,8 @@ export { default as SignatureScreen } from './SignatureScreen';
 export { default as FailJobScreen } from './FailJobScreen';
 export { default as CustomModalScreen } from './CustomModalScreen';
 export { default as UploadHistoryScreen } from './UploadHistoryScreen';
+export { default as AddressScreen } from './AddressScreen';
+export { default as DriverNoteScreen } from './DriverNoteScreen';
+export { default as BinInfoScreen } from './BinInfoScreen';
+export { default as ScanCodeScreen } from './ScanCodeScreen';
+export { default as AddServicesScreen } from './AddServicesScreen';
