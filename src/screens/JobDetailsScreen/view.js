@@ -90,6 +90,7 @@ const JobDetailsScreenView = ({
   onAddress,
   onDriverNote,
   onAddServices,
+  onBinInfo,
 }) => {
 
   const getBinInOutIndex = (index) => {
@@ -473,6 +474,9 @@ const JobDetailsScreenView = ({
           (item.wasteType || item.binType) &&
           <View>
             <SpaceView mTop={SIZE2} />
+            <TouchableOpacity
+              onPress={() => onBinInfo(item, binInOutIndex)}
+            >
             <ContentWrap>
               <RowWrap>
                 {
@@ -494,52 +498,57 @@ const JobDetailsScreenView = ({
                 </TitleText>
               </RowWrap>
             </ContentWrap>
+            </TouchableOpacity>
             <WrapBorder />
-            <ContentWrap>
-              <RowWrap>
-                <FlexWrap>
-                  <RowWrap>
-                    <FlexWrap>
-                      <LabelText>Waste Type</LabelText>
-                      <InfoText>
-                        {item['wasteType'] && item['wasteType']['wasteTypeName']}
-                      </InfoText>
-                    </FlexWrap>
-                    {
-                      focusedJob.isEnabledBinWeight &&
-                      (!!item['binWeight'] || editable) &&
-                      (
-                        index !== 0 ||
-                        focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
-                      ) &&
+            <TouchableOpacity
+              onPress={() => onBinInfo(item, binInOutIndex)}
+            >
+              <ContentWrap>
+                <RowWrap>
+                  <FlexWrap>
+                    <RowWrap>
                       <FlexWrap>
-                        <LabelText>Nett Weight</LabelText>
+                        <LabelText>Waste Type</LabelText>
                         <InfoText>
-                          {item['binWeight']}
+                          {item['wasteType'] && item['wasteType']['wasteTypeName']}
                         </InfoText>
                       </FlexWrap>
-                    }
-                  </RowWrap>
-                  <SpaceView mTop={SIZE2} />
-                  <RowWrap>
-                    <FlexWrap>
-                      <LabelText>Bin Type</LabelText>
-                      <InfoText>
-                        {item['binType'] && item['binType']['binTypeName']}
-                      </InfoText>
-                    </FlexWrap>
-                    <FlexWrap>
-                      <LabelText>Bin Id</LabelText>
-                      <InfoText>
-                        {item['binNumber']}
-                      </InfoText>
-                    </FlexWrap>
-                  </RowWrap>
-                </FlexWrap>
-                <SpaceView mLeft={SIZE2} />
-                <BlueRightArrowIcon />
-              </RowWrap>
-            </ContentWrap>
+                      {
+                        focusedJob.isEnabledBinWeight &&
+                        (!!item['binWeight'] || editable) &&
+                        (
+                          index !== 0 ||
+                          focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+                        ) &&
+                        <FlexWrap>
+                          <LabelText>Nett Weight</LabelText>
+                          <InfoText>
+                            {item['binWeight']}
+                          </InfoText>
+                        </FlexWrap>
+                      }
+                    </RowWrap>
+                    <SpaceView mTop={SIZE2} />
+                    <RowWrap>
+                      <FlexWrap>
+                        <LabelText>Bin Type</LabelText>
+                        <InfoText>
+                          {item['binType'] && item['binType']['binTypeName']}
+                        </InfoText>
+                      </FlexWrap>
+                      <FlexWrap>
+                        <LabelText>Bin Id</LabelText>
+                        <InfoText>
+                          {item['binNumber']}
+                        </InfoText>
+                      </FlexWrap>
+                    </RowWrap>
+                  </FlexWrap>
+                  <SpaceView mLeft={SIZE2} />
+                  <BlueRightArrowIcon />
+                </RowWrap>
+              </ContentWrap>
+            </TouchableOpacity>
           </View>
         );
       })
@@ -850,6 +859,7 @@ JobDetailsScreenView.propTypes = {
   onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
+  onBinInfo: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {

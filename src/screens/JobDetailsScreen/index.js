@@ -25,6 +25,7 @@ import {
   ADDRESS_SCREEN,
   DRIVER_NOTE_SCREEN,
   ADD_SERVICES_SCREEN,
+  BIN_INFO_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -430,6 +431,10 @@ const JobDetailsScreen = ({
     pushScreen(componentId, ADD_SERVICES_SCREEN, { services });
   };
 
+  const onBinInfo = (bin, binInOutIndex) => {
+    pushScreen(componentId, BIN_INFO_SCREEN, { bin, binInOutIndex });
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -467,6 +472,7 @@ const JobDetailsScreen = ({
       onAddress={onAddress}
       onDriverNote={onDriverNote}
       onAddServices={onAddServices}
+      onBinInfo={onBinInfo}
     />
   );
 };
