@@ -24,6 +24,7 @@ import {
   FAIL_JOB_SCREEN,
   ADDRESS_SCREEN,
   DRIVER_NOTE_SCREEN,
+  ADD_SERVICES_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -425,6 +426,10 @@ const JobDetailsScreen = ({
     pushScreen(componentId, DRIVER_NOTE_SCREEN);
   };
 
+  const onAddServices = () => {
+    pushScreen(componentId, ADD_SERVICES_SCREEN, { services });
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -461,6 +466,7 @@ const JobDetailsScreen = ({
       onAlertNotProgress={onAlertNotProgress}
       onAddress={onAddress}
       onDriverNote={onDriverNote}
+      onAddServices={onAddServices}
     />
   );
 };

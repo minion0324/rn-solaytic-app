@@ -89,6 +89,7 @@ const JobDetailsScreenView = ({
   onAlertNotProgress,
   onAddress,
   onDriverNote,
+  onAddServices,
 }) => {
 
   const getBinInOutIndex = (index) => {
@@ -394,21 +395,23 @@ const JobDetailsScreenView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap>
-              <RowWrap>
-                <FailIcon />
-                <SpaceView mLeft={SIZE2} />
-                <TitleText>
-                  Fail Job
-                </TitleText>
-              </RowWrap>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <BlueRightArrowIcon />
-          </RowWrap>
-        </ContentWrap>
+        <TouchableOpacity onPress={onFail}>
+          <ContentWrap>
+            <RowWrap>
+              <FlexWrap>
+                <RowWrap>
+                  <FailIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <TitleText>
+                    Fail Job
+                  </TitleText>
+                </RowWrap>
+              </FlexWrap>
+              <SpaceView mLeft={SIZE2} />
+              <BlueRightArrowIcon />
+            </RowWrap>
+          </ContentWrap>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -417,21 +420,23 @@ const JobDetailsScreenView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap>
-              <RowWrap>
-                <ServiceIcon />
-                <SpaceView mLeft={SIZE2} />
-                <TitleText>
-                  Add Services
-                </TitleText>
-              </RowWrap>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <BlueRightArrowIcon />
-          </RowWrap>
-        </ContentWrap>
+        <TouchableOpacity onPress={onAddServices}>
+          <ContentWrap>
+            <RowWrap>
+              <FlexWrap>
+                <RowWrap>
+                  <ServiceIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <TitleText>
+                    Add Services
+                  </TitleText>
+                </RowWrap>
+              </FlexWrap>
+              <SpaceView mLeft={SIZE2} />
+              <BlueRightArrowIcon />
+            </RowWrap>
+          </ContentWrap>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -844,6 +849,7 @@ JobDetailsScreenView.propTypes = {
   onAlertNotProgress: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
+  onAddServices: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
