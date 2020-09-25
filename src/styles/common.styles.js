@@ -24,7 +24,7 @@ const ContentWrap = styled.View`
   padding-top: ${props => props.mTop || SIZE3}px;
   padding-horizontal: ${SIZE3}px;
   padding-bottom: ${SIZE3}px;
-  background-color: ${COLORS.WHITE1};
+  background-color: ${props => props.color || COLORS.WHITE1};
 `;
 
 const WrapBorder = styled.View`
