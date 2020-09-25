@@ -43,6 +43,7 @@ import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
 import DeactiveBinOutIcon from 'src/assets/svgs/icon-out-bin-deactive.svg';
 import PaymentIcon from 'src/assets/svgs/icon-payment.svg';
 import ImageIcon from 'src/assets/svgs/icon-image.svg';
+import AddressIcon from 'src/assets/svgs/icon-address.svg';
 
 export default {
   ActiveCheckIcon,
@@ -90,4 +91,5 @@ export default {
   DeactiveBinOutIcon,
   PaymentIcon,
   ImageIcon,
+  AddressIcon,
 };
