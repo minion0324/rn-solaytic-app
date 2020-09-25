@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import {
   HeaderBar,
 } from 'src/components';
+import {
+  popScreen,
+} from 'src/navigation';
 
 import {
   Container,
@@ -21,12 +24,15 @@ const ScanCodeScreen = ({
   componentId,
 }) => {
 
+  const onBack = () => {
+    popScreen(componentId);
+  };
 
   return (
     <Container>
       <ShadowWrap>
         <HeaderBar
-          centerIcon={<ScreenText>History</ScreenText>}
+          centerIcon={<ScreenText>Scan QR Code</ScreenText>}
           leftIcon={<Back />}
           rightIcon={<EmptyWrap />}
           onPressLeft={onBack}
