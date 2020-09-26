@@ -1,2 +1,2 @@
-export { default as DetailsTab } from './detailsTab';
-export { default as InstructionTab } from './instructionTab';
+export { default as ProgressView } from './progressView';
+export { default as CompleteView } from './completeView';
