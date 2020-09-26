@@ -44,7 +44,6 @@ const JobDetailsScreenView = ({
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
-  onAddress,
   onDriverNote,
   onAddServices,
   onBinInfo,
@@ -199,7 +198,6 @@ const JobDetailsScreenView = ({
         onUpdateAmountCollected={onUpdateAmountCollected}
         isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
-        onAddress={onAddress}
         onDriverNote={onDriverNote}
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
@@ -240,7 +238,6 @@ const JobDetailsScreenView = ({
         onUpdateAmountCollected={onUpdateAmountCollected}
         isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
-        onAddress={onAddress}
         onDriverNote={onDriverNote}
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
@@ -286,7 +283,6 @@ JobDetailsScreenView.propTypes = {
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
-  onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,

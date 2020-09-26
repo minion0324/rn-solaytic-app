@@ -16,6 +16,10 @@ import {
   HeaderBar,
   DefaultButton,
 } from 'src/components';
+import {
+  pushScreen,
+  ADDRESS_SCREEN,
+} from 'src/navigation';
 
 import {
   Container,
@@ -87,7 +91,6 @@ const ProgressView = ({
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
-  onAddress,
   onDriverNote,
   onAddServices,
   onBinInfo,
@@ -95,6 +98,10 @@ const ProgressView = ({
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
 }) => {
+
+  const onAddress = (index) => {
+    pushScreen(componentId, ADDRESS_SCREEN, { index });
+  };
 
   const renderJobProof = () => {
     return (
@@ -398,7 +405,14 @@ const ProgressView = ({
   const renderContact = () => {
     const { steps } = focusedJob;
 
-    const idx = getCustomerSiteIndex();
+    const index = getCustomerSiteIndex();
+
+    if (
+      !steps[index].contactPersonOne ||
+      !steps[index].contactNumberOne
+    ) {
+      return null;
+    }
 
     return (
       <View>
@@ -407,7 +421,7 @@ const ProgressView = ({
           <WrapBorder />
         </RowWrap>
         <TouchableOpacity
-          onPress={() => onAddress(idx)}
+          onPress={() => onAddress(index)}
         >
           <ContentWrap>
             <RowWrap>
@@ -416,7 +430,7 @@ const ProgressView = ({
                   <PersonContactIcon />
                   <SpaceView mLeft={SIZE2} />
                   <InfoText numberOfLines={1}>
-                    {steps[idx].contactPersonOne}
+                    {steps[index].contactPersonOne}
                   </InfoText>
                 </RowWrap>
               </FlexWrap>
@@ -425,7 +439,7 @@ const ProgressView = ({
                   <NumberContactIcon />
                   <SpaceView mLeft={SIZE2} />
                   <InfoText numberOfLines={1}>
-                    {steps[idx].contactNumberOne}
+                    {steps[index].contactNumberOne}
                   </InfoText>
                 </RowWrap>
               </FlexWrap>
@@ -439,17 +453,17 @@ const ProgressView = ({
   const renderLocation = () => {
     const { steps } = focusedJob;
 
-    const idx = getCustomerSiteIndex();
+    const index = getCustomerSiteIndex();
 
     return (
       <TouchableOpacity
-        onPress={() => onAddress(idx)}
+        onPress={() => onAddress(index)}
       >
         <ContentWrap mTop={SIZE1}>
           <RowWrap>
             <FlexWrap>
               <InfoText>
-                {steps[idx].address}
+                {steps[index].address}
               </InfoText>
             </FlexWrap>
             <SpaceView mLeft={SIZE2} />
@@ -589,7 +603,6 @@ ProgressView.propTypes = {
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
-  onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,

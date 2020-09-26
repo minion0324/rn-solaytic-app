@@ -22,7 +22,6 @@ import {
   popScreen,
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
-  ADDRESS_SCREEN,
   DRIVER_NOTE_SCREEN,
   ADD_SERVICES_SCREEN,
   BIN_INFO_SCREEN,
@@ -419,10 +418,6 @@ const JobDetailsScreen = ({
     return true;
   };
 
-  const onAddress = (stepIndex) => {
-    pushScreen(componentId, ADDRESS_SCREEN, { stepIndex });
-  };
-
   const onDriverNote = () => {
     pushScreen(componentId, DRIVER_NOTE_SCREEN);
   };
@@ -469,7 +464,6 @@ const JobDetailsScreen = ({
       onUpdateAmountCollected={onUpdateAmountCollected}
       isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
-      onAddress={onAddress}
       onDriverNote={onDriverNote}
       onAddServices={onAddServices}
       onBinInfo={onBinInfo}
