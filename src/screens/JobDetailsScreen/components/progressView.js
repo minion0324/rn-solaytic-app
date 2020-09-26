@@ -92,9 +92,8 @@ const ProgressView = ({
   onAddServices,
   onBinInfo,
 
-  getBinInOutIndex,
-  getContactStepIndex,
-  getLocationStepIndex,
+  getBinInOutInfoIndex,
+  getCustomerSiteIndex,
 }) => {
 
   const renderJobProof = () => {
@@ -238,40 +237,40 @@ const ProgressView = ({
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
-        const binInOutIndex = getBinInOutIndex(index);
+        const idx = getBinInOutInfoIndex(index);
 
         return (
           (item.wasteType || item.binType) &&
           <View>
             <SpaceView mTop={SIZE2} />
             <TouchableOpacity
-              onPress={() => onBinInfo(item, binInOutIndex)}
+              onPress={() => onBinInfo(item, idx)}
             >
             <ContentWrap>
               <RowWrap>
                 {
-                  binInOutIndex === 0 &&
+                  idx === 0 &&
                   <RowWrap>
                     <ActiveBinInIcon />
                     <SpaceView mLeft={SIZE2} />
                   </RowWrap>
                 }
                 {
-                  binInOutIndex === 1 &&
+                  idx === 1 &&
                   <RowWrap>
                     <ActiveBinOutIcon />
                     <SpaceView mLeft={SIZE2} />
                   </RowWrap>
                 }
                 <TitleText>
-                  {`Bin ${binInOutIndex === 0 ? 'In' : binInOutIndex === 1 ? 'Out' : ''}`}
+                  {`Bin ${idx === 0 ? 'In' : idx === 1 ? 'Out' : ''}`}
                 </TitleText>
               </RowWrap>
             </ContentWrap>
             </TouchableOpacity>
             <WrapBorder />
             <TouchableOpacity
-              onPress={() => onBinInfo(item, binInOutIndex)}
+              onPress={() => onBinInfo(item, idx)}
             >
               <ContentWrap>
                 <RowWrap>
@@ -399,7 +398,7 @@ const ProgressView = ({
   const renderContact = () => {
     const { steps } = focusedJob;
 
-    const contactStepIndex = getContactStepIndex();
+    const idx = getCustomerSiteIndex();
 
     return (
       <View>
@@ -408,7 +407,7 @@ const ProgressView = ({
           <WrapBorder />
         </RowWrap>
         <TouchableOpacity
-          onPress={() => onAddress(contactStepIndex)}
+          onPress={() => onAddress(idx)}
         >
           <ContentWrap>
             <RowWrap>
@@ -417,7 +416,7 @@ const ProgressView = ({
                   <PersonContactIcon />
                   <SpaceView mLeft={SIZE2} />
                   <InfoText numberOfLines={1}>
-                    {steps[contactStepIndex].contactPersonOne}
+                    {steps[idx].contactPersonOne}
                   </InfoText>
                 </RowWrap>
               </FlexWrap>
@@ -426,7 +425,7 @@ const ProgressView = ({
                   <NumberContactIcon />
                   <SpaceView mLeft={SIZE2} />
                   <InfoText numberOfLines={1}>
-                    {steps[contactStepIndex].contactNumberOne}
+                    {steps[idx].contactNumberOne}
                   </InfoText>
                 </RowWrap>
               </FlexWrap>
@@ -440,17 +439,17 @@ const ProgressView = ({
   const renderLocation = () => {
     const { steps } = focusedJob;
 
-    const locationStepIndex = getLocationStepIndex();
+    const idx = getCustomerSiteIndex();
 
     return (
       <TouchableOpacity
-        onPress={() => onAddress(locationStepIndex)}
+        onPress={() => onAddress(idx)}
       >
         <ContentWrap mTop={SIZE1}>
           <RowWrap>
             <FlexWrap>
               <InfoText>
-                {steps[locationStepIndex].address}
+                {steps[idx].address}
               </InfoText>
             </FlexWrap>
             <SpaceView mLeft={SIZE2} />
@@ -595,9 +594,8 @@ ProgressView.propTypes = {
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,
 
-  getBinInOutIndex: PropTypes.func.isRequired,
-  getContactStepIndex: PropTypes.func.isRequired,
-  getLocationStepIndex: PropTypes.func.isRequired,
+  getBinInOutInfoIndex: PropTypes.func.isRequired,
+  getCustomerSiteIndex: PropTypes.func.isRequired,
 };
 
 ProgressView.defaultProps = {

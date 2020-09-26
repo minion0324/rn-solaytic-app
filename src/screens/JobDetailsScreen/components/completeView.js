@@ -92,9 +92,8 @@ const CompleteView = ({
   onAddServices,
   onBinInfo,
 
-  getBinInOutIndex,
-  getContactStepIndex,
-  getLocationStepIndex,
+  getBinInOutInfoIndex,
+  getCustomerSiteIndex,
 }) => {
 
   const renderJobProof = () => {
@@ -190,40 +189,40 @@ const CompleteView = ({
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
-        const binInOutIndex = getBinInOutIndex(index);
+        const idx = getBinInOutInfoIndex(index);
 
         return (
           (item.wasteType || item.binType) &&
           <View>
             <SpaceView mTop={SIZE2} />
             <TouchableOpacity
-              onPress={() => onBinInfo(item, binInOutIndex)}
+              onPress={() => onBinInfo(item, idx)}
             >
             <ContentWrap>
               <RowWrap>
                 {
-                  binInOutIndex === 0 &&
+                  idx === 0 &&
                   <RowWrap>
                     <ActiveBinInIcon />
                     <SpaceView mLeft={SIZE2} />
                   </RowWrap>
                 }
                 {
-                  binInOutIndex === 1 &&
+                  idx === 1 &&
                   <RowWrap>
                     <ActiveBinOutIcon />
                     <SpaceView mLeft={SIZE2} />
                   </RowWrap>
                 }
                 <TitleText>
-                  {`Bin ${binInOutIndex === 0 ? 'In' : binInOutIndex === 1 ? 'Out' : ''}`}
+                  {`Bin ${idx === 0 ? 'In' : idx === 1 ? 'Out' : ''}`}
                 </TitleText>
               </RowWrap>
             </ContentWrap>
             </TouchableOpacity>
             <WrapBorder />
             <TouchableOpacity
-              onPress={() => onBinInfo(item, binInOutIndex)}
+              onPress={() => onBinInfo(item, idx)}
             >
               <ContentWrap>
                 <RowWrap>
@@ -278,9 +277,7 @@ const CompleteView = ({
   };
 
   const renderCustomerCopy = () => {
-    const contactStepIndex = getContactStepIndex();
-
-    const locationStepIndex = getLocationStepIndex();
+    const idx = getCustomerSiteIndex();
 
     return (
       <View>
@@ -310,16 +307,16 @@ const CompleteView = ({
           <SpaceView mTop={SIZE2} />
           <LabelText>Locations</LabelText>
           <InfoText>
-            {focusedJob.steps[locationStepIndex].address}
+            {focusedJob.steps[idx].address}
           </InfoText>
 
           <SpaceView mTop={SIZE2} />
           <LabelText>Contact</LabelText>
           <InfoText>
             {
-              focusedJob.steps[contactStepIndex].contactPersonOne +
+              focusedJob.steps[idx].contactPersonOne +
               '  |  ' +
-              focusedJob.steps[contactStepIndex].contactNumberOne
+              focusedJob.steps[idx].contactNumberOne
             }
           </InfoText>
 
@@ -442,9 +439,8 @@ CompleteView.propTypes = {
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,
 
-  getBinInOutIndex: PropTypes.func.isRequired,
-  getContactStepIndex: PropTypes.func.isRequired,
-  getLocationStepIndex: PropTypes.func.isRequired,
+  getBinInOutInfoIndex: PropTypes.func.isRequired,
+  getCustomerSiteIndex: PropTypes.func.isRequired,
 };
 
 CompleteView.defaultProps = {

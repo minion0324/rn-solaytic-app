@@ -50,7 +50,7 @@ const JobDetailsScreenView = ({
   onBinInfo,
 }) => {
 
-  const getBinInOutIndex = (index) => {
+  const getBinInOutInfoIndex = (index) => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
         if (
@@ -117,43 +117,11 @@ const JobDetailsScreenView = ({
         }
 
       default:
-        return '';
+        return -1;
     };
   };
 
-  const getContactStepIndex = () => {
-    const { steps } = focusedJob;
-
-    let stepIndex = steps.length - 1;
-    if (
-      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.CANCELLED ||
-      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-    ) {
-      if (steps[0].contactPersonOne && steps[0].contactNumberOne) {
-        stepIndex = 0;
-      } else {
-        stepIndex = 1;
-      }
-    } else if (jobStatus === JOB_STATUS.IN_PROGRESS2) {
-      if (steps[2].contactPersonOne && steps[2].contactNumberOne) {
-        stepIndex = 2;
-      } else {
-        stepIndex = 1;
-      }
-    } else {
-      if (steps[stepIndex].contactPersonOne && steps[stepIndex].contactNumberOne) {
-        stepIndex = stepIndex;
-      } else {
-        stepIndex = stepIndex - 1;
-      }
-    }
-
-    return stepIndex;
-  };
-
-  const getLocationStepIndex = () => {
+  const getCustomerSiteIndex = () => {
     const { steps, jobTypeName } = focusedJob;
 
     if (jobTypeName === JOB_TYPE.PULL) {
@@ -236,9 +204,8 @@ const JobDetailsScreenView = ({
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
 
-        getBinInOutIndex={getBinInOutIndex}
-        getContactStepIndex={getContactStepIndex}
-        getLocationStepIndex={getLocationStepIndex}
+        getBinInOutInfoIndex={getBinInOutInfoIndex}
+        getCustomerSiteIndex={getCustomerSiteIndex}
       />
     : <CompleteView
         loading={loading}
@@ -278,9 +245,8 @@ const JobDetailsScreenView = ({
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
 
-        getBinInOutIndex={getBinInOutIndex}
-        getContactStepIndex={getContactStepIndex}
-        getLocationStepIndex={getLocationStepIndex}
+        getBinInOutInfoIndex={getBinInOutInfoIndex}
+        getCustomerSiteIndex={getCustomerSiteIndex}
       />
 };
 
