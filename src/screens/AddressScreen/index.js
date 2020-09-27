@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { showLocation } from 'react-native-map-link';
 
 import {
   HeaderBar,
@@ -19,6 +20,9 @@ import {
 import {
   Jobs,
 } from 'src/redux';
+import {
+  openUrl,
+} from 'src/utils';
 
 import {
   Container,
@@ -54,12 +58,106 @@ const {
 
 const AddressScreen = ({
   focusedJob,
-  stepIndex,
+  customerSiteIndex,
   componentId,
 }) => {
 
   const onBack = () => {
     popScreen(componentId);
+  };
+
+  const onLocation = (latitude, longitude) => {
+    showLocation({ latitude, longitude });
+  };
+
+  const onContact = (phoneNumber) => {
+    openUrl(`tel:${phoneNumber}`);
+  };
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <ContentWrap>
+          <RowWrap>
+            <IconWrap>
+              {
+                index === 0
+                ? <Location1Icon />
+                : index === 1
+                  ? <Location2Icon />
+                  : <Location3Icon />
+              }
+            </IconWrap>
+            <FlexWrap>
+              {
+                index === customerSiteIndex
+                ? <TitleText>
+                    {item.address}
+                  </TitleText>
+                : <InfoText>
+                    {item.siteName}
+                  </InfoText>
+              }
+              {
+                index !== customerSiteIndex &&
+                <LabelText>
+                  {item.address}
+                </LabelText>
+              }
+              <ButtonWrap>
+                <TouchableOpacity
+                  onPress={() => onLocation(item.latitude, item.longitude)}
+                >
+                  <LabelText color={COLORS.BLUE1}>
+                    {'Show on map'}
+                  </LabelText>
+                </TouchableOpacity>
+              </ButtonWrap>
+              {
+                index === customerSiteIndex &&
+                <TitleText>
+                  {item.siteName}
+                </TitleText>
+              }
+
+              {
+                index === customerSiteIndex &&
+                (
+                  (!!item.contactPersonOne && !!item.contactNumberOne) ||
+                  (!!item.contactPersonTwo && !!item.contactNumberTwo)
+                ) &&
+                <ButtonWrap>
+                  {
+                    !!item.contactPersonOne &&
+                    !!item.contactNumberOne &&
+                    <DefaultButton
+                      color={COLORS.GREEN1}
+                      text={item.contactPersonOne}
+                      onPress={() => onContact(item.contactNumberOne)}
+                      mTop={SIZE1}
+                      mBottom={SIZE1}
+                    />
+                  }
+
+                  {
+                    !!item.contactPersonTwo &&
+                    !!item.contactNumberTwo &&
+                    <DefaultButton
+                      color={COLORS.GREEN1}
+                      text={item.contactPersonTwo}
+                      onPress={() => onContact(item.contactNumberTwo)}
+                      mTop={SIZE1}
+                      mBottom={SIZE1}
+                    />
+                  }
+                </ButtonWrap>
+              }
+            </FlexWrap>
+          </RowWrap>
+        </ContentWrap>
+      </View>
+    );
   };
 
   return (
@@ -80,83 +178,13 @@ const AddressScreen = ({
       </ShadowWrap>
 
       <Content>
-        <ScrollView>
-          {
-            focusedJob.steps.map((item, index) => (
-              <View>
-                <SpaceView mTop={SIZE2} />
-                <ContentWrap>
-                  <RowWrap>
-                    <IconWrap>
-                      {
-                        index === 0
-                        ? <Location1Icon />
-                        : index === 1
-                          ? <Location2Icon />
-                          : <Location3Icon />
-                      }
-                    </IconWrap>
-                    <FlexWrap>
-                      {
-                        index === stepIndex
-                        ? <TitleText>
-                            {item.address}
-                          </TitleText>
-                        : <InfoText>
-                            {item.siteName}
-                          </InfoText>
-                      }
-                      {
-                        index !== stepIndex &&
-                        <LabelText>
-                          {item.address}
-                        </LabelText>
-                      }
-                      <ButtonWrap>
-                        <TouchableOpacity>
-                          <LabelText color={COLORS.BLUE1}>
-                            {'Show on map'}
-                          </LabelText>
-                        </TouchableOpacity>
-                      </ButtonWrap>
-                      {
-                        index === stepIndex &&
-                        <TitleText>
-                          {item.siteName}
-                        </TitleText>
-                      }
-
-                      {
-                        index === stepIndex &&
-                        <ButtonWrap>
-                        <DefaultButton
-                          color={COLORS.GREEN1}
-                          text={item.contactPersonOne}
-                          onPress={() => {}}
-                          mTop={SIZE1}
-                          mBottom={SIZE1}
-                        />
-                        {
-                          item.contactPersonTwo &&
-                          item.contactNumberTwo &&
-                          <DefaultButton
-                            color={COLORS.GREEN1}
-                            text={item.contactPersonTwo}
-                            onPress={() => {}}
-                            mTop={SIZE1}
-                            mBottom={SIZE1}
-                          />
-                        }
-                        </ButtonWrap>
-                      }
-                    </FlexWrap>
-                  </RowWrap>
-                </ContentWrap>
-              </View>
-            ))
-          }
-
-        </ScrollView>
+        <FlatList
+          bounces={false}
+          data={focusedJob.steps}
+          keyExtractor={(item) => `${item.jobStepId}`}
+          showsVerticalScrollIndicator={false}
+          renderItem={renderItem}
+        />
       </Content>
     </Container>
   );
@@ -164,12 +192,12 @@ const AddressScreen = ({
 
 AddressScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
-  stepIndex: PropTypes.number,
+  customerSiteIndex: PropTypes.number.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 AddressScreen.defaultProps = {
-  stepIndex: 0,
+  //
 };
 
 const mapStateToProps = (state) => {
