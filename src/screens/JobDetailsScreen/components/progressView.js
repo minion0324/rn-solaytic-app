@@ -17,11 +17,6 @@ import {
   DefaultButton,
   ItemWrap,
 } from 'src/components';
-import {
-  pushScreen,
-  FAIL_JOB_SCREEN,
-  ADDRESS_SCREEN,
-} from 'src/navigation';
 
 import {
   Container,

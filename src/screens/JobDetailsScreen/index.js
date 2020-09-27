@@ -419,8 +419,8 @@ const JobDetailsScreen = ({
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
 
-  const onAddress = (index) => {
-    pushScreen(componentId, ADDRESS_SCREEN, { index });
+  const onAddress = (customerSiteIndex) => {
+    pushScreen(componentId, ADDRESS_SCREEN, { customerSiteIndex });
   };
 
   const onDriverNote = () => {
