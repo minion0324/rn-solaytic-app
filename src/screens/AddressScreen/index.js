@@ -54,6 +54,7 @@ const {
   Location2Icon,
   Location3Icon,
   AddressIcon,
+  PhoneIcon,
 } = SVGS;
 
 const AddressScreen = ({
@@ -135,6 +136,7 @@ const AddressScreen = ({
                       color={COLORS.GREEN1}
                       text={item.contactPersonOne}
                       onPress={() => onContact(item.contactNumberOne)}
+                      icon={<PhoneIcon />}
                       mTop={SIZE1}
                       mBottom={SIZE1}
                     />
@@ -147,6 +149,7 @@ const AddressScreen = ({
                       color={COLORS.GREEN1}
                       text={item.contactPersonTwo}
                       onPress={() => onContact(item.contactNumberTwo)}
+                      icon={<PhoneIcon />}
                       mTop={SIZE1}
                       mBottom={SIZE1}
                     />
