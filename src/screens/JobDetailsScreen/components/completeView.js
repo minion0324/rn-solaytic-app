@@ -15,6 +15,7 @@ import {
 import {
   HeaderBar,
   DefaultButton,
+  ItemWrap,
 } from 'src/components';
 
 import {
@@ -23,6 +24,7 @@ import {
   ContentWrap,
   WrapBorder,
   ShadowWrap,
+  FullImage,
   RowWrap,
   FlexWrap,
   SpaceView,
@@ -37,6 +39,13 @@ import {
   InfoText,
   LabelText,
 } from 'src/styles/text.styles';
+
+import {
+  JobProofItem,
+  HalfWrap,
+  SignInfo,
+  SignInfoText,
+} from '../styled';
 
 const {
   PersonContactIcon,
@@ -112,26 +121,25 @@ const CompleteView = ({
         <WrapBorder />
         <ContentWrap>
           {
-            photos.map((photo, index) =>
-              <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
-                <AttachmentWrap>
+            photos.map((photo) =>
+              <ItemWrap
+                deactivated
+                mLeft={SIZE1} mRight={SIZE1}
+                key={photo.uri}
+              >
+                <JobProofItem>
                   <FullImage source={{ uri: photo.uri }} />
-                  {
-                    isForComplete() &&
-                    <CancelButton
-                      onPress={() => onCancelPhoto(index)}
-                    >
-                      <CancelIcon />
-                    </CancelButton>
-                  }
-                </AttachmentWrap>
+                </JobProofItem>
               </ItemWrap>
             )
           }
           {
             !!sign.uri &&
-            <ItemWrap mLeft={0} mRight={0}>
-              <AttachmentWrap>
+            <ItemWrap
+              deactivated
+              mLeft={SIZE1} mRight={SIZE1}
+            >
+              <JobProofItem>
                 <HalfWrap>
                   <FullImage source={{ uri: sign.uri }} />
                 </HalfWrap>
@@ -147,13 +155,7 @@ const CompleteView = ({
                     </SignInfoText>
                   </SignInfo>
                 </HalfWrap>
-                {
-                  isForComplete() &&
-                  <CancelButton onPress={onCancelSign}>
-                    <CancelIcon />
-                  </CancelButton>
-                }
-              </AttachmentWrap>
+              </JobProofItem>
             </ItemWrap>
           }
         </ContentWrap>

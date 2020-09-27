@@ -15,6 +15,7 @@ import {
 import {
   HeaderBar,
   DefaultButton,
+  ItemWrap,
 } from 'src/components';
 import {
   pushScreen,
@@ -27,6 +28,7 @@ import {
   ContentWrap,
   WrapBorder,
   ShadowWrap,
+  FullImage,
   RowWrap,
   FlexWrap,
   SpaceView,
@@ -42,6 +44,16 @@ import {
   LabelText,
 } from 'src/styles/text.styles';
 
+import {
+  JobProofItem,
+  HalfWrap,
+  SignInfo,
+  SignInfoText,
+  CancelButton,
+  PhotoAndSignWrap,
+  PhotoAndSignText,
+} from '../styled';
+
 const {
   PersonContactIcon,
   NumberContactIcon,
@@ -56,6 +68,9 @@ const {
   ServiceIcon,
   FailIcon,
   ImageIcon,
+  CancelIcon,
+  CameraIcon,
+  SignIcon,
 } = SVGS;
 
 const ProgressView = ({
@@ -103,6 +118,38 @@ const ProgressView = ({
     pushScreen(componentId, ADDRESS_SCREEN, { index });
   };
 
+  const isForComplete = () => {
+    return (
+      (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+      (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2))
+    );
+  };
+
+  const renderPhotoAndSign = () => {
+    if (!isForComplete()) {
+      return null;
+    }
+
+    return (
+      <ShadowWrap>
+        <PhotoAndSignWrap>
+          <TouchableOpacity onPress={onPhoto}>
+            <RowWrap>
+              <CameraIcon />
+              <PhotoAndSignText>Photo</PhotoAndSignText>
+            </RowWrap>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onSign}>
+            <RowWrap>
+              <SignIcon />
+              <PhotoAndSignText>Sign</PhotoAndSignText>
+            </RowWrap>
+          </TouchableOpacity>
+        </PhotoAndSignWrap>
+      </ShadowWrap>
+    );
+  };
+
   const renderJobProof = () => {
     return (
       <View>
@@ -120,25 +167,29 @@ const ProgressView = ({
         <ContentWrap>
           {
             photos.map((photo, index) =>
-              <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
-                <AttachmentWrap>
+              <ItemWrap
+                deactivated
+                mLeft={SIZE1} mRight={SIZE1}
+                key={photo.uri}
+              >
+                <JobProofItem>
                   <FullImage source={{ uri: photo.uri }} />
-                  {
-                    isForComplete() &&
-                    <CancelButton
-                      onPress={() => onCancelPhoto(index)}
-                    >
-                      <CancelIcon />
-                    </CancelButton>
-                  }
-                </AttachmentWrap>
+                  <CancelButton
+                    onPress={() => onCancelPhoto(index)}
+                  >
+                    <CancelIcon />
+                  </CancelButton>
+                </JobProofItem>
               </ItemWrap>
             )
           }
           {
             !!sign.uri &&
-            <ItemWrap mLeft={0} mRight={0}>
-              <AttachmentWrap>
+            <ItemWrap
+              deactivated
+              mLeft={SIZE1} mRight={SIZE1}
+            >
+              <JobProofItem>
                 <HalfWrap>
                   <FullImage source={{ uri: sign.uri }} />
                 </HalfWrap>
@@ -154,13 +205,10 @@ const ProgressView = ({
                     </SignInfoText>
                   </SignInfo>
                 </HalfWrap>
-                {
-                  isForComplete() &&
-                  <CancelButton onPress={onCancelSign}>
-                    <CancelIcon />
-                  </CancelButton>
-                }
-              </AttachmentWrap>
+                <CancelButton onPress={onCancelSign}>
+                  <CancelIcon />
+                </CancelButton>
+              </JobProofItem>
             </ItemWrap>
           }
         </ContentWrap>
@@ -563,6 +611,8 @@ const ProgressView = ({
           { renderJobProof() }
         </ScrollView>
       </Content>
+
+      { renderPhotoAndSign() }
     </Container>
   );
 };

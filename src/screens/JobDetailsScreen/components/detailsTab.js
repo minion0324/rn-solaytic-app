@@ -51,7 +51,7 @@ import {
   BinInput,
   PhotoAndSignWrap,
   PhotoAndSignText,
-  AttachmentWrap,
+  JobProofItem,
   HalfWrap,
   SignInfo,
   SignInfoText,
@@ -605,7 +605,7 @@ const DetailsTab = ({
         {
           photos.map((photo, index) =>
             <ItemWrap key={photo.uri} mLeft={0} mRight={0}>
-              <AttachmentWrap>
+              <JobProofItem>
                 <FullImage source={{ uri: photo.uri }} />
                 {
                   isForComplete() &&
@@ -615,14 +615,14 @@ const DetailsTab = ({
                     <CancelIcon />
                   </CancelButton>
                 }
-              </AttachmentWrap>
+              </JobProofItem>
             </ItemWrap>
           )
         }
         {
           !!sign.uri &&
           <ItemWrap mLeft={0} mRight={0}>
-            <AttachmentWrap>
+            <JobProofItem>
               <HalfWrap>
                 <FullImage source={{ uri: sign.uri }} />
               </HalfWrap>
@@ -644,7 +644,7 @@ const DetailsTab = ({
                   <CancelIcon />
                 </CancelButton>
               }
-            </AttachmentWrap>
+            </JobProofItem>
           </ItemWrap>
         }
       </View>
