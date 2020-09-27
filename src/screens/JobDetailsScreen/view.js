@@ -132,6 +132,10 @@ const JobDetailsScreenView = ({
       return 1;
     }
 
+    if (jobTypeName === JOB_TYPE.EXCHANGE) {
+      return 1;
+    }
+
     if (steps.length === 2) {
       if (
         jobStatus === JOB_STATUS.DISPATCHED ||

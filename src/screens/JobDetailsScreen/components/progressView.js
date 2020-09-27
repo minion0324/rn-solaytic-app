@@ -287,6 +287,8 @@ const ProgressView = ({
   };
 
   const renderBinInfo = () => {
+    const editable = isInProgress() && focusedJob.isAllowDriverEditOnApp;
+
     return (
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
