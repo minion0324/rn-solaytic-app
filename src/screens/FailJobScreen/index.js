@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, Keyboard, Alert } from 'react-native';
+import { Keyboard, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Toast from 'react-native-simple-toast';
@@ -24,17 +24,16 @@ import {
   HeaderBar,
   ListWrap,
   ItemWrap,
-  DefaultButton,
 } from 'src/components';
 import {
   Jobs,
   ViewStore,
 } from 'src/redux';
 import {
+  getTimestamp,
   addItemToCache,
   removeItemFromCache,
   getCacheIds,
-  getTimestamp,
 } from 'src/utils';
 
 import {
@@ -45,6 +44,8 @@ import {
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
+  RowWrap,
+  SpaceView,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -60,23 +61,24 @@ import {
 } from 'src/styles/modal.styles';
 
 import {
-  ButtonWrap,
   DriverNoteItem,
   DriverNoteText,
 } from './styled';
 
-const { SearchIcon } = SVGS;
+const {
+  FailIcon,
+  SearchIcon,
+} = SVGS;
 
 const FailJobScreen = ({
   focusedJob,
   driverNotes,
-  pageOfdriverNotes,
+  pageOfDriverNotes,
   failJobs,
   getDriverNotes,
   componentId,
 }) => {
-  const [ loading, setLoading ] = useState(false);
-  const [ reloading, setReloading ] = useState(false);
+  const [ loading, setLoading ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
@@ -89,8 +91,6 @@ const FailJobScreen = ({
 
   useEffect(() => {
     checkIsInBackgroundMode();
-
-    onReload();
   }, []);
 
   useEffect(() => {
@@ -104,6 +104,16 @@ const FailJobScreen = ({
       onSearch();
     }, 1500);
   }, [searchText]);
+
+  useEffect(() => {
+    if (selectedIndex !== -1) {
+      showOverlay(CUSTOM_MODAL_SCREEN, {
+        width: '80%',
+        offsetFromCenter: SIZE10,
+        getContent: renderAlertModal,
+      });
+    }
+  }, [selectedIndex]);
 
   const checkIsInBackgroundMode = async () => {
     try {
@@ -150,6 +160,11 @@ const FailJobScreen = ({
     }
   };
 
+  const onFailJobFailure = () => {
+    setLoading(false);
+    setSelectedIndex(-1);
+  };
+
   const onFailJob = () => {
     setLoading(true);
 
@@ -157,27 +172,14 @@ const FailJobScreen = ({
       jobIds: `${focusedJob.jobId}`,
       driverNote: driverNotes[selectedIndex].note,
       success: onFailJobSuccess,
-      failure: () => setLoading(false),
+      failure: onFailJobFailure,
     });
-  }
-
-  const onFail = () => {
-    if (selectedIndex === -1) {
-      Alert.alert('Warning', 'Please select a driver note.');
-      return;
-    }
-
-    showOverlay(CUSTOM_MODAL_SCREEN, {
-      width: '80%',
-      offsetFromCenter: SIZE10,
-      getContent: renderAlertModal,
-    });
-  }
+  };
 
   const onEnd = () => {
     getDriverNotes({
       search: searchText,
-      page: pageOfdriverNotes,
+      page: pageOfDriverNotes,
       success: () => {},
       failure: () => {},
     });
@@ -194,33 +196,23 @@ const FailJobScreen = ({
   };
 
   const onReload = () => {
-    setReloading(true);
+    setLoading(true);
 
     getDriverNotes({
       search: searchText,
-      success: () => setReloading(false),
-      failure: () => setReloading(false),
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
     });
   };
 
   const onSearch = () => {
     Keyboard.dismiss();
-
     setSelectedIndex(-1);
-
     onReload();
   };
 
   const onChangeSearchText = (text) => {
     setSearchText(text);
-  };
-
-  const onItemPress = (index) => {
-    if (index === selectedIndex) {
-      setSelectedIndex(-1);
-    } else {
-      setSelectedIndex(index);
-    }
   };
 
   const renderAlertModal = (containerId) => {
@@ -234,7 +226,12 @@ const FailJobScreen = ({
           }
         </AlertText>
         <AlertButtonRow>
-          <AlertButton onPress={() => dismissOverlay(containerId)}>
+          <AlertButton
+            onPress={() => {
+              dismissOverlay(containerId);
+              onFailJobFailure();
+            }}
+          >
             <AlertButtonText>Cancel</AlertButtonText>
           </AlertButton>
           <AlertButton
@@ -254,15 +251,19 @@ const FailJobScreen = ({
   const renderItem = ({ item, index }) => {
     return (
       <ItemWrap
-        activated={index === selectedIndex}
         deactivated
-        activeColor={COLORS.RED1}
-        onPress={() => onItemPress(index)}
-        mTop={SIZE1 / 2}
-        mBottom={SIZE1 / 2}
+        onPress={() => setSelectedIndex(index)}
+        mLeft={SIZE1} mTop={SIZE1 / 2}
+        mRight={SIZE1} mBottom={SIZE1 / 2}
       >
-        <DriverNoteItem>
-          <DriverNoteText>{item.note}</DriverNoteText>
+        <DriverNoteItem
+          activated={index === selectedIndex}
+        >
+          <DriverNoteText
+            activated={index === selectedIndex}
+          >
+            {item.note}
+          </DriverNoteText>
         </DriverNoteItem>
       </ItemWrap>
     );
@@ -272,30 +273,37 @@ const FailJobScreen = ({
     <Container>
       <ShadowWrap>
         <HeaderBar
-          centerIcon={<ScreenText>Fail Job</ScreenText>}
+          centerIcon={
+            <RowWrap>
+              <FailIcon />
+              <SpaceView mLeft={SIZE1} />
+              <ScreenText>Fail Job</ScreenText>
+            </RowWrap>
+          }
           leftIcon={<Back />}
           rightIcon={<EmptyWrap />}
           onPressLeft={onBack}
         />
       </ShadowWrap>
 
-      <Content>
-        <SearchBarWrap>
-          <SearchIconWrap>
-            <SearchIcon />
-          </SearchIconWrap>
-          <SearchInput
-            placeholder={'Search ...'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'go'}
-            onSubmitEditing={onSearch}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangeSearchText(text)}
-            value={searchText}
-          />
-        </SearchBarWrap>
+      <SearchBarWrap>
+        <SearchIconWrap>
+          <SearchIcon />
+        </SearchIconWrap>
+        <SearchInput
+          placeholder={'Search ...'}
+          placeholderTextColor={COLORS.BLACK2}
+          underlineColorAndroid={COLORS.TRANSPARENT1}
+          returnKeyType={'go'}
+          onSubmitEditing={onSearch}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          onChangeText={text => onChangeSearchText(text)}
+          value={searchText}
+        />
+      </SearchBarWrap>
 
+      <Content>
         <ListWrap
           data={driverNotes}
           keyExtractor={(item) => `${item.driverNoteId}`}
@@ -306,20 +314,11 @@ const FailJobScreen = ({
         />
 
         {
-          reloading &&
+          loading &&
           <LoadingWrap>
             <ActivityIndicator size={'large'} />
           </LoadingWrap>
         }
-
-        <ButtonWrap>
-          <DefaultButton
-            text={'Fail Job'}
-            color={COLORS.RED1}
-            onPress={onFail}
-            loading={loading}
-          />
-        </ButtonWrap>
       </Content>
     </Container>
   );
@@ -328,7 +327,7 @@ const FailJobScreen = ({
 FailJobScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   driverNotes: PropTypes.array.isRequired,
-  pageOfdriverNotes: PropTypes.number.isRequired,
+  pageOfDriverNotes: PropTypes.number.isRequired,
   failJobs: PropTypes.func.isRequired,
   getDriverNotes: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
@@ -338,7 +337,7 @@ const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
     driverNotes: ViewStore.selectors.getDriverNotes(state),
-    pageOfdriverNotes: ViewStore.selectors.getPageOfDriverNotes(state),
+    pageOfDriverNotes: ViewStore.selectors.getPageOfDriverNotes(state),
   };
 };
 
