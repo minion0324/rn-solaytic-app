@@ -11,6 +11,57 @@ import {
   FONT,
 } from 'src/constants';
 
+const JobProofItem = styled.View`
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: ${SIZE1}px;
+  overflow: hidden;
+`;
+
+const CancelButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: ${SIZE1}px;
+`;
+
+const HalfWrap = styled.View`
+  width: 100%;
+  aspect-ratio: 2;
+  justify-content: center;
+  padding: ${SIZE4}px;
+`;
+
+const SignInfo = styled.View`
+  height: ${SIZE8}px;
+  justify-content: center;
+  margin-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE4}px;
+  background-color: ${COLORS.WHITE3};
+  border-radius: ${SIZE1}px;
+`;
+
+const SignInfoText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+`;
+
+const PhotoAndSignWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+const PhotoAndSignText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLACK2};
+  margin-left: ${SIZE1}px;
+  margin-vertical: ${SIZE3}px;
+`;
+
+
 const JobDetails = styled.View`
   flex: 1;
   margin-bottom: ${SIZE2}px;
@@ -108,56 +159,6 @@ const BinInput = styled.TextInput`
   )}px;
 `;
 
-const PhotoAndSignWrap = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-`;
-
-const PhotoAndSignText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 600,
-  color: ${COLORS.BLACK2};
-  margin-left: ${SIZE1}px;
-  margin-vertical: ${SIZE4}px;
-`;
-
-const AttachmentWrap = styled.View`
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: ${SIZE1}px;
-  overflow: hidden;
-`;
-
-const HalfWrap = styled.View`
-  width: 100%;
-  aspect-ratio: 2;
-  justify-content: center;
-  padding: ${SIZE4}px;
-`;
-
-const SignInfo = styled.View`
-  height: ${SIZE8}px;
-  justify-content: center;
-  margin-vertical: ${SIZE1}px;
-  padding-horizontal: ${SIZE4}px;
-  background-color: ${COLORS.WHITE3};
-  border-radius: ${SIZE1}px;
-`;
-
-const SignInfoText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 500;
-  color: ${COLORS.BLACK2};
-`;
-
-const CancelButton = styled.TouchableOpacity`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  padding: ${SIZE1}px;
-`;
-
 const JobInstruction = styled.View`
   flex: 1;
   margin-bottom: ${SIZE2}px;
@@ -242,6 +243,14 @@ const ServiceRow = styled.TouchableOpacity`
 `;
 
 export {
+  JobProofItem,
+  HalfWrap,
+  SignInfo,
+  SignInfoText,
+  CancelButton,
+  PhotoAndSignWrap,
+  PhotoAndSignText,
+
   JobDetails,
   Content,
 
@@ -257,13 +266,6 @@ export {
   BinInfoRow,
   BinText,
   BinInput,
-  PhotoAndSignWrap,
-  PhotoAndSignText,
-  AttachmentWrap,
-  HalfWrap,
-  SignInfo,
-  SignInfoText,
-  CancelButton,
 
   JobInstruction,
   CommentsWrap,
