@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import {
-  SIZE2,
+  SIZE3,
   SIZE4,
   SIZE8,
 } from 'src/constants';
@@ -12,9 +12,11 @@ const IconWrap = styled.View`
 `;
 
 const ButtonWrap = styled.View`
-  flex-direction: row;
+  align-items: ${(props) => (
+    props.forCenter ? 'center' : 'flex-start'
+  )};
   margin-right: ${SIZE4}px;
-  margin-vertical: ${SIZE2}px;
+  margin-vertical: ${SIZE3}px;
 `;
 
 export {

@@ -56,6 +56,7 @@ const {
   Location3Icon,
   AddressIcon,
   PhoneIcon,
+  MapIcon,
 } = SVGS;
 
 const AddressScreen = ({
@@ -108,22 +109,40 @@ const AddressScreen = ({
                   {item.address}
                 </LabelText>
               }
-              <ButtonWrap>
-                <TouchableOpacity
-                  onPress={() => onLocation(item.latitude, item.longitude)}
-                >
-                  <LabelText color={COLORS.BLUE1}>
-                    {'Show on map'}
-                  </LabelText>
-                </TouchableOpacity>
-              </ButtonWrap>
+              {
+                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                ? index === customerSiteIndex &&
+                  <ButtonWrap forCenter>
+                    <SpaceView mTop={SIZE2} />
+                    <TouchableOpacity
+                      onPress={() => onLocation(item.latitude, item.longitude)}
+                    >
+                      <RowWrap>
+                        <MapIcon />
+                        <SpaceView mLeft={SIZE1} />
+                        <LabelText>
+                          {'Show map'}
+                        </LabelText>
+                      </RowWrap>
+                    </TouchableOpacity>
+                    <SpaceView mTop={SIZE2} />
+                  </ButtonWrap>
+                : <ButtonWrap>
+                    <TouchableOpacity
+                      onPress={() => onLocation(item.latitude, item.longitude)}
+                    >
+                      <LabelText color={COLORS.BLUE1}>
+                        {'Show on map'}
+                      </LabelText>
+                    </TouchableOpacity>
+                  </ButtonWrap>
+              }
               {
                 index === customerSiteIndex &&
                 <TitleText>
                   {item.siteName}
                 </TitleText>
               }
-
               {
                 index === customerSiteIndex &&
                 (
@@ -137,13 +156,13 @@ const AddressScreen = ({
                     <DefaultButton
                       color={
                         JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-                          ? COLORS.GRAY3 : COLORS.GREEN1
+                        ? COLORS.GRAY3 : COLORS.GREEN1
                       }
                       text={item.contactPersonOne}
                       onPress={
                         JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-                          ? null
-                          : () => onContact(item.contactNumberOne)
+                        ? null
+                        : () => onContact(item.contactNumberOne)
                       }
                       icon={<PhoneIcon />}
                       mTop={SIZE1}
@@ -157,13 +176,13 @@ const AddressScreen = ({
                     <DefaultButton
                       color={
                         JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-                          ? COLORS.GRAY3 : COLORS.GREEN1
+                        ? COLORS.GRAY3 : COLORS.GREEN1
                       }
                       text={item.contactPersonTwo}
                       onPress={
                         JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-                          ? null
-                          : () => onContact(item.contactNumberOne)
+                        ? null
+                        : () => onContact(item.contactNumberOne)
                       }
                       icon={<PhoneIcon />}
                       mTop={SIZE1}
