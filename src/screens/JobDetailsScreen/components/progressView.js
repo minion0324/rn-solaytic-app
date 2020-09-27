@@ -19,6 +19,7 @@ import {
 } from 'src/components';
 import {
   pushScreen,
+  FAIL_JOB_SCREEN,
   ADDRESS_SCREEN,
 } from 'src/navigation';
 
@@ -99,13 +100,14 @@ const ProgressView = ({
   onSign,
   onCancelPhoto,
   onCancelSign,
-  onFail,
   onUpdateService,
   onReadMessages,
   onNewComment,
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
+  onFail,
+  onAddress,
   onDriverNote,
   onAddServices,
   onBinInfo,
@@ -113,10 +115,6 @@ const ProgressView = ({
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
 }) => {
-
-  const onAddress = (index) => {
-    pushScreen(componentId, ADDRESS_SCREEN, { index });
-  };
 
   const isForComplete = () => {
     return (
@@ -237,7 +235,7 @@ const ProgressView = ({
                 </RowWrap>
               </FlexWrap>
               <SpaceView mLeft={SIZE2} />
-              <BlueRightArrowIcon />
+              <RedRightArrowIcon />
             </RowWrap>
           </ContentWrap>
         </TouchableOpacity>
@@ -613,6 +611,8 @@ const ProgressView = ({
           { renderServices() }
           { renderFailJob() }
           { renderJobProof() }
+
+          <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
 
@@ -650,13 +650,14 @@ ProgressView.propTypes = {
   onSign: PropTypes.func.isRequired,
   onCancelPhoto: PropTypes.func.isRequired,
   onCancelSign: PropTypes.func.isRequired,
-  onFail: PropTypes.func.isRequired,
   onUpdateService: PropTypes.func.isRequired,
   onReadMessages: PropTypes.func.isRequired,
   onNewComment: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
+  onFail: PropTypes.func.isRequired,
+  onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,

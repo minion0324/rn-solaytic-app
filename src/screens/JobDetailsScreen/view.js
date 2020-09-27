@@ -37,13 +37,14 @@ const JobDetailsScreenView = ({
   onSign,
   onCancelPhoto,
   onCancelSign,
-  onFail,
   onUpdateService,
   onReadMessages,
   onNewComment,
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
+  onFail,
+  onAddress,
   onDriverNote,
   onAddServices,
   onBinInfo,
@@ -191,13 +192,14 @@ const JobDetailsScreenView = ({
         onSign={onSign}
         onCancelPhoto={onCancelPhoto}
         onCancelSign={onCancelSign}
-        onFail={onFail}
         onUpdateService={onUpdateService}
         onReadMessages={onReadMessages}
         onNewComment={onNewComment}
         onUpdateAmountCollected={onUpdateAmountCollected}
         isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
+        onFail={onFail}
+        onAddress={onAddress}
         onDriverNote={onDriverNote}
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
@@ -231,13 +233,14 @@ const JobDetailsScreenView = ({
         onSign={onSign}
         onCancelPhoto={onCancelPhoto}
         onCancelSign={onCancelSign}
-        onFail={onFail}
         onUpdateService={onUpdateService}
         onReadMessages={onReadMessages}
         onNewComment={onNewComment}
         onUpdateAmountCollected={onUpdateAmountCollected}
         isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
+        onFail={onFail}
+        onAddress={onAddress}
         onDriverNote={onDriverNote}
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
@@ -276,13 +279,14 @@ JobDetailsScreenView.propTypes = {
   onSign: PropTypes.func.isRequired,
   onCancelPhoto: PropTypes.func.isRequired,
   onCancelSign: PropTypes.func.isRequired,
-  onFail: PropTypes.func.isRequired,
   onUpdateService: PropTypes.func.isRequired,
   onReadMessages: PropTypes.func.isRequired,
   onNewComment: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
+  onFail: PropTypes.func.isRequired,
+  onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,

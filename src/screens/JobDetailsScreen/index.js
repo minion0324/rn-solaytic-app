@@ -358,10 +358,6 @@ const JobDetailsScreen = ({
     setSignedUserContact(photosAndSign.signedUserContact);
   };
 
-  const onFail = () => {
-    pushScreen(componentId, FAIL_JOB_SCREEN);
-  };
-
   const onUpdateService = (item, index) => {
     if (!onAlertNotProgress()) {
       return;
@@ -418,6 +414,14 @@ const JobDetailsScreen = ({
     return true;
   };
 
+  const onFail = () => {
+    pushScreen(componentId, FAIL_JOB_SCREEN);
+  };
+
+  const onAddress = (index) => {
+    pushScreen(componentId, ADDRESS_SCREEN, { index });
+  };
+
   const onDriverNote = () => {
     pushScreen(componentId, DRIVER_NOTE_SCREEN);
   };
@@ -457,13 +461,14 @@ const JobDetailsScreen = ({
       onSign={onSign}
       onCancelPhoto={onCancelPhoto}
       onCancelSign={onCancelSign}
-      onFail={onFail}
       onUpdateService={onUpdateService}
       onReadMessages={onReadMessages}
       onNewComment={onNewComment}
       onUpdateAmountCollected={onUpdateAmountCollected}
       isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
+      onFail={onFail}
+      onAddress={onAddress}
       onDriverNote={onDriverNote}
       onAddServices={onAddServices}
       onBinInfo={onBinInfo}

@@ -163,26 +163,31 @@ const CompleteView = ({
   };
 
   const renderServices = () => {
+    const selectedServices = services.filter(item => item.isSelected);
+    if (selectedServices.length === 0) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <TouchableOpacity onPress={onAddServices}>
-          <ContentWrap>
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  <ServiceIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <TitleText>
-                    Add Services
-                  </TitleText>
-                </RowWrap>
-              </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
-              <BlueRightArrowIcon />
-            </RowWrap>
-          </ContentWrap>
-        </TouchableOpacity>
+        <ContentWrap>
+          <TitleText>
+            ADDITIONAL SERVICE
+          </TitleText>
+        </ContentWrap>
+        <WrapBorder />
+        <ContentWrap>
+          {
+            selectedServices.map((item) => (
+              <InfoText
+                key={`${item.serviceAdditionalChargeId}`}
+              >
+                {item.serviceAdditionalChargeName}
+              </InfoText>
+            ))
+          }
+        </ContentWrap>
       </View>
     );
   };
@@ -393,6 +398,8 @@ const CompleteView = ({
           { renderBinInfo() }
           { renderServices() }
           { renderJobProof() }
+
+          <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
     </Container>
