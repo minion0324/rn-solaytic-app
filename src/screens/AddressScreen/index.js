@@ -48,6 +48,9 @@ import {
 import {
   IconWrap,
   ButtonWrap,
+  Location1Line,
+  Location2Line,
+  Location3Line,
 } from './styled';
 
 const {
@@ -194,6 +197,15 @@ const AddressScreen = ({
             </FlexWrap>
           </RowWrap>
         </ContentWrap>
+        {
+          index === 0
+          ? <Location1Line />
+          : index === 1
+            ? focusedJob.steps.length === 2
+              ? <Location3Line />
+              : <Location2Line />
+            : <Location3Line />
+        }
       </View>
     );
   };
