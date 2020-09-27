@@ -12,8 +12,9 @@ const IconWrap = styled.View`
 `;
 
 const ButtonWrap = styled.View`
-  padding-vertical: ${SIZE2}px;
+  flex-direction: row;
   padding-right: ${SIZE4}px;
+  padding-vertical: ${SIZE2}px;
 `;
 
 export {
