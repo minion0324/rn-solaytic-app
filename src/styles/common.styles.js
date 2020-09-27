@@ -67,6 +67,7 @@ const SearchBarWrap = styled.View`
   padding: ${SIZE1}px;
   flex-direction: row;
   align-items: center;
+  background-color: ${COLORS.WHITE2};
 `;
 
 const SearchIconWrap = styled.View`
