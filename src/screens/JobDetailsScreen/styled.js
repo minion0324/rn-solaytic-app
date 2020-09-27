@@ -14,7 +14,7 @@ import {
 const JobProofItem = styled.View`
   width: 100%;
   aspect-ratio: 1;
-  border-radius: ${SIZE1}px;
+  border-radius: ${SIZE2}px;
   overflow: hidden;
 `;
 
@@ -37,7 +37,6 @@ const SignInfo = styled.View`
   justify-content: center;
   margin-vertical: ${SIZE1}px;
   padding-horizontal: ${SIZE4}px;
-  background-color: ${COLORS.WHITE3};
   border-radius: ${SIZE1}px;
 `;
 
@@ -45,6 +44,7 @@ const SignInfoText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 500;
   color: ${COLORS.BLACK2};
+  text-align: center;
 `;
 
 const PhotoAndSignWrap = styled.View`
