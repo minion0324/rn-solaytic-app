@@ -113,13 +113,9 @@ const CompleteView = ({
       <View>
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
-          <RowWrap>
-            <ImageIcon />
-            <SpaceView mLeft={SIZE2} />
-            <TitleText>
-              Job Proof
-            </TitleText>
-          </RowWrap>
+          <TitleText>
+            JOB PROOF
+          </TitleText>
         </ContentWrap>
         <WrapBorder />
         <ContentWrap>
