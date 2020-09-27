@@ -14,7 +14,6 @@ import {
 } from 'src/constants';
 import {
   HeaderBar,
-  DefaultButton,
   ItemWrap,
 } from 'src/components';
 
@@ -106,6 +105,10 @@ const CompleteView = ({
 }) => {
 
   const renderJobProof = () => {
+    if (photos.length === 0 && !sign.uri) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />

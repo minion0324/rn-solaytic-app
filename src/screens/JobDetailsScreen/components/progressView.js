@@ -151,6 +151,10 @@ const ProgressView = ({
   };
 
   const renderJobProof = () => {
+    if (photos.length === 0 && !sign.uri) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
