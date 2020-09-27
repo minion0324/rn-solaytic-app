@@ -6,9 +6,15 @@ import styled from 'styled-components';
 import {
   COLORS,
   SIZE1,
+  SIZE2,
   SIZE8,
   FONT,
 } from 'src/constants';
+
+import {
+  RowWrap,
+  SpaceView,
+} from 'src/styles/common.styles';
 
 const Button = styled.TouchableOpacity`
   width: 100%;
@@ -36,6 +42,7 @@ const DefaultButton = ({
   onPress,
   textColor,
   loading,
+  icon,
   mLeft,
   mTop,
   mRight,
@@ -58,11 +65,20 @@ const DefaultButton = ({
             size={'small'}
             color={textColor}
           />
-        : <ButtonText
-            color={textColor}
-          >
-            {text}
-          </ButtonText>
+        : <RowWrap>
+            {
+              !!icon &&
+              <RowWrap>
+                { icon }
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+            }
+            <ButtonText
+              color={textColor}
+            >
+              {text}
+            </ButtonText>
+          </RowWrap>
       }
     </Button>
   );
@@ -74,6 +90,7 @@ DefaultButton.propTypes = {
   onPress: PropTypes.func,
   textColor: PropTypes.string,
   loading: PropTypes.bool,
+  icon: PropTypes.node,
   mLeft: PropTypes.number,
   mTop: PropTypes.number,
   mRight: PropTypes.number,
@@ -84,6 +101,7 @@ DefaultButton.defaultProps = {
   onPress: null,
   textColor: COLORS.WHITE1,
   loading: false,
+  icon: null,
   mLeft: 0,
   mTop: 0,
   mRight: 0,
