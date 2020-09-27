@@ -48,6 +48,8 @@ import SendIcon from 'src/assets/svgs/icon-send.svg';
 import QrCodeIcon from 'src/assets/svgs/icon-code-qr.svg';
 import PhoneIcon from 'src/assets/svgs/icon-phone.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
+import UpArrowIcon from 'src/assets/svgs/icon-arrow-up.svg';
+import DownArrowIcon from 'src/assets/svgs/icon-arrow-down.svg';
 
 export default {
   ActiveCheckIcon,
@@ -100,4 +102,6 @@ export default {
   QrCodeIcon,
   PhoneIcon,
   MapIcon,
+  UpArrowIcon,
+  DownArrowIcon,
 };
