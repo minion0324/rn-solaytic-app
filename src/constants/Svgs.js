@@ -47,6 +47,7 @@ import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
 import QrCodeIcon from 'src/assets/svgs/icon-code-qr.svg';
 import PhoneIcon from 'src/assets/svgs/icon-phone.svg';
+import MapIcon from 'src/assets/svgs/icon-map.svg';
 
 export default {
   ActiveCheckIcon,
@@ -98,4 +99,5 @@ export default {
   SendIcon,
   QrCodeIcon,
   PhoneIcon,
+  MapIcon,
 };
