@@ -479,7 +479,7 @@ const JobDetailsScreen = ({
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
-  jobStatus: PropTypes.string,
+  jobStatus: PropTypes.string.isRequired,
   photosAndSign: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
@@ -496,7 +496,7 @@ JobDetailsScreen.propTypes = {
 };
 
 JobDetailsScreen.defaultProps = {
-  jobStatus: '',
+  //
 };
 
 const mapStateToProps = (state) => {
