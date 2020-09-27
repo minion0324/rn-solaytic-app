@@ -11,6 +11,7 @@ import {
 import {
   SVGS,
   COLORS,
+  JOB_STATUS,
   SIZE1,
   SIZE2,
 } from 'src/constants';
@@ -59,6 +60,7 @@ const {
 
 const AddressScreen = ({
   focusedJob,
+  jobStatus,
   customerSiteIndex,
   componentId,
 }) => {
@@ -133,9 +135,16 @@ const AddressScreen = ({
                     !!item.contactPersonOne &&
                     !!item.contactNumberOne &&
                     <DefaultButton
-                      color={COLORS.GREEN1}
+                      color={
+                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                          ? COLORS.GRAY3 : COLORS.GREEN1
+                      }
                       text={item.contactPersonOne}
-                      onPress={() => onContact(item.contactNumberOne)}
+                      onPress={
+                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                          ? null
+                          : () => onContact(item.contactNumberOne)
+                      }
                       icon={<PhoneIcon />}
                       mTop={SIZE1}
                       mBottom={SIZE1}
@@ -146,9 +155,16 @@ const AddressScreen = ({
                     !!item.contactPersonTwo &&
                     !!item.contactNumberTwo &&
                     <DefaultButton
-                      color={COLORS.GREEN1}
+                      color={
+                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                          ? COLORS.GRAY3 : COLORS.GREEN1
+                      }
                       text={item.contactPersonTwo}
-                      onPress={() => onContact(item.contactNumberTwo)}
+                      onPress={
+                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                          ? null
+                          : () => onContact(item.contactNumberOne)
+                      }
                       icon={<PhoneIcon />}
                       mTop={SIZE1}
                       mBottom={SIZE1}
@@ -195,6 +211,7 @@ const AddressScreen = ({
 
 AddressScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  jobStatus: PropTypes.string.isRequired,
   customerSiteIndex: PropTypes.number.isRequired,
   componentId: PropTypes.string.isRequired,
 };
@@ -206,6 +223,7 @@ AddressScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    jobStatus: Jobs.selectors.getJobStatus(state),
   };
 };
 
