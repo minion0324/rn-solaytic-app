@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { FlatList, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -25,7 +25,6 @@ import {
   ContentWrap,
   ShadowWrap,
   RowWrap,
-  FlexWrap,
   SpaceView,
 } from 'src/styles/common.styles';
 import {
@@ -35,38 +34,77 @@ import {
 } from 'src/styles/header.styles';
 
 import {
+  CommentWrap,
   Comment,
   CommentText,
   CommentInput,
+  AvatarWrap,
+  AvatarText,
 } from './styled';
 
 const {
   ChatIcon,
   SendIcon,
+  MessageAvatarIcon,
 } = SVGS;
 
 const DriverNoteScreen = ({
   focusedJob,
+  markMessagesAsRead,
+  addMessage,
   componentId,
 }) => {
+  const [ newComment, setNewComment ] = useState('');
+
+  const listRef = useRef(null);
 
   const onBack = () => {
     popScreen(componentId);
   };
 
+  const onReadMessages = () => {
+    markMessagesAsRead({
+      jobId: focusedJob.jobId,
+    });
+  };
+
+  const onNewComment = () => {
+    Keyboard.dismiss();
+
+    addMessage({
+      jobId: focusedJob.jobId,
+      message: newComment,
+      success: () => setNewComment(''),
+      failure: () => {},
+    });
+  };
+
   const renderCommentItem = ({ item }) => {
     return (
       !!item.message &&
-      <Comment
-        key={item.jobMessageId}
+      <CommentWrap
         pos={item.type && 'right'}
       >
-        <CommentText
+        {
+          !item.type &&
+          <AvatarWrap>
+            <MessageAvatarIcon />
+            <AvatarText>
+              {item.name}
+            </AvatarText>
+          </AvatarWrap>
+        }
+        <Comment
+          key={item.jobMessageId}
           pos={item.type && 'right'}
         >
-          {item.message}
-        </CommentText>
-      </Comment>
+          <CommentText
+            pos={item.type && 'right'}
+          >
+            {item.message}
+          </CommentText>
+        </Comment>
+      </CommentWrap>
     );
   };
 
@@ -90,7 +128,7 @@ const DriverNoteScreen = ({
       <Content>
         <ContentWrap color={COLORS.WHITE2}>
           <FlatList
-            // ref={listRef}
+            ref={listRef}
             bounces={false}
             data={focusedJob.messages}
             keyExtractor={(item) => `${item.jobMessageId}`}
@@ -100,22 +138,34 @@ const DriverNoteScreen = ({
         </ContentWrap>
       </Content>
 
-      <ContentWrap>
-        <RowWrap>
-          <CommentInput
-          />
-          <SpaceView mLeft={SIZE2} />
-          <TouchableOpacity>
-            <SendIcon />
-          </TouchableOpacity>
-        </RowWrap>
-      </ContentWrap>
+      <ShadowWrap>
+        <ContentWrap>
+          <RowWrap>
+            <CommentInput
+              placeholder={'Type a message'}
+              underlineColorAndroid={COLORS.TRANSPARENT1}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={text => setNewComment(text)}
+              value={newComment}
+              returnKeyType={'go'}
+              onSubmitEditing={onNewComment}
+            />
+            <SpaceView mLeft={SIZE2} />
+            <TouchableOpacity onPress={onNewComment}>
+              <SendIcon />
+            </TouchableOpacity>
+          </RowWrap>
+        </ContentWrap>
+      </ShadowWrap>
     </Container>
   );
 };
 
 DriverNoteScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  markMessagesAsRead: PropTypes.func.isRequired,
+  addMessage: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -130,7 +180,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  //
+  markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
+  addMessage: Jobs.actionCreators.addMessage,
 };
 
 export default connect(
