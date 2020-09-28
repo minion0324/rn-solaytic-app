@@ -73,6 +73,15 @@ const AmountButton = styled.TouchableOpacity`
   border-radius: ${SIZE1}px;
 `;
 
+const DriverNoteBadge = styled.View`
+  width: ${SIZE2}px;
+  aspect-ratio: 1;
+  border-radius: ${SIZE1}px;
+  background-color: ${COLORS.RED1};
+  margin-left: ${SIZE1}px;
+  margin-top: -${SIZE1}px;
+`;
+
 
 // const JobDetails = styled.View`
 //   flex: 1;
@@ -263,6 +272,7 @@ export {
   PhotoAndSignWrap,
   PhotoAndSignText,
   AmountButton,
+  DriverNoteBadge,
 
   // JobDetails,
   // Content,
