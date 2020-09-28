@@ -37,6 +37,7 @@ import {
   Container,
   Content,
   ShadowWrap,
+  LoadingWrap,
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
@@ -64,6 +65,7 @@ const UploadHistoryScreen = ({
   setCoreScreenInfo,
   componentId,
 }) => {
+  const [ loading, setLoading ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const [ jobLogs, setJobLogs ] = useState([]);
@@ -156,16 +158,14 @@ const UploadHistoryScreen = ({
 
   const onRefresh = async () => {
     setRefreshing(true);
-
     await getJobLogs();
-
     setRefreshing(false);
   };
 
   const onSearch = () => {
     Keyboard.dismiss();
-
     getSearchedJobLogs();
+    setLoading(false);
   };
 
   const onChangeSearchText = (text) => {
@@ -308,23 +308,24 @@ const UploadHistoryScreen = ({
         />
       </ShadowWrap>
 
-      <Content>
-        <SearchBarWrap>
-          <SearchIconWrap>
-            <SearchIcon />
-          </SearchIconWrap>
-          <SearchInput
-            placeholder={'Search ...'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'go'}
-            onSubmitEditing={onSearch}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangeSearchText(text)}
-            value={searchText}
-          />
-        </SearchBarWrap>
+      <SearchBarWrap>
+        <SearchIconWrap>
+          <SearchIcon />
+        </SearchIconWrap>
+        <SearchInput
+          placeholder={'Search ...'}
+          placeholderTextColor={COLORS.BLACK2}
+          underlineColorAndroid={COLORS.TRANSPARENT1}
+          returnKeyType={'go'}
+          onSubmitEditing={onSearch}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          onChangeText={text => onChangeSearchText(text)}
+          value={searchText}
+        />
+      </SearchBarWrap>
 
+      <Content>
         <ListWrap
           data={searchedJobLogs}
           keyExtractor={(item) => `${item.id.jobId}`}
@@ -332,6 +333,13 @@ const UploadHistoryScreen = ({
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
         />
+
+        {
+          loading &&
+          <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        }
       </Content>
     </Container>
   );
