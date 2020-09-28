@@ -409,7 +409,7 @@ const JobDetailsScreen = ({
   };
 
   const onAddServices = () => {
-    pushScreen(componentId, ADD_SERVICES_SCREEN, { services });
+    pushScreen(componentId, ADD_SERVICES_SCREEN, { services, setServices });
   };
 
   const onBinInfo = (bin, binInOutIndex) => {
