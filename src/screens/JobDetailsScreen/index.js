@@ -442,7 +442,6 @@ const JobDetailsScreen = ({
       onCancelPhoto={onCancelPhoto}
       onCancelSign={onCancelSign}
       onReadMessages={onReadMessages}
-      onNewComment={onNewComment}
       onUpdateAmountCollected={onUpdateAmountCollected}
       isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
