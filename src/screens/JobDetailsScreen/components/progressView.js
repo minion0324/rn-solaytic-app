@@ -328,7 +328,7 @@ const ProgressView = ({
   const renderServices = () => {
     if (
       !isInProgress() ||
-      focusedJob.additionalCharges.length === 0
+      services.length === 0
     ) {
       return null;
     }
