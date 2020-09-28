@@ -62,7 +62,7 @@ function getUpdatedServices(services) {
     if (item.isSelected) {
       result.push({
         ...item,
-        quantity: 1,
+        quantity: item.quantity || 1,
       })
     }
 
