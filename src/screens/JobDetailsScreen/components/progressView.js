@@ -72,6 +72,7 @@ import {
   PhotoAndSignWrap,
   PhotoAndSignText,
   AmountButton,
+  DriverNoteBadge,
 } from '../styled';
 
 const {
@@ -529,23 +530,32 @@ const ProgressView = ({
               <ChatIcon />
               <SpaceView mLeft={SIZE2} />
               <TitleText>Driver Note</TitleText>
+              {
+                focusedJob.haveUnreadMessage &&
+                <DriverNoteBadge />
+              }
             </RowWrap>
           </ContentWrap>
         </TouchableOpacity>
-        <WrapBorder />
-        <TouchableOpacity onPress={onDriverNote}>
-          <ContentWrap>
-            <RowWrap>
-              <FlexWrap>
-                <InfoText>
-                  {focusedJob.instructions}
-                </InfoText>
-              </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
-              <BlueRightArrowIcon />
-            </RowWrap>
-          </ContentWrap>
-        </TouchableOpacity>
+        {
+          focusedJob.messages.length > 0 &&
+          <View>
+            <WrapBorder />
+            <TouchableOpacity onPress={onDriverNote}>
+              <ContentWrap>
+                <RowWrap>
+                  <FlexWrap>
+                    <InfoText>
+                      {focusedJob.messages[0].message}
+                    </InfoText>
+                  </FlexWrap>
+                  <SpaceView mLeft={SIZE2} />
+                  <BlueRightArrowIcon />
+                </RowWrap>
+              </ContentWrap>
+            </TouchableOpacity>
+          </View>
+        }
       </View>
     );
   };
