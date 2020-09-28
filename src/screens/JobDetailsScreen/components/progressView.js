@@ -326,6 +326,13 @@ const ProgressView = ({
   };
 
   const renderServices = () => {
+    if (
+      !isInProgress() ||
+      focusedJob.additionalCharges.length === 0
+    ) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
