@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FlatList, TouchableOpacity, Alert, Keyboard } from 'react-native';
+import {
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   HeaderBar,
@@ -25,6 +31,7 @@ import {
   ContentWrap,
   ShadowWrap,
   RowWrap,
+  FlexWrap,
   SpaceView,
 } from 'src/styles/common.styles';
 import {
@@ -40,6 +47,7 @@ import {
   CommentInput,
   AvatarWrap,
   AvatarText,
+  TimeText,
 } from './styled';
 
 const {
@@ -69,6 +77,12 @@ const DriverNoteScreen = ({
   };
 
   const onNewComment = () => {
+    if (!newComment.trim()) {
+      setNewComment('');
+      Alert.alert('Warning', 'Please enter message.');
+      return;
+    }
+
     Keyboard.dismiss();
 
     addMessage({
@@ -94,16 +108,26 @@ const DriverNoteScreen = ({
             </AvatarText>
           </AvatarWrap>
         }
-        <Comment
-          key={item.jobMessageId}
-          pos={item.type && 'right'}
-        >
-          <CommentText
+        <FlexWrap>
+          <Comment
+            key={item.jobMessageId}
             pos={item.type && 'right'}
           >
-            {item.message}
-          </CommentText>
-        </Comment>
+            <CommentText
+              pos={item.type && 'right'}
+            >
+              {item.message}
+            </CommentText>
+          </Comment>
+          <TimeText
+            pos={item.type && 'right'}
+          >
+            {
+              moment(item.created)
+                .format('DD-MMM-YYYY, hh:mm A')
+            }
+          </TimeText>
+        </FlexWrap>
       </CommentWrap>
     );
   };
