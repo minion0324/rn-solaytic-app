@@ -51,6 +51,8 @@ import MapIcon from 'src/assets/svgs/icon-map.svg';
 import UpArrowIcon from 'src/assets/svgs/icon-arrow-up.svg';
 import DownArrowIcon from 'src/assets/svgs/icon-arrow-down.svg';
 import CircleIcon from 'src/assets/svgs/icon-circle.svg';
+import AddCircleIcon from 'src/assets/svgs/icon-circle-add.svg';
+import RemoveCircleIcon from 'src/assets/svgs/icon-circle-remove.svg';
 
 export default {
   ActiveCheckIcon,
@@ -106,4 +108,6 @@ export default {
   UpArrowIcon,
   DownArrowIcon,
   CircleIcon,
+  AddCircleIcon,
+  RemoveCircleIcon,
 };
