@@ -74,8 +74,6 @@ const CompleteView = ({
   services,
 
   focusedJob,
-  newCommentInfo,
-  setNewCommentInfo,
 
   onBack,
   onAcknowledge,
@@ -413,8 +411,6 @@ CompleteView.propTypes = {
   services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
-  newCommentInfo: PropTypes.object.isRequired,
-  setNewCommentInfo: PropTypes.func.isRequired,
 
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,

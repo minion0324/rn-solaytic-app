@@ -23,8 +23,6 @@ const JobDetailsScreenView = ({
   services,
 
   focusedJob,
-  newCommentInfo,
-  setNewCommentInfo,
 
   onBack,
   onAcknowledge,
@@ -177,8 +175,6 @@ const JobDetailsScreenView = ({
         services={services}
 
         focusedJob={focusedJob}
-        newCommentInfo={newCommentInfo}
-        setNewCommentInfo={setNewCommentInfo}
 
         onBack={onBack}
         onAcknowledge={onAcknowledge}
@@ -213,8 +209,6 @@ const JobDetailsScreenView = ({
         services={services}
 
         focusedJob={focusedJob}
-        newCommentInfo={newCommentInfo}
-        setNewCommentInfo={setNewCommentInfo}
 
         onBack={onBack}
         onAcknowledge={onAcknowledge}
@@ -251,8 +245,6 @@ JobDetailsScreenView.propTypes = {
   services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
-  newCommentInfo: PropTypes.object.isRequired,
-  setNewCommentInfo: PropTypes.func.isRequired,
 
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,

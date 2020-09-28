@@ -53,7 +53,6 @@ const JobDetailsScreen = ({
   updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
-  setNewCommentInfo,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -89,6 +88,10 @@ const JobDetailsScreen = ({
     getSavedPhotosAndSign();
     checkIsInBackgroundMode();
   }, []);
+
+  useEffect(() => {
+    onNewCommentInfo();
+  }, [newCommentInfo]);
 
   useNavigationComponentDidAppear((event) => {
     const { componentName } = event;
@@ -192,6 +195,14 @@ const JobDetailsScreen = ({
       );
     } catch (error) {
       //
+    }
+  };
+
+  const onNewCommentInfo = () => {
+    const { jobId } = newCommentInfo;
+
+    if (+jobId === focusedJob.jobId) {
+      pushScreen(componentId, DRIVER_NOTE_SCREEN);
     }
   };
 
@@ -426,8 +437,6 @@ const JobDetailsScreen = ({
       services={services}
 
       focusedJob={focusedJob}
-      newCommentInfo={newCommentInfo}
-      setNewCommentInfo={setNewCommentInfo}
 
       onBack={onBack}
       onAcknowledge={onAcknowledge}
@@ -462,7 +471,6 @@ JobDetailsScreen.propTypes = {
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
-  setNewCommentInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -487,7 +495,6 @@ const mapDispatchToProps = {
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
-  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
 };
 
 export default connect(
