@@ -297,6 +297,10 @@ const ProgressView = ({
   }
 
   const renderFailJob = () => {
+    if (!isInProgress()) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
