@@ -1,5 +1,11 @@
-import React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -9,6 +15,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  SIZE10,
   JOB_STATUS,
   JOB_TYPE,
 } from 'src/constants';
@@ -17,6 +24,14 @@ import {
   DefaultButton,
   ItemWrap,
 } from 'src/components';
+import {
+  showOverlay,
+  dismissOverlay,
+  CUSTOM_MODAL_SCREEN,
+} from 'src/navigation';
+import {
+  delay,
+} from 'src/utils';
 
 import {
   Container,
@@ -39,6 +54,14 @@ import {
   InfoText,
   LabelText,
 } from 'src/styles/text.styles';
+import {
+  ModalWrap,
+  ModalTopText,
+  ModalInput,
+  OkCancelRow,
+  OkCancelButton,
+  OkCancelText,
+} from 'src/styles/modal.styles';
 
 import {
   JobProofItem,
@@ -48,6 +71,7 @@ import {
   CancelButton,
   PhotoAndSignWrap,
   PhotoAndSignText,
+  AmountButton,
 } from '../styled';
 
 const {
@@ -67,6 +91,9 @@ const {
   CancelIcon,
   CameraIcon,
   SignIcon,
+  UpArrowIcon,
+  DownArrowIcon,
+  CircleIcon,
 } = SVGS;
 
 const ProgressView = ({
@@ -110,11 +137,69 @@ const ProgressView = ({
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
 }) => {
+  const [ paymentsActive, setPaymentsActive ] = useState(false);
 
   const isForComplete = () => {
     return (
       (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
       (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2))
+    );
+  };
+
+  const onShowAmountModal = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
+    showOverlay(CUSTOM_MODAL_SCREEN, {
+      offsetFromCenter: SIZE10,
+      dismissible: false,
+      getContent: renderAmountModal,
+    });
+  };
+
+  const onDismissAmountModal = async (containerId) => {
+    Keyboard.dismiss();
+
+    await delay(100);
+    dismissOverlay(containerId);
+  };
+
+  const onAddAmount = (amount, containerId) => {
+    if (!amount) {
+      Alert.alert('Warning', 'Please enter amount.');
+      return;
+    }
+
+    onUpdateAmountCollected(amount);
+    onDismissAmountModal(containerId);
+  };
+
+  const renderAmountModal = (containerId, { modalData, setModalData }) => {
+    return (
+      <ModalWrap>
+        <ModalTopText>Enter amount</ModalTopText>
+        <ModalInput
+          underlineColorAndroid={COLORS.TRANSPARENT1}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          onChangeText={text => setModalData(text)}
+          value={modalData}
+          keyboardType={'numeric'}
+        />
+        <OkCancelRow>
+          <OkCancelButton
+            onPress={() => onDismissAmountModal(containerId)}
+          >
+            <OkCancelText>Cancel</OkCancelText>
+          </OkCancelButton>
+          <OkCancelButton
+            onPress={() => onAddAmount(modalData, containerId)}
+          >
+            <OkCancelText>Ok</OkCancelText>
+          </OkCancelButton>
+        </OkCancelRow>
+      </ModalWrap>
     );
   };
 
@@ -267,21 +352,57 @@ const ProgressView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap>
+        <TouchableOpacity
+          onPress={() => setPaymentsActive(!paymentsActive)}
+        >
+          <ContentWrap>
+            <RowWrap>
+              <FlexWrap>
+                <RowWrap>
+                  <PaymentIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <TitleText>
+                    {'Payments' + (amountCollected ? `: Cash $${amountCollected}` : '')}
+                  </TitleText>
+                </RowWrap>
+              </FlexWrap>
+              <SpaceView mLeft={SIZE2} />
+              {
+                paymentsActive
+                ? <UpArrowIcon />
+                : <DownArrowIcon />
+              }
+            </RowWrap>
+          </ContentWrap>
+        </TouchableOpacity>
+        {
+          paymentsActive &&
+          <View>
+            <WrapBorder />
+            <ContentWrap>
               <RowWrap>
-                <PaymentIcon />
+                <CircleIcon />
                 <SpaceView mLeft={SIZE2} />
-                <TitleText>
-                  {'Payments' + (amountCollected ? `: Cash $${amountCollected}` : '')}
-                </TitleText>
+                <InfoText>
+                  {'Collected: $' + `${focusedJob.amountToCollect || 0}`}
+                </InfoText>
               </RowWrap>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <BlueRightArrowIcon />
-          </RowWrap>
-        </ContentWrap>
+              <SpaceView mTop={SIZE2} />
+              <RowWrap>
+                <CircleIcon />
+                <SpaceView mLeft={SIZE2} />
+                <InfoText>{'Others: $'}</InfoText>
+                <AmountButton
+                  onPress={onShowAmountModal}
+                >
+                  <InfoText numberOfLines={1}>
+                    {focusedJob.collectedAmount || ''}
+                  </InfoText>
+                </AmountButton>
+              </RowWrap>
+            </ContentWrap>
+          </View>
+        }
       </View>
     );
   };
