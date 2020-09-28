@@ -23,7 +23,11 @@ import {
 } from 'src/constants';
 import {
   Jobs,
+  ViewStore,
 } from 'src/redux';
+import {
+  delay,
+} from 'src/utils';
 
 import {
   Container,
@@ -58,13 +62,36 @@ const {
 
 const DriverNoteScreen = ({
   focusedJob,
+  newCommentInfo,
   markMessagesAsRead,
   addMessage,
+  setNewCommentInfo,
   componentId,
 }) => {
   const [ newComment, setNewComment ] = useState('');
 
   const listRef = useRef(null);
+
+  useEffect(() => {
+    onNewCommentInfo();
+  }, [newCommentInfo]);
+
+  const onNewCommentInfo = async () => {
+    try {
+      const { jobId } = newCommentInfo;
+
+      if (+jobId === focusedJob.jobId) {
+        setNewCommentInfo({});
+      }
+
+      await delay(100);
+      listRef.current.scrollToEnd();
+
+      onReadMessages();
+    } catch (error) {
+      //
+    }
+  };
 
   const onBack = () => {
     popScreen(componentId);
@@ -74,6 +101,13 @@ const DriverNoteScreen = ({
     markMessagesAsRead({
       jobId: focusedJob.jobId,
     });
+  };
+
+  const onNewCommentSuccess = async () => {
+    setNewComment('');
+
+    await delay(100);
+    listRef.current.scrollToEnd();
   };
 
   const onNewComment = () => {
@@ -88,7 +122,7 @@ const DriverNoteScreen = ({
     addMessage({
       jobId: focusedJob.jobId,
       message: newComment,
-      success: () => setNewComment(''),
+      success: onNewCommentSuccess,
       failure: () => {},
     });
   };
@@ -188,8 +222,10 @@ const DriverNoteScreen = ({
 
 DriverNoteScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
+  newCommentInfo: PropTypes.object.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
+  setNewCommentInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -200,12 +236,14 @@ DriverNoteScreen.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
   };
 };
 
 const mapDispatchToProps = {
   markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
   addMessage: Jobs.actionCreators.addMessage,
+  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
 };
 
 export default connect(
