@@ -2,22 +2,26 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  SIZE1,
-  SIZE2,
   SIZE3,
-  SIZE4,
-  SIZE6,
-  SIZE8,
+  SIZE12,
   FONT,
 } from 'src/constants';
 
-const ServiceRow = styled.TouchableOpacity`
+const ServiceItem = styled.View`
+  height: ${SIZE12}px;
   flex-direction: row;
   align-items: center;
-  margin-vertical: ${SIZE2}px;
+  padding-horizontal: ${SIZE3}px;
   background-color: ${COLORS.WHITE1};
 `;
 
+const ServiceText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+`;
+
 export {
-  ServiceRow,
+  ServiceItem,
+  ServiceText,
 };
