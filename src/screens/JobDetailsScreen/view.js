@@ -35,7 +35,6 @@ const JobDetailsScreenView = ({
   onSign,
   onCancelPhoto,
   onCancelSign,
-  onReadMessages,
   onUpdateAmountCollected,
   isInProgress,
   onAlertNotProgress,
@@ -190,7 +189,6 @@ const JobDetailsScreenView = ({
         onSign={onSign}
         onCancelPhoto={onCancelPhoto}
         onCancelSign={onCancelSign}
-        onReadMessages={onReadMessages}
         onUpdateAmountCollected={onUpdateAmountCollected}
         isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
@@ -227,7 +225,6 @@ const JobDetailsScreenView = ({
         onSign={onSign}
         onCancelPhoto={onCancelPhoto}
         onCancelSign={onCancelSign}
-        onReadMessages={onReadMessages}
         onUpdateAmountCollected={onUpdateAmountCollected}
         isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
@@ -266,7 +263,6 @@ JobDetailsScreenView.propTypes = {
   onSign: PropTypes.func.isRequired,
   onCancelPhoto: PropTypes.func.isRequired,
   onCancelSign: PropTypes.func.isRequired,
-  onReadMessages: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
   isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,

@@ -355,19 +355,6 @@ const JobDetailsScreen = ({
     setSignedUserContact(photosAndSign.signedUserContact);
   };
 
-  const onReadMessages = () => {
-    markMessagesAsRead({
-      jobId: focusedJob.jobId,
-    });
-  };
-
-  const onNewComment = (message) => {
-    addMessage({
-      jobId: focusedJob.jobId,
-      message,
-    });
-  };
-
   const onUpdateAmountCollected = (amount) => {
     if (!onAlertNotProgress()) {
       return;
@@ -441,7 +428,6 @@ const JobDetailsScreen = ({
       onSign={onSign}
       onCancelPhoto={onCancelPhoto}
       onCancelSign={onCancelSign}
-      onReadMessages={onReadMessages}
       onUpdateAmountCollected={onUpdateAmountCollected}
       isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
