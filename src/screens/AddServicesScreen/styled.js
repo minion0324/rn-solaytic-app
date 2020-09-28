@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  SIZE1,
   SIZE3,
+  SIZE8,
   SIZE12,
   FONT,
 } from 'src/constants';
@@ -21,7 +23,23 @@ const ServiceText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const IconButton = styled.TouchableOpacity`
+  padding: ${SIZE1}px;
+`;
+
+const QuantityWrap = styled.View`
+  width: ${SIZE8}px;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: ${COLORS.WHITE3};
+  border-radius: ${SIZE1}px;
+  margin-horizontal: ${SIZE1}px;
+`;
+
 export {
   ServiceItem,
   ServiceText,
+  IconButton,
+  QuantityWrap,
 };
