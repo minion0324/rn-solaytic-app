@@ -82,10 +82,6 @@ const JobDetailsScreen = ({
       })
   );
 
-  const [ amountCollected, setAmountCollected ] = useState(
-    focusedJob.collectedAmount || focusedJob.amountToCollect
-  );
-
   const [ services, setServices ] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.services
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
@@ -308,7 +304,7 @@ const JobDetailsScreen = ({
       sign,
       signedUserName,
       signedUserContact,
-      amountCollected,
+      amountCollected: focusedJob.collectedAmount,
       success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });
@@ -445,8 +441,6 @@ const JobDetailsScreen = ({
       binInfo={binInfo}
       setBinInfo={setBinInfo}
       jobStatus={jobStatus}
-      amountCollected={amountCollected}
-      setAmountCollected={setAmountCollected}
       services={services}
 
       focusedJob={focusedJob}

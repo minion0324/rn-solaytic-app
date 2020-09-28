@@ -20,8 +20,6 @@ const JobDetailsScreenView = ({
   binInfo,
   setBinInfo,
   jobStatus,
-  amountCollected,
-  setAmountCollected,
   services,
 
   focusedJob,
@@ -179,8 +177,6 @@ const JobDetailsScreenView = ({
         binInfo={binInfo}
         setBinInfo={setBinInfo}
         jobStatus={jobStatus}
-        amountCollected={amountCollected}
-        setAmountCollected={setAmountCollected}
         services={services}
 
         focusedJob={focusedJob}
@@ -220,8 +216,6 @@ const JobDetailsScreenView = ({
         binInfo={binInfo}
         setBinInfo={setBinInfo}
         jobStatus={jobStatus}
-        amountCollected={amountCollected}
-        setAmountCollected={setAmountCollected}
         services={services}
 
         focusedJob={focusedJob}
@@ -263,11 +257,6 @@ JobDetailsScreenView.propTypes = {
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  amountCollected: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-  setAmountCollected: PropTypes.func.isRequired,
   services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
@@ -300,7 +289,6 @@ JobDetailsScreenView.defaultProps = {
   sign: null,
   signedUserName: '',
   signedUserContact: '',
-  amountCollected: '',
 };
 
 export default JobDetailsScreenView;
