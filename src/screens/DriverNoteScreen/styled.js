@@ -12,6 +12,7 @@ const CommentWrap = styled.View`
   align-self: ${(props) => (
     props.pos === 'right' ? 'flex-end' : 'flex-start'
   )};
+  margin-top: ${SIZE2}px;
 `;
 
 const Comment = styled.View`
@@ -19,6 +20,9 @@ const Comment = styled.View`
   margin-vertical: ${SIZE2}px;
   max-width: 80%;
   background-color: ${COLORS.WHITE1};
+  align-self: ${(props) => (
+    props.pos === 'right' ? 'flex-end' : 'flex-start'
+  )};
   border-radius: ${SIZE3}px;
   border-bottom-left-radius: ${(props) => (
     props.pos === 'right' ? SIZE3 : 0
@@ -57,6 +61,16 @@ const AvatarText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const TimeText = styled.Text`
+  font-size: ${FONT(10)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+  text-align: ${(props) => (
+    props.pos === 'right' ? 'right' : 'left'
+  )};
+  margin-horizontal: ${SIZE3}px;
+`;
+
 export {
   CommentWrap,
   Comment,
@@ -64,4 +78,5 @@ export {
   CommentInput,
   AvatarWrap,
   AvatarText,
+  TimeText,
 };
