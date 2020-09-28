@@ -105,8 +105,6 @@ const ProgressView = ({
   binInfo,
   setBinInfo,
   jobStatus,
-  amountCollected,
-  setAmountCollected,
   services,
 
   focusedJob,
@@ -362,7 +360,13 @@ const ProgressView = ({
                   <PaymentIcon />
                   <SpaceView mLeft={SIZE2} />
                   <TitleText>
-                    {'Payments' + (amountCollected ? `: Cash $${amountCollected}` : '')}
+                    {
+                      'Payments: Cash $' +
+                      (
+                        (focusedJob.amountToCollect || 0) +
+                        (focusedJob.collectedAmount || 0)
+                      )
+                    }
                   </TitleText>
                 </RowWrap>
               </FlexWrap>
@@ -384,7 +388,10 @@ const ProgressView = ({
                 <CircleIcon />
                 <SpaceView mLeft={SIZE2} />
                 <InfoText>
-                  {'Collected: $' + `${focusedJob.amountToCollect || 0}`}
+                  {
+                    'Collected: $' +
+                    `${focusedJob.amountToCollect || 0}`
+                  }
                 </InfoText>
               </RowWrap>
               <SpaceView mTop={SIZE2} />
@@ -748,11 +755,6 @@ ProgressView.propTypes = {
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  amountCollected: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-  setAmountCollected: PropTypes.func.isRequired,
   services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
@@ -788,7 +790,6 @@ ProgressView.defaultProps = {
   sign: null,
   signedUserName: '',
   signedUserContact: '',
-  amountCollected: '',
 };
 
 export default ProgressView;

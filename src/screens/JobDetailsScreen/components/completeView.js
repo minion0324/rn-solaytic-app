@@ -71,8 +71,6 @@ const CompleteView = ({
   binInfo,
   setBinInfo,
   jobStatus,
-  amountCollected,
-  setAmountCollected,
   services,
 
   focusedJob,
@@ -347,7 +345,7 @@ const CompleteView = ({
             <FlexWrap>
               <LabelText>Collections</LabelText>
               <InfoText>
-                {amountCollected ? `$${amountCollected}` : ''}
+                {''}
               </InfoText>
             </FlexWrap>
           </RowWrap>
@@ -363,7 +361,7 @@ const CompleteView = ({
             <FlexWrap>
               <LabelText>Vehicle</LabelText>
               <InfoText>
-                {amountCollected ? `$${amountCollected}` : ''}
+                {''}
               </InfoText>
             </FlexWrap>
           </RowWrap>
@@ -415,11 +413,6 @@ CompleteView.propTypes = {
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  amountCollected: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-  setAmountCollected: PropTypes.func.isRequired,
   services: PropTypes.array.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
@@ -455,7 +448,6 @@ CompleteView.defaultProps = {
   sign: null,
   signedUserName: '',
   signedUserContact: '',
-  amountCollected: '',
 };
 
 export default CompleteView;
