@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  SIZE1,
   SIZE2,
   SIZE4,
   SIZE8,
@@ -63,6 +64,25 @@ const AlertButtonText = styled.Text`
   text-transform: uppercase;
 `;
 
+const OkCancelRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-vertical: ${SIZE1}px;
+`;
+
+const OkCancelButton = styled.TouchableOpacity`
+  padding-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE2}px;
+`;
+
+const OkCancelText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700,
+  color: ${COLORS.BLUE1};
+  text-transform: uppercase;
+`;
+
 export {
   ModalWrap,
   ModalTopText,
@@ -71,4 +91,7 @@ export {
   AlertButtonRow,
   AlertButton,
   AlertButtonText,
+  OkCancelRow,
+  OkCancelButton,
+  OkCancelText,
 };
