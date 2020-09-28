@@ -132,7 +132,7 @@ const UploadHistoryScreen = ({
       return;
     }
 
-    const searchedLogs = jobLogs.map((item) => {
+    const searched = jobLogs.map((item) => {
       const {
         value: { status },
         id: { jobNumber },
@@ -148,7 +148,7 @@ const UploadHistoryScreen = ({
       }
     });
 
-    setSearchedJobLogs(searchedLogs);
+    setSearchedJobLogs(searched);
   };
 
   const onBack = () => {
