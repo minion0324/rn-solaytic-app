@@ -347,6 +347,10 @@ const ProgressView = ({
   };
 
   const renderPayments = () => {
+    if (!focusedJob.isEnabledCashCollection) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
