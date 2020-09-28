@@ -382,6 +382,10 @@ const JobDetailsScreen = ({
   };
 
   const onFail = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
 
@@ -390,10 +394,18 @@ const JobDetailsScreen = ({
   };
 
   const onDriverNote = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
     pushScreen(componentId, DRIVER_NOTE_SCREEN);
   };
 
   const onAddServices = () => {
+    if (!onAlertNotProgress()) {
+      return;
+    }
+
     pushScreen(componentId, ADD_SERVICES_SCREEN, { services, setServices });
   };
 

@@ -295,10 +295,6 @@ const ProgressView = ({
   }
 
   const renderFailJob = () => {
-    if (!isInProgress()) {
-      return null;
-    }
-
     return (
       <View>
         <SpaceView mTop={SIZE2} />
@@ -324,10 +320,7 @@ const ProgressView = ({
   };
 
   const renderServices = () => {
-    if (
-      !isInProgress() ||
-      services.length === 0
-    ) {
+    if (services.length === 0) {
       return null;
     }
 
