@@ -50,6 +50,7 @@ import PhoneIcon from 'src/assets/svgs/icon-phone.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
 import UpArrowIcon from 'src/assets/svgs/icon-arrow-up.svg';
 import DownArrowIcon from 'src/assets/svgs/icon-arrow-down.svg';
+import CircleIcon from 'src/assets/svgs/icon-circle.svg';
 
 export default {
   ActiveCheckIcon,
@@ -104,4 +105,5 @@ export default {
   MapIcon,
   UpArrowIcon,
   DownArrowIcon,
+  CircleIcon,
 };
