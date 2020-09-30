@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -83,6 +83,14 @@ const JobDetailsScreen = ({
     focusedJob.appExtraData && focusedJob.appExtraData.services
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
+
+  const isInProgress = useMemo(() => {
+    return (
+      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
+      jobStatus === JOB_STATUS.IN_PROGRESS2
+    );
+  }, [jobStatus]);
 
   useEffect(() => {
     getSavedPhotosAndSign();
@@ -375,16 +383,8 @@ const JobDetailsScreen = ({
     });
   };
 
-  const isInProgress = () => {
-    return (
-      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
-    );
-  };
-
   const onAlertNotProgress = () => {
-    if (!isInProgress()) {
+    if (!isInProgress) {
       Alert.alert('Warning', 'This job is not in progress now.');
       return false;
     }
@@ -423,6 +423,7 @@ const JobDetailsScreen = ({
       setBinInfo={setBinInfo}
       jobStatus={jobStatus}
       services={services}
+      isInProgress={isInProgress}
 
       focusedJob={focusedJob}
 
@@ -436,7 +437,6 @@ const JobDetailsScreen = ({
       onCancelPhoto={onCancelPhoto}
       onCancelSign={onCancelSign}
       onUpdateAmountCollected={onUpdateAmountCollected}
-      isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
       onFail={onFail}
       onAddress={onAddress}
