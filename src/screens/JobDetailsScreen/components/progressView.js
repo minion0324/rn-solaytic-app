@@ -442,7 +442,7 @@ const ProgressView = ({
             <SpaceView mTop={SIZE2} />
             <TouchableOpacity
               disabled={!isInProgress}
-              onPress={() => onBinInfo(item, idx)}
+              onPress={() => onBinInfo(index, idx)}
             >
             <ContentWrap>
               <RowWrap>
@@ -469,7 +469,7 @@ const ProgressView = ({
             <WrapBorder />
             <TouchableOpacity
               disabled={!isInProgress}
-              onPress={() => onBinInfo(item, idx)}
+              onPress={() => onBinInfo(index, idx)}
             >
               <ContentWrap>
                 <RowWrap>
