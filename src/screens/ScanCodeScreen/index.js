@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { RNCamera } from 'react-native-camera';
 
 import {
   HeaderBar,
@@ -8,11 +10,16 @@ import {
 import {
   popScreen,
 } from 'src/navigation';
+import {
+  SIZE2,
+} from 'src/constants';
 
 import {
   Container,
   Content,
+  ContentWrap,
   ShadowWrap,
+  SpaceView,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -23,6 +30,13 @@ import {
 const ScanCodeScreen = ({
   componentId,
 }) => {
+
+  const cameraRef = useRef(null);
+
+  useEffect(() => {
+    console.log('----------------- camera ref');
+    console.log(cameraRef.current);
+  }, []);
 
   const onBack = () => {
     popScreen(componentId);
@@ -40,7 +54,30 @@ const ScanCodeScreen = ({
       </ShadowWrap>
 
       <Content>
+        <SpaceView mTop={SIZE2} />
+        <ContentWrap>
+          <RNCamera
+            ref={cameraRef}
+            style={{
+              backgroundColor: 'red',
+              width: 250,
+              height: 250,
+            }}
+            notAuthorizedView={
+              <View style={{flex: 1, width: '100%', backgroundColor: 'red'}}>
+              </View>
+            }
+            onBarCodeRead={() => {}}
+            refreshAuthorizationStatus={async () => {
+              console.log('---------------');
+              console.log('---------- refresh auth status');
+            }}
+            ratio={'1:1'}
+          >
 
+          </RNCamera>
+
+        </ContentWrap>
       </Content>
     </Container>
   );
