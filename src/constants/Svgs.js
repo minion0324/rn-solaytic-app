@@ -54,6 +54,7 @@ import CircleIcon from 'src/assets/svgs/icon-circle.svg';
 import AddCircleIcon from 'src/assets/svgs/icon-circle-add.svg';
 import RemoveCircleIcon from 'src/assets/svgs/icon-circle-remove.svg';
 import MessageAvatarIcon from 'src/assets/svgs/icon-avatar-message.svg';
+import BinSearchIcon from 'src/assets/svgs/icon-search-bin.svg';
 
 export default {
   ActiveCheckIcon,
@@ -112,4 +113,5 @@ export default {
   AddCircleIcon,
   RemoveCircleIcon,
   MessageAvatarIcon,
+  BinSearchIcon,
 };
