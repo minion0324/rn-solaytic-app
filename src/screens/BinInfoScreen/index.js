@@ -267,9 +267,12 @@ const BinInfoScreen = ({
               <FlexWrap flex={4}>
                 <RowWrap>
                   <FlexWrap />
-                  <TouchableOpacity onPress={onScanCode}>
-                    <QrCodeIcon />
-                  </TouchableOpacity>
+                  {
+                    focusedJob.isAllowDriverEditOnApp &&
+                    <TouchableOpacity onPress={onScanCode}>
+                      <QrCodeIcon />
+                    </TouchableOpacity>
+                  }
                 </RowWrap>
               </FlexWrap>
               <SpaceView mLeft={SIZE2} />
