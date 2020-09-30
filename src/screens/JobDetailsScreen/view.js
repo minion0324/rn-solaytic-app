@@ -173,6 +173,7 @@ const JobDetailsScreenView = ({
         setBinInfo={setBinInfo}
         jobStatus={jobStatus}
         services={services}
+        isInProgress={isInProgress}
 
         focusedJob={focusedJob}
 
@@ -186,7 +187,6 @@ const JobDetailsScreenView = ({
         onCancelPhoto={onCancelPhoto}
         onCancelSign={onCancelSign}
         onUpdateAmountCollected={onUpdateAmountCollected}
-        isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
         onFail={onFail}
         onAddress={onAddress}
@@ -207,6 +207,7 @@ const JobDetailsScreenView = ({
         setBinInfo={setBinInfo}
         jobStatus={jobStatus}
         services={services}
+        isInProgress={isInProgress}
 
         focusedJob={focusedJob}
 
@@ -220,7 +221,6 @@ const JobDetailsScreenView = ({
         onCancelPhoto={onCancelPhoto}
         onCancelSign={onCancelSign}
         onUpdateAmountCollected={onUpdateAmountCollected}
-        isInProgress={isInProgress}
         onAlertNotProgress={onAlertNotProgress}
         onFail={onFail}
         onAddress={onAddress}
@@ -243,6 +243,7 @@ JobDetailsScreenView.propTypes = {
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
@@ -256,7 +257,6 @@ JobDetailsScreenView.propTypes = {
   onCancelPhoto: PropTypes.func.isRequired,
   onCancelSign: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
-  isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,
