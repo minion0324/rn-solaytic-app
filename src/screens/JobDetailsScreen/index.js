@@ -408,8 +408,10 @@ const JobDetailsScreen = ({
     pushScreen(componentId, ADD_SERVICES_SCREEN, { services, setServices });
   };
 
-  const onBinInfo = (bin, binInOutIndex) => {
-    pushScreen(componentId, BIN_INFO_SCREEN, { bin, binInOutIndex });
+  const onBinInfo = (binIndex, binInOutInfoIndex) => {
+    pushScreen(componentId, BIN_INFO_SCREEN, {
+      binInfo, setBinInfo, binIndex, binInOutInfoIndex,
+    });
   };
 
   return (
