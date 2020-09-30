@@ -107,6 +107,7 @@ const ProgressView = ({
   setBinInfo,
   jobStatus,
   services,
+  isInProgress,
 
   focusedJob,
 
@@ -120,7 +121,6 @@ const ProgressView = ({
   onCancelPhoto,
   onCancelSign,
   onUpdateAmountCollected,
-  isInProgress,
   onAlertNotProgress,
   onFail,
   onAddress,
@@ -293,6 +293,10 @@ const ProgressView = ({
   }
 
   const renderFailJob = () => {
+    if (!isInProgress) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
@@ -318,7 +322,10 @@ const ProgressView = ({
   };
 
   const renderServices = () => {
-    if (services.length === 0) {
+    if (
+      !isInProgress ||
+      services.length === 0
+    ) {
       return null;
     }
 
@@ -355,6 +362,7 @@ const ProgressView = ({
       <View>
         <SpaceView mTop={SIZE2} />
         <TouchableOpacity
+          disabled={!isInProgress}
           onPress={() => setPaymentsActive(!paymentsActive)}
         >
           <ContentWrap>
@@ -374,11 +382,16 @@ const ProgressView = ({
                   </TitleText>
                 </RowWrap>
               </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
               {
-                paymentsActive
-                ? <UpArrowIcon />
-                : <DownArrowIcon />
+                isInProgress &&
+                <View>
+                  <SpaceView mLeft={SIZE2} />
+                  {
+                    paymentsActive
+                    ? <UpArrowIcon />
+                    : <DownArrowIcon />
+                  }
+                </View>
               }
             </RowWrap>
           </ContentWrap>
@@ -419,15 +432,18 @@ const ProgressView = ({
   };
 
   const renderBinInfo = () => {
-    const editable = isInProgress() && focusedJob.isAllowDriverEditOnApp;
+    const editable = isInProgress && focusedJob.isAllowDriverEditOnApp;
 
     return (
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
 
+        console.log('------------ item');
+        console.log(item);
+
         return (
           (item.wasteType || item.binType) &&
-          <View>
+          <View key={`${item.jobStepId}`}>
             <SpaceView mTop={SIZE2} />
             <TouchableOpacity
               onPress={() => onBinInfo(item, idx)}
@@ -514,7 +530,10 @@ const ProgressView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <TouchableOpacity onPress={onDriverNote}>
+        <TouchableOpacity
+          disabled={!isInProgress}
+          onPress={onDriverNote}
+        >
           <ContentWrap>
             <RowWrap>
               <ChatIcon />
@@ -531,7 +550,10 @@ const ProgressView = ({
           focusedJob.messages.length > 0 &&
           <View>
             <WrapBorder />
-            <TouchableOpacity onPress={onDriverNote}>
+            <TouchableOpacity
+              disabled={!isInProgress}
+              onPress={onDriverNote}
+            >
               <ContentWrap>
                 <RowWrap>
                   <FlexWrap>
@@ -539,8 +561,13 @@ const ProgressView = ({
                       {focusedJob.messages[0].message}
                     </InfoText>
                   </FlexWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <BlueRightArrowIcon />
+                  {
+                    isInProgress &&
+                    <View>
+                      <SpaceView mLeft={SIZE2} />
+                      <BlueRightArrowIcon />
+                    </View>
+                  }
                 </RowWrap>
               </ContentWrap>
             </TouchableOpacity>
@@ -769,6 +796,7 @@ ProgressView.propTypes = {
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
@@ -782,7 +810,6 @@ ProgressView.propTypes = {
   onCancelPhoto: PropTypes.func.isRequired,
   onCancelSign: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
-  isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,

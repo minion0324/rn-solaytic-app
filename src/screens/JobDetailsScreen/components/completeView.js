@@ -72,6 +72,7 @@ const CompleteView = ({
   setBinInfo,
   jobStatus,
   services,
+  isInProgress,
 
   focusedJob,
 
@@ -86,7 +87,6 @@ const CompleteView = ({
   onCancelSign,
   onFail,
   onUpdateAmountCollected,
-  isInProgress,
   onAlertNotProgress,
   onAddress,
   onDriverNote,
@@ -409,6 +409,7 @@ CompleteView.propTypes = {
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
@@ -423,7 +424,6 @@ CompleteView.propTypes = {
   onCancelSign: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
-  isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
