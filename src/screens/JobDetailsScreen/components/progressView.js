@@ -438,14 +438,12 @@ const ProgressView = ({
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
 
-        console.log('------------ item');
-        console.log(item);
-
         return (
           (item.wasteType || item.binType) &&
           <View key={`${item.jobStepId}`}>
             <SpaceView mTop={SIZE2} />
             <TouchableOpacity
+              disabled={!isInProgress}
               onPress={() => onBinInfo(item, idx)}
             >
             <ContentWrap>
@@ -472,6 +470,7 @@ const ProgressView = ({
             </TouchableOpacity>
             <WrapBorder />
             <TouchableOpacity
+              disabled={!isInProgress}
               onPress={() => onBinInfo(item, idx)}
             >
               <ContentWrap>
@@ -515,8 +514,13 @@ const ProgressView = ({
                       </FlexWrap>
                     </RowWrap>
                   </FlexWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <BlueRightArrowIcon />
+                  {
+                    isInProgress &&
+                    <View>
+                      <SpaceView mLeft={SIZE2} />
+                      <BlueRightArrowIcon />
+                    </View>
+                  }
                 </RowWrap>
               </ContentWrap>
             </TouchableOpacity>
