@@ -432,8 +432,6 @@ const ProgressView = ({
   };
 
   const renderBinInfo = () => {
-    const editable = isInProgress && focusedJob.isAllowDriverEditOnApp;
-
     return (
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
@@ -477,7 +475,7 @@ const ProgressView = ({
                 <RowWrap>
                   <FlexWrap>
                     <RowWrap>
-                      <FlexWrap>
+                      <FlexWrap flex={6}>
                         <LabelText>Waste Type</LabelText>
                         <InfoText>
                           {item['wasteType'] && item['wasteType']['wasteTypeName']}
@@ -485,29 +483,24 @@ const ProgressView = ({
                       </FlexWrap>
                       {
                         focusedJob.isEnabledBinWeight &&
-                        (!!item['binWeight'] || editable) &&
-                        (
-                          index !== 0 ||
-                          focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
-                        ) &&
-                        <FlexWrap>
+                        <FlexWrap flex={4}>
                           <LabelText>Nett Weight</LabelText>
                           <InfoText>
-                            {item['binWeight']}
+                            {item['binWeight'] || '-- --'}
                           </InfoText>
                         </FlexWrap>
                       }
                     </RowWrap>
                     <SpaceView mTop={SIZE2} />
                     <RowWrap>
-                      <FlexWrap>
+                      <FlexWrap flex={6}>
                         <LabelText>Bin Type</LabelText>
                         <InfoText>
                           {item['binType'] && item['binType']['binTypeName']}
                         </InfoText>
                       </FlexWrap>
-                      <FlexWrap>
-                        <LabelText>Bin Id</LabelText>
+                      <FlexWrap flex={4}>
+                        <LabelText>Bin ID</LabelText>
                         <InfoText>
                           {item['binNumber']}
                         </InfoText>
