@@ -43,7 +43,7 @@ import {
 import JobDetailsScreenView from './view';
 
 const JobDetailsScreen = ({
-  ownerAccountInfo,
+  ownerInfo,
   focusedJob,
   jobStatus,
   photosAndSign,
@@ -428,7 +428,7 @@ const JobDetailsScreen = ({
       services={services}
       isInProgress={isInProgress}
 
-      ownerAccountInfo={ownerAccountInfo}
+      ownerInfo={ownerInfo}
       focusedJob={focusedJob}
 
       onBack={onBack}
@@ -452,7 +452,7 @@ const JobDetailsScreen = ({
 };
 
 JobDetailsScreen.propTypes = {
-  ownerAccountInfo: PropTypes.object.isRequired,
+  ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
   jobStatus: PropTypes.string.isRequired,
   photosAndSign: PropTypes.object.isRequired,
@@ -473,7 +473,7 @@ JobDetailsScreen.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    ownerAccountInfo: User.selectors.getOwnerAccountInfo(state),
+    ownerInfo: User.selectors.getOwnerInfo(state),
     focusedJob: Jobs.selectors.getFocusedJob(state),
     jobStatus: Jobs.selectors.getJobStatus(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),

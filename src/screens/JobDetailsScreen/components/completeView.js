@@ -62,7 +62,7 @@ const CompleteView = ({
   jobStatus,
   services,
 
-  ownerAccountInfo,
+  ownerInfo,
   focusedJob,
 
   onBack,
@@ -375,9 +375,11 @@ const CompleteView = ({
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
           <RowWrap>
-            <FlexWrap>
+            <FlexWrap flex={4}>
+
             </FlexWrap>
-            <FlexWrap>
+            <FlexWrap flex={6}>
+              <TitleText>{ownerInfo.accountName}</TitleText>
             </FlexWrap>
           </RowWrap>
         </ContentWrap>
@@ -431,7 +433,7 @@ CompleteView.propTypes = {
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
 
-  ownerAccountInfo: PropTypes.object.isRequired,
+  ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,
