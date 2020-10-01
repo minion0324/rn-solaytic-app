@@ -44,10 +44,18 @@ const getDriverName = createSelector(
   },
 );
 
+const getOwnerAccountInfo = createSelector(
+  getUserInfo,
+  (userInfo) => {
+    return userInfo.ownerAccount || {};
+  },
+);
+
 export default {
   getIsRehydrated,
   getToken,
   getAppLogo,
   getRememberedUser,
   getDriverName,
+  getOwnerAccountInfo,
 };
