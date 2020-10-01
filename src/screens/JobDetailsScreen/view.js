@@ -21,6 +21,7 @@ const JobDetailsScreenView = ({
   jobStatus,
   services,
 
+  ownerAccountInfo,
   focusedJob,
 
   onBack,
@@ -204,6 +205,7 @@ const JobDetailsScreenView = ({
         jobStatus={jobStatus}
         services={services}
 
+        ownerAccountInfo={ownerAccountInfo}
         focusedJob={focusedJob}
 
         onBack={onBack}
@@ -224,6 +226,7 @@ JobDetailsScreenView.propTypes = {
   services: PropTypes.array.isRequired,
   isInProgress: PropTypes.bool.isRequired,
 
+  ownerAccountInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,

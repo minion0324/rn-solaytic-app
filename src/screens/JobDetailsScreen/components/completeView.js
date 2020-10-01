@@ -62,6 +62,7 @@ const CompleteView = ({
   jobStatus,
   services,
 
+  ownerAccountInfo,
   focusedJob,
 
   onBack,
@@ -368,6 +369,22 @@ const CompleteView = ({
     );
   };
 
+  const renderReceiptHeader = () => {
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <ContentWrap>
+          <RowWrap>
+            <FlexWrap>
+            </FlexWrap>
+            <FlexWrap>
+            </FlexWrap>
+          </RowWrap>
+        </ContentWrap>
+      </View>
+    );
+  };
+
   const renderHeader = () => {
     return (
       <HeaderBar
@@ -390,6 +407,7 @@ const CompleteView = ({
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
+          { renderReceiptHeader() }
           { renderCustomerCopy() }
           { renderBinInfo() }
           { renderServices() }
@@ -413,6 +431,7 @@ CompleteView.propTypes = {
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
 
+  ownerAccountInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,
