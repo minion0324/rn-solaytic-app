@@ -8,6 +8,7 @@ import {
   SIZE2,
   SIZE3,
   SIZE4,
+  FONT,
 } from 'src/constants';
 
 const { Scan1Icon, Scan2Icon } = SVGS;
@@ -41,6 +42,15 @@ const ButtonWrap = styled.View`
   width: 100%;
   padding-vertical: ${SIZE1}px;
   padding-horizontal: ${SIZE4}px;
+`;
+
+const InfoInput = styled.TextInput`
+  flex: 1;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
+  color: ${COLORS.BLACK2};
+  text-align: center;
 `;
 
 const Mask1IconWrap = styled.View`
@@ -105,6 +115,7 @@ export {
   LabelWrap,
   InfoWrap,
   ButtonWrap,
+  InfoInput,
   Mask1IconWrap,
   Mask2IconWrap,
   Mask3IconWrap,
