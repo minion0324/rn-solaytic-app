@@ -121,8 +121,10 @@ const ScanCodeScreen = ({
     setLoading(true);
     setDetected(true);
 
+    Keyboard.dismiss();
+
     getBinNumbers({
-      search: 'B123', // res.data,
+      search: res.data,
       success: getBinNumbersSuccess,
       failure: getBinNumbersFailure,
     });
