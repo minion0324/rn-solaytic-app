@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Keyboard, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { useNavigationComponentDidDisappear } from 'react-native-navigation-hooks';
 
 import {
@@ -259,17 +258,4 @@ AddServicesScreen.defaultProps = {
   //
 };
 
-const mapStateToProps = (state) => {
-  return {
-    //
-  };
-};
-
-const mapDispatchToProps = {
-  //
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AddServicesScreen);
+export default AddServicesScreen;
