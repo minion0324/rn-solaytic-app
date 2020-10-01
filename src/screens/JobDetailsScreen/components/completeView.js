@@ -346,9 +346,9 @@ const CompleteView = ({
           <LabelText>Completed Date & Time</LabelText>
           <InfoText>
             {
-              moment(focusedJob.jobTimeSpecific || focusedJob.jobDate).format('DD MMM') +
+              moment(focusedJob.completedDate || focusedJob.jobTimeSpecific).format('DD MMM') +
               '  |  ' +
-              moment(focusedJob.jobTimeSpecific || focusedJob.jobDate).format('hh:mm A')
+              moment(focusedJob.completedDate || focusedJob.jobTimeSpecific).format('hh:mm A')
             }
           </InfoText>
 
