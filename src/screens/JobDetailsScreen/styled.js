@@ -95,6 +95,11 @@ const DriverNoteBadge = styled.View`
   margin-top: -${SIZE1}px;
 `;
 
+const LogoImageWrap = styled.View`
+  width: 100%;
+  aspect-ratio: 1;
+`;
+
 export {
   JobProofItem,
   HalfWrap,
@@ -107,4 +112,5 @@ export {
   PrintAndShareText,
   AmountButton,
   DriverNoteBadge,
+  LogoImageWrap,
 };
