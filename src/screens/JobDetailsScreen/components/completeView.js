@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import ViewShot from 'react-native-view-shot';
+import Share from 'react-native-share';
 
 import {
   SVGS,
+  IMAGES,
   SIZE1,
   SIZE2,
   SIZE4,
@@ -14,6 +17,9 @@ import {
   HeaderBar,
   ItemWrap,
 } from 'src/components';
+import {
+  delay,
+} from 'src/utils';
 
 import {
   Container,
@@ -71,6 +77,45 @@ const CompleteView = ({
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
 }) => {
+  const [ showing, setShowing ] = useState(false);
+
+  const viewShotRef = useRef(null);
+
+  const onViewShot = async () => {
+    try {
+      setShowing(true);
+
+      await delay(1000);
+
+      const mediaType = 'image/png';
+      const base64Str = await viewShotRef.current.capture();
+
+      return `data:${mediaType};base64,${base64Str}`;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const onPrint = async () => {
+    try {
+      const base64Data = await onViewShot();
+
+      setShowing(false);
+    } catch (error) {
+      //
+    }
+  };
+
+  const onShare = async () => {
+    try {
+      const base64Data = await onViewShot();
+      await Share.open({ url: base64Data });
+
+      setShowing(false);
+    } catch (error) {
+      //
+    }
+  };
 
   const renderPrintAndShare = () => {
     if (jobStatus !== JOB_STATUS.COMPLETED) {
@@ -80,13 +125,13 @@ const CompleteView = ({
     return (
       <ShadowWrap>
         <PrintAndShareWrap>
-          <TouchableOpacity onPress={null}>
+          <TouchableOpacity onPress={onPrint}>
             <RowWrap>
               <PrintIcon />
               <PrintAndShareText>Print</PrintAndShareText>
             </RowWrap>
           </TouchableOpacity>
-          <TouchableOpacity onPress={null}>
+          <TouchableOpacity onPress={onShare}>
             <RowWrap>
               <ShareIcon />
               <PrintAndShareText>Share</PrintAndShareText>
@@ -371,6 +416,10 @@ const CompleteView = ({
   };
 
   const renderReceiptHeader = () => {
+    if (!showing) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
@@ -378,10 +427,17 @@ const CompleteView = ({
           <RowWrap>
             <FlexWrap flex={4}>
               <LogoImageWrap>
-                <FullImage source={{ uri: ownerInfo.logoImageUrl }} />
+                <FullImage
+                  resizeMode={'contain'}
+                  source={
+                    ownerInfo.logoImageUrl
+                    ? { uri: ownerInfo.logoImageUrl }
+                    : IMAGES.APP_LOGO
+                  }
+                />
               </LogoImageWrap>
             </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
+            <SpaceView mLeft={SIZE4} />
             <FlexWrap flex={6}>
               <TitleText>{ownerInfo.accountName}</TitleText>
               <SpaceView mTop={SIZE1} />
@@ -419,13 +475,18 @@ const CompleteView = ({
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
-          { renderReceiptHeader() }
-          { renderCustomerCopy() }
-          { renderBinInfo() }
-          { renderServices() }
-          { renderJobProof() }
+          <ViewShot
+            ref={viewShotRef}
+            options={{ result: 'base64' }}
+          >
+            { renderReceiptHeader() }
+            { renderCustomerCopy() }
+            { renderBinInfo() }
+            { renderServices() }
+            { renderJobProof() }
 
-          <SpaceView mTop={SIZE2} />
+            <SpaceView mTop={SIZE2} />
+          </ViewShot>
         </ScrollView>
       </Content>
 
