@@ -19,11 +19,8 @@ import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
-import EditIcon from 'src/assets/svgs/icon-edit.svg';
-import CommentIcon from 'src/assets/svgs/icon-comment.svg';
 import ActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
-import ArrowLocationIcon from 'src/assets/svgs/icon-location-arrow.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
@@ -87,11 +84,8 @@ export default {
   SignIcon,
   SearchIcon,
   FailIcon,
-  EditIcon,
-  CommentIcon,
   ActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  ArrowLocationIcon,
   CloseIcon,
   HappyIcon,
   CalendarIcon,
