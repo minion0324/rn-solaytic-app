@@ -6,6 +6,9 @@ import {
   apiGetDriverNotes,
   apiGetBinNumbers,
 } from 'src/services';
+import {
+  onError,
+} from 'src/utils';
 
 import {
   GET_DRIVER_NOTES,
@@ -25,6 +28,7 @@ export function* asyncGetDriverNotes({ payload }) {
 
     success && success();
   } catch (error) {
+    yield onError(error);
     failure && failure();
   }
 }
@@ -69,6 +73,7 @@ export function* asyncGetBinNumbers({ payload }) {
 
     success && success();
   } catch (error) {
+    yield onError(error);
     failure && failure();
   }
 }
