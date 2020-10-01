@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ActionSheet from 'react-native-actionsheet';
@@ -85,12 +85,28 @@ const BinInfoScreen = ({
     setBinInfo(originBinInfo);
   });
 
+  const onUpdateBinInfo = (newInfo) => {
+    const newBinInfo = originBinInfo.slice(0);
+
+    newBinInfo[binIndex] = {
+      ...newBinInfo[binIndex],
+      ...newInfo,
+    };
+
+    setOriginBinInfo(newBinInfo);
+  };
+
   const onBack = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
   };
 
   const onScanCode = () => {
-    pushScreen(componentId, SCAN_CODE_SCREEN);
+    pushScreen(componentId, SCAN_CODE_SCREEN, {
+      binIndex,
+      binInfo: originBinInfo,
+      setBinInfo: setOriginBinInfo,
+    });
   };
 
   const onActionSheetPress = (index) => {
@@ -172,17 +188,6 @@ const BinInfoScreen = ({
     actionSheetRef.current.show();
   };
 
-  const onUpdateBinInfo = (newInfo) => {
-    const newBinInfo = originBinInfo.slice(0);
-
-    newBinInfo[binIndex] = {
-      ...newBinInfo[binIndex],
-      ...newInfo,
-    };
-
-    setOriginBinInfo(newBinInfo);
-  };
-
   return (
     <Container>
       <ShadowWrap>
@@ -239,7 +244,7 @@ const BinInfoScreen = ({
                     placeholder={'BIN NUMBER'}
                     value={`${bin['binNumber'] || ''}`}
                     onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
-                    editable={focusedJob.isAllowDriverEditOnApp}
+                    // editable={focusedJob.isAllowDriverEditOnApp}
                   />
                   <WrapBorder />
                 </View>
@@ -268,7 +273,7 @@ const BinInfoScreen = ({
                 <RowWrap>
                   <FlexWrap />
                   {
-                    focusedJob.isAllowDriverEditOnApp &&
+                    // focusedJob.isAllowDriverEditOnApp &&
                     <TouchableOpacity onPress={onScanCode}>
                       <QrCodeIcon />
                     </TouchableOpacity>
