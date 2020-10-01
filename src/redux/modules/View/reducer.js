@@ -54,7 +54,7 @@ function View(state = DEFAULT, action = {}) {
         draft.newCommentInfo = payload;
         break;
       case GET_BIN_NUMBERS_SUCCESS:
-        draft.binNumbers = payload;
+        draft.binNumbers = payload.data;
         break;
     }
   });
