@@ -244,7 +244,7 @@ const BinInfoScreen = ({
                     placeholder={'BIN NUMBER'}
                     value={`${bin['binNumber'] || ''}`}
                     onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
-                    // editable={focusedJob.isAllowDriverEditOnApp}
+                    editable={focusedJob.isAllowDriverEditOnApp}
                   />
                   <WrapBorder />
                 </View>
@@ -273,7 +273,7 @@ const BinInfoScreen = ({
                 <RowWrap>
                   <FlexWrap />
                   {
-                    // focusedJob.isAllowDriverEditOnApp &&
+                    focusedJob.isAllowDriverEditOnApp &&
                     <TouchableOpacity onPress={onScanCode}>
                       <QrCodeIcon />
                     </TouchableOpacity>
