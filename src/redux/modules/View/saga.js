@@ -4,11 +4,13 @@ import {
 
 import {
   apiGetDriverNotes,
+  apiGetBinNumbers,
 } from 'src/services';
 
 import {
   GET_DRIVER_NOTES,
   GET_DRIVER_NOTES_BY_PAGE,
+  GET_BIN_NUMBERS,
   actionCreators,
 } from './actions';
 
@@ -56,6 +58,28 @@ export function* watchGetDriverNotesByPage() {
   }
 }
 
+export function* asyncGetBinNumbers({ payload }) {
+  const {
+    search, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetBinNumbers, search);
+    yield put(actionCreators.getBinNumbersSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetBinNumbers() {
+  while (true) {
+    const action = yield take(GET_BIN_NUMBERS);
+    yield* asyncGetBinNumbers(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -82,5 +106,6 @@ export default function* () {
   yield all([
     fork(watchGetDriverNotes),
     fork(watchGetDriverNotesByPage),
+    fork(watchGetBinNumbers),
   ]);
 }

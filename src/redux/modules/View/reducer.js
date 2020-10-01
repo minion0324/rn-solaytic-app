@@ -9,6 +9,7 @@ import {
   SET_IS_REQUIRED_UPDATE_TAB,
   SET_IS_NETWORK_CONNECTED,
   SET_NEW_COMMENT_INFO,
+  GET_BIN_NUMBERS_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -24,6 +25,7 @@ const viewPersistConfig = {
     'isRequiredUpdateTab',
     'isNetworkConnected',
     'newCommentInfo',
+    'binNumbers',
   ],
 };
 
@@ -50,6 +52,9 @@ function View(state = DEFAULT, action = {}) {
         break;
       case SET_NEW_COMMENT_INFO:
         draft.newCommentInfo = payload;
+        break;
+      case GET_BIN_NUMBERS_SUCCESS:
+        draft.binNumbers = payload;
         break;
     }
   });
