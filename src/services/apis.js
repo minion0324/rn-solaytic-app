@@ -151,6 +151,20 @@ function apiUpdateAmountCollected(jobIds, attempt) {
   });
 };
 
+function apiGetBinNumbers(
+  searchQuery,
+  currentPage = 1,
+  pageSize = 10,
+) {
+  return apiCall('api/mobile/driver/bin-numbers', 'get', {
+    params: {
+      searchQuery,
+      currentPage,
+      pageSize,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -166,4 +180,5 @@ export {
   apiMarkMessagesAsRead,
   apiAddMessage,
   apiUpdateAmountCollected,
+  apiGetBinNumbers,
 };
