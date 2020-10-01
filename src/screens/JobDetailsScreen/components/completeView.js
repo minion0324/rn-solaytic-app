@@ -186,6 +186,8 @@ const CompleteView = ({
   };
 
   const renderBinInfo = () => {
+    const editable = true;
+
     return (
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
@@ -298,29 +300,36 @@ const CompleteView = ({
         </ContentWrap>
         <WrapBorder />
         <ContentWrap>
+          <SpaceView mTop={SIZE2} />
           <LabelText>Customer</LabelText>
           <InfoText>
             {focusedJob.customer.customerName}
           </InfoText>
 
-          <SpaceView mTop={SIZE2} />
+          <SpaceView mTop={SIZE4} />
           <LabelText>Locations</LabelText>
           <InfoText>
             {focusedJob.steps[idx].address}
           </InfoText>
 
-          <SpaceView mTop={SIZE2} />
-          <LabelText>Contact</LabelText>
-          <InfoText>
-            {
-              focusedJob.steps[idx].contactPersonOne +
-              '  |  ' +
-              focusedJob.steps[idx].contactNumberOne
-            }
-          </InfoText>
+          {
+            !!focusedJob.steps[idx].contactPersonOne &&
+            !!focusedJob.steps[idx].contactNumberOne &&
+            <View>
+              <SpaceView mTop={SIZE4} />
+              <LabelText>Contact</LabelText>
+              <InfoText>
+                {
+                  focusedJob.steps[idx].contactPersonOne +
+                  '  |  ' +
+                  focusedJob.steps[idx].contactNumberOne
+                }
+              </InfoText>
+            </View>
+          }
 
-          <SpaceView mTop={SIZE2} />
-          <LabelText>Date & Time</LabelText>
+          <SpaceView mTop={SIZE4} />
+          <LabelText>Completed Date & Time</LabelText>
           <InfoText>
             {
               moment(focusedJob.jobTimeSpecific || focusedJob.jobDate).format('DD MMM') +
@@ -329,7 +338,7 @@ const CompleteView = ({
             }
           </InfoText>
 
-          <SpaceView mTop={SIZE2} />
+          <SpaceView mTop={SIZE4} />
           <RowWrap>
             <FlexWrap>
               <LabelText>Job Type</LabelText>
@@ -337,29 +346,40 @@ const CompleteView = ({
                 {focusedJob.jobTemplateName || focusedJob.jobTypeName}
               </InfoText>
             </FlexWrap>
-            <FlexWrap>
-              <LabelText>Collections</LabelText>
-              <InfoText>
-                {''}
-              </InfoText>
-            </FlexWrap>
+            {
+              focusedJob.isEnabledCashCollection &&
+              <FlexWrap>
+                <LabelText>Collections</LabelText>
+                <InfoText>
+                  {
+                    '$' +
+                    (
+                      (focusedJob.amountToCollect || 0) +
+                      (focusedJob.collectedAmount || 0)
+                    )
+                  }
+                </InfoText>
+              </FlexWrap>
+            }
           </RowWrap>
 
-          <SpaceView mTop={SIZE2} />
+          <SpaceView mTop={SIZE4} />
           <RowWrap>
             <FlexWrap>
               <LabelText>Driver</LabelText>
               <InfoText>
-                {focusedJob.jobTemplateName || focusedJob.jobTypeName}
+                {focusedJob.assignedVehicle.defaultDriver.driverName}
               </InfoText>
             </FlexWrap>
             <FlexWrap>
               <LabelText>Vehicle</LabelText>
               <InfoText>
-                {''}
+                {focusedJob.assignedVehicle.vehicleName}
               </InfoText>
             </FlexWrap>
           </RowWrap>
+
+          <SpaceView mTop={SIZE4} />
         </ContentWrap>
       </View>
     );
