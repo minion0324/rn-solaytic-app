@@ -44,6 +44,8 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
+  PrintAndShareWrap,
+  PrintAndShareText,
 } from '../styled';
 
 const {
@@ -54,12 +56,14 @@ const {
   DateIcon,
   TimeIcon,
   ChatIcon,
-  ActiveBinInIcon,
-  ActiveBinOutIcon,
+  DeactiveBinInIcon,
+  DeactiveBinOutIcon,
   PaymentIcon,
   ServiceIcon,
   FailIcon,
   ImageIcon,
+  PrintIcon,
+  ShareIcon,
 } = SVGS;
 
 const CompleteView = ({
@@ -96,6 +100,31 @@ const CompleteView = ({
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
 }) => {
+
+  const renderPrintAndShare = () => {
+    if (jobStatus !== JOB_STATUS.COMPLETED) {
+      return null;
+    }
+
+    return (
+      <ShadowWrap>
+        <PrintAndShareWrap>
+          <TouchableOpacity onPress={null}>
+            <RowWrap>
+              <PrintIcon />
+              <PrintAndShareText>Print</PrintAndShareText>
+            </RowWrap>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={null}>
+            <RowWrap>
+              <ShareIcon />
+              <PrintAndShareText>Share</PrintAndShareText>
+            </RowWrap>
+          </TouchableOpacity>
+        </PrintAndShareWrap>
+      </ShadowWrap>
+    );
+  };
 
   const renderJobProof = () => {
     if (photos.length === 0 && !sign.uri) {
@@ -173,45 +202,44 @@ const CompleteView = ({
         <ContentWrap>
           {
             selectedServices.map((item) => (
-              <InfoText
+              <View
                 key={`${item.serviceAdditionalChargeId}`}
               >
-                {item.serviceAdditionalChargeName}
-              </InfoText>
+                <SpaceView mTop={SIZE2} />
+                <InfoText>
+                  {`${item.serviceAdditionalChargeName} * ${item.quantity || 1}`}
+                </InfoText>
+              </View>
             ))
           }
+          <SpaceView mTop={SIZE2} />
         </ContentWrap>
       </View>
     );
   };
 
   const renderBinInfo = () => {
-    const editable = true;
-
     return (
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
 
         return (
           (item.wasteType || item.binType) &&
-          <View>
+          <View key={`${item.jobStepId}`}>
             <SpaceView mTop={SIZE2} />
-            <TouchableOpacity
-              onPress={() => onBinInfo(item, idx)}
-            >
             <ContentWrap>
               <RowWrap>
                 {
                   idx === 0 &&
                   <RowWrap>
-                    <ActiveBinInIcon />
+                    <DeactiveBinInIcon />
                     <SpaceView mLeft={SIZE2} />
                   </RowWrap>
                 }
                 {
                   idx === 1 &&
                   <RowWrap>
-                    <ActiveBinOutIcon />
+                    <DeactiveBinOutIcon />
                     <SpaceView mLeft={SIZE2} />
                   </RowWrap>
                 }
@@ -220,57 +248,43 @@ const CompleteView = ({
                 </TitleText>
               </RowWrap>
             </ContentWrap>
-            </TouchableOpacity>
             <WrapBorder />
-            <TouchableOpacity
-              onPress={() => onBinInfo(item, idx)}
-            >
-              <ContentWrap>
-                <RowWrap>
-                  <FlexWrap>
-                    <RowWrap>
-                      <FlexWrap>
-                        <LabelText>Waste Type</LabelText>
-                        <InfoText>
-                          {item['wasteType'] && item['wasteType']['wasteTypeName']}
-                        </InfoText>
-                      </FlexWrap>
-                      {
-                        focusedJob.isEnabledBinWeight &&
-                        (!!item['binWeight'] || editable) &&
-                        (
-                          index !== 0 ||
-                          focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
-                        ) &&
-                        <FlexWrap>
-                          <LabelText>Nett Weight</LabelText>
-                          <InfoText>
-                            {item['binWeight']}
-                          </InfoText>
-                        </FlexWrap>
-                      }
-                    </RowWrap>
-                    <SpaceView mTop={SIZE2} />
-                    <RowWrap>
-                      <FlexWrap>
-                        <LabelText>Bin Type</LabelText>
-                        <InfoText>
-                          {item['binType'] && item['binType']['binTypeName']}
-                        </InfoText>
-                      </FlexWrap>
-                      <FlexWrap>
-                        <LabelText>Bin Id</LabelText>
-                        <InfoText>
-                          {item['binNumber']}
-                        </InfoText>
-                      </FlexWrap>
-                    </RowWrap>
+            <ContentWrap>
+              <SpaceView mTop={SIZE2} />
+              <RowWrap>
+                <FlexWrap flex={6}>
+                  <LabelText>Waste Type</LabelText>
+                  <InfoText>
+                    {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                  </InfoText>
+                </FlexWrap>
+                {
+                  focusedJob.isEnabledBinWeight &&
+                  <FlexWrap flex={4}>
+                    <LabelText>Nett Weight</LabelText>
+                    <InfoText>
+                      {item['binWeight'] || '-- --'}
+                    </InfoText>
                   </FlexWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <BlueRightArrowIcon />
-                </RowWrap>
-              </ContentWrap>
-            </TouchableOpacity>
+                }
+              </RowWrap>
+              <SpaceView mTop={SIZE4} />
+              <RowWrap>
+                <FlexWrap flex={6}>
+                  <LabelText>Bin Type</LabelText>
+                  <InfoText>
+                    {item['binType'] && item['binType']['binTypeName']}
+                  </InfoText>
+                </FlexWrap>
+                <FlexWrap flex={4}>
+                  <LabelText>Bin ID</LabelText>
+                  <InfoText>
+                    {item['binNumber']}
+                  </InfoText>
+                </FlexWrap>
+              </RowWrap>
+              <SpaceView mTop={SIZE4} />
+            </ContentWrap>
           </View>
         );
       })
@@ -415,6 +429,8 @@ const CompleteView = ({
           <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
+
+      { renderPrintAndShare() }
     </Container>
   );
 };
