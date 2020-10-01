@@ -62,6 +62,20 @@ const PhotoAndSignText = styled.Text`
   margin-vertical: ${SIZE3}px;
 `;
 
+const PrintAndShareWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+const PrintAndShareText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 600,
+  color: ${COLORS.BLACK2};
+  margin-left: ${SIZE1}px;
+  margin-vertical: ${SIZE3}px;
+`;
+
 const AmountButton = styled.TouchableOpacity`
   width: ${SIZE20}px;
   height: ${SIZE8}px;
@@ -271,6 +285,8 @@ export {
   CancelButton,
   PhotoAndSignWrap,
   PhotoAndSignText,
+  PrintAndShareWrap,
+  PrintAndShareText,
   AmountButton,
   DriverNoteBadge,
 
