@@ -279,6 +279,35 @@ const BinInfoScreen = ({
             </RowWrap>
           </ContentWrap>
 
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <ContentWrap>
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <FlexWrap>
+                  <RowWrap>
+                    <FlexWrap>
+                      <LabelText>Waste Type</LabelText>
+                      <InfoText>
+                        {bin['wasteType'] && bin['wasteType']['wasteTypeName']}
+                      </InfoText>
+                    </FlexWrap>
+                    {
+                      focusedJob.isAllowDriverEditOnApp &&
+                      <BinSearch
+                        onPress={() => onShowActionSheet('wasteType')}
+                      >
+                        <BinSearchIcon />
+                      </BinSearch>
+                    }
+                  </RowWrap>
+                  <WrapBorder />
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+            </ContentWrap>
+          </View>
+
           {
             focusedJob.isEnabledBinWeight &&
             <View>
@@ -313,16 +342,6 @@ const BinInfoScreen = ({
               </ContentWrap>
             </View>
           }
-
-          <SpaceView mTop={SIZE2} />
-          <ContentWrap>
-            <SpaceView mLeft={SIZE2} />
-            <View>
-              <LabelText>Waste Type</LabelText>
-              <InfoText>Paper disposal</InfoText>
-            </View>
-            <SpaceView mLeft={SIZE2} />
-          </ContentWrap>
         </ScrollView>
       </Content>
 
