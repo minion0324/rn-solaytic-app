@@ -18,7 +18,6 @@ const JobDetailsScreenView = ({
   signedUserName,
   signedUserContact,
   binInfo,
-  setBinInfo,
   jobStatus,
   services,
 
@@ -197,35 +196,17 @@ const JobDetailsScreenView = ({
         getCustomerSiteIndex={getCustomerSiteIndex}
       />
     : <CompleteView
-        loading={loading}
         photos={photos}
         sign={sign}
         signedUserName={signedUserName}
         signedUserContact={signedUserContact}
         binInfo={binInfo}
-        setBinInfo={setBinInfo}
         jobStatus={jobStatus}
         services={services}
-        isInProgress={isInProgress}
 
         focusedJob={focusedJob}
 
         onBack={onBack}
-        onAcknowledge={onAcknowledge}
-        onStart={onStart}
-        onExchange={onExchange}
-        onComplete={onComplete}
-        onPhoto={onPhoto}
-        onSign={onSign}
-        onCancelPhoto={onCancelPhoto}
-        onCancelSign={onCancelSign}
-        onUpdateAmountCollected={onUpdateAmountCollected}
-        onAlertNotProgress={onAlertNotProgress}
-        onFail={onFail}
-        onAddress={onAddress}
-        onDriverNote={onDriverNote}
-        onAddServices={onAddServices}
-        onBinInfo={onBinInfo}
 
         getBinInOutInfoIndex={getBinInOutInfoIndex}
         getCustomerSiteIndex={getCustomerSiteIndex}
@@ -239,7 +220,6 @@ JobDetailsScreenView.propTypes = {
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
-  setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
   isInProgress: PropTypes.bool.isRequired,

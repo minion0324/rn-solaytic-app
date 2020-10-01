@@ -422,7 +422,6 @@ const JobDetailsScreen = ({
       signedUserName={signedUserName}
       signedUserContact={signedUserContact}
       binInfo={binInfo}
-      setBinInfo={setBinInfo}
       jobStatus={jobStatus}
       services={services}
       isInProgress={isInProgress}

@@ -5,12 +5,10 @@ import moment from 'moment';
 
 import {
   SVGS,
-  COLORS,
   SIZE1,
   SIZE2,
   SIZE4,
   JOB_STATUS,
-  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -49,53 +47,24 @@ import {
 } from '../styled';
 
 const {
-  PersonContactIcon,
-  NumberContactIcon,
-  BlueRightArrowIcon,
-  RedRightArrowIcon,
-  DateIcon,
-  TimeIcon,
-  ChatIcon,
   DeactiveBinInIcon,
   DeactiveBinOutIcon,
-  PaymentIcon,
-  ServiceIcon,
-  FailIcon,
-  ImageIcon,
   PrintIcon,
   ShareIcon,
 } = SVGS;
 
 const CompleteView = ({
-  loading,
   photos,
   sign,
   signedUserName,
   signedUserContact,
   binInfo,
-  setBinInfo,
   jobStatus,
   services,
-  isInProgress,
 
   focusedJob,
 
   onBack,
-  onAcknowledge,
-  onStart,
-  onExchange,
-  onComplete,
-  onPhoto,
-  onSign,
-  onCancelPhoto,
-  onCancelSign,
-  onFail,
-  onUpdateAmountCollected,
-  onAlertNotProgress,
-  onAddress,
-  onDriverNote,
-  onAddServices,
-  onBinInfo,
 
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
@@ -436,35 +405,17 @@ const CompleteView = ({
 };
 
 CompleteView.propTypes = {
-  loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
   sign: PropTypes.object,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
-  setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
-  isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,
-  onAcknowledge: PropTypes.func.isRequired,
-  onStart: PropTypes.func.isRequired,
-  onExchange: PropTypes.func.isRequired,
-  onComplete: PropTypes.func.isRequired,
-  onPhoto: PropTypes.func.isRequired,
-  onSign: PropTypes.func.isRequired,
-  onCancelPhoto: PropTypes.func.isRequired,
-  onCancelSign: PropTypes.func.isRequired,
-  onFail: PropTypes.func.isRequired,
-  onUpdateAmountCollected: PropTypes.func.isRequired,
-  onAlertNotProgress: PropTypes.func.isRequired,
-  onAddress: PropTypes.func.isRequired,
-  onDriverNote: PropTypes.func.isRequired,
-  onAddServices: PropTypes.func.isRequired,
-  onBinInfo: PropTypes.func.isRequired,
 
   getBinInOutInfoIndex: PropTypes.func.isRequired,
   getCustomerSiteIndex: PropTypes.func.isRequired,
