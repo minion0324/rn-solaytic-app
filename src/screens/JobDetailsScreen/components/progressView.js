@@ -17,7 +17,6 @@ import {
   SIZE4,
   SIZE10,
   JOB_STATUS,
-  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -104,7 +103,6 @@ const ProgressView = ({
   signedUserName,
   signedUserContact,
   binInfo,
-  setBinInfo,
   jobStatus,
   services,
   isInProgress,
@@ -790,7 +788,6 @@ ProgressView.propTypes = {
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
-  setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
   isInProgress: PropTypes.bool.isRequired,
