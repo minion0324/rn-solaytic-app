@@ -55,6 +55,12 @@ import AddCircleIcon from 'src/assets/svgs/icon-circle-add.svg';
 import RemoveCircleIcon from 'src/assets/svgs/icon-circle-remove.svg';
 import MessageAvatarIcon from 'src/assets/svgs/icon-avatar-message.svg';
 import BinSearchIcon from 'src/assets/svgs/icon-search-bin.svg';
+import Mask1Icon from 'src/assets/svgs/icon-mask1.svg';
+import Mask2Icon from 'src/assets/svgs/icon-mask2.svg';
+import Mask3Icon from 'src/assets/svgs/icon-mask3.svg';
+import Mask4Icon from 'src/assets/svgs/icon-mask4.svg';
+import Scan1Icon from 'src/assets/svgs/icon-scan1.svg';
+import Scan2Icon from 'src/assets/svgs/icon-scan2.svg';
 
 export default {
   ActiveCheckIcon,
@@ -114,4 +120,10 @@ export default {
   RemoveCircleIcon,
   MessageAvatarIcon,
   BinSearchIcon,
+  Mask1Icon,
+  Mask2Icon,
+  Mask3Icon,
+  Mask4Icon,
+  Scan1Icon,
+  Scan2Icon,
 };
