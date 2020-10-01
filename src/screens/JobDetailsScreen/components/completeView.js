@@ -44,6 +44,7 @@ import {
   SignInfoText,
   PrintAndShareWrap,
   PrintAndShareText,
+  LogoImageWrap,
 } from '../styled';
 
 const {
@@ -376,10 +377,19 @@ const CompleteView = ({
         <ContentWrap>
           <RowWrap>
             <FlexWrap flex={4}>
-
+              <LogoImageWrap>
+                <FullImage source={{ uri: ownerInfo.logoImageUrl }} />
+              </LogoImageWrap>
             </FlexWrap>
+            <SpaceView mLeft={SIZE2} />
             <FlexWrap flex={6}>
               <TitleText>{ownerInfo.accountName}</TitleText>
+              <SpaceView mTop={SIZE1} />
+
+              <InfoText>{ownerInfo.address}</InfoText>
+              <InfoText>{ownerInfo.phone}</InfoText>
+              <InfoText>{ownerInfo.uenNumber}</InfoText>
+              <InfoText>{ownerInfo.gstNumber}</InfoText>
             </FlexWrap>
           </RowWrap>
         </ContentWrap>
