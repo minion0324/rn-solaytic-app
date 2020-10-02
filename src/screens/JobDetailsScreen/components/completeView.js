@@ -20,6 +20,10 @@ import {
 import {
   delay,
 } from 'src/utils';
+import {
+  showOverlay,
+  BLUETOOTH_PRINTER_SCREEN,
+} from 'src/navigation';
 
 import {
   Container,
@@ -87,10 +91,7 @@ const CompleteView = ({
 
       await delay(1000);
 
-      const mediaType = 'image/png';
-      const base64Str = await viewShotRef.current.capture();
-
-      return `data:${mediaType};base64,${base64Str}`;
+      return await viewShotRef.current.capture();
     } catch (error) {
       return Promise.reject(error);
     }
@@ -98,22 +99,28 @@ const CompleteView = ({
 
   const onPrint = async () => {
     try {
-      const base64Data = await onViewShot();
+      const base64Str = await onViewShot();
+
+      showOverlay(BLUETOOTH_PRINTER_SCREEN, { base64Str });
 
       setShowing(false);
     } catch (error) {
-      //
+      setShowing(false);
     }
   };
 
   const onShare = async () => {
     try {
-      const base64Data = await onViewShot();
+      const base64Str = await onViewShot();
+
+      const mediaType = 'image/png';
+      const base64Data = `data:${mediaType};base64,${base64Str}`;
+
       await Share.open({ url: base64Data });
 
       setShowing(false);
     } catch (error) {
-      //
+      setShowing(false);
     }
   };
 
