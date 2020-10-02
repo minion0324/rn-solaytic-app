@@ -19,6 +19,7 @@ import {
   BinInfoScreen,
   ScanCodeScreen,
   AddServicesScreen,
+  BluetoothPrinterScreen,
 } from 'src/screens';
 
 import {
@@ -36,6 +37,7 @@ import {
   BIN_INFO_SCREEN,
   SCAN_CODE_SCREEN,
   ADD_SERVICES_SCREEN,
+  BLUETOOTH_PRINTER_SCREEN,
 } from './Screens';
 
 function WrappedComponent(Component) {
@@ -69,4 +71,5 @@ export default function () {
   Navigation.registerComponent(BIN_INFO_SCREEN, () => WrappedComponent(BinInfoScreen));
   Navigation.registerComponent(SCAN_CODE_SCREEN, () => WrappedComponent(ScanCodeScreen));
   Navigation.registerComponent(ADD_SERVICES_SCREEN, () => WrappedComponent(AddServicesScreen));
+  Navigation.registerComponent(BLUETOOTH_PRINTER_SCREEN, () => WrappedComponent(BluetoothPrinterScreen));
 };
