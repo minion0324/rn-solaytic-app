@@ -439,13 +439,26 @@ const CompleteView = ({
             </FlexWrap>
             <SpaceView mLeft={SIZE4} />
             <FlexWrap flex={6}>
-              <TitleText>{ownerInfo.accountName}</TitleText>
+              <TitleText>
+                {ownerInfo.accountName}
+              </TitleText>
               <SpaceView mTop={SIZE1} />
 
-              <InfoText>{ownerInfo.address}</InfoText>
-              <InfoText>{ownerInfo.phone}</InfoText>
-              <InfoText>{ownerInfo.uenNumber}</InfoText>
-              <InfoText>{ownerInfo.gstNumber}</InfoText>
+              <InfoText>
+                {ownerInfo.address}
+              </InfoText>
+              <InfoText>
+                {
+                  (ownerInfo.phone ? `Tel: ${ownerInfo.phone}  ` : '') +
+                  (ownerInfo.faxNumber ? `Fax: ${ownerInfo.faxNumber}  ` : '')
+                }
+              </InfoText>
+              <InfoText>
+                {
+                  (ownerInfo.uenNumber ? `UEN: ${ownerInfo.uenNumber}  ` : '') +
+                  (ownerInfo.gstNumber ? `GST: ${ownerInfo.gstNumber}  ` : '')
+                }
+              </InfoText>
             </FlexWrap>
           </RowWrap>
         </ContentWrap>
