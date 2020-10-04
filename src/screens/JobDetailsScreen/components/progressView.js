@@ -136,8 +136,8 @@ const ProgressView = ({
 
   const isForComplete = () => {
     return (
-      (jobStatus === JOB_STATUS.IN_PROGRESS2 ||
-      (jobStatus === JOB_STATUS.IN_PROGRESS1 && focusedJob.steps.length === 2))
+      (jobStatus === JOB_STATUS.IN_PROGRESS ||
+      (jobStatus === JOB_STATUS.STARTED && focusedJob.steps.length === 2))
     );
   };
 
@@ -732,7 +732,7 @@ const ProgressView = ({
 
     if (
       focusedJob.steps.length === 3 &&
-      jobStatus === JOB_STATUS.IN_PROGRESS1
+      jobStatus === JOB_STATUS.STARTED
     ) {
       return (
         <DefaultButton
@@ -745,8 +745,8 @@ const ProgressView = ({
     }
 
     if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
+      jobStatus === JOB_STATUS.STARTED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS
     ) {
       return (
         <DefaultButton

@@ -91,8 +91,8 @@ const JobDetailsScreen = ({
   const isInProgress = useMemo(() => {
     return (
       jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
+      jobStatus === JOB_STATUS.STARTED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS
     );
   }, [jobStatus]);
 
@@ -313,7 +313,7 @@ const JobDetailsScreen = ({
         }
       );
 
-      onBack();
+      setLoading(false);
     } catch (error) {
       //
     }

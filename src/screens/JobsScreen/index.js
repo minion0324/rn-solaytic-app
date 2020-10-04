@@ -215,8 +215,8 @@ const JobsScreen = ({
       return allJobs.filter((job) => (
         job.statusName === JOB_STATUS.ASSIGNED ||
         job.statusName === JOB_STATUS.ACKNOWLEDGED ||
-        job.statusName === JOB_STATUS.IN_PROGRESS1 ||
-        job.statusName === JOB_STATUS.IN_PROGRESS2
+        job.statusName === JOB_STATUS.STARTED ||
+        job.statusName === JOB_STATUS.IN_PROGRESS
       ));
     }
 

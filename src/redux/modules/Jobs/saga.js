@@ -366,6 +366,9 @@ export function* asyncStartJobs({ payload }) {
 
     const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate, pricings);
 
+    console.log('--------------- start jobs');
+    console.log(data);
+
     const successJobIds = data.successJobs.map(item => item.jobId);
 
     const allJobs = yield select(Jobs.selectors.getAllJobs);
@@ -376,7 +379,7 @@ export function* asyncStartJobs({ payload }) {
       if (index !== -1) {
         res.newJobs.splice(index, 1, {
           ...res.newJobs[index],
-          statusName: JOB_STATUS.IN_PROGRESS1,
+          statusName: JOB_STATUS.STARTED,
         });
       }
 
@@ -387,7 +390,7 @@ export function* asyncStartJobs({ payload }) {
 
     yield put(actionCreators.startJobsSuccess({
       ...result,
-      statusName: JOB_STATUS.IN_PROGRESS1,
+      statusName: JOB_STATUS.STARTED,
       appExtraData: { binInfo, services },
     }));
 
@@ -426,7 +429,7 @@ export function* asyncExchangeJobs({ payload }) {
       if (index !== -1) {
         res.newJobs.splice(index, 1, {
           ...res.newJobs[index],
-          statusName: JOB_STATUS.IN_PROGRESS2,
+          statusName: JOB_STATUS.IN_PROGRESS,
         });
       }
 
@@ -437,7 +440,7 @@ export function* asyncExchangeJobs({ payload }) {
 
     yield put(actionCreators.exchangeJobsSuccess({
       ...result,
-      statusName: JOB_STATUS.IN_PROGRESS2,
+      statusName: JOB_STATUS.IN_PROGRESS,
       appExtraData: { binInfo, services },
     }));
 

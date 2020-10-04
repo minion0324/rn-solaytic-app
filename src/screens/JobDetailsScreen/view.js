@@ -50,7 +50,7 @@ const JobDetailsScreenView = ({
       case JOB_TYPE.PULL:
         if (
           index !== 0 ||
-          jobStatus === JOB_STATUS.IN_PROGRESS2
+          jobStatus === JOB_STATUS.IN_PROGRESS
         ) {
           return -1;
         }
@@ -58,7 +58,7 @@ const JobDetailsScreenView = ({
         if (
           jobStatus === JOB_STATUS.DISPATCHED ||
           jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-          jobStatus === JOB_STATUS.IN_PROGRESS1
+          jobStatus === JOB_STATUS.STARTED
         ) {
           return 0;
         } else {
@@ -68,7 +68,7 @@ const JobDetailsScreenView = ({
       case JOB_TYPE.PUT:
         if (
           index !== 0 ||
-          jobStatus === JOB_STATUS.IN_PROGRESS2
+          jobStatus === JOB_STATUS.IN_PROGRESS
         ) {
           return -1;
         }
@@ -100,12 +100,12 @@ const JobDetailsScreenView = ({
       case JOB_TYPE.SHIFT:
         if (
           index !== 0 ||
-          jobStatus === JOB_STATUS.IN_PROGRESS2
+          jobStatus === JOB_STATUS.IN_PROGRESS
         ) {
           return -1;
         }
 
-        if (jobStatus === JOB_STATUS.IN_PROGRESS1) {
+        if (jobStatus === JOB_STATUS.STARTED) {
           return 0;
         } else {
           return 1;
@@ -139,7 +139,7 @@ const JobDetailsScreenView = ({
         return 0;
       }
 
-      if (jobStatus === JOB_STATUS.IN_PROGRESS1) {
+      if (jobStatus === JOB_STATUS.STARTED) {
         return 1;
       }
 
@@ -150,7 +150,7 @@ const JobDetailsScreenView = ({
       if (
         jobStatus === JOB_STATUS.DISPATCHED ||
         jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-        jobStatus === JOB_STATUS.IN_PROGRESS1
+        jobStatus === JOB_STATUS.STARTED
       ) {
         return 0;
       }
@@ -161,8 +161,8 @@ const JobDetailsScreenView = ({
 
   return (
     jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-    jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-    jobStatus === JOB_STATUS.IN_PROGRESS2 ||
+    jobStatus === JOB_STATUS.STARTED ||
+    jobStatus === JOB_STATUS.IN_PROGRESS ||
     JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
   )
     ? <ProgressView

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -121,9 +121,31 @@ const JobCard = ({
     jobTypeName,
   },
 }) => {
-  const steps = sortBy(originSteps, 'stepOrder');
+  const steps = useMemo(() => {
+    return sortBy(originSteps, 'stepOrder');
+  }, [originSteps]);
 
-  const getLocation = () => {
+  const statusColor = useMemo(() => {
+    switch (statusName) {
+      case JOB_STATUS.STARTED:
+        return COLORS.BLUE1;
+
+      case JOB_STATUS.IN_PROGRESS:
+        return COLORS.PURPLE1;
+
+      case JOB_STATUS.COMPLETED:
+        return COLORS.GREEN1;
+
+      case JOB_STATUS.FAILED:
+      case JOB_STATUS.CANCELLED:
+        return COLORS.RED1;
+
+      default:
+        return null;
+    };
+  }, [statusName]);
+
+  const location = useMemo(() => {
     switch (jobTypeName) {
       case JOB_TYPE.PULL:
         return steps[0].address || steps[1].address;
@@ -141,47 +163,18 @@ const JobCard = ({
       default:
         return steps[2].address || steps[1].address || steps[0].address;
     };
-  }
-
-  const renderStatus = () => {
-    let res = null;
-
-    switch (statusName) {
-      case JOB_STATUS.IN_PROGRESS1:
-        res = { color: COLORS.BLUE1, text: 'Started' };
-        break;
-
-      case JOB_STATUS.IN_PROGRESS2:
-        res = { color: COLORS.PURPLE1, text: 'In Progress' };
-        break;
-
-      case JOB_STATUS.COMPLETED:
-        res = { color: COLORS.GREEN1, text: 'Completed' };
-        break;
-
-      case JOB_STATUS.FAILED:
-      case JOB_STATUS.CANCELLED:
-        res = { color: COLORS.RED1, text: statusName };
-        break;
-
-      default:
-        break;
-    };
-
-    if (!res) return null;
-
-    return (
-      <StatusWrap color={res.color}>
-        <StatusText color={res.color}>
-          {res.text}
-        </StatusText>
-      </StatusWrap>
-    );
-  };
+  }, [jobTypeName]);
 
   return (
     <Container>
-      { renderStatus() }
+      {
+        statusColor &&
+        <StatusWrap color={statusColor}>
+          <StatusText color={statusColor}>
+            {statusName}
+          </StatusText>
+        </StatusWrap>
+      }
       <FlexWrap flex={2}>
         <ContentWrap hasBorder>
           <FlexWrap flex={2}>
@@ -207,7 +200,7 @@ const JobCard = ({
             <LocationRow>
               <LocationIcon />
               <LocationText numberOfLines={1}>
-                {getLocation()}
+                {location}
               </LocationText>
             </LocationRow>
           </FlexWrap>
