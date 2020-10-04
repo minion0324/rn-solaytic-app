@@ -28,7 +28,6 @@ import {
   Container,
   Content,
   ContentWrap,
-  WrapBorder,
   ShadowWrap,
   RowWrap,
   FlexWrap,
@@ -45,6 +44,7 @@ import {
 } from 'src/styles/text.styles';
 
 import {
+  BinBorder,
   BinInput,
   BinSearch,
 } from './styled';
@@ -246,7 +246,7 @@ const BinInfoScreen = ({
                     onChangeText={(text) => onUpdateBinInfo({ binNumber: text })}
                     editable={focusedJob.isAllowDriverEditOnApp}
                   />
-                  <WrapBorder />
+                  <BinBorder />
                 </View>
                 <SpaceView mTop={SIZE4} />
                 <View>
@@ -266,7 +266,7 @@ const BinInfoScreen = ({
                       </BinSearch>
                     }
                   </RowWrap>
-                  <WrapBorder />
+                  <BinBorder />
                 </View>
               </FlexWrap>
               <FlexWrap flex={4}>
@@ -306,7 +306,7 @@ const BinInfoScreen = ({
                       </BinSearch>
                     }
                   </RowWrap>
-                  <WrapBorder />
+                  <BinBorder />
                 </FlexWrap>
                 <SpaceView mLeft={SIZE2} />
               </RowWrap>
@@ -338,7 +338,7 @@ const BinInfoScreen = ({
                         </FlexWrap>
                         <InfoText>tons</InfoText>
                       </RowWrap>
-                      <WrapBorder />
+                      <BinBorder />
                     </View>
                   </FlexWrap>
                   <FlexWrap flex={4} />
