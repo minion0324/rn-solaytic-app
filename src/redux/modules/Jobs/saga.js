@@ -17,6 +17,7 @@ import {
   apiGetJobs,
   apiAcknowledgeJobs,
   apiStartJobs,
+  apiPullJobs,
   apiExchangeJobs,
   apiCompleteJobs,
   apiFailJobs,
@@ -44,6 +45,7 @@ import {
   RELOAD_JOBS_AND_ALERTS,
   ACKNOWLEDGE_JOBS,
   START_JOBS,
+  PULL_JOBS,
   EXCHANGE_JOBS,
   COMPLETE_JOBS,
   FAIL_JOBS,
@@ -408,6 +410,59 @@ export function* watchStartJobs() {
   while (true) {
     const action = yield take(START_JOBS);
     yield* asyncStartJobs(action);
+  }
+}
+
+export function* asyncPullJobs({ payload }) {
+  const {
+    jobIds, binInfo, services, success, failure,
+  } = payload;
+
+  try {
+    const stepBinUpdate = getUpdatedBinInfo(binInfo);
+    const pricings = getUpdatedServices(services);
+
+    const { data } = yield call(apiPullJobs, jobIds, stepBinUpdate, pricings);
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const focusedJobId = yield select(Jobs.selectors.getFocusedJobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      if (index !== -1) {
+        res.newJobs.splice(index, 1, {
+          ...res.newJobs[index],
+          statusName: JOB_STATUS.IN_PROGRESS,
+        });
+      }
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.pullJobsSuccess({
+      ...result,
+      statusName:
+        successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
+      appExtraData: { binInfo, services },
+    }));
+
+    success && success();
+  } catch (error) {
+    yield onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchPullJobs() {
+  while (true) {
+    const action = yield take(PULL_JOBS);
+    yield* asyncPullJobs(action);
   }
 }
 
@@ -792,6 +847,7 @@ export default function* () {
     fork(watchReloadJobsAndAlerts),
     fork(watchAcknowledgeJobs),
     fork(watchStartJobs),
+    fork(watchPullJobs),
     fork(watchExchangeJobs),
     fork(watchCompleteJobs),
     fork(watchFailJobs),
