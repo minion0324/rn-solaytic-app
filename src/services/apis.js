@@ -176,6 +176,16 @@ function apiGetBinNumbers(
   });
 };
 
+function apiGetJobDates(
+  isAssigned = false,
+) {
+  return apiCall('api/mobile/driver/job-dates', 'get', {
+    params: {
+      isAssigned,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -193,4 +203,5 @@ export {
   apiAddMessage,
   apiUpdateAmountCollected,
   apiGetBinNumbers,
+  apiGetJobDates,
 };
