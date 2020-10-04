@@ -81,7 +81,9 @@ const TimeText = styled.Text`
 `;
 
 const CustomerText = styled.Text`
-  width: 70%;
+  width: ${(props) => (
+    props.full ? '100%' : '70%'
+  )};
   font-size: ${FONT(15)}px;
   font-weight: 700;
   color: ${COLORS.BLACK2};
@@ -193,7 +195,10 @@ const JobCard = ({
           </FlexWrap>
           <SpaceView mLeft={SIZE1} />
           <FlexWrap flex={7}>
-            <CustomerText numberOfLines={1}>
+            <CustomerText
+              numberOfLines={1}
+              full={!statusColor}
+            >
               {customerName}
             </CustomerText>
             <SpaceView mTop={SIZE1} />
