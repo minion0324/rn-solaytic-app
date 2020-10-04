@@ -503,6 +503,7 @@ const ProgressView = ({
                         </InfoText>
                       </FlexWrap>
                       {
+                        index === 1 &&
                         focusedJob.isEnabledBinWeight &&
                         <FlexWrap flex={4}>
                           <LabelText>Nett Weight</LabelText>
