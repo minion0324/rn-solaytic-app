@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Calendar } from 'react-native-calendars';
@@ -6,6 +6,7 @@ import { Calendar } from 'react-native-calendars';
 import {
   COLORS,
   WIDTH,
+  DEFAULT_DATE_FORMAT,
   DATE_KEY,
 } from 'src/constants';
 import {
@@ -20,18 +21,32 @@ const Container = styled.View`
 
 const DatePicker = ({
   date,
+  jobDates,
   onSelect,
 }) => {
-  const getSelectedDate = () => {
-    const selectedDate = getStartDate(date, DATE_KEY);
+  const markedDates = useMemo(() => {
+    const result = jobDates.reduce((res, item) => {
+      const mid = getDate(item, DEFAULT_DATE_FORMAT);
+
+      return {
+        ...res,
+        [mid]: { marked: true },
+      };
+    }, {});
+
+    return result;
+  }, [jobDates]);
+
+  const selectedDate = useMemo(() => {
+    const mid = getStartDate(date, DATE_KEY);
 
     return {
-      [selectedDate]: {
+      [mid]: {
         selected: true,
         selectedColor: COLORS.BLUE1,
       },
     };
-  }
+  }, [date]);
 
   const onDateSelect = (day) => {
     onSelect(getDate(day.dateString));
@@ -43,7 +58,10 @@ const DatePicker = ({
         onDayPress={onDateSelect}
         onDayLongPress={onDateSelect}
         monthFormat={'MMMM yyyy'}
-        markedDates={getSelectedDate()}
+        markedDates={{
+          ...markedDates,
+          ...selectedDate,
+        }}
       />
     </Container>
   );
@@ -51,6 +69,7 @@ const DatePicker = ({
 
 DatePicker.propTypes = {
   date: PropTypes.string.isRequired,
+  jobDates: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
 };
 
