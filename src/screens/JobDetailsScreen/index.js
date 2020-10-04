@@ -356,7 +356,7 @@ const JobDetailsScreen = ({
       signedUserName,
       setSignedUserName,
       signedUserContact,
-      setSignedUserContact
+      setSignedUserContact,
     });
   };
 
