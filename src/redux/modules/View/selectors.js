@@ -58,6 +58,13 @@ const getBinNumbers = createSelector(
   },
 );
 
+const getJobDates = createSelector(
+  getViewStore,
+  (view) => {
+    return view.jobDates || [];
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getDriverNotes,
@@ -67,4 +74,5 @@ export default {
   getIsNetworkConnected,
   getNewCommentInfo,
   getBinNumbers,
+  getJobDates,
 };

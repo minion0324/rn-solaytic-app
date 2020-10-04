@@ -10,6 +10,7 @@ import {
   SET_IS_NETWORK_CONNECTED,
   SET_NEW_COMMENT_INFO,
   GET_BIN_NUMBERS_SUCCESS,
+  GET_JOB_DATES_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -26,6 +27,7 @@ const viewPersistConfig = {
     'isNetworkConnected',
     'newCommentInfo',
     'binNumbers',
+    'jobDates',
   ],
 };
 
@@ -55,6 +57,9 @@ function View(state = DEFAULT, action = {}) {
         break;
       case GET_BIN_NUMBERS_SUCCESS:
         draft.binNumbers = payload.data;
+        break;
+      case GET_JOB_DATES_SUCCESS:
+        draft.jobDates = payload.data;
         break;
     }
   });
