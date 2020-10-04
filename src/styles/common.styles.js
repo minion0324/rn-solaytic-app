@@ -28,7 +28,7 @@ const ContentWrap = styled.View`
 `;
 
 const WrapBorder = styled.View`
-  width: 100%;
+  margin-horizontal: ${SIZE1}px;
   height: 0px;
   border-top-width: 1px;
   border-color: ${COLORS.GRAY2};
