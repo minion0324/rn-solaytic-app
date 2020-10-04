@@ -6,11 +6,12 @@ import {
   apiCall,
 } from './apiInstance';
 
-function apiLogin(userName, password) {
+function apiLogin(userName, password, persistToken) {
   return apiCall('api/mobile/driver/login', 'post', {
     data: {
       userName,
       password,
+      persistToken,
     },
   });
 };
