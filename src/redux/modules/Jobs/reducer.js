@@ -70,7 +70,7 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.allJobs = payload.newJobs;
         draft.allAlerts = payload.newAlerts;
 
-        if (draft.focusedJob) {
+        if (draft.focusedJob && payload.statusName) {
           draft.focusedJob.status.jobStatusName = payload.statusName;
         }
         break;
@@ -80,8 +80,11 @@ function Jobs(state = DEFAULT, action = {}) {
       case FAIL_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
 
-        if (draft.focusedJob) {
+        if (draft.focusedJob && payload.statusName) {
           draft.focusedJob.status.jobStatusName = payload.statusName;
+        }
+
+        if (draft.focusedJob) {
           draft.focusedJob.appExtraData = payload.appExtraData;
         }
         break;
