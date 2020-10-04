@@ -465,27 +465,27 @@ const ProgressView = ({
               disabled={!isInProgress}
               onPress={() => onBinInfo(index, idx)}
             >
-            <ContentWrap>
-              <RowWrap>
-                {
-                  idx === 0 &&
-                  <RowWrap>
-                    <ActiveBinInIcon />
-                    <SpaceView mLeft={SIZE2} />
-                  </RowWrap>
-                }
-                {
-                  idx === 1 &&
-                  <RowWrap>
-                    <ActiveBinOutIcon />
-                    <SpaceView mLeft={SIZE2} />
-                  </RowWrap>
-                }
-                <TitleText>
-                  {`Bin ${idx === 0 ? 'In' : idx === 1 ? 'Out' : ''}`}
-                </TitleText>
-              </RowWrap>
-            </ContentWrap>
+              <ContentWrap>
+                <RowWrap>
+                  {
+                    idx === 0 &&
+                    <RowWrap>
+                      <ActiveBinInIcon />
+                      <SpaceView mLeft={SIZE2} />
+                    </RowWrap>
+                  }
+                  {
+                    idx === 1 &&
+                    <RowWrap>
+                      <ActiveBinOutIcon />
+                      <SpaceView mLeft={SIZE2} />
+                    </RowWrap>
+                  }
+                  <TitleText>
+                    {`Bin ${idx === 0 ? 'In' : idx === 1 ? 'Out' : ''}`}
+                  </TitleText>
+                </RowWrap>
+              </ContentWrap>
             </TouchableOpacity>
             <WrapBorder />
             <TouchableOpacity
