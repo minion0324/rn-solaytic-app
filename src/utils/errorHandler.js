@@ -19,8 +19,16 @@ export function* onError(error, fetchInfo, fetchData) {
 
   try {
     const responseData = error.response.data;
+
     if (typeof responseData === 'string') {
       message = responseData;
+    }
+
+    if (
+      typeof responseData === 'object' &&
+      typeof responseData.Error === 'string'
+    ) {
+      message = responseData.Error;
     }
   } catch (err) {
     //
