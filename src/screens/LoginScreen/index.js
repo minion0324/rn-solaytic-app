@@ -126,6 +126,7 @@ const LoginScreen = ({
     login({
       userName,
       password,
+      persistToken: rememberCheck,
       success: onFetch,
       failure: onFailure,
     });
