@@ -2,9 +2,15 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  FONT,
   SIZE2,
+  FONT,
 } from 'src/constants';
+
+const BinBorder = styled.View`
+  height: 0px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
+`;
 
 const BinInput = styled.TextInput`
   flex: 1;
@@ -20,6 +26,7 @@ const BinSearch = styled.TouchableOpacity`
 `;
 
 export {
+  BinBorder,
   BinInput,
   BinSearch,
 };
