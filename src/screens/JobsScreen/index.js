@@ -71,6 +71,7 @@ const JobsScreen = ({
   focusedJobId,
   coreScreenInfo,
   isNetworkConnected,
+  jobDates,
   getJobsByDate,
   getJobsByPage,
   reloadJobsAndAlerts,
@@ -79,6 +80,7 @@ const JobsScreen = ({
   setCoreScreenInfo,
   setIsNetworkConnected,
   setNewCommentInfo,
+  getJobDates,
   componentId,
 }) => {
   const [ reloading, setReloading ] = useState(false);
@@ -87,6 +89,8 @@ const JobsScreen = ({
   const [ tabIndex, setTabIndex ] = useState(1);
 
   useEffect(() => {
+    getJobDates({});
+
     const networkEventListener = NetInfo.addEventListener(({ isConnected }) => {
       if (isNetworkConnected === isConnected) {
         return;
@@ -245,6 +249,7 @@ const JobsScreen = ({
     return (
       <DatePicker
         date={dateForJobs}
+        jobDates={jobDates}
         onSelect={(date) => {
           updateDateForJobs(date);
           dismissOverlay(containerId);
@@ -349,6 +354,7 @@ JobsScreen.propTypes = {
   focusedJobId: PropTypes.number,
   coreScreenInfo: PropTypes.object.isRequired,
   isNetworkConnected: PropTypes.bool.isRequired,
+  jobDates: PropTypes.array.isRequired,
   getJobsByDate: PropTypes.func.isRequired,
   getJobsByPage: PropTypes.func.isRequired,
   reloadJobsAndAlerts: PropTypes.func.isRequired,
@@ -357,6 +363,7 @@ JobsScreen.propTypes = {
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsNetworkConnected: PropTypes.func.isRequired,
   setNewCommentInfo: PropTypes.func.isRequired,
+  getJobDates: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -373,6 +380,7 @@ const mapStateToProps = (state) => {
     focusedJobId: Jobs.selectors.getFocusedJobId(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
     isNetworkConnected: ViewStore.selectors.getIsNetworkConnected(state),
+    jobDates: ViewStore.selectors.getJobDates(state),
   };
 };
 
@@ -385,6 +393,7 @@ const mapDispatchToProps = {
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsNetworkConnected: ViewStore.actionCreators.setIsNetworkConnected,
   setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
+  getJobDates: ViewStore.actionCreators.getJobDates,
 };
 
 export default connect(
