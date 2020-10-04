@@ -232,7 +232,7 @@ const BluetoothPrinterScreen = ({
 
       console.log(base64Str);
 
-      await BluetoothEscposPrinter.printPic(base64Str, { width: 200, left: 40 });
+      await BluetoothEscposPrinter.printPic(base64Str, { width: 300, left: 40 });
 
       setLoading(false);
     } catch (error) {
