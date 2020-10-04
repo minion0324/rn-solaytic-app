@@ -405,7 +405,7 @@ const CompleteView = ({
             <FlexWrap>
               <LabelText>Driver</LabelText>
               <InfoText>
-                {focusedJob.assignedVehicle.defaultDriver.driverName}
+                {focusedJob.assignedDriver.driverName}
               </InfoText>
             </FlexWrap>
             <FlexWrap>
