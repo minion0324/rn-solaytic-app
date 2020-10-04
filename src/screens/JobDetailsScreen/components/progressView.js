@@ -16,6 +16,7 @@ import {
   SIZE2,
   SIZE4,
   SIZE10,
+  JOB_TYPE,
   JOB_STATUS,
 } from 'src/constants';
 import {
@@ -115,6 +116,7 @@ const ProgressView = ({
   onBack,
   onAcknowledge,
   onStart,
+  onPull,
   onExchange,
   onComplete,
   onPhoto,
@@ -732,6 +734,20 @@ const ProgressView = ({
     }
 
     if (
+      focusedJob.jobTypeName === JOB_TYPE.PULL &&
+      jobStatus === JOB_STATUS.STARTED
+    ) {
+      return (
+        <DefaultButton
+          color={COLORS.PURPLE1}
+          text={'Pull'}
+          onPress={onPull}
+          loading={loading}
+        />
+      );
+    }
+
+    if (
       focusedJob.steps.length === 3 &&
       jobStatus === JOB_STATUS.STARTED
     ) {
@@ -823,6 +839,7 @@ ProgressView.propTypes = {
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,
   onStart: PropTypes.func.isRequired,
+  onPull: PropTypes.func.isRequired,
   onExchange: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,

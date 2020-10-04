@@ -30,6 +30,7 @@ const JobDetailsScreenView = ({
   onBack,
   onAcknowledge,
   onStart,
+  onPull,
   onExchange,
   onComplete,
   onPhoto,
@@ -181,6 +182,7 @@ const JobDetailsScreenView = ({
         onBack={onBack}
         onAcknowledge={onAcknowledge}
         onStart={onStart}
+        onPull={onPull}
         onExchange={onExchange}
         onComplete={onComplete}
         onPhoto={onPhoto}
@@ -236,6 +238,7 @@ JobDetailsScreenView.propTypes = {
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,
   onStart: PropTypes.func.isRequired,
+  onPull: PropTypes.func.isRequired,
   onExchange: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,

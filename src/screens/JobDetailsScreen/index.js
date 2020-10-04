@@ -247,6 +247,18 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onPull = () => {
+    setLoading(true);
+
+    pullJobs({
+      jobIds: `${focusedJob.jobId}`,
+      binInfo,
+      services,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
   const onExchange = () => {
     setLoading(true);
 
@@ -447,6 +459,7 @@ const JobDetailsScreen = ({
       onBack={onBack}
       onAcknowledge={onAcknowledge}
       onStart={onStart}
+      onPull={onPull}
       onExchange={onExchange}
       onComplete={onComplete}
       onPhoto={onPhoto}
@@ -497,6 +510,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   startJobs: Jobs.actionCreators.startJobs,
+  pullJobs: Jobs.actionCreators.pullJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
