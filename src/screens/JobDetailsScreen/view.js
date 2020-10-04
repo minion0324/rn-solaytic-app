@@ -20,6 +20,9 @@ const JobDetailsScreenView = ({
   binInfo,
   jobStatus,
   services,
+  cashIndex,
+  setCashIndex,
+  isInProgress,
 
   ownerInfo,
   focusedJob,
@@ -34,7 +37,6 @@ const JobDetailsScreenView = ({
   onCancelPhoto,
   onCancelSign,
   onUpdateAmountCollected,
-  isInProgress,
   onAlertNotProgress,
   onFail,
   onAddress,
@@ -172,6 +174,8 @@ const JobDetailsScreenView = ({
         binInfo={binInfo}
         jobStatus={jobStatus}
         services={services}
+        cashIndex={cashIndex}
+        setCashIndex={setCashIndex}
         isInProgress={isInProgress}
 
         focusedJob={focusedJob}
@@ -224,6 +228,8 @@ JobDetailsScreenView.propTypes = {
   binInfo: PropTypes.array.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  cashIndex: PropTypes.number.isRequired,
+  setCashIndex: PropTypes.func.isRequired,
   isInProgress: PropTypes.bool.isRequired,
 
   ownerInfo: PropTypes.object.isRequired,

@@ -86,6 +86,8 @@ const JobDetailsScreen = ({
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
+  const [ cashIndex, setCashIndex ] = useState(-1);
+
   const isInProgress = useMemo(() => {
     return (
       jobStatus === JOB_STATUS.ACKNOWLEDGED ||
@@ -268,6 +270,11 @@ const JobDetailsScreen = ({
       return;
     }
 
+    if (focusedJob.isEnabledCashCollection && cashIndex === -1) {
+      Alert.alert('Warning', 'Please select payments.');
+      return;
+    }
+
     if (isInBackgroundMode) {
       Alert.alert(
         'Warning',
@@ -315,6 +322,10 @@ const JobDetailsScreen = ({
   const onCompleteJobs = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
@@ -323,7 +334,7 @@ const JobDetailsScreen = ({
       sign,
       signedUserName,
       signedUserContact,
-      amountCollected: focusedJob.collectedAmount,
+      amountCollected,
       success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });
@@ -426,6 +437,8 @@ const JobDetailsScreen = ({
       binInfo={binInfo}
       jobStatus={jobStatus}
       services={services}
+      cashIndex={cashIndex}
+      setCashIndex={setCashIndex}
       isInProgress={isInProgress}
 
       ownerInfo={ownerInfo}

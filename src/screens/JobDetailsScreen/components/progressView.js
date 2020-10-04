@@ -93,7 +93,8 @@ const {
   SignIcon,
   UpArrowIcon,
   DownArrowIcon,
-  CircleIcon,
+  ActiveCircleCheckIcon,
+  DeactiveCircleCheckIcon,
 } = SVGS;
 
 const ProgressView = ({
@@ -105,6 +106,8 @@ const ProgressView = ({
   binInfo,
   jobStatus,
   services,
+  cashIndex,
+  setCashIndex,
   isInProgress,
 
   focusedJob,
@@ -371,11 +374,14 @@ const ProgressView = ({
                   <SpaceView mLeft={SIZE2} />
                   <TitleText>
                     {
-                      'Payments: Cash $' +
-                      (
-                        (focusedJob.amountToCollect || 0) +
-                        (focusedJob.collectedAmount || 0)
-                      )
+                      cashIndex === -1
+                      ? 'Payments'
+                      : 'Payments: Cash $' +
+                        (
+                          cashIndex === 0
+                          ? (focusedJob.amountToCollect || 0)
+                          : (focusedJob.collectedAmount || 0)
+                        )
                     }
                   </TitleText>
                 </RowWrap>
@@ -399,29 +405,46 @@ const ProgressView = ({
           <View>
             <WrapBorder />
             <ContentWrap>
-              <RowWrap>
-                <CircleIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText>
+              <TouchableOpacity
+                onPress={() => setCashIndex(cashIndex === 0 ? -1 : 0)}
+              >
+                <RowWrap>
                   {
-                    'Collected: $' +
-                    `${focusedJob.amountToCollect || 0}`
+                    cashIndex === 0
+                    ? <ActiveCircleCheckIcon />
+                    : <DeactiveCircleCheckIcon />
                   }
-                </InfoText>
-              </RowWrap>
-              <SpaceView mTop={SIZE2} />
-              <RowWrap>
-                <CircleIcon />
-                <SpaceView mLeft={SIZE2} />
-                <InfoText>{'Others: $'}</InfoText>
-                <AmountButton
-                  onPress={onShowAmountModal}
-                >
-                  <InfoText numberOfLines={1}>
-                    {focusedJob.collectedAmount || ''}
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText>
+                    {
+                      'Collected: $' +
+                      `${focusedJob.amountToCollect || 0}`
+                    }
                   </InfoText>
-                </AmountButton>
-              </RowWrap>
+                </RowWrap>
+              </TouchableOpacity>
+              <SpaceView mTop={SIZE2} />
+              <TouchableOpacity
+                onPress={() => setCashIndex(cashIndex === 1 ? -1 : 1)}
+              >
+                <RowWrap>
+                  {
+                    cashIndex === 1
+                    ? <ActiveCircleCheckIcon />
+                    : <DeactiveCircleCheckIcon />
+                  }
+                  <SpaceView mLeft={SIZE2} />
+                  <InfoText>{'Others: $'}</InfoText>
+                  <AmountButton
+                    onPress={onShowAmountModal}
+                    disabled={cashIndex !== 1}
+                  >
+                    <InfoText numberOfLines={1}>
+                      {focusedJob.collectedAmount || ''}
+                    </InfoText>
+                  </AmountButton>
+                </RowWrap>
+              </TouchableOpacity>
             </ContentWrap>
           </View>
         }
@@ -790,6 +813,8 @@ ProgressView.propTypes = {
   binInfo: PropTypes.array.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  cashIndex: PropTypes.number.isRequired,
+  setCashIndex: PropTypes.func.isRequired,
   isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
