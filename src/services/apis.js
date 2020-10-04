@@ -74,6 +74,16 @@ function apiStartJobs(jobIds, stepBinUpdate, pricings) {
   });
 };
 
+function apiPullJobs(jobIds, stepBinUpdate, pricings) {
+  return apiCall('api/mobile/driver/jobs/pull', 'post', {
+    data: {
+      jobIds,
+      stepBinUpdate,
+      pricings,
+    },
+  });
+};
+
 function apiExchangeJobs(jobIds, stepBinUpdate, pricings) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
@@ -173,6 +183,7 @@ export {
   apiGetJobs,
   apiAcknowledgeJobs,
   apiStartJobs,
+  apiPullJobs,
   apiExchangeJobs,
   apiCompleteJobs,
   apiGetDriverNotes,
