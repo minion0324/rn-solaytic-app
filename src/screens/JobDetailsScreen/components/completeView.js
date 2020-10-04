@@ -389,11 +389,7 @@ const CompleteView = ({
                 <LabelText>Collections</LabelText>
                 <InfoText>
                   {
-                    '$' +
-                    (
-                      (focusedJob.amountToCollect || 0) +
-                      (focusedJob.collectedAmount || 0)
-                    )
+                    '$' + (focusedJob.collectedAmount || 0)
                   }
                 </InfoText>
               </FlexWrap>
