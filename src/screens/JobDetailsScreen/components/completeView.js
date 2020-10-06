@@ -8,6 +8,7 @@ import Share from 'react-native-share';
 import {
   SVGS,
   IMAGES,
+  COLORS,
   SIZE1,
   SIZE2,
   SIZE4,
@@ -156,7 +157,11 @@ const CompleteView = ({
 
     return (
       <View>
-        <SpaceView mTop={SIZE2} />
+        {
+          showing
+          ? <WrapBorder />
+          : <SpaceView mTop={SIZE2} />
+        }
         <ContentWrap>
           <TitleText>
             JOB PROOF
@@ -215,7 +220,11 @@ const CompleteView = ({
 
     return (
       <View>
-        <SpaceView mTop={SIZE2} />
+        {
+          showing
+          ? <WrapBorder />
+          : <SpaceView mTop={SIZE2} />
+        }
         <ContentWrap>
           <TitleText>
             ADDITIONAL SERVICE
@@ -249,7 +258,11 @@ const CompleteView = ({
         return (
           (item.wasteType || item.binType) &&
           <View key={`${item.jobStepId}`}>
-            <SpaceView mTop={SIZE2} />
+            {
+              showing
+              ? <WrapBorder />
+              : <SpaceView mTop={SIZE2} />
+            }
             <ContentWrap>
               <RowWrap>
                 {
@@ -320,7 +333,11 @@ const CompleteView = ({
 
     return (
       <View>
-        <SpaceView mTop={SIZE2} />
+        {
+          showing
+          ? <WrapBorder />
+          : <SpaceView mTop={SIZE2} />
+        }
         <ContentWrap>
           <RowWrap>
             <FlexWrap>
@@ -487,7 +504,12 @@ const CompleteView = ({
         { renderHeader() }
       </ShadowWrap>
 
-      <Content>
+      <Content
+        color={
+          showing
+          ? COLORS.WHITE1 : COLORS.WHITE2
+        }
+      >
         <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
@@ -502,7 +524,10 @@ const CompleteView = ({
             { renderServices() }
             { renderJobProof() }
 
-            <SpaceView mTop={SIZE2} />
+            {
+              !showing &&
+              <SpaceView mTop={SIZE2} />
+            }
           </ViewShot>
         </ScrollView>
       </Content>
