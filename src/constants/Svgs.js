@@ -31,6 +31,7 @@ import PersonContactIcon from 'src/assets/svgs/icon-contact-person.svg';
 import NumberContactIcon from 'src/assets/svgs/icon-contact-number.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
 import RedRightArrowIcon from 'src/assets/svgs/icon-arrow-right-red.svg';
+import BlackRightArrowIcon from 'src/assets/svgs/icon-arrow-right-black.svg';
 import DateIcon from 'src/assets/svgs/icon-date.svg';
 import TimeIcon from 'src/assets/svgs/icon-time.svg';
 import ChatIcon from 'src/assets/svgs/icon-chat.svg';
@@ -96,6 +97,7 @@ export default {
   NumberContactIcon,
   BlueRightArrowIcon,
   RedRightArrowIcon,
+  BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
   ChatIcon,
