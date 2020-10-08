@@ -167,6 +167,14 @@ const JobCard = ({
     };
   }, [jobTypeName]);
 
+  const binIndex = useMemo(() => {
+    if (jobTypeName === JOB_TYPE.EXCHANGE) {
+      return 1;
+    }
+
+    return 0;
+  }, [jobTypeName]);
+
   return (
     <Container>
       {
@@ -217,21 +225,21 @@ const JobCard = ({
           <FlexWrap flex={2}>
             <InfoWrap hasBorder>
               <InfoText numberOfLines={2}>
-                {jobTemplateName}
+                {jobTemplateName || jobTypeName}
               </InfoText>
             </InfoWrap>
           </FlexWrap>
           <FlexWrap flex={3}>
             <InfoWrap hasBorder>
               <InfoText numberOfLines={2}>
-                {steps[0].binTypeName || ''}
+                {steps[binIndex].binTypeName || ''}
               </InfoText>
             </InfoWrap>
           </FlexWrap>
           <FlexWrap flex={4}>
             <InfoWrap>
               <InfoText numberOfLines={2}>
-                {steps[0].wasteTypeName || ''}
+                {steps[binIndex].wasteTypeName || ''}
               </InfoText>
             </InfoWrap>
           </FlexWrap>
