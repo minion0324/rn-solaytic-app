@@ -24,7 +24,6 @@ const JobDetailsScreenView = ({
   setCashIndex,
   isInProgress,
 
-  ownerInfo,
   focusedJob,
 
   onBack,
@@ -209,7 +208,6 @@ const JobDetailsScreenView = ({
         jobStatus={jobStatus}
         services={services}
 
-        ownerInfo={ownerInfo}
         focusedJob={focusedJob}
 
         onBack={onBack}
@@ -232,7 +230,6 @@ JobDetailsScreenView.propTypes = {
   setCashIndex: PropTypes.func.isRequired,
   isInProgress: PropTypes.bool.isRequired,
 
-  ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,

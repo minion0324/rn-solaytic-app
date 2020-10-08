@@ -28,7 +28,6 @@ import {
   BIN_INFO_SCREEN,
 } from 'src/navigation';
 import {
-  User,
   Jobs,
   ViewStore,
 } from 'src/redux';
@@ -43,7 +42,6 @@ import {
 import JobDetailsScreenView from './view';
 
 const JobDetailsScreen = ({
-  ownerInfo,
   focusedJob,
   jobStatus,
   photosAndSign,
@@ -454,7 +452,6 @@ const JobDetailsScreen = ({
       setCashIndex={setCashIndex}
       isInProgress={isInProgress}
 
-      ownerInfo={ownerInfo}
       focusedJob={focusedJob}
 
       onBack={onBack}
@@ -479,7 +476,6 @@ const JobDetailsScreen = ({
 };
 
 JobDetailsScreen.propTypes = {
-  ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
   jobStatus: PropTypes.string.isRequired,
   photosAndSign: PropTypes.object.isRequired,
@@ -501,7 +497,6 @@ JobDetailsScreen.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    ownerInfo: User.selectors.getOwnerInfo(state),
     focusedJob: Jobs.selectors.getFocusedJob(state),
     jobStatus: Jobs.selectors.getJobStatus(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),

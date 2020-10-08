@@ -1,30 +1,18 @@
-import React, { useState, useRef } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import ViewShot from 'react-native-view-shot';
-import Share from 'react-native-share';
 
 import {
   SVGS,
-  IMAGES,
-  COLORS,
   SIZE1,
   SIZE2,
   SIZE4,
-  JOB_STATUS,
 } from 'src/constants';
 import {
   HeaderBar,
   ItemWrap,
 } from 'src/components';
-import {
-  delay,
-} from 'src/utils';
-import {
-  showOverlay,
-  BLUETOOTH_PRINTER_SCREEN,
-} from 'src/navigation';
 
 import {
   Container,
@@ -53,16 +41,11 @@ import {
   HalfWrap,
   SignInfo,
   SignInfoText,
-  PrintAndShareWrap,
-  PrintAndShareText,
-  LogoImageWrap,
 } from '../styled';
 
 const {
   DeactiveBinInIcon,
   DeactiveBinOutIcon,
-  PrintIcon,
-  ShareIcon,
 } = SVGS;
 
 const CompleteView = ({
@@ -74,7 +57,6 @@ const CompleteView = ({
   jobStatus,
   services,
 
-  ownerInfo,
   focusedJob,
 
   onBack,
@@ -82,73 +64,6 @@ const CompleteView = ({
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
 }) => {
-  const [ showing, setShowing ] = useState(false);
-
-  const viewShotRef = useRef(null);
-
-  const onViewShot = async () => {
-    try {
-      setShowing(true);
-
-      await delay(1000);
-
-      return await viewShotRef.current.capture();
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
-
-  const onPrint = async () => {
-    try {
-      const base64Str = await onViewShot();
-
-      showOverlay(BLUETOOTH_PRINTER_SCREEN, { base64Str });
-
-      setShowing(false);
-    } catch (error) {
-      setShowing(false);
-    }
-  };
-
-  const onShare = async () => {
-    try {
-      const base64Str = await onViewShot();
-
-      const mediaType = 'image/png';
-      const base64Data = `data:${mediaType};base64,${base64Str}`;
-
-      await Share.open({ url: base64Data });
-
-      setShowing(false);
-    } catch (error) {
-      setShowing(false);
-    }
-  };
-
-  const renderPrintAndShare = () => {
-    if (jobStatus !== JOB_STATUS.COMPLETED) {
-      return null;
-    }
-
-    return (
-      <ShadowWrap>
-        <PrintAndShareWrap>
-          <TouchableOpacity onPress={onPrint}>
-            <RowWrap>
-              <PrintIcon />
-              <PrintAndShareText>Print</PrintAndShareText>
-            </RowWrap>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onShare}>
-            <RowWrap>
-              <ShareIcon />
-              <PrintAndShareText>Share</PrintAndShareText>
-            </RowWrap>
-          </TouchableOpacity>
-        </PrintAndShareWrap>
-      </ShadowWrap>
-    );
-  };
 
   const renderJobProof = () => {
     if (photos.length === 0 && !sign.uri) {
@@ -157,11 +72,7 @@ const CompleteView = ({
 
     return (
       <View>
-        {
-          showing
-          ? <WrapBorder />
-          : <SpaceView mTop={SIZE2} />
-        }
+        <SpaceView mTop={SIZE2} />
         <ContentWrap>
           <TitleText>
             JOB PROOF
@@ -220,11 +131,7 @@ const CompleteView = ({
 
     return (
       <View>
-        {
-          showing
-          ? <WrapBorder />
-          : <SpaceView mTop={SIZE2} />
-        }
+        <SpaceView mTop={SIZE2} />
         <ContentWrap>
           <TitleText>
             ADDITIONAL SERVICE
@@ -258,11 +165,7 @@ const CompleteView = ({
         return (
           (item.wasteType || item.binType) &&
           <View key={`${item.jobStepId}`}>
-            {
-              showing
-              ? <WrapBorder />
-              : <SpaceView mTop={SIZE2} />
-            }
+            <SpaceView mTop={SIZE2} />
             <ContentWrap>
               <RowWrap>
                 {
@@ -333,11 +236,7 @@ const CompleteView = ({
 
     return (
       <View>
-        {
-          showing
-          ? <WrapBorder />
-          : <SpaceView mTop={SIZE2} />
-        }
+        <SpaceView mTop={SIZE2} />
         <ContentWrap>
           <RowWrap>
             <FlexWrap>
@@ -436,57 +335,6 @@ const CompleteView = ({
     );
   };
 
-  const renderReceiptHeader = () => {
-    if (!showing) {
-      return null;
-    }
-
-    return (
-      <View>
-        <SpaceView mTop={SIZE2} />
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap flex={4}>
-              <LogoImageWrap>
-                <FullImage
-                  resizeMode={'contain'}
-                  source={
-                    ownerInfo.logoImageUrl
-                    ? { uri: ownerInfo.logoImageUrl }
-                    : IMAGES.APP_LOGO
-                  }
-                />
-              </LogoImageWrap>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE4} />
-            <FlexWrap flex={6}>
-              <TitleText>
-                {ownerInfo.accountName}
-              </TitleText>
-              <SpaceView mTop={SIZE1} />
-
-              <InfoText>
-                {ownerInfo.address}
-              </InfoText>
-              <InfoText>
-                {
-                  (ownerInfo.phone ? `Tel: ${ownerInfo.phone}  ` : '') +
-                  (ownerInfo.faxNumber ? `Fax: ${ownerInfo.faxNumber}  ` : '')
-                }
-              </InfoText>
-              <InfoText>
-                {
-                  (ownerInfo.uenNumber ? `UEN: ${ownerInfo.uenNumber}  ` : '') +
-                  (ownerInfo.gstNumber ? `GST: ${ownerInfo.gstNumber}  ` : '')
-                }
-              </InfoText>
-            </FlexWrap>
-          </RowWrap>
-        </ContentWrap>
-      </View>
-    );
-  };
-
   const renderHeader = () => {
     return (
       <HeaderBar
@@ -504,35 +352,19 @@ const CompleteView = ({
         { renderHeader() }
       </ShadowWrap>
 
-      <Content
-        color={
-          showing
-          ? COLORS.WHITE1 : COLORS.WHITE2
-        }
-      >
+      <Content>
         <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
-          <ViewShot
-            ref={viewShotRef}
-            options={{ result: 'base64' }}
-          >
-            { renderReceiptHeader() }
-            { renderCustomerCopy() }
-            { renderBinInfo() }
-            { renderServices() }
-            { renderJobProof() }
+          { renderCustomerCopy() }
+          { renderBinInfo() }
+          { renderServices() }
+          { renderJobProof() }
 
-            {
-              !showing &&
-              <SpaceView mTop={SIZE2} />
-            }
-          </ViewShot>
+          <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
-
-      { renderPrintAndShare() }
     </Container>
   );
 };
@@ -546,7 +378,6 @@ CompleteView.propTypes = {
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
 
-  ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,
