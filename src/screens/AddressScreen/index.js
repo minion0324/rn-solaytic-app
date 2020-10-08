@@ -41,11 +41,11 @@ import {
 } from 'src/styles/header.styles';
 import {
   TitleText,
-  InfoText,
   LabelText,
 } from 'src/styles/text.styles';
 
 import {
+  LocationWrap,
   IconWrap,
   ButtonWrap,
   Location1Line,
@@ -86,7 +86,7 @@ const AddressScreen = ({
       <View>
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
-          <RowWrap>
+          <LocationWrap>
             <IconWrap>
               {
                 index === 0
@@ -177,7 +177,7 @@ const AddressScreen = ({
                 </ButtonWrap>
               }
             </FlexWrap>
-          </RowWrap>
+          </LocationWrap>
         </ContentWrap>
         {
           index === 0
