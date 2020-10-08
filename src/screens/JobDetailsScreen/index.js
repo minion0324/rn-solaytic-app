@@ -85,7 +85,12 @@ const JobDetailsScreen = ({
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
-  const [ cashIndex, setCashIndex ] = useState(-1);
+  const [ cashIndex, setCashIndex ] = useState(
+    !focusedJob.isEnabledCashCollection || !focusedJob.collectedAmount
+    ? -1
+    : focusedJob.collectedAmount === focusedJob.amountToCollect
+      ? 0 : 1
+  );
 
   const isInProgress = useMemo(() => {
     return (
