@@ -80,6 +80,7 @@ const {
   NumberContactIcon,
   BlueRightArrowIcon,
   RedRightArrowIcon,
+  BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
   ChatIcon,
@@ -96,6 +97,7 @@ const {
   DownArrowIcon,
   ActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
+  PrintIcon,
 } = SVGS;
 
 const ProgressView = ({
@@ -130,6 +132,7 @@ const ProgressView = ({
   onDriverNote,
   onAddServices,
   onBinInfo,
+  onPrint,
 
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
@@ -235,11 +238,26 @@ const ProgressView = ({
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
           <RowWrap>
-            <ImageIcon />
-            <SpaceView mLeft={SIZE2} />
-            <TitleText>
-              Job Proof
-            </TitleText>
+            <FlexWrap>
+              <RowWrap>
+                <ImageIcon />
+                <SpaceView mLeft={SIZE2} />
+                <TitleText>
+                  Job Proof
+                </TitleText>
+              </RowWrap>
+            </FlexWrap>
+            <TouchableOpacity onPress={onPrint}>
+              <RowWrap>
+                <PrintIcon />
+                <SpaceView mLeft={SIZE2} />
+                <TitleText>
+                  Print
+                </TitleText>
+                <SpaceView mLeft={SIZE2} />
+                <BlackRightArrowIcon />
+              </RowWrap>
+            </TouchableOpacity>
           </RowWrap>
         </ContentWrap>
         <WrapBorder />
@@ -853,6 +871,7 @@ ProgressView.propTypes = {
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,
+  onPrint: PropTypes.func.isRequired,
 
   getBinInOutInfoIndex: PropTypes.func.isRequired,
   getCustomerSiteIndex: PropTypes.func.isRequired,

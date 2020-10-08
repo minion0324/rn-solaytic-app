@@ -26,6 +26,7 @@ import {
   DRIVER_NOTE_SCREEN,
   ADD_SERVICES_SCREEN,
   BIN_INFO_SCREEN,
+  PREVIEW_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -443,6 +444,10 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onPrint = () => {
+    pushScreen(componentId, PREVIEW_SCREEN, {});
+  };
+
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -476,6 +481,7 @@ const JobDetailsScreen = ({
       onDriverNote={onDriverNote}
       onAddServices={onAddServices}
       onBinInfo={onBinInfo}
+      onPrint={onPrint}
     />
   );
 };

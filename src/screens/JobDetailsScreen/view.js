@@ -43,6 +43,7 @@ const JobDetailsScreenView = ({
   onDriverNote,
   onAddServices,
   onBinInfo,
+  onPrint,
 }) => {
 
   const getBinInOutInfoIndex = (index) => {
@@ -195,6 +196,7 @@ const JobDetailsScreenView = ({
         onDriverNote={onDriverNote}
         onAddServices={onAddServices}
         onBinInfo={onBinInfo}
+        onPrint={onPrint}
 
         getBinInOutInfoIndex={getBinInOutInfoIndex}
         getCustomerSiteIndex={getCustomerSiteIndex}
@@ -249,6 +251,7 @@ JobDetailsScreenView.propTypes = {
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onBinInfo: PropTypes.func.isRequired,
+  onPrint: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
