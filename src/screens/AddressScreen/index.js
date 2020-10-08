@@ -97,21 +97,9 @@ const AddressScreen = ({
               }
             </IconWrap>
             <FlexWrap>
-              {
-                index === customerSiteIndex
-                ? <TitleText>
-                    {item.address}
-                  </TitleText>
-                : <InfoText>
-                    {item.siteName}
-                  </InfoText>
-              }
-              {
-                index !== customerSiteIndex &&
-                <LabelText>
-                  {item.address}
-                </LabelText>
-              }
+              <TitleText>
+                {item.address}
+              </TitleText>
               {
                 JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
                 ? index === customerSiteIndex &&
@@ -128,9 +116,9 @@ const AddressScreen = ({
                         </LabelText>
                       </RowWrap>
                     </TouchableOpacity>
-                    <SpaceView mTop={SIZE2} />
                   </ButtonWrap>
                 : <ButtonWrap>
+                    <SpaceView mTop={SIZE2} />
                     <TouchableOpacity
                       onPress={() => onLocation(item.latitude, item.longitude)}
                     >
@@ -139,12 +127,6 @@ const AddressScreen = ({
                       </LabelText>
                     </TouchableOpacity>
                   </ButtonWrap>
-              }
-              {
-                index === customerSiteIndex &&
-                <TitleText>
-                  {item.siteName}
-                </TitleText>
               }
               {
                 index === customerSiteIndex &&
