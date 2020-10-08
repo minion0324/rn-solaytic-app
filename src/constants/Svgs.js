@@ -58,8 +58,6 @@ import Mask3Icon from 'src/assets/svgs/icon-mask3.svg';
 import Mask4Icon from 'src/assets/svgs/icon-mask4.svg';
 import Scan1Icon from 'src/assets/svgs/icon-scan1.svg';
 import Scan2Icon from 'src/assets/svgs/icon-scan2.svg';
-import PrintIcon from 'src/assets/svgs/icon-print.svg';
-import ShareIcon from 'src/assets/svgs/icon-share.svg';
 import KeyboardIcon from 'src/assets/svgs/icon-keyboard.svg';
 
 export default {
@@ -123,7 +121,5 @@ export default {
   Mask4Icon,
   Scan1Icon,
   Scan2Icon,
-  PrintIcon,
-  ShareIcon,
   KeyboardIcon,
 };
