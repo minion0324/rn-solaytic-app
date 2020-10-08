@@ -13,3 +13,4 @@ export { default as BinInfoScreen } from './BinInfoScreen';
 export { default as ScanCodeScreen } from './ScanCodeScreen';
 export { default as AddServicesScreen } from './AddServicesScreen';
 export { default as BluetoothPrinterScreen } from './BluetoothPrinterScreen';
+export { default as PreviewScreen } from './PreviewScreen';
