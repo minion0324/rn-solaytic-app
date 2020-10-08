@@ -59,6 +59,8 @@ import Mask4Icon from 'src/assets/svgs/icon-mask4.svg';
 import Scan1Icon from 'src/assets/svgs/icon-scan1.svg';
 import Scan2Icon from 'src/assets/svgs/icon-scan2.svg';
 import KeyboardIcon from 'src/assets/svgs/icon-keyboard.svg';
+import PrintIcon from 'src/assets/svgs/icon-print.svg';
+import ShareIcon from 'src/assets/svgs/icon-share.svg';
 
 export default {
   ActiveCheckIcon,
@@ -122,4 +124,6 @@ export default {
   Scan1Icon,
   Scan2Icon,
   KeyboardIcon,
+  PrintIcon,
+  ShareIcon,
 };
