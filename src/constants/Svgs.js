@@ -61,7 +61,7 @@ import Scan1Icon from 'src/assets/svgs/icon-scan1.svg';
 import Scan2Icon from 'src/assets/svgs/icon-scan2.svg';
 import KeyboardIcon from 'src/assets/svgs/icon-keyboard.svg';
 import PrintIcon from 'src/assets/svgs/icon-print.svg';
-import ShareIcon from 'src/assets/svgs/icon-share.svg';
+import SharingIcon from 'src/assets/svgs/icon-sharing.svg';
 
 export default {
   ActiveCheckIcon,
@@ -127,5 +127,5 @@ export default {
   Scan2Icon,
   KeyboardIcon,
   PrintIcon,
-  ShareIcon,
+  SharingIcon,
 };
