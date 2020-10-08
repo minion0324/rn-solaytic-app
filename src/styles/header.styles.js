@@ -12,12 +12,13 @@ const {
   BackIcon,
   SideMenuIcon,
   CalendarIcon,
+  SharingIcon,
 } = SVGS;
 
 const ScreenText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700;
-  color: ${COLORS.BLACK2};
+  color: ${props => props.color || COLORS.BLACK2};
 `;
 
 const EmptyWrap = styled.View`
@@ -44,10 +45,17 @@ const Calendar = () => (
   </EmptyWrap>
 );
 
+const Sharing = () => (
+  <EmptyWrap align={'center'}>
+    <SharingIcon />
+  </EmptyWrap>
+);
+
 export {
   ScreenText,
   EmptyWrap,
   Back,
   SideMenu,
   Calendar,
+  Sharing,
 };
