@@ -247,7 +247,9 @@ const ProgressView = ({
                 </TitleText>
               </RowWrap>
             </FlexWrap>
-            <TouchableOpacity onPress={onPrint}>
+            <TouchableOpacity
+              onPress={() => onPrint(getBinInOutInfoIndex, getCustomerSiteIndex)}
+            >
               <RowWrap>
                 <PrintIcon />
                 <SpaceView mLeft={SIZE2} />

@@ -444,8 +444,11 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onPrint = () => {
-    pushScreen(componentId, PREVIEW_SCREEN, {});
+  const onPrint = (getBinInOutInfoIndex, getCustomerSiteIndex) => {
+    pushScreen(componentId, PREVIEW_SCREEN, {
+      sign, signedUserName, signedUserContact, binInfo, services,
+      getBinInOutInfoIndex, getCustomerSiteIndex,
+    });
   };
 
   return (
