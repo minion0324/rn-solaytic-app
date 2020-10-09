@@ -467,8 +467,13 @@ const JobDetailsScreen = ({
   };
 
   const onPrint = (getBinInOutInfoIndex, getCustomerSiteIndex) => {
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     pushScreen(componentId, PREVIEW_SCREEN, {
-      sign, signedUserName, signedUserContact, binInfo, services,
+      sign, signedUserName, signedUserContact,
+      binInfo, services, amountCollected,
       getBinInOutInfoIndex, getCustomerSiteIndex,
     });
   };
