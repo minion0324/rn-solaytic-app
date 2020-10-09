@@ -12,7 +12,8 @@ const {
   BackIcon,
   SideMenuIcon,
   CalendarIcon,
-  SharingIcon,
+  ShareIcon,
+  PrintIcon,
 } = SVGS;
 
 const ScreenText = styled.Text`
@@ -47,7 +48,13 @@ const Calendar = () => (
 
 const Sharing = () => (
   <EmptyWrap align={'center'}>
-    <SharingIcon />
+    <ShareIcon />
+  </EmptyWrap>
+);
+
+const Printing = () => (
+  <EmptyWrap align={'center'}>
+    <PrintIcon />
   </EmptyWrap>
 );
 
@@ -58,4 +65,5 @@ export {
   SideMenu,
   Calendar,
   Sharing,
+  Printing,
 };
