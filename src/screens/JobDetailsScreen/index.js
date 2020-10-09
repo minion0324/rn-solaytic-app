@@ -55,6 +55,7 @@ const JobDetailsScreen = ({
   updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
+  getJobDates,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -238,8 +239,9 @@ const JobDetailsScreen = ({
     acknowledgeJobs({
       jobIds: `${focusedJob.jobId}`,
       success: () => {
-        setLoading(false);
+        getJobDates({});
         setIsRequiredUpdateTab(true);
+        setLoading(false);
       },
       failure: () => setLoading(false),
     });
@@ -522,6 +524,7 @@ JobDetailsScreen.propTypes = {
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
+  getJobDates: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -547,6 +550,7 @@ const mapDispatchToProps = {
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
+  getJobDates: ViewStore.actionCreators.getJobDates,
 };
 
 export default connect(
