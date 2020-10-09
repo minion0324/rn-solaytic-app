@@ -440,7 +440,12 @@ const ProgressView = ({
             <WrapBorder />
             <ContentWrap>
               <TouchableOpacity
-                onPress={() => setCashIndex(cashIndex === 0 ? -1 : 0)}
+                onPress={() => {
+                  if (cashIndex !== 0) {
+                    onUpdateAmountCollected(0);
+                  }
+                  setCashIndex(cashIndex === 0 ? -1 : 0);
+                }}
               >
                 <RowWrap>
                   {
@@ -459,7 +464,14 @@ const ProgressView = ({
               </TouchableOpacity>
               <SpaceView mTop={SIZE2} />
               <TouchableOpacity
-                onPress={() => setCashIndex(cashIndex === 1 ? -1 : 1)}
+                onPress={() => {
+                  if (cashIndex !== 1) {
+                    onShowAmountModal();
+                  } else {
+                    onUpdateAmountCollected(0);
+                  }
+                  setCashIndex(cashIndex === 1 ? -1 : 1);
+                }}
               >
                 <RowWrap>
                   {
