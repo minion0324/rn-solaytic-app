@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
+  View,
   Alert,
-  ActivityIndicator,
   NativeEventEmitter,
   DeviceEventEmitter,
   TouchableOpacity,
@@ -17,32 +17,32 @@ import {
   dismissOverlay,
 } from 'src/navigation';
 import {
-  HeaderBar,
+  DefaultButton,
   OverlayWrap,
 } from 'src/components';
 import {
+  SVGS,
   PLATFORM,
   COLORS,
+  SIZE1,
   SIZE2,
 } from 'src/constants';
 
 import {
   ContentWrap,
-  ShadowWrap,
+  WrapBorder,
   RowWrap,
+  FlexWrap,
   SpaceView,
 } from 'src/styles/common.styles';
 import {
-  ScreenText,
-} from 'src/styles/header.styles';
-import {
-  LabelText,
+  InfoText,
 } from 'src/styles/text.styles';
-import {
-  OkCancelRow,
-  OkCancelButton,
-  OkCancelText,
-} from 'src/styles/modal.styles';
+
+const {
+  ActiveCircleCheckIcon,
+  DeactiveCircleCheckIcon,
+} = SVGS;
 
 const BluetoothPrinterScreen = ({
   base64Str,
@@ -96,8 +96,6 @@ const BluetoothPrinterScreen = ({
       }
     } catch (error) {
       //
-      console.log('----- init bluetooth');
-      console.log(error);
     }
   };
 
@@ -111,8 +109,6 @@ const BluetoothPrinterScreen = ({
       bluetoothListener4.current && bluetoothListener4.current.remove();
     } catch (error) {
       //
-      console.log('----- destory bluetooth');
-      console.log(error);
     }
   };
 
@@ -202,9 +198,6 @@ const BluetoothPrinterScreen = ({
 
       const result = await BluetoothManager.scanDevices();
 
-      console.log('-------------- after scan devices');
-      console.log(result);
-
       let res = result.found || [];
       try {
         res = JSON.parse(res);
@@ -218,9 +211,6 @@ const BluetoothPrinterScreen = ({
 
       setLoading(false);
     } catch (error) {
-      console.log('----- on scan');
-      console.log(error);
-
       setLoading(false);
       Alert.alert('Warning', error.message || 'Something went wrong.');
     }
@@ -230,15 +220,10 @@ const BluetoothPrinterScreen = ({
     try {
       setLoading(true);
 
-      console.log(base64Str);
-
       await BluetoothEscposPrinter.printPic(base64Str, { width: 360, left: 10 });
 
       setLoading(false);
     } catch (error) {
-      console.log('----- on confirm');
-      console.log(error);
-
       setLoading(false);
       Alert.alert('Warning', error.message || 'Something went wrong.');
     }
@@ -254,9 +239,6 @@ const BluetoothPrinterScreen = ({
 
       setLoading(false);
     } catch (error) {
-      console.log('----- on press item');
-      console.log(error);
-
       setLoading(false);
       Alert.alert('Warning', error.message || 'Something went wrong.');
     }
@@ -264,91 +246,87 @@ const BluetoothPrinterScreen = ({
 
   const renderItem = (item) => {
     return (
-      <TouchableOpacity
-        key={item.address}
-        onPress={() => onPressItem(item)}
-      >
-        <LabelText numberOfLines={1}>
-          {
-            `Name: ${item.name || 'UNKNOWN'}` +
-            `  Address: ${item.address}`
-          }
-        </LabelText>
-      </TouchableOpacity>
+      <View>
+        <SpaceView mTop={SIZE1} />
+        <TouchableOpacity
+          key={item.address}
+          onPress={() => onPressItem(item)}
+        >
+          <RowWrap>
+            {
+              item.address === connectedDevice.address
+              ? <ActiveCircleCheckIcon />
+              : <DeactiveCircleCheckIcon />
+            }
+            <SpaceView mLeft={SIZE2} />
+            <InfoText numberOfLines={1}>
+              {item.name || 'Unknown'}
+            </InfoText>
+          </RowWrap>
+        </TouchableOpacity>
+      </View>
     );
   };
 
   return (
     <OverlayWrap dismissOverlay={onBack}>
-      <ShadowWrap>
-        <HeaderBar
-          centerIcon={
-            <ScreenText>
-              Select Bluetooth Printer
-            </ScreenText>
-          }
-        />
-      </ShadowWrap>
-
       <SpaceView mTop={SIZE2} />
       <ContentWrap>
         <RowWrap>
-          <LabelText>Connected Device</LabelText>
-          <SpaceView mLeft={SIZE2} />
-          {
-            loading &&
-            <ActivityIndicator />
-          }
-        </RowWrap>
-        {
-          connectedDevice.address
-          ? <LabelText numberOfLines={1}>
-            {
-              `Name: ${connectedDevice.name || 'UNKNOWN'}` +
-              `  Address: ${connectedDevice.address}`
-            }
-            </LabelText>
-          : <LabelText color={COLORS.RED1}>No Device</LabelText>
-        }
-      </ContentWrap>
-
-      <SpaceView mTop={SIZE2} />
-      <ContentWrap>
-        <LabelText>Found Devices (Tap to Connect)</LabelText>
-
-        {
-          foundDevices.length > 0
-          ? foundDevices.map(renderItem)
-          : <LabelText color={COLORS.RED1}>No Device</LabelText>
-        }
-      </ContentWrap>
-
-      <SpaceView mTop={SIZE2} />
-      <ContentWrap>
-        <LabelText>Paired Devices</LabelText>
-        {
-          pairedDevices.length > 0
-          ? pairedDevices.map(renderItem)
-          : <LabelText color={COLORS.RED1}>No Device</LabelText>
-        }
-      </ContentWrap>
-
-      <SpaceView mTop={SIZE2} />
-      <ContentWrap>
-        <OkCancelRow>
-          <OkCancelButton
+          <FlexWrap>
+            <InfoText color={COLORS.GRAY3}>
+              Paired devices
+            </InfoText>
+          </FlexWrap>
+          <TouchableOpacity
             onPress={onScan}
             disabled={loading}
           >
-            <OkCancelText>Scan Device</OkCancelText>
-          </OkCancelButton>
-          <OkCancelButton
-            onPress={onConfirm}
-            disabled={loading || !connectedDevice.address}
-          >
-            <OkCancelText>Confirm</OkCancelText>
-          </OkCancelButton>
-        </OkCancelRow>
+            <InfoText color={COLORS.BLUE1}>
+              SCAN
+            </InfoText>
+          </TouchableOpacity>
+        </RowWrap>
+      </ContentWrap>
+      <WrapBorder />
+      <ContentWrap>
+        {
+          pairedDevices.length > 0
+          ? pairedDevices.map(renderItem)
+          : <InfoText color={COLORS.RED1}>No Device</InfoText>
+        }
+      </ContentWrap>
+      <SpaceView mTop={SIZE2} />
+      <ContentWrap>
+        <RowWrap>
+          <InfoText color={COLORS.GRAY3}>
+            Available devices
+          </InfoText>
+        </RowWrap>
+      </ContentWrap>
+      <WrapBorder />
+      <ContentWrap>
+        {
+          foundDevices.length > 0
+          ? foundDevices.map(renderItem)
+          : <InfoText color={COLORS.RED1}>No Device</InfoText>
+        }
+      </ContentWrap>
+      <SpaceView mTop={SIZE2} />
+      <WrapBorder />
+      <ContentWrap>
+        <DefaultButton
+          color={
+            connectedDevice.address
+            ? COLORS.BLUE1 : COLORS.GRAY3
+          }
+          text={'Confirm'}
+          onPress={
+            connectedDevice.address
+            ? onConfirm : null
+          }
+          loading={loading}
+        />
       </ContentWrap>
     </OverlayWrap>
   );
