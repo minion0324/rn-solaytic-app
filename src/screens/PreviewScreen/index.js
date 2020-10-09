@@ -67,6 +67,7 @@ const PreviewScreen = ({
   signedUserContact,
   binInfo,
   services,
+  amountCollected,
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
   componentId,
@@ -264,7 +265,7 @@ const PreviewScreen = ({
           </FlexWrap>
           <InfoText>
             {
-              '$' + (focusedJob.collectedAmount || 0)
+              `$${amountCollected}`
             }
           </InfoText>
         </RowWrap>
@@ -519,6 +520,7 @@ PreviewScreen.propTypes = {
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
   services: PropTypes.array.isRequired,
+  amountCollected: PropTypes.number.isRequired,
   getBinInOutInfoIndex: PropTypes.func.isRequired,
   getCustomerSiteIndex: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
