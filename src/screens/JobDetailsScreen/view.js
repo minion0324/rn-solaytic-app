@@ -213,6 +213,7 @@ const JobDetailsScreenView = ({
         focusedJob={focusedJob}
 
         onBack={onBack}
+        onPrint={onPrint}
 
         getBinInOutInfoIndex={getBinInOutInfoIndex}
         getCustomerSiteIndex={getCustomerSiteIndex}

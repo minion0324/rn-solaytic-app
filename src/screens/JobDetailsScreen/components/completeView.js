@@ -8,6 +8,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  JOB_STATUS,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -29,6 +30,7 @@ import {
   ScreenText,
   EmptyWrap,
   Back,
+  Printing,
 } from 'src/styles/header.styles';
 import {
   TitleText,
@@ -60,6 +62,7 @@ const CompleteView = ({
   focusedJob,
 
   onBack,
+  onPrint,
 
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
@@ -340,8 +343,16 @@ const CompleteView = ({
       <HeaderBar
         centerIcon={<ScreenText>{jobStatus}</ScreenText>}
         leftIcon={<Back />}
-        rightIcon={<EmptyWrap />}
+        rightIcon={
+          jobStatus === JOB_STATUS.COMPLETED
+          ? <Printing /> : <EmptyWrap />
+        }
         onPressLeft={onBack}
+        onPressRight={
+          jobStatus === JOB_STATUS.COMPLETED
+          ? () => onPrint(getBinInOutInfoIndex, getCustomerSiteIndex)
+          : null
+        }
       />
     );
   };
@@ -381,6 +392,7 @@ CompleteView.propTypes = {
   focusedJob: PropTypes.object.isRequired,
 
   onBack: PropTypes.func.isRequired,
+  onPrint: PropTypes.func.isRequired,
 
   getBinInOutInfoIndex: PropTypes.func.isRequired,
   getCustomerSiteIndex: PropTypes.func.isRequired,
