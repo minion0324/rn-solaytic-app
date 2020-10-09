@@ -274,7 +274,10 @@ const BluetoothPrinterScreen = ({
   };
 
   return (
-    <OverlayWrap dismissOverlay={onBack}>
+    <OverlayWrap
+      color={COLORS.WHITE1}
+      dismissOverlay={onBack}
+    >
       <SpaceView mTop={SIZE2} />
       <ContentWrap>
         <RowWrap>
