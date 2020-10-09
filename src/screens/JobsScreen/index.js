@@ -132,6 +132,8 @@ const JobsScreen = ({
     try {
       if (message) {
         setNewCommentInfo({ jobId, message });
+      } else {
+        getJobDates({});
       }
 
       if (coreScreenInfo.componentType === 'push') {
