@@ -114,12 +114,28 @@ const PreviewScreen = ({
         <SpaceView mTop={SIZE4} />
         <InfoText align={'center'}>
           {
-            'Kindly note that the maximum weight \n' +
-            'allowed per loading not exceeding 10 (ten) \n' +
-            'tonnes under ROV regulation, customers \n' +
+            'Kindly note that the maximum weight'
+          }
+        </InfoText>
+        <SpaceView mTop={SIZE1 / 2} />
+        <InfoText align={'center'}>
+          {
+            'allowed per loading not exceeding 10 (ten)'
+          }
+        </InfoText>
+        <SpaceView mTop={SIZE1 / 2} />
+        <InfoText align={'center'}>
+          {
+            'tonnes under ROV regulation, customers'
+          }
+        </InfoText>
+        <SpaceView mTop={SIZE1 / 2} />
+        <InfoText align={'center'}>
+          {
             'are to bear all fine due to overloading.'
           }
         </InfoText>
+        <SpaceView mTop={SIZE2} />
       </View>
     );
   };
@@ -142,7 +158,7 @@ const PreviewScreen = ({
         <RowWrap>
           <FlexWrap flex={4}>
             <InfoText>
-              Site Contact
+              Site Contact:
             </InfoText>
           </FlexWrap>
           <FlexWrap flex={6}>
@@ -156,7 +172,7 @@ const PreviewScreen = ({
         <RowWrap>
           <FlexWrap flex={4}>
             <InfoText>
-              Telephone
+              Telephone:
             </InfoText>
           </FlexWrap>
           <FlexWrap flex={6}>
@@ -165,6 +181,8 @@ const PreviewScreen = ({
             </InfoText>
           </FlexWrap>
         </RowWrap>
+
+        <SpaceView mTop={SIZE2} />
       </View>
     );
   };
@@ -183,7 +201,7 @@ const PreviewScreen = ({
           ADDITIONAL SERVICE
         </InfoText>
 
-        <SpaceView mTop={SIZE1} />
+        <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
             <InfoText>
@@ -200,7 +218,7 @@ const PreviewScreen = ({
             <View
               key={`${item.serviceAdditionalChargeId}`}
             >
-              <SpaceView mTop={SIZE1} />
+              <SpaceView mTop={SIZE2} />
               <RowWrap>
                 <FlexWrap>
                   <InfoText>
@@ -214,6 +232,7 @@ const PreviewScreen = ({
             </View>
           ))
         }
+        <SpaceView mTop={SIZE2} />
       </View>
     );
   };
@@ -236,7 +255,7 @@ const PreviewScreen = ({
             CASH
           </InfoText>
         </RowWrap>
-        <SpaceView mTop={SIZE1} />
+        <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
             <InfoText>
@@ -249,6 +268,7 @@ const PreviewScreen = ({
             }
           </InfoText>
         </RowWrap>
+        <SpaceView mTop={SIZE2} />
       </View>
     );
   };
@@ -276,7 +296,7 @@ const PreviewScreen = ({
                 {item['binNumber']}
               </InfoText>
             </RowWrap>
-            <SpaceView mTop={SIZE1} />
+            <SpaceView mTop={SIZE2} />
             <RowWrap>
               <FlexWrap>
                 <InfoText>
@@ -287,7 +307,7 @@ const PreviewScreen = ({
                 {item['binType'] && item['binType']['binTypeName']}
               </InfoText>
             </RowWrap>
-
+            <SpaceView mTop={SIZE2} />
           </View>
         );
       })
@@ -304,14 +324,15 @@ const PreviewScreen = ({
           {`DO #: ${focusedJob.jobNumber}`}
         </TitleText>
 
-        <SpaceView mTop={SIZE2} />
+        <SpaceView mTop={SIZE4} />
         <InfoText>
           SITE ADDRESS
         </InfoText>
-        <SpaceView mTop={SIZE1} />
+        <SpaceView mTop={SIZE2} />
         <InfoText>
           {focusedJob.steps[index].address}
         </InfoText>
+        <SpaceView mTop={SIZE2} />
 
         <SpaceView mTop={SIZE4} />
         <TitleText>
@@ -338,7 +359,7 @@ const PreviewScreen = ({
           </InfoText>
         </RowWrap>
 
-        <SpaceView mTop={SIZE1} />
+        <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
             <InfoText>
@@ -350,7 +371,7 @@ const PreviewScreen = ({
           </InfoText>
         </RowWrap>
 
-        <SpaceView mTop={SIZE1} />
+        <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
             <InfoText>
@@ -361,6 +382,7 @@ const PreviewScreen = ({
             {focusedJob.assignedVehicle.vehicleName}
           </InfoText>
         </RowWrap>
+        <SpaceView mTop={SIZE2} />
 
         <SpaceView mTop={SIZE4} />
         <RowWrap>
@@ -373,6 +395,7 @@ const PreviewScreen = ({
             {focusedJob.jobTemplateName || focusedJob.jobTypeName}
           </InfoText>
         </RowWrap>
+        <SpaceView mTop={SIZE2} />
       </View>
     );
   };
@@ -380,14 +403,15 @@ const PreviewScreen = ({
   const renderOwnerInfo = () => {
     return (
       <View>
-        <SpaceView mTop={SIZE2} />
+        <SpaceView mTop={SIZE4} />
         <InfoText align={'center'}>
           {ownerInfo.accountName}
         </InfoText>
-
+        <SpaceView mTop={SIZE1} />
         <InfoText align={'center'}>
           {ownerInfo.address}
         </InfoText>
+        <SpaceView mTop={SIZE1} />
         <InfoText align={'center'}>
           {
             (ownerInfo.phone ? `Tel: ${ownerInfo.phone}` : '') +
@@ -395,6 +419,7 @@ const PreviewScreen = ({
             (ownerInfo.faxNumber ? `Fax: ${ownerInfo.faxNumber}` : '')
           }
         </InfoText>
+        <SpaceView mTop={SIZE1} />
         <InfoText align={'center'}>
           {
             (ownerInfo.uenNumber ? `UEN: ${ownerInfo.uenNumber}` : '') +
@@ -402,6 +427,7 @@ const PreviewScreen = ({
             (ownerInfo.gstNumber ? `GST: ${ownerInfo.gstNumber}` : '')
           }
         </InfoText>
+        <SpaceView mTop={SIZE2} />
       </View>
     );
   };
