@@ -75,6 +75,7 @@ const AlertScreen = ({
   updateDateForJobs,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
+  getJobDates,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -140,7 +141,10 @@ const AlertScreen = ({
 
     acknowledgeJobs({
       jobIds,
-      success: () => setLoading(false),
+      success: () => {
+        getJobDates({});
+        setLoading(false);
+      },
       failure: () => setLoading(false),
     });
   };
@@ -314,6 +318,7 @@ AlertScreen.propTypes = {
   updateDateForJobs: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
+  getJobDates: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -338,6 +343,7 @@ const mapDispatchToProps = {
   updateDateForJobs: Jobs.actionCreators.updateDateForJobs,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
+  getJobDates: ViewStore.actionCreators.getJobDates,
 };
 
 export default connect(
