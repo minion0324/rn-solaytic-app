@@ -255,6 +255,7 @@ const BluetoothPrinterScreen = ({
         <TouchableOpacity
           key={item.address}
           onPress={() => onPressItem(item)}
+          disabled={loading}
         >
           <RowWrap>
             {
