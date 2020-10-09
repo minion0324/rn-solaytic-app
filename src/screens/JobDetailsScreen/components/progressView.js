@@ -189,7 +189,12 @@ const ProgressView = ({
         />
         <OkCancelRow>
           <OkCancelButton
-            onPress={() => onDismissAmountModal(containerId)}
+            onPress={() => {
+              if (!focusedJob.collectedAmount) {
+                setCashIndex(-1);
+              }
+              onDismissAmountModal(containerId);
+            }}
           >
             <OkCancelText>Cancel</OkCancelText>
           </OkCancelButton>
@@ -410,12 +415,13 @@ const ProgressView = ({
                     {
                       cashIndex === -1
                       ? 'Payments'
-                      : 'Payments: Cash $' +
-                        (
-                          cashIndex === 0
-                          ? (focusedJob.amountToCollect || 0)
-                          : (focusedJob.collectedAmount || 0)
-                        )
+                      : cashIndex === 0
+                        ? focusedJob.amountToCollect
+                          ? `Payments: Cash $${focusedJob.amountToCollect}`
+                          : 'Payments'
+                        : focusedJob.collectedAmount
+                          ? `Payments: Cash $${focusedJob.collectedAmount}`
+                          : 'Payments'
                     }
                   </TitleText>
                 </RowWrap>
