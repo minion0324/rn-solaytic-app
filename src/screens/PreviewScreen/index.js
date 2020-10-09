@@ -13,28 +13,25 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
-  JOB_STATUS,
 } from 'src/constants';
 import {
   HeaderBar,
-  ItemWrap,
 } from 'src/components';
 import {
   User,
   Jobs,
 } from 'src/redux';
+import {
+  popScreen,
+} from 'src/navigation';
 
-// import {
-//   delay,
-// } from 'src/utils';
-// import {
-//   showOverlay,
-//   BLUETOOTH_PRINTER_SCREEN,
-// } from 'src/navigation';
+import {
+  showOverlay,
+  BLUETOOTH_PRINTER_SCREEN,
+} from 'src/navigation';
 
 import {
   Container,
-  Content,
   ContentWrap,
   WrapBorder,
   ShadowWrap,
@@ -45,30 +42,21 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
-  EmptyWrap,
   Back,
+  Sharing,
 } from 'src/styles/header.styles';
 import {
   TitleText,
   InfoText,
-  LabelText,
 } from 'src/styles/text.styles';
 
 import {
-  JobProofItem,
   HalfWrap,
-  SignInfo,
-  SignInfoText,
-  PrintAndShareWrap,
-  PrintAndShareText,
   LogoImageWrap,
 } from './styled';
 
 const {
-  DeactiveBinInIcon,
-  DeactiveBinOutIcon,
   PrintIcon,
-  ShareIcon,
 } = SVGS;
 
 const PreviewScreen = ({
@@ -78,423 +66,387 @@ const PreviewScreen = ({
   signedUserName,
   signedUserContact,
   binInfo,
-  jobStatus,
   services,
-
+  getBinInOutInfoIndex,
+  getCustomerSiteIndex,
+  componentId,
 }) => {
-  // const [ showing, setShowing ] = useState(false);
+  const viewShotRef = useRef(null);
 
-  // const viewShotRef = useRef(null);
+  const onBack = () => {
+    popScreen(componentId);
+  };
 
-  // const onViewShot = async () => {
-  //   try {
-  //     setShowing(true);
+  const onViewShot = async () => {
+    try {
+      return await viewShotRef.current.capture();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
 
-  //     await delay(1000);
+  const onPrint = async () => {
+    try {
+      const base64Str = await onViewShot();
 
-  //     return await viewShotRef.current.capture();
-  //   } catch (error) {
-  //     return Promise.reject(error);
-  //   }
-  // };
+      showOverlay(BLUETOOTH_PRINTER_SCREEN, { base64Str });
+    } catch (error) {
+      //
+    }
+  };
 
-  // const onPrint = async () => {
-  //   try {
-  //     const base64Str = await onViewShot();
+  const onShare = async () => {
+    try {
+      const base64Str = await onViewShot();
 
-  //     // showOverlay(BLUETOOTH_PRINTER_SCREEN, {
-  //     //   base64Str,
-  //     //   onEndPrint
-  //     // });
-  //   } catch (error) {
-  //     setShowing(false);
-  //   }
-  // };
+      const mediaType = 'image/png';
+      const base64Data = `data:${mediaType};base64,${base64Str}`;
 
-  // const onShare = async () => {
-  //   try {
-  //     const base64Str = await onViewShot();
+      await Share.open({ url: base64Data });
+    } catch (error) {
+      //
+    }
+  };
 
-  //     const mediaType = 'image/png';
-  //     const base64Data = `data:${mediaType};base64,${base64Str}`;
+  const renderNote = () => {
+    return (
+      <View>
+        <SpaceView mTop={SIZE4} />
+        <InfoText align={'center'}>
+          {
+            'Kindly note that the maximum weight \n' +
+            'allowed per loading not exceeding 10 (ten) \n' +
+            'tonnes under ROV regulation, customers \n' +
+            'are to bear all fine due to overloading.'
+          }
+        </InfoText>
+      </View>
+    );
+  };
 
-  //     await Share.open({ url: base64Data });
+  const renderJobProof = () => {
+    if (!sign.uri) {
+      return null;
+    }
 
-  //     setShowing(false);
-  //   } catch (error) {
-  //     setShowing(false);
-  //   }
-  // };
+    return (
+      <View>
+        <SpaceView mTop={SIZE4} />
 
-  // const renderPrintAndShare = () => {
-  //   if (jobStatus !== JOB_STATUS.COMPLETED) {
-  //     return null;
-  //   }
+        <HalfWrap>
+          <FullImage source={{ uri: sign.uri }} />
+        </HalfWrap>
+        <WrapBorder />
 
-  //   return (
-  //     <ShadowWrap>
-  //       <PrintAndShareWrap>
-  //         <TouchableOpacity onPress={onPrint}>
-  //           <RowWrap>
-  //             <PrintIcon />
-  //             <PrintAndShareText>Print</PrintAndShareText>
-  //           </RowWrap>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity onPress={onShare}>
-  //           <RowWrap>
-  //             <ShareIcon />
-  //             <PrintAndShareText>Share</PrintAndShareText>
-  //           </RowWrap>
-  //         </TouchableOpacity>
-  //       </PrintAndShareWrap>
-  //     </ShadowWrap>
-  //   );
-  // };
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <FlexWrap flex={4}>
+            <InfoText>
+              Site Contact
+            </InfoText>
+          </FlexWrap>
+          <FlexWrap flex={6}>
+            <InfoText>
+              {signedUserName}
+            </InfoText>
+          </FlexWrap>
+        </RowWrap>
 
-  // const renderJobProof = () => {
-  //   if (photos.length === 0 && !sign.uri) {
-  //     return null;
-  //   }
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <FlexWrap flex={4}>
+            <InfoText>
+              Telephone
+            </InfoText>
+          </FlexWrap>
+          <FlexWrap flex={6}>
+            <InfoText>
+              {signedUserContact}
+            </InfoText>
+          </FlexWrap>
+        </RowWrap>
+      </View>
+    );
+  };
 
-  //   return (
-  //     <View>
-  //       {
-  //         showing
-  //         ? <WrapBorder />
-  //         : <SpaceView mTop={SIZE2} />
-  //       }
-  //       <ContentWrap>
-  //         <TitleText>
-  //           JOB PROOF
-  //         </TitleText>
-  //       </ContentWrap>
-  //       <WrapBorder />
-  //       <ContentWrap>
-  //         {
-  //           photos.map((photo) =>
-  //             <ItemWrap
-  //               deactivated
-  //               mLeft={SIZE1} mRight={SIZE1}
-  //               key={photo.uri}
-  //             >
-  //               <JobProofItem>
-  //                 <FullImage source={{ uri: photo.uri }} />
-  //               </JobProofItem>
-  //             </ItemWrap>
-  //           )
-  //         }
-  //         {
-  //           !!sign.uri &&
-  //           <ItemWrap
-  //             deactivated
-  //             mLeft={SIZE1} mRight={SIZE1}
-  //           >
-  //             <JobProofItem>
-  //               <HalfWrap>
-  //                 <FullImage source={{ uri: sign.uri }} />
-  //               </HalfWrap>
-  //               <HalfWrap>
-  //                 <SignInfo>
-  //                   <SignInfoText numberOfLines={1}>
-  //                     {signedUserName}
-  //                   </SignInfoText>
-  //                 </SignInfo>
-  //                 <SignInfo>
-  //                   <SignInfoText numberOfLines={1}>
-  //                     {signedUserContact}
-  //                   </SignInfoText>
-  //                 </SignInfo>
-  //               </HalfWrap>
-  //             </JobProofItem>
-  //           </ItemWrap>
-  //         }
-  //       </ContentWrap>
-  //     </View>
-  //   );
-  // };
+  const renderServices = () => {
+    const selectedServices = services.filter(item => item.isSelected);
+    if (selectedServices.length === 0) {
+      return null;
+    }
 
-  // const renderServices = () => {
-  //   const selectedServices = services.filter(item => item.isSelected);
-  //   if (selectedServices.length === 0) {
-  //     return null;
-  //   }
+    return (
+      <View>
+        <SpaceView mTop={SIZE4} />
 
-  //   return (
-  //     <View>
-  //       {
-  //         showing
-  //         ? <WrapBorder />
-  //         : <SpaceView mTop={SIZE2} />
-  //       }
-  //       <ContentWrap>
-  //         <TitleText>
-  //           ADDITIONAL SERVICE
-  //         </TitleText>
-  //       </ContentWrap>
-  //       <WrapBorder />
-  //       <ContentWrap>
-  //         {
-  //           selectedServices.map((item) => (
-  //             <View
-  //               key={`${item.serviceAdditionalChargeId}`}
-  //             >
-  //               <SpaceView mTop={SIZE2} />
-  //               <InfoText>
-  //                 {`${item.serviceAdditionalChargeName} * ${item.quantity || 1}`}
-  //               </InfoText>
-  //             </View>
-  //           ))
-  //         }
-  //         <SpaceView mTop={SIZE2} />
-  //       </ContentWrap>
-  //     </View>
-  //   );
-  // };
+        <InfoText>
+          ADDITIONAL SERVICE
+        </InfoText>
 
-  // const renderBinInfo = () => {
-  //   return (
-  //     binInfo.map((item, index) => {
-  //       const idx = getBinInOutInfoIndex(index);
+        <SpaceView mTop={SIZE1} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              ITEM
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            QTY
+          </InfoText>
+        </RowWrap>
 
-  //       return (
-  //         (item.wasteType || item.binType) &&
-  //         <View key={`${item.jobStepId}`}>
-  //           {
-  //             showing
-  //             ? <WrapBorder />
-  //             : <SpaceView mTop={SIZE2} />
-  //           }
-  //           <ContentWrap>
-  //             <RowWrap>
-  //               {
-  //                 idx === 0 &&
-  //                 <RowWrap>
-  //                   <DeactiveBinInIcon />
-  //                   <SpaceView mLeft={SIZE2} />
-  //                 </RowWrap>
-  //               }
-  //               {
-  //                 idx === 1 &&
-  //                 <RowWrap>
-  //                   <DeactiveBinOutIcon />
-  //                   <SpaceView mLeft={SIZE2} />
-  //                 </RowWrap>
-  //               }
-  //               <TitleText>
-  //                 {`Bin ${idx === 0 ? 'In' : idx === 1 ? 'Out' : ''}`}
-  //               </TitleText>
-  //             </RowWrap>
-  //           </ContentWrap>
-  //           <WrapBorder />
-  //           <ContentWrap>
-  //             <SpaceView mTop={SIZE2} />
-  //             <RowWrap>
-  //               <FlexWrap flex={6}>
-  //                 <LabelText>Waste Type</LabelText>
-  //                 <InfoText>
-  //                   {item['wasteType'] && item['wasteType']['wasteTypeName']}
-  //                 </InfoText>
-  //               </FlexWrap>
-  //               {
-  //                 index === 1 &&
-  //                 focusedJob.isEnabledBinWeight &&
-  //                 <FlexWrap flex={4}>
-  //                   <LabelText>Nett Weight</LabelText>
-  //                   <InfoText>
-  //                     {item['binWeight'] || '-- --'}
-  //                   </InfoText>
-  //                 </FlexWrap>
-  //               }
-  //             </RowWrap>
-  //             <SpaceView mTop={SIZE4} />
-  //             <RowWrap>
-  //               <FlexWrap flex={6}>
-  //                 <LabelText>Bin Type</LabelText>
-  //                 <InfoText>
-  //                   {item['binType'] && item['binType']['binTypeName']}
-  //                 </InfoText>
-  //               </FlexWrap>
-  //               <FlexWrap flex={4}>
-  //                 <LabelText>Bin ID</LabelText>
-  //                 <InfoText>
-  //                   {item['binNumber']}
-  //                 </InfoText>
-  //               </FlexWrap>
-  //             </RowWrap>
-  //             <SpaceView mTop={SIZE4} />
-  //           </ContentWrap>
-  //         </View>
-  //       );
-  //     })
-  //   );
-  // };
+        {
+          selectedServices.map((item) => (
+            <View
+              key={`${item.serviceAdditionalChargeId}`}
+            >
+              <SpaceView mTop={SIZE1} />
+              <RowWrap>
+                <FlexWrap>
+                  <InfoText>
+                    {item.serviceAdditionalChargeName}
+                  </InfoText>
+                </FlexWrap>
+                <InfoText>
+                  {item.quantity || 1}
+                </InfoText>
+              </RowWrap>
+            </View>
+          ))
+        }
+      </View>
+    );
+  };
 
-  // const renderCustomerCopy = () => {
-  //   const idx = getCustomerSiteIndex();
+  const renderPayment = () => {
+    if (!focusedJob.isEnabledCashCollection) {
+      return null;
+    }
 
-  //   return (
-  //     <View>
-  //       {
-  //         showing
-  //         ? <WrapBorder />
-  //         : <SpaceView mTop={SIZE2} />
-  //       }
-  //       <ContentWrap>
-  //         <RowWrap>
-  //           <FlexWrap>
-  //             <RowWrap>
-  //               <SpaceView mLeft={SIZE2} />
-  //               <TitleText>
-  //                 Customer Copy
-  //               </TitleText>
-  //             </RowWrap>
-  //           </FlexWrap>
-  //           <FlexWrap>
-  //             <TitleText>{focusedJob.jobNumber}</TitleText>
-  //           </FlexWrap>
-  //         </RowWrap>
-  //       </ContentWrap>
-  //       <WrapBorder />
-  //       <ContentWrap>
-  //         <SpaceView mTop={SIZE2} />
-  //         <LabelText>Customer</LabelText>
-  //         <InfoText>
-  //           {focusedJob.customer.customerName}
-  //         </InfoText>
+    return (
+      <View>
+        <SpaceView mTop={SIZE4} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              PAYMENT
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            CASH
+          </InfoText>
+        </RowWrap>
+        <SpaceView mTop={SIZE1} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              Collected
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            {
+              '$' + (focusedJob.collectedAmount || 0)
+            }
+          </InfoText>
+        </RowWrap>
+      </View>
+    );
+  };
 
-  //         <SpaceView mTop={SIZE4} />
-  //         <LabelText>Locations</LabelText>
-  //         <InfoText>
-  //           {focusedJob.steps[idx].address}
-  //         </InfoText>
+  const renderBinInfo = () => {
+    return (
+      binInfo.map((item, index) => {
+        const idx = getBinInOutInfoIndex(index);
 
-  //         {
-  //           !!focusedJob.steps[idx].contactPersonOne &&
-  //           !!focusedJob.steps[idx].contactNumberOne &&
-  //           <View>
-  //             <SpaceView mTop={SIZE4} />
-  //             <LabelText>Contact</LabelText>
-  //             <InfoText>
-  //               {
-  //                 focusedJob.steps[idx].contactPersonOne +
-  //                 '  |  ' +
-  //                 focusedJob.steps[idx].contactNumberOne
-  //               }
-  //             </InfoText>
-  //           </View>
-  //         }
+        return (
+          (item.wasteType || item.binType) &&
+          <View key={`${item.jobStepId}`}>
+            <SpaceView mTop={SIZE4} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {
+                    'Bin'
+                    + (idx === 0 ? ' Collected' : '')
+                    + (idx === 1 ? ' Delivered' : '')
+                  }
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {item['binNumber']}
+              </InfoText>
+            </RowWrap>
+            <SpaceView mTop={SIZE1} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  Bin Type
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {item['binType'] && item['binType']['binTypeName']}
+              </InfoText>
+            </RowWrap>
 
-  //         <SpaceView mTop={SIZE4} />
-  //         <LabelText>Completed Date & Time</LabelText>
-  //         <InfoText>
-  //           {
-  //             moment(focusedJob.completedDate || focusedJob.jobTimeSpecific).format('DD MMM') +
-  //             '  |  ' +
-  //             moment(focusedJob.completedDate || focusedJob.jobTimeSpecific).format('hh:mm A')
-  //           }
-  //         </InfoText>
+          </View>
+        );
+      })
+    );
+  };
 
-  //         <SpaceView mTop={SIZE4} />
-  //         <RowWrap>
-  //           <FlexWrap>
-  //             <LabelText>Job Type</LabelText>
-  //             <InfoText>
-  //               {focusedJob.jobTemplateName || focusedJob.jobTypeName}
-  //             </InfoText>
-  //           </FlexWrap>
-  //           {
-  //             focusedJob.isEnabledCashCollection &&
-  //             <FlexWrap>
-  //               <LabelText>Collections</LabelText>
-  //               <InfoText>
-  //                 {
-  //                   '$' + (focusedJob.collectedAmount || 0)
-  //                 }
-  //               </InfoText>
-  //             </FlexWrap>
-  //           }
-  //         </RowWrap>
+  const renderJobInfo = () => {
+    const index = getCustomerSiteIndex();
 
-  //         <SpaceView mTop={SIZE4} />
-  //         <RowWrap>
-  //           <FlexWrap>
-  //             <LabelText>Driver</LabelText>
-  //             <InfoText>
-  //               {focusedJob.assignedDriver.driverName}
-  //             </InfoText>
-  //           </FlexWrap>
-  //           <FlexWrap>
-  //             <LabelText>Vehicle</LabelText>
-  //             <InfoText>
-  //               {focusedJob.assignedVehicle.vehicleName}
-  //             </InfoText>
-  //           </FlexWrap>
-  //         </RowWrap>
+    return (
+      <View>
+        <SpaceView mTop={SIZE4} />
+        <TitleText>
+          {`DO #: ${focusedJob.jobNumber}`}
+        </TitleText>
 
-  //         <SpaceView mTop={SIZE4} />
-  //       </ContentWrap>
-  //     </View>
-  //   );
-  // };
+        <SpaceView mTop={SIZE2} />
+        <InfoText>
+          SITE ADDRESS
+        </InfoText>
+        <SpaceView mTop={SIZE1} />
+        <InfoText>
+          {focusedJob.steps[index].address}
+        </InfoText>
 
-  // const renderReceiptHeader = () => {
-  //   if (!showing) {
-  //     return null;
-  //   }
+        <SpaceView mTop={SIZE4} />
+        <TitleText>
+          JOB COMPLETED
+        </TitleText>
 
-  //   return (
-  //     <View>
-  //       <SpaceView mTop={SIZE2} />
-  //       <ContentWrap>
-  //         <RowWrap>
-  //           <FlexWrap flex={4}>
-  //             <LogoImageWrap>
-  //               <FullImage
-  //                 resizeMode={'contain'}
-  //                 source={
-  //                   ownerInfo.logoImageUrl
-  //                   ? { uri: ownerInfo.logoImageUrl }
-  //                   : IMAGES.APP_LOGO
-  //                 }
-  //               />
-  //             </LogoImageWrap>
-  //           </FlexWrap>
-  //           <SpaceView mLeft={SIZE4} />
-  //           <FlexWrap flex={6}>
-  //             <TitleText>
-  //               {ownerInfo.accountName}
-  //             </TitleText>
-  //             <SpaceView mTop={SIZE1} />
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              {
+                moment(
+                  focusedJob.completedDate || focusedJob.jobTimeSpecific
+                ).format('DD/MM/YYYY')
+              }
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            {
+              moment(
+                focusedJob.completedDate || focusedJob.jobTimeSpecific
+              ).format('hh:mm A')
+            }
+          </InfoText>
+        </RowWrap>
 
-  //             <InfoText>
-  //               {ownerInfo.address}
-  //             </InfoText>
-  //             <InfoText>
-  //               {
-  //                 (ownerInfo.phone ? `Tel: ${ownerInfo.phone}  ` : '') +
-  //                 (ownerInfo.faxNumber ? `Fax: ${ownerInfo.faxNumber}  ` : '')
-  //               }
-  //             </InfoText>
-  //             <InfoText>
-  //               {
-  //                 (ownerInfo.uenNumber ? `UEN: ${ownerInfo.uenNumber}  ` : '') +
-  //                 (ownerInfo.gstNumber ? `GST: ${ownerInfo.gstNumber}  ` : '')
-  //               }
-  //             </InfoText>
-  //           </FlexWrap>
-  //         </RowWrap>
-  //       </ContentWrap>
-  //     </View>
-  //   );
-  // };
+        <SpaceView mTop={SIZE1} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              Driver
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            {focusedJob.assignedDriver.driverName}
+          </InfoText>
+        </RowWrap>
+
+        <SpaceView mTop={SIZE1} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              Vehicle
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            {focusedJob.assignedVehicle.vehicleName}
+          </InfoText>
+        </RowWrap>
+
+        <SpaceView mTop={SIZE4} />
+        <RowWrap>
+          <FlexWrap>
+            <InfoText>
+              Job Type
+            </InfoText>
+          </FlexWrap>
+          <InfoText>
+            {focusedJob.jobTemplateName || focusedJob.jobTypeName}
+          </InfoText>
+        </RowWrap>
+      </View>
+    );
+  };
+
+  const renderOwnerInfo = () => {
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <InfoText align={'center'}>
+          {ownerInfo.accountName}
+        </InfoText>
+
+        <InfoText align={'center'}>
+          {ownerInfo.address}
+        </InfoText>
+        <InfoText align={'center'}>
+          {
+            (ownerInfo.phone ? `Tel: ${ownerInfo.phone}` : '') +
+            (ownerInfo.phone && ownerInfo.faxNumber ? '  ,  ' : '') +
+            (ownerInfo.faxNumber ? `Fax: ${ownerInfo.faxNumber}` : '')
+          }
+        </InfoText>
+        <InfoText align={'center'}>
+          {
+            (ownerInfo.uenNumber ? `UEN: ${ownerInfo.uenNumber}` : '') +
+            (ownerInfo.uenNumber && ownerInfo.gstNumber ? '  ,  ' : '') +
+            (ownerInfo.gstNumber ? `GST: ${ownerInfo.gstNumber}` : '')
+          }
+        </InfoText>
+      </View>
+    );
+  };
+
+  const renderLogo = () => {
+    return (
+      <RowWrap>
+        <FlexWrap flex={3} />
+        <FlexWrap flex={4}>
+          <LogoImageWrap>
+            <FullImage
+              resizeMode={'contain'}
+              source={
+                ownerInfo.logoImageUrl
+                ? { uri: ownerInfo.logoImageUrl }
+                : IMAGES.APP_LOGO
+              }
+            />
+          </LogoImageWrap>
+        </FlexWrap>
+        <FlexWrap flex={3} />
+      </RowWrap>
+    );
+  };
 
   const renderHeader = () => {
     return (
       <HeaderBar
-        centerIcon={<ScreenText>{jobStatus}</ScreenText>}
+        centerIcon={
+          <TouchableOpacity onPress={onPrint}>
+            <RowWrap>
+              <PrintIcon />
+              <SpaceView mLeft={SIZE1} />
+              <ScreenText
+                color={COLORS.BLUE1}
+              >
+                SEARCH PRINTER
+              </ScreenText>
+            </RowWrap>
+          </TouchableOpacity>
+        }
         leftIcon={<Back />}
-        rightIcon={<EmptyWrap />}
+        rightIcon={<Sharing />}
         onPressLeft={onBack}
+        onPressRight={onShare}
       />
     );
   };
@@ -505,40 +457,30 @@ const PreviewScreen = ({
         { renderHeader() }
       </ShadowWrap>
 
-      <Content
-        color={
-          showing
-          ? COLORS.WHITE1 : COLORS.WHITE2
-        }
+      <ScrollView
+        bounces={false}
+        showsVerticalScrollIndicator={false}
       >
-        <ScrollView
-          bounces={false}
-          showsVerticalScrollIndicator={false}
+        <ViewShot
+          ref={viewShotRef}
+          options={{ result: 'base64' }}
         >
-          <ViewShot
-            ref={viewShotRef}
-            options={{ result: 'base64' }}
-          >
-          {
-            // { renderReceiptHeader() }
-            // { renderCustomerCopy() }
-            // { renderBinInfo() }
-            // { renderServices() }
-            // { renderJobProof() }
-          }
+          <ContentWrap>
+            <SpaceView mTop={SIZE2} />
 
+            { renderLogo() }
+            { renderOwnerInfo() }
+            { renderJobInfo() }
+            { renderBinInfo() }
+            { renderPayment() }
+            { renderServices() }
+            { renderJobProof() }
+            { renderNote() }
 
-            {
-              !showing &&
-              <SpaceView mTop={SIZE2} />
-            }
-          </ViewShot>
-        </ScrollView>
-      </Content>
-
-      {
-        // renderPrintAndShare()
-      }
+            <SpaceView mTop={SIZE4} />
+          </ContentWrap>
+        </ViewShot>
+      </ScrollView>
     </Container>
   );
 };
@@ -546,13 +488,14 @@ const PreviewScreen = ({
 PreviewScreen.propTypes = {
   ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
-
   sign: PropTypes.object,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
-  jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  getBinInOutInfoIndex: PropTypes.func.isRequired,
+  getCustomerSiteIndex: PropTypes.func.isRequired,
+  componentId: PropTypes.string.isRequired,
 };
 
 PreviewScreen.defaultProps = {
