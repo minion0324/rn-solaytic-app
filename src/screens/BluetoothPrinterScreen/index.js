@@ -224,7 +224,7 @@ const BluetoothPrinterScreen = ({
     try {
       setLoading(true);
 
-      await BluetoothEscposPrinter.printPic(base64Str, { width: 360, left: 10 });
+      await BluetoothEscposPrinter.printPic(base64Str, { width: 380, left: 2 });
 
       setLoading(false);
     } catch (error) {
