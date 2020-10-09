@@ -213,12 +213,13 @@ const UploadHistoryScreen = ({
         value: { fetchData },
       } = await getCacheItemById(BACKGROUND_FETCH_KEY, item.id);
 
-      const [ jobIds, binInfo, services, attempt ] = fetchData;
+      const [ jobIds, binInfo, services, amountCollected,  attempt ] = fetchData;
 
       completeJobs({
         jobIds,
         binInfo,
         services,
+        amountCollected,
         attempt,
         success: () => onRetrySuccess(item, index),
         failure: () => onRetryFailure(item, index),

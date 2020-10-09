@@ -243,10 +243,15 @@ const JobDetailsScreen = ({
   const onStart = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     startJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -255,10 +260,15 @@ const JobDetailsScreen = ({
   const onPull = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     pullJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -267,10 +277,15 @@ const JobDetailsScreen = ({
   const onExchange = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -347,11 +362,11 @@ const JobDetailsScreen = ({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
       photos,
       sign,
       signedUserName,
       signedUserContact,
-      amountCollected,
       success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });

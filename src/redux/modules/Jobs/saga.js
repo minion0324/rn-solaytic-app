@@ -362,14 +362,19 @@ export function* watchAcknowledgeJobs() {
 
 export function* asyncStartJobs({ payload }) {
   const {
-    jobIds, binInfo, services, success, failure,
+    jobIds,
+    binInfo,
+    services,
+    amountCollected,
+    success,
+    failure,
   } = payload;
 
   try {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate, pricings);
+    const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate, pricings, amountCollected);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -396,7 +401,7 @@ export function* asyncStartJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJobId) && JOB_STATUS.STARTED,
-      appExtraData: { binInfo, services },
+      appExtraData: { binInfo, services, amountCollected },
     }));
 
     success && success();
@@ -415,14 +420,19 @@ export function* watchStartJobs() {
 
 export function* asyncPullJobs({ payload }) {
   const {
-    jobIds, binInfo, services, success, failure,
+    jobIds,
+    binInfo,
+    services,
+    amountCollected,
+    success,
+    failure,
   } = payload;
 
   try {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    const { data } = yield call(apiPullJobs, jobIds, stepBinUpdate, pricings);
+    const { data } = yield call(apiPullJobs, jobIds, stepBinUpdate, pricings, amountCollected);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -449,7 +459,7 @@ export function* asyncPullJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
-      appExtraData: { binInfo, services },
+      appExtraData: { binInfo, services, amountCollected },
     }));
 
     success && success();
@@ -468,14 +478,19 @@ export function* watchPullJobs() {
 
 export function* asyncExchangeJobs({ payload }) {
   const {
-    jobIds, binInfo, services, success, failure,
+    jobIds,
+    binInfo,
+    services,
+    amountCollected,
+    success,
+    failure,
   } = payload;
 
   try {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    const { data } = yield call(apiExchangeJobs, jobIds, stepBinUpdate, pricings);
+    const { data } = yield call(apiExchangeJobs, jobIds, stepBinUpdate, pricings, amountCollected);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -502,7 +517,7 @@ export function* asyncExchangeJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
-      appExtraData: { binInfo, services },
+      appExtraData: { binInfo, services, amountCollected },
     }));
 
     success && success();
@@ -524,11 +539,11 @@ export function* asyncCompleteJobs({ payload }) {
     jobIds,
     binInfo,
     services,
+    amountCollected,
     photos,
     sign,
     signedUserName,
     signedUserContact,
-    amountCollected,
     attempt: attemptData,
     success,
     failure,
@@ -581,7 +596,7 @@ export function* asyncCompleteJobs({ payload }) {
       };
     }
 
-    const { data } = yield call(apiCompleteJobs, jobIds, stepBinUpdate, pricings, attempt);
+    const { data } = yield call(apiCompleteJobs, jobIds, stepBinUpdate, pricings, amountCollected, attempt);
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -606,7 +621,7 @@ export function* asyncCompleteJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJob.jobId) && JOB_STATUS.COMPLETED,
-      appExtraData: { binInfo, services },
+      appExtraData: { binInfo, services, amountCollected },
     }));
 
     success && success();
@@ -618,7 +633,7 @@ export function* asyncCompleteJobs({ payload }) {
         jobNumber: focusedJob.jobNumber,
       },
       [
-        jobIds, binInfo, services, attempt,
+        jobIds, binInfo, services, amountCollected, attempt,
       ],
     );
     failure && failure();
