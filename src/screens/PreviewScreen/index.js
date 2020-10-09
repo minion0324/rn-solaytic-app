@@ -217,7 +217,7 @@ const PreviewScreen = ({
         {
           selectedServices.map((item) => (
             <View
-              key={`${item.serviceAdditionalChargeId}`}
+              key={`${item.serviceAdditionalChargeTemplateId}`}
             >
               <SpaceView mTop={SIZE2} />
               <RowWrap>

@@ -233,7 +233,7 @@ const AddServicesScreen = ({
       <Content>
         <ListWrap
           data={searchedServices}
-          keyExtractor={(item) => `${item.serviceAdditionalChargeId}`}
+          keyExtractor={(item) => `${item.serviceAdditionalChargeTemplateId}`}
           renderItem={renderItem}
         />
 
