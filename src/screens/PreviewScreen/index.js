@@ -503,7 +503,7 @@ const PreviewScreen = ({
             { renderJobProof() }
             { renderNote() }
 
-            <SpaceView mTop={SIZE4} />
+            <SpaceView mTop={SIZE4 * 4} />
           </ContentWrap>
         </ViewShot>
       </ScrollView>
