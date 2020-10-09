@@ -70,6 +70,10 @@ const BluetoothPrinterScreen = ({
   }, []);
 
   const onBack = () => {
+    if (loading) {
+      return;
+    }
+
     dismissOverlay(componentId);
   };
 
