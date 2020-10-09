@@ -15,6 +15,7 @@ const InfoText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 600;
   color: ${props => props.color || COLORS.BLACK2};
+  text-align: ${props => props.align || 'left'};
 `;
 
 const LabelText = styled.Text`
