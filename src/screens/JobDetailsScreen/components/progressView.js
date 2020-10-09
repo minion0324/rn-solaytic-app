@@ -229,7 +229,14 @@ const ProgressView = ({
   };
 
   const renderJobProof = () => {
-    if (photos.length === 0 && !sign.uri) {
+    if (
+      (
+        focusedJob.steps.length !== 2 ||
+        jobStatus !== JOB_STATUS.STARTED
+      ) &&
+      jobStatus !== JOB_STATUS.IN_PROGRESS &&
+      (photos.length === 0 && !sign.uri)
+    ) {
       return null;
     }
 
@@ -262,55 +269,60 @@ const ProgressView = ({
             </TouchableOpacity>
           </RowWrap>
         </ContentWrap>
-        <WrapBorder />
-        <ContentWrap>
-          {
-            photos.map((photo, index) =>
-              <ItemWrap
-                deactivated
-                mLeft={SIZE1} mRight={SIZE1}
-                key={photo.uri}
-              >
-                <JobProofItem>
-                  <FullImage source={{ uri: photo.uri }} />
-                  <CancelButton
-                    onPress={() => onCancelPhoto(index)}
+        {
+          !(photos.length === 0 && !sign.uri) &&
+          <View>
+            <WrapBorder />
+            <ContentWrap>
+              {
+                photos.map((photo, index) =>
+                  <ItemWrap
+                    deactivated
+                    mLeft={SIZE1} mRight={SIZE1}
+                    key={photo.uri}
                   >
-                    <CancelIcon />
-                  </CancelButton>
-                </JobProofItem>
-              </ItemWrap>
-            )
-          }
-          {
-            !!sign.uri &&
-            <ItemWrap
-              deactivated
-              mLeft={SIZE1} mRight={SIZE1}
-            >
-              <JobProofItem>
-                <HalfWrap>
-                  <FullImage source={{ uri: sign.uri }} />
-                </HalfWrap>
-                <HalfWrap>
-                  <SignInfo>
-                    <SignInfoText numberOfLines={1}>
-                      {signedUserName}
-                    </SignInfoText>
-                  </SignInfo>
-                  <SignInfo>
-                    <SignInfoText numberOfLines={1}>
-                      {signedUserContact}
-                    </SignInfoText>
-                  </SignInfo>
-                </HalfWrap>
-                <CancelButton onPress={onCancelSign}>
-                  <CancelIcon />
-                </CancelButton>
-              </JobProofItem>
-            </ItemWrap>
-          }
-        </ContentWrap>
+                    <JobProofItem>
+                      <FullImage source={{ uri: photo.uri }} />
+                      <CancelButton
+                        onPress={() => onCancelPhoto(index)}
+                      >
+                        <CancelIcon />
+                      </CancelButton>
+                    </JobProofItem>
+                  </ItemWrap>
+                )
+              }
+              {
+                !!sign.uri &&
+                <ItemWrap
+                  deactivated
+                  mLeft={SIZE1} mRight={SIZE1}
+                >
+                  <JobProofItem>
+                    <HalfWrap>
+                      <FullImage source={{ uri: sign.uri }} />
+                    </HalfWrap>
+                    <HalfWrap>
+                      <SignInfo>
+                        <SignInfoText numberOfLines={1}>
+                          {signedUserName}
+                        </SignInfoText>
+                      </SignInfo>
+                      <SignInfo>
+                        <SignInfoText numberOfLines={1}>
+                          {signedUserContact}
+                        </SignInfoText>
+                      </SignInfo>
+                    </HalfWrap>
+                    <CancelButton onPress={onCancelSign}>
+                      <CancelIcon />
+                    </CancelButton>
+                  </JobProofItem>
+                </ItemWrap>
+              }
+            </ContentWrap>
+          </View>
+        }
       </View>
     );
   }
