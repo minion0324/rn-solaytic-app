@@ -8,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { useNavigationComponentDidAppear } from 'react-native-navigation-hooks';
 
 import {
   HeaderBar,
@@ -66,6 +67,7 @@ const DriverNoteScreen = ({
   markMessagesAsRead,
   addMessage,
   setNewCommentInfo,
+  setCoreScreenInfo,
   componentId,
 }) => {
   const [ newComment, setNewComment ] = useState('');
@@ -75,6 +77,16 @@ const DriverNoteScreen = ({
   useEffect(() => {
     onNewCommentInfo();
   }, [newCommentInfo]);
+
+  useNavigationComponentDidAppear((event) => {
+    const { componentName } = event;
+
+    setCoreScreenInfo({
+      componentId,
+      componentName,
+      componentType: 'push',
+    });
+  });
 
   const onNewCommentInfo = async () => {
     try {
@@ -226,6 +238,7 @@ DriverNoteScreen.propTypes = {
   markMessagesAsRead: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
   setNewCommentInfo: PropTypes.func.isRequired,
+  setCoreScreenInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
@@ -244,6 +257,7 @@ const mapDispatchToProps = {
   markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
   addMessage: Jobs.actionCreators.addMessage,
   setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
+  setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
 };
 
 export default connect(
