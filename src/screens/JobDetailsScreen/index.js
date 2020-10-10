@@ -47,6 +47,7 @@ const JobDetailsScreen = ({
   jobStatus,
   photosAndSign,
   newCommentInfo,
+  coreScreenInfo,
   acknowledgeJobs,
   startJobs,
   pullJobs,
@@ -224,7 +225,10 @@ const JobDetailsScreen = ({
   const onNewCommentInfo = () => {
     const { jobId } = newCommentInfo;
 
-    if (+jobId === focusedJob.jobId) {
+    if (
+      +jobId === focusedJob.jobId &&
+      coreScreenInfo.componentName !== DRIVER_NOTE_SCREEN
+    ) {
       pushScreen(componentId, DRIVER_NOTE_SCREEN);
     }
   };
@@ -521,6 +525,7 @@ JobDetailsScreen.propTypes = {
   jobStatus: PropTypes.string.isRequired,
   photosAndSign: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
+  coreScreenInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   pullJobs: PropTypes.func.isRequired,
@@ -543,6 +548,7 @@ const mapStateToProps = (state) => {
     jobStatus: Jobs.selectors.getJobStatus(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),
     newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
+    coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
 };
 
