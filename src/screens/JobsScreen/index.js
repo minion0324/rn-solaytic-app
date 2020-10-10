@@ -22,6 +22,7 @@ import {
   popToRootScreen,
   JOB_DETAILS_SCREEN,
   CUSTOM_MODAL_SCREEN,
+  DRIVER_NOTE_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -139,7 +140,10 @@ const JobsScreen = ({
       if (coreScreenInfo.componentType === 'push') {
         if (
           message && +jobId === focusedJobId &&
-          coreScreenInfo.componentName === JOB_DETAILS_SCREEN
+          (
+            coreScreenInfo.componentName === JOB_DETAILS_SCREEN ||
+            coreScreenInfo.componentName === DRIVER_NOTE_SCREEN
+          )
         ) {
           getJobById({
             jobId,
