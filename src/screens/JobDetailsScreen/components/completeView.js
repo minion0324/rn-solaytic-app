@@ -245,9 +245,7 @@ const CompleteView = ({
             <FlexWrap>
               <RowWrap>
                 <SpaceView mLeft={SIZE2} />
-                <TitleText>
-                  Customer Copy
-                </TitleText>
+                <TitleText>DO Number</TitleText>
               </RowWrap>
             </FlexWrap>
             <FlexWrap>
