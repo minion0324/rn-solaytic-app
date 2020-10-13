@@ -31,6 +31,7 @@ import {
 } from 'src/navigation';
 import {
   delay,
+  getDate,
 } from 'src/utils';
 
 import {
@@ -761,6 +762,9 @@ const ProgressView = ({
   };
 
   const renderButton = () => {
+    const forToday = getDate() ===
+      getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
+
     if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
       return (
         <DefaultButton
@@ -775,9 +779,14 @@ const ProgressView = ({
     if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
       return (
         <DefaultButton
-          color={COLORS.BLUE1}
+          color={
+            forToday
+            ? COLORS.BLUE1 : COLORS.GRAY3
+          }
           text={'Start'}
-          onPress={onStart}
+          onPress={
+            forToday ? onStart : null
+          }
           loading={loading}
         />
       );
