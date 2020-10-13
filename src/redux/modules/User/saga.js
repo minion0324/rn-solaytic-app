@@ -22,13 +22,17 @@ import {
 
 export function* asyncLogin({ payload }) {
   const {
-    userName, password, success, failure,
+    userName,
+    password,
+    persistToken,
+    success,
+    failure,
   } = payload;
 
   try {
     removeAuthToken();
 
-    const { data } = yield call(apiLogin, userName, password);
+    const { data } = yield call(apiLogin, userName, password, persistToken);
     yield put(actionCreators.loginSuccess(data));
 
     setAuthToken(data.token);

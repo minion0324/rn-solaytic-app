@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="19.129" height="16.754" viewBox="0 0 19.129 16.754">
-  <g id="Icon_feather-alert-triangle" data-name="Icon feather-alert-triangle" transform="translate(-0.437 -1.58)">
-    <path id="Path_24194" data-name="Path 24194" d="M8.575,3.217,1.517,15a1.667,1.667,0,0,0,1.425,2.5H17.058A1.667,1.667,0,0,0,18.483,15L11.425,3.217a1.667,1.667,0,0,0-2.85,0Z" fill="none" stroke="#484848" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667"/>
-    <path id="Path_24195" data-name="Path 24195" d="M10,7.5v3.333" fill="none" stroke="#484848" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667"/>
-    <path id="Path_24196" data-name="Path 24196" d="M10,14.167h0" fill="none" stroke="#484848" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="19.129" height="16.752" viewBox="0 0 19.129 16.752">
+  <g id="Icon_feather-alert-triangle" data-name="Icon feather-alert-triangle" transform="translate(-0.436 -1.581)">
+    <path id="Path_24194" data-name="Path 24194" d="M8.575,3.217,1.517,15a1.667,1.667,0,0,0,1.425,2.5H17.058A1.667,1.667,0,0,0,18.483,15L11.425,3.217a1.667,1.667,0,0,0-2.85,0Z" fill="none" stroke="#ef476f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667"/>
+    <path id="Path_24195" data-name="Path 24195" d="M10,7.5v3.333" fill="none" stroke="#ef476f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667"/>
+    <path id="Path_24196" data-name="Path 24196" d="M10,14.167h0" fill="none" stroke="#ef476f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667"/>
   </g>
 </svg>

@@ -1,44 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { TabView, TabBar } from 'react-native-tab-view';
 
 import {
-  COLORS,
   JOB_STATUS,
+  JOB_TYPE,
 } from 'src/constants';
-import {
-  HeaderBar,
-  DefaultButton,
-} from 'src/components';
 
 import {
-  Container,
-  Content,
-  ShadowWrap,
-} from 'src/styles/common.styles';
-import {
-  ScreenText,
-  EmptyWrap,
-  BackButton,
-  FailJob,
-} from 'src/styles/header.styles';
-import {
-  TabBarBadge,
-  TabBarStyle,
-  TabBarIndicatorStyle,
-  TabBarLabelStyle,
-  TabBarActiveColor,
-  TabBarInactiveColor,
-} from 'src/styles/tab.styles';
-
-import {
-  ButtonWrap,
-} from './styled';
-
-import { DetailsTab, InstructionTab } from './components';
-
-const TAB1 = 'Details';
-const TAB2 = 'Instruction';
+  ProgressView,
+  CompleteView,
+} from './components';
 
 const JobDetailsScreenView = ({
   loading,
@@ -47,224 +18,188 @@ const JobDetailsScreenView = ({
   signedUserName,
   signedUserContact,
   binInfo,
-  setBinInfo,
   jobStatus,
-  amountCollected,
-  setAmountCollected,
   services,
+  cashIndex,
+  setCashIndex,
+  isInProgress,
 
   focusedJob,
-  newCommentInfo,
-  setNewCommentInfo,
 
   onBack,
   onAcknowledge,
   onStart,
+  onPull,
   onExchange,
   onComplete,
   onPhoto,
   onSign,
   onCancelPhoto,
   onCancelSign,
-  onFail,
-  onUpdateService,
-  onReadMessages,
-  onNewComment,
   onUpdateAmountCollected,
-  isInProgress,
   onAlertNotProgress,
+  onFail,
+  onAddress,
+  onDriverNote,
+  onAddServices,
+  onBinInfo,
+  onPrint,
 }) => {
-  const [ tabIndex, setTabIndex ] = useState(0);
-  const [ tabRoutes ] = useState([
-    { key: TAB1, title: TAB1 },
-    { key: TAB2, title: TAB2 },
-  ]);
 
-  const onTapPress = ({ route }) => {
-    if (
-      route.key === TAB1 ||
-      !focusedJob.haveUnreadMessage
-    ) {
-      return;
-    }
+  const getBinInOutInfoIndex = (index) => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PUT:
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS
+        ) {
+          return -1;
+        }
 
-    onReadMessages();
+        return 1;
+
+      case JOB_TYPE.PULL:
+        if (index !== 0) {
+          return -1;
+        }
+
+        return 0;
+
+      case JOB_TYPE.EXCHANGE:
+        return index === 0 ? 1 : 0;
+
+      case JOB_TYPE.OUT:
+        if (index !== 0) {
+          return -1;
+        }
+
+        return 1;
+
+      case JOB_TYPE.SHIFT:
+        if (
+          index !== 0 ||
+          jobStatus === JOB_STATUS.IN_PROGRESS
+        ) {
+          return -1;
+        }
+
+        if (
+          jobStatus === JOB_STATUS.STARTED ||
+          jobStatus === JOB_STATUS.COMPLETED
+        ) {
+          return 0;
+        } else {
+          return 1;
+        }
+
+      default:
+        return -1;
+    };
   };
 
-  const renderButton = () => {
-    if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.BLUE1}
-            text={'Start'}
-            onPress={onStart}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
+  const getCustomerSiteIndex = () => {
+    const { steps, jobTypeName } = focusedJob;
+
+    if (jobTypeName === JOB_TYPE.PULL) {
+      return 0;
     }
 
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 &&
-      focusedJob.steps.length === 3
-    ) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.PURPLE1}
-            text={'Exchange'}
-            onPress={onExchange}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
+    if (jobTypeName === JOB_TYPE.PUT) {
+      return 1;
     }
 
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
-    ) {
-      return (
-        <ButtonWrap>
-          <DefaultButton
-            color={COLORS.GREEN1}
-            text={'Complete'}
-            onPress={onComplete}
-            loading={loading}
-          />
-        </ButtonWrap>
-      );
+    if (jobTypeName === JOB_TYPE.EXCHANGE) {
+      return 1;
     }
 
-    return null;
-  };
+    if (steps.length === 2) {
+      if (
+        jobStatus === JOB_STATUS.DISPATCHED ||
+        jobStatus === JOB_STATUS.ACKNOWLEDGED
+      ) {
+        return 0;
+      }
 
-  const renderHeader = () => {
-    return (
-      JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-      ? <HeaderBar
-          centerIcon={
-            <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-          }
-          leftIcon={<BackButton />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
-        />
-      : <ShadowWrap>
-          <HeaderBar
-            centerIcon={
-              <ScreenText>{focusedJob.jobTemplateName || focusedJob.jobTypeName}</ScreenText>
-            }
-            leftIcon={<BackButton />}
-            rightIcon={
-              jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-              jobStatus === JOB_STATUS.IN_PROGRESS2
-              ? <FailJob />
-              : <EmptyWrap />
-            }
-            onPressLeft={onBack}
-            onPressRight={
-              jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-              jobStatus === JOB_STATUS.IN_PROGRESS2
-              ? onFail
-              : null
-            }
-          />
+      if (jobStatus === JOB_STATUS.STARTED) {
+        return 1;
+      }
 
-          { renderButton() }
-        </ShadowWrap>
-    );
-  };
-
-  const renderScene = ({ route }) => {
-    return route.key === TAB1
-      ? <DetailsTab
-          loading={loading}
-          photos={photos}
-          sign={sign}
-          signedUserName={signedUserName}
-          signedUserContact={signedUserContact}
-          binInfo={binInfo}
-          setBinInfo={setBinInfo}
-          jobStatus={jobStatus}
-          setTabIndex={setTabIndex}
-
-          focusedJob={focusedJob}
-
-          onAcknowledge={onAcknowledge}
-          onPhoto={onPhoto}
-          onSign={onSign}
-          onCancelPhoto={onCancelPhoto}
-          onCancelSign={onCancelSign}
-          isInProgress={isInProgress}
-        />
-      : <InstructionTab
-          amountCollected={amountCollected}
-          setAmountCollected={setAmountCollected}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-          services={services}
-
-          focusedJob={focusedJob}
-          newCommentInfo={newCommentInfo}
-          setNewCommentInfo={setNewCommentInfo}
-
-          onUpdateService={onUpdateService}
-          onReadMessages={onReadMessages}
-          onNewComment={onNewComment}
-          onUpdateAmountCollected={onUpdateAmountCollected}
-          isInProgress={isInProgress}
-          onAlertNotProgress={onAlertNotProgress}
-        />
-  };
-
-  const renderBadge = ({ route }) => {
-    if (
-      route.key === TAB1 ||
-      !focusedJob.haveUnreadMessage
-    ) {
-      return null;
+      return 2;
     }
 
-    return (
-      <TabBarBadge />
-    );
-  };
+    if (steps.length === 3) {
+      if (
+        jobStatus === JOB_STATUS.DISPATCHED ||
+        jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+        jobStatus === JOB_STATUS.STARTED
+      ) {
+        return 0;
+      }
 
-  const renderTabBar = (props) => {
-    return (
-      <TabBar
-        {...props}
-        getLabelText={({ route }) => route.title}
-        style={TabBarStyle}
-        indicatorStyle={TabBarIndicatorStyle}
-        labelStyle={TabBarLabelStyle}
-        activeColor={TabBarActiveColor}
-        inactiveColor={TabBarInactiveColor}
-        renderBadge={renderBadge}
-        onTabPress={onTapPress}
-      />
-    );
+      return 1;
+    }
   };
 
   return (
-    <Container>
-      { renderHeader() }
+    jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+    jobStatus === JOB_STATUS.STARTED ||
+    jobStatus === JOB_STATUS.IN_PROGRESS ||
+    JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+  )
+    ? <ProgressView
+        loading={loading}
+        photos={photos}
+        sign={sign}
+        signedUserName={signedUserName}
+        signedUserContact={signedUserContact}
+        binInfo={binInfo}
+        jobStatus={jobStatus}
+        services={services}
+        cashIndex={cashIndex}
+        setCashIndex={setCashIndex}
+        isInProgress={isInProgress}
 
-      <Content>
-        <TabView
-          navigationState={{
-            index: tabIndex, routes: tabRoutes
-          }}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={idx => setTabIndex(idx)}
-          useNativeDriver
-        />
-      </Content>
-    </Container>
-  );
+        focusedJob={focusedJob}
+
+        onBack={onBack}
+        onAcknowledge={onAcknowledge}
+        onStart={onStart}
+        onPull={onPull}
+        onExchange={onExchange}
+        onComplete={onComplete}
+        onPhoto={onPhoto}
+        onSign={onSign}
+        onCancelPhoto={onCancelPhoto}
+        onCancelSign={onCancelSign}
+        onUpdateAmountCollected={onUpdateAmountCollected}
+        onAlertNotProgress={onAlertNotProgress}
+        onFail={onFail}
+        onAddress={onAddress}
+        onDriverNote={onDriverNote}
+        onAddServices={onAddServices}
+        onBinInfo={onBinInfo}
+        onPrint={onPrint}
+
+        getBinInOutInfoIndex={getBinInOutInfoIndex}
+        getCustomerSiteIndex={getCustomerSiteIndex}
+      />
+    : <CompleteView
+        photos={photos}
+        sign={sign}
+        signedUserName={signedUserName}
+        signedUserContact={signedUserContact}
+        binInfo={binInfo}
+        jobStatus={jobStatus}
+        services={services}
+
+        focusedJob={focusedJob}
+
+        onBack={onBack}
+        onPrint={onPrint}
+
+        getBinInOutInfoIndex={getBinInOutInfoIndex}
+        getCustomerSiteIndex={getCustomerSiteIndex}
+      />
 };
 
 JobDetailsScreenView.propTypes = {
@@ -274,42 +209,38 @@ JobDetailsScreenView.propTypes = {
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
-  setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  amountCollected: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
-  setAmountCollected: PropTypes.func.isRequired,
   services: PropTypes.array.isRequired,
+  cashIndex: PropTypes.number.isRequired,
+  setCashIndex: PropTypes.func.isRequired,
+  isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
-  newCommentInfo: PropTypes.object.isRequired,
-  setNewCommentInfo: PropTypes.func.isRequired,
 
   onBack: PropTypes.func.isRequired,
   onAcknowledge: PropTypes.func.isRequired,
   onStart: PropTypes.func.isRequired,
+  onPull: PropTypes.func.isRequired,
   onExchange: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
   onCancelPhoto: PropTypes.func.isRequired,
   onCancelSign: PropTypes.func.isRequired,
-  onFail: PropTypes.func.isRequired,
-  onUpdateService: PropTypes.func.isRequired,
-  onReadMessages: PropTypes.func.isRequired,
-  onNewComment: PropTypes.func.isRequired,
   onUpdateAmountCollected: PropTypes.func.isRequired,
-  isInProgress: PropTypes.func.isRequired,
   onAlertNotProgress: PropTypes.func.isRequired,
+  onFail: PropTypes.func.isRequired,
+  onAddress: PropTypes.func.isRequired,
+  onDriverNote: PropTypes.func.isRequired,
+  onAddServices: PropTypes.func.isRequired,
+  onBinInfo: PropTypes.func.isRequired,
+  onPrint: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
   sign: null,
   signedUserName: '',
   signedUserContact: '',
-  amountCollected: '',
 };
 
 export default JobDetailsScreenView;

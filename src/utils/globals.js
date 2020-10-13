@@ -24,8 +24,8 @@ function getTimestamp() {
   return moment().format('x');
 };
 
-function getDate(date) {
-  return moment(date).format(APP_DATE_FORMAT);
+function getDate(date, format) {
+  return moment(date).format(format || APP_DATE_FORMAT);
 };
 
 function getStartDate(date, key, format) {
@@ -62,7 +62,7 @@ function getUpdatedServices(services) {
     if (item.isSelected) {
       result.push({
         ...item,
-        quantity: 1,
+        quantity: item.quantity || 1,
       })
     }
 

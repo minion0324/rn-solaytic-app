@@ -37,6 +37,7 @@ import {
   Container,
   Content,
   ShadowWrap,
+  LoadingWrap,
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
@@ -46,7 +47,7 @@ import {
 import {
   ScreenText,
   EmptyWrap,
-  BackButton,
+  Back,
 } from 'src/styles/header.styles';
 
 import {
@@ -64,6 +65,7 @@ const UploadHistoryScreen = ({
   setCoreScreenInfo,
   componentId,
 }) => {
+  const [ loading, setLoading ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
 
   const [ jobLogs, setJobLogs ] = useState([]);
@@ -130,7 +132,7 @@ const UploadHistoryScreen = ({
       return;
     }
 
-    const searchedLogs = jobLogs.map((item) => {
+    const searched = jobLogs.map((item) => {
       const {
         value: { status },
         id: { jobNumber },
@@ -146,7 +148,7 @@ const UploadHistoryScreen = ({
       }
     });
 
-    setSearchedJobLogs(searchedLogs);
+    setSearchedJobLogs(searched);
   };
 
   const onBack = () => {
@@ -156,16 +158,14 @@ const UploadHistoryScreen = ({
 
   const onRefresh = async () => {
     setRefreshing(true);
-
     await getJobLogs();
-
     setRefreshing(false);
   };
 
   const onSearch = () => {
     Keyboard.dismiss();
-
     getSearchedJobLogs();
+    setLoading(false);
   };
 
   const onChangeSearchText = (text) => {
@@ -213,12 +213,13 @@ const UploadHistoryScreen = ({
         value: { fetchData },
       } = await getCacheItemById(BACKGROUND_FETCH_KEY, item.id);
 
-      const [ jobIds, binInfo, services, attempt ] = fetchData;
+      const [ jobIds, binInfo, services, amountCollected,  attempt ] = fetchData;
 
       completeJobs({
         jobIds,
         binInfo,
         services,
+        amountCollected,
         attempt,
         success: () => onRetrySuccess(item, index),
         failure: () => onRetryFailure(item, index),
@@ -302,29 +303,30 @@ const UploadHistoryScreen = ({
       <ShadowWrap>
         <HeaderBar
           centerIcon={<ScreenText>History</ScreenText>}
-          leftIcon={<BackButton />}
+          leftIcon={<Back />}
           rightIcon={<EmptyWrap />}
           onPressLeft={onBack}
         />
       </ShadowWrap>
 
-      <Content>
-        <SearchBarWrap>
-          <SearchIconWrap>
-            <SearchIcon />
-          </SearchIconWrap>
-          <SearchInput
-            placeholder={'Search ...'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            returnKeyType={'go'}
-            onSubmitEditing={onSearch}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => onChangeSearchText(text)}
-            value={searchText}
-          />
-        </SearchBarWrap>
+      <SearchBarWrap>
+        <SearchIconWrap>
+          <SearchIcon />
+        </SearchIconWrap>
+        <SearchInput
+          placeholder={'Search ...'}
+          placeholderTextColor={COLORS.BLACK2}
+          underlineColorAndroid={COLORS.TRANSPARENT1}
+          returnKeyType={'go'}
+          onSubmitEditing={onSearch}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          onChangeText={text => onChangeSearchText(text)}
+          value={searchText}
+        />
+      </SearchBarWrap>
 
+      <Content>
         <ListWrap
           data={searchedJobLogs}
           keyExtractor={(item) => `${item.id.jobId}`}
@@ -332,6 +334,13 @@ const UploadHistoryScreen = ({
           onRefreshProcess={onRefresh}
           refreshing={refreshing}
         />
+
+        {
+          loading &&
+          <LoadingWrap>
+            <ActivityIndicator size={'large'} />
+          </LoadingWrap>
+        }
       </Content>
     </Container>
   );

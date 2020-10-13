@@ -4,6 +4,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE3,
   SIZE12,
   FONT,
 } from 'src/constants';
@@ -16,6 +17,21 @@ const Container = styled.SafeAreaView`
 const Content = styled.View`
   flex: 1;
   background-color: ${props => props.color || COLORS.WHITE2};
+`;
+
+const ContentWrap = styled.View`
+  margin-horizontal: ${SIZE1}px;
+  padding-top: ${props => props.mTop || SIZE3}px;
+  padding-horizontal: ${SIZE3}px;
+  padding-bottom: ${SIZE3}px;
+  background-color: ${props => props.color || COLORS.WHITE1};
+`;
+
+const WrapBorder = styled.View`
+  margin-horizontal: ${SIZE1}px;
+  height: 0px;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
 `;
 
 const ShadowWrap = styled.View`
@@ -51,6 +67,7 @@ const SearchBarWrap = styled.View`
   padding: ${SIZE1}px;
   flex-direction: row;
   align-items: center;
+  background-color: ${COLORS.WHITE2};
 `;
 
 const SearchIconWrap = styled.View`
@@ -65,6 +82,11 @@ const SearchInput = styled.TextInput`
   color: ${COLORS.BLACK2};
 `;
 
+const RowWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const FlexWrap = styled.View`
   flex: ${props => props.flex || 1};
 `;
@@ -76,37 +98,18 @@ const SpaceView = styled.View`
   margin-bottom: ${props => props.mBottom || 0}px;
 `;
 
-const OkCancelRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  margin-vertical: ${SIZE1}px;
-`;
-
-const OkCancelButton = styled.TouchableOpacity`
-  padding-vertical: ${SIZE1}px;
-  padding-horizontal: ${SIZE2}px;
-`;
-
-const OkCancelText = styled.Text`
-  font-size: ${FONT(15)}px;
-  font-weight: 700,
-  color: ${COLORS.BLUE1};
-  text-transform: uppercase;
-`;
-
 export {
   Container,
   Content,
+  ContentWrap,
+  WrapBorder,
   ShadowWrap,
   LoadingWrap,
   FullImage,
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
+  RowWrap,
   FlexWrap,
   SpaceView,
-  OkCancelRow,
-  OkCancelButton,
-  OkCancelText,
 };

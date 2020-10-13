@@ -51,6 +51,20 @@ const getNewCommentInfo = createSelector(
   },
 );
 
+const getBinNumbers = createSelector(
+  getViewStore,
+  (view) => {
+    return view.binNumbers || [];
+  },
+);
+
+const getJobDates = createSelector(
+  getViewStore,
+  (view) => {
+    return view.jobDates || [];
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getDriverNotes,
@@ -59,4 +73,6 @@ export default {
   getIsRequiredUpdateTab,
   getIsNetworkConnected,
   getNewCommentInfo,
+  getBinNumbers,
+  getJobDates,
 };

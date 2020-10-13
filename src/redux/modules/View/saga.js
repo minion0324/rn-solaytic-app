@@ -4,11 +4,18 @@ import {
 
 import {
   apiGetDriverNotes,
+  apiGetBinNumbers,
+  apiGetJobDates,
 } from 'src/services';
+import {
+  onError,
+} from 'src/utils';
 
 import {
   GET_DRIVER_NOTES,
   GET_DRIVER_NOTES_BY_PAGE,
+  GET_BIN_NUMBERS,
+  GET_JOB_DATES,
   actionCreators,
 } from './actions';
 
@@ -23,6 +30,7 @@ export function* asyncGetDriverNotes({ payload }) {
 
     success && success();
   } catch (error) {
+    yield onError(error);
     failure && failure();
   }
 }
@@ -56,6 +64,52 @@ export function* watchGetDriverNotesByPage() {
   }
 }
 
+export function* asyncGetBinNumbers({ payload }) {
+  const {
+    search, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetBinNumbers, search);
+    yield put(actionCreators.getBinNumbersSuccess(data));
+
+    success && success();
+  } catch (error) {
+    yield onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchGetBinNumbers() {
+  while (true) {
+    const action = yield take(GET_BIN_NUMBERS);
+    yield* asyncGetBinNumbers(action);
+  }
+}
+
+export function* asyncGetJobDates({ payload }) {
+  const {
+    success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetJobDates);
+
+    yield put(actionCreators.getJobDatesSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetJobDates() {
+  while (true) {
+    const action = yield take(GET_JOB_DATES);
+    yield* asyncGetJobDates(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -82,5 +136,7 @@ export default function* () {
   yield all([
     fork(watchGetDriverNotes),
     fork(watchGetDriverNotesByPage),
+    fork(watchGetBinNumbers),
+    fork(watchGetJobDates),
   ]);
 }

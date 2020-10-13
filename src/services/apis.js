@@ -6,11 +6,12 @@ import {
   apiCall,
 } from './apiInstance';
 
-function apiLogin(userName, password) {
+function apiLogin(userName, password, persistToken) {
   return apiCall('api/mobile/driver/login', 'post', {
     data: {
       userName,
       password,
+      persistToken,
     },
   });
 };
@@ -63,32 +64,46 @@ function apiAcknowledgeJobs(jobIds) {
   });
 };
 
-function apiStartJobs(jobIds, stepBinUpdate, pricings) {
+function apiStartJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
+      amountCollected,
     },
   });
 };
 
-function apiExchangeJobs(jobIds, stepBinUpdate, pricings) {
+function apiPullJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+  return apiCall('api/mobile/driver/jobs/pull', 'post', {
+    data: {
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+    },
+  });
+};
+
+function apiExchangeJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
+      amountCollected,
     },
   });
 };
 
-function apiCompleteJobs(jobIds, stepBinUpdate, pricings, attempt) {
+function apiCompleteJobs(jobIds, stepBinUpdate, pricings, amountCollected, attempt) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
+      amountCollected,
       attempt,
     },
   });
@@ -151,6 +166,30 @@ function apiUpdateAmountCollected(jobIds, attempt) {
   });
 };
 
+function apiGetBinNumbers(
+  searchQuery,
+  currentPage = 1,
+  pageSize = 10,
+) {
+  return apiCall('api/mobile/driver/bin-numbers', 'get', {
+    params: {
+      searchQuery,
+      currentPage,
+      pageSize,
+    },
+  });
+};
+
+function apiGetJobDates(
+  isAssigned = false,
+) {
+  return apiCall('api/mobile/driver/job-dates', 'get', {
+    params: {
+      isAssigned,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -158,6 +197,7 @@ export {
   apiGetJobs,
   apiAcknowledgeJobs,
   apiStartJobs,
+  apiPullJobs,
   apiExchangeJobs,
   apiCompleteJobs,
   apiGetDriverNotes,
@@ -166,4 +206,6 @@ export {
   apiMarkMessagesAsRead,
   apiAddMessage,
   apiUpdateAmountCollected,
+  apiGetBinNumbers,
+  apiGetJobDates,
 };

@@ -18,7 +18,14 @@ import {
 } from 'src/constants';
 
 //
-const fetchCompleteJobs = async (token, jobIds, binInfo, services, attempt) => {
+const fetchCompleteJobs = async (
+  token,
+  jobIds,
+  binInfo,
+  services,
+  amountCollected,
+  attempt
+) => {
   try {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
@@ -33,7 +40,7 @@ const fetchCompleteJobs = async (token, jobIds, binInfo, services, attempt) => {
           'Authorization': token,
         },
         body: JSON.stringify({
-          jobIds, stepBinUpdate, pricings, attempt,
+          jobIds, stepBinUpdate, pricings, amountCollected, attempt,
         }),
       }
     );

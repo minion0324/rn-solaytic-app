@@ -14,6 +14,13 @@ import {
   FailJobScreen,
   CustomModalScreen,
   UploadHistoryScreen,
+  AddressScreen,
+  DriverNoteScreen,
+  BinInfoScreen,
+  ScanCodeScreen,
+  AddServicesScreen,
+  BluetoothPrinterScreen,
+  PreviewScreen,
 } from 'src/screens';
 
 import {
@@ -26,6 +33,13 @@ import {
   FAIL_JOB_SCREEN,
   CUSTOM_MODAL_SCREEN,
   UPLOAD_HISTORY_SCREEN,
+  ADDRESS_SCREEN,
+  DRIVER_NOTE_SCREEN,
+  BIN_INFO_SCREEN,
+  SCAN_CODE_SCREEN,
+  ADD_SERVICES_SCREEN,
+  BLUETOOTH_PRINTER_SCREEN,
+  PREVIEW_SCREEN,
 } from './Screens';
 
 function WrappedComponent(Component) {
@@ -54,4 +68,11 @@ export default function () {
   Navigation.registerComponent(FAIL_JOB_SCREEN, () => WrappedComponent(FailJobScreen));
   Navigation.registerComponent(CUSTOM_MODAL_SCREEN, () => WrappedComponent(CustomModalScreen));
   Navigation.registerComponent(UPLOAD_HISTORY_SCREEN, () => WrappedComponent(UploadHistoryScreen));
-}
+  Navigation.registerComponent(ADDRESS_SCREEN, () => WrappedComponent(AddressScreen));
+  Navigation.registerComponent(DRIVER_NOTE_SCREEN, () => WrappedComponent(DriverNoteScreen));
+  Navigation.registerComponent(BIN_INFO_SCREEN, () => WrappedComponent(BinInfoScreen));
+  Navigation.registerComponent(SCAN_CODE_SCREEN, () => WrappedComponent(ScanCodeScreen));
+  Navigation.registerComponent(ADD_SERVICES_SCREEN, () => WrappedComponent(AddServicesScreen));
+  Navigation.registerComponent(BLUETOOTH_PRINTER_SCREEN, () => WrappedComponent(BluetoothPrinterScreen));
+  Navigation.registerComponent(PREVIEW_SCREEN, () => WrappedComponent(PreviewScreen));
+};

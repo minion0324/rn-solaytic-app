@@ -12,6 +12,7 @@ import {
   RELOAD_JOBS_AND_ALERTS_SUCCESS,
   ACKNOWLEDGE_JOBS_SUCCESS,
   START_JOBS_SUCCESS,
+  PULL_JOBS_SUCCESS,
   EXCHANGE_JOBS_SUCCESS,
   COMPLETE_JOBS_SUCCESS,
   FAIL_JOBS_SUCCESS,
@@ -70,18 +71,22 @@ function Jobs(state = DEFAULT, action = {}) {
         draft.allJobs = payload.newJobs;
         draft.allAlerts = payload.newAlerts;
 
-        if (draft.focusedJob) {
+        if (draft.focusedJob && payload.statusName) {
           draft.focusedJob.status.jobStatusName = payload.statusName;
         }
         break;
       case START_JOBS_SUCCESS:
+      case PULL_JOBS_SUCCESS:
       case EXCHANGE_JOBS_SUCCESS:
       case COMPLETE_JOBS_SUCCESS:
       case FAIL_JOBS_SUCCESS:
         draft.allJobs = payload.newJobs;
 
-        if (draft.focusedJob) {
+        if (draft.focusedJob && payload.statusName) {
           draft.focusedJob.status.jobStatusName = payload.statusName;
+        }
+
+        if (draft.focusedJob) {
           draft.focusedJob.appExtraData = payload.appExtraData;
         }
         break;

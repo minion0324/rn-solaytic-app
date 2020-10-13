@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -22,6 +22,11 @@ import {
   popScreen,
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
+  ADDRESS_SCREEN,
+  DRIVER_NOTE_SCREEN,
+  ADD_SERVICES_SCREEN,
+  BIN_INFO_SCREEN,
+  PREVIEW_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -42,16 +47,16 @@ const JobDetailsScreen = ({
   jobStatus,
   photosAndSign,
   newCommentInfo,
+  coreScreenInfo,
   acknowledgeJobs,
   startJobs,
+  pullJobs,
   exchangeJobs,
   completeJobs,
-  markMessagesAsRead,
-  addMessage,
   updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
-  setNewCommentInfo,
+  getJobDates,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
@@ -78,19 +83,39 @@ const JobDetailsScreen = ({
       })
   );
 
-  const [ amountCollected, setAmountCollected ] = useState(
-    focusedJob.collectedAmount || focusedJob.amountToCollect
-  );
-
   const [ services, setServices ] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.services
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
+  const [ cashIndex, setCashIndex ] = useState(
+    !focusedJob.isEnabledCashCollection
+    ? -1
+    : (focusedJob.appExtraData && focusedJob.appExtraData.amountCollected)
+      ? focusedJob.appExtraData.amountCollected === focusedJob.amountToCollect
+        ? 0 : 1
+      : focusedJob.collectedAmount
+        ? focusedJob.collectedAmount === focusedJob.amountToCollect
+          ? 0 : 1
+        : -1
+  );
+
+  const isInProgress = useMemo(() => {
+    return (
+      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+      jobStatus === JOB_STATUS.STARTED ||
+      jobStatus === JOB_STATUS.IN_PROGRESS
+    );
+  }, [jobStatus]);
+
   useEffect(() => {
     getSavedPhotosAndSign();
     checkIsInBackgroundMode();
   }, []);
+
+  useEffect(() => {
+    onNewCommentInfo();
+  }, [newCommentInfo]);
 
   useNavigationComponentDidAppear((event) => {
     const { componentName } = event;
@@ -197,6 +222,17 @@ const JobDetailsScreen = ({
     }
   };
 
+  const onNewCommentInfo = () => {
+    const { jobId } = newCommentInfo;
+
+    if (
+      +jobId === focusedJob.jobId &&
+      coreScreenInfo.componentName !== DRIVER_NOTE_SCREEN
+    ) {
+      pushScreen(componentId, DRIVER_NOTE_SCREEN);
+    }
+  };
+
   const onBack = () => {
     popScreen(componentId);
   };
@@ -207,8 +243,9 @@ const JobDetailsScreen = ({
     acknowledgeJobs({
       jobIds: `${focusedJob.jobId}`,
       success: () => {
-        setLoading(false);
+        getJobDates({});
         setIsRequiredUpdateTab(true);
+        setLoading(false);
       },
       failure: () => setLoading(false),
     });
@@ -217,10 +254,32 @@ const JobDetailsScreen = ({
   const onStart = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     startJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
+  const onPull = () => {
+    setLoading(true);
+
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
+    pullJobs({
+      jobIds: `${focusedJob.jobId}`,
+      binInfo,
+      services,
+      amountCollected,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -229,10 +288,15 @@ const JobDetailsScreen = ({
   const onExchange = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -246,6 +310,11 @@ const JobDetailsScreen = ({
 
     if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
       Alert.alert('Warning', 'Please upload signature.');
+      return;
+    }
+
+    if (focusedJob.isEnabledCashCollection && cashIndex === -1) {
+      Alert.alert('Warning', 'Please select payments.');
       return;
     }
 
@@ -287,7 +356,7 @@ const JobDetailsScreen = ({
         }
       );
 
-      onBack();
+      setLoading(false);
     } catch (error) {
       //
     }
@@ -296,15 +365,19 @@ const JobDetailsScreen = ({
   const onCompleteJobs = () => {
     setLoading(true);
 
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
+      amountCollected,
       photos,
       sign,
       signedUserName,
       signedUserContact,
-      amountCollected,
       success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });
@@ -337,7 +410,7 @@ const JobDetailsScreen = ({
       signedUserName,
       setSignedUserName,
       signedUserContact,
-      setSignedUserContact
+      setSignedUserContact,
     });
   };
 
@@ -355,38 +428,6 @@ const JobDetailsScreen = ({
     setSignedUserContact(photosAndSign.signedUserContact);
   };
 
-  const onFail = () => {
-    pushScreen(componentId, FAIL_JOB_SCREEN);
-  };
-
-  const onUpdateService = (item, index) => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
-
-    const newServices = services.slice(0);
-
-    newServices[index] = {
-      ...item,
-      isSelected: !item.isSelected,
-    };
-
-    setServices(newServices);
-  };
-
-  const onReadMessages = () => {
-    markMessagesAsRead({
-      jobId: focusedJob.jobId,
-    });
-  };
-
-  const onNewComment = (message) => {
-    addMessage({
-      jobId: focusedJob.jobId,
-      message,
-    });
-  };
-
   const onUpdateAmountCollected = (amount) => {
     if (!onAlertNotProgress()) {
       return;
@@ -398,21 +439,47 @@ const JobDetailsScreen = ({
     });
   };
 
-  const isInProgress = () => {
-    return (
-      jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS1 ||
-      jobStatus === JOB_STATUS.IN_PROGRESS2
-    );
-  };
-
   const onAlertNotProgress = () => {
-    if (!isInProgress()) {
+    if (!isInProgress) {
       Alert.alert('Warning', 'This job is not in progress now.');
       return false;
     }
 
     return true;
+  };
+
+  const onFail = () => {
+    pushScreen(componentId, FAIL_JOB_SCREEN);
+  };
+
+  const onAddress = (customerSiteIndex) => {
+    pushScreen(componentId, ADDRESS_SCREEN, { customerSiteIndex });
+  };
+
+  const onDriverNote = () => {
+    pushScreen(componentId, DRIVER_NOTE_SCREEN);
+  };
+
+  const onAddServices = () => {
+    pushScreen(componentId, ADD_SERVICES_SCREEN, { services, setServices });
+  };
+
+  const onBinInfo = (binIndex, binInOutInfoIndex) => {
+    pushScreen(componentId, BIN_INFO_SCREEN, {
+      binInfo, setBinInfo, binIndex, binInOutInfoIndex,
+    });
+  };
+
+  const onPrint = (getBinInOutInfoIndex, getCustomerSiteIndex) => {
+    const amountCollected =
+      (cashIndex === 0 && focusedJob.amountToCollect) ||
+      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
+
+    pushScreen(componentId, PREVIEW_SCREEN, {
+      sign, signedUserName, signedUserContact,
+      binInfo, services, amountCollected,
+      getBinInOutInfoIndex, getCustomerSiteIndex,
+    });
   };
 
   return (
@@ -423,56 +490,56 @@ const JobDetailsScreen = ({
       signedUserName={signedUserName}
       signedUserContact={signedUserContact}
       binInfo={binInfo}
-      setBinInfo={setBinInfo}
       jobStatus={jobStatus}
-      amountCollected={amountCollected}
-      setAmountCollected={setAmountCollected}
       services={services}
+      cashIndex={cashIndex}
+      setCashIndex={setCashIndex}
+      isInProgress={isInProgress}
 
       focusedJob={focusedJob}
-      newCommentInfo={newCommentInfo}
-      setNewCommentInfo={setNewCommentInfo}
 
       onBack={onBack}
       onAcknowledge={onAcknowledge}
       onStart={onStart}
+      onPull={onPull}
       onExchange={onExchange}
       onComplete={onComplete}
       onPhoto={onPhoto}
       onSign={onSign}
       onCancelPhoto={onCancelPhoto}
       onCancelSign={onCancelSign}
-      onFail={onFail}
-      onUpdateService={onUpdateService}
-      onReadMessages={onReadMessages}
-      onNewComment={onNewComment}
       onUpdateAmountCollected={onUpdateAmountCollected}
-      isInProgress={isInProgress}
       onAlertNotProgress={onAlertNotProgress}
+      onFail={onFail}
+      onAddress={onAddress}
+      onDriverNote={onDriverNote}
+      onAddServices={onAddServices}
+      onBinInfo={onBinInfo}
+      onPrint={onPrint}
     />
   );
 };
 
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
-  jobStatus: PropTypes.string,
+  jobStatus: PropTypes.string.isRequired,
   photosAndSign: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
+  coreScreenInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
+  pullJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  markMessagesAsRead: PropTypes.func.isRequired,
-  addMessage: PropTypes.func.isRequired,
   updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
-  setNewCommentInfo: PropTypes.func.isRequired,
+  getJobDates: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 JobDetailsScreen.defaultProps = {
-  jobStatus: '',
+  //
 };
 
 const mapStateToProps = (state) => {
@@ -481,20 +548,20 @@ const mapStateToProps = (state) => {
     jobStatus: Jobs.selectors.getJobStatus(state),
     photosAndSign: Jobs.selectors.getPhotosAndSign(state),
     newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
+    coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
 };
 
 const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   startJobs: Jobs.actionCreators.startJobs,
+  pullJobs: Jobs.actionCreators.pullJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  markMessagesAsRead: Jobs.actionCreators.markMessagesAsRead,
-  addMessage: Jobs.actionCreators.addMessage,
   updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
-  setNewCommentInfo: ViewStore.actionCreators.setNewCommentInfo,
+  getJobDates: ViewStore.actionCreators.getJobDates,
 };
 
 export default connect(
