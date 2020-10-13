@@ -56,45 +56,24 @@ const JobDetailsScreenView = ({
           return -1;
         }
 
-        if (jobStatus === JOB_STATUS.COMPLETED) {
-          return 0;
-        } else {
-          return 1;
-        }
+        return 1;
 
       case JOB_TYPE.PULL:
         if (index !== 0) {
           return -1;
         }
 
-        if (
-          jobStatus === JOB_STATUS.DISPATCHED ||
-          jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-          jobStatus === JOB_STATUS.STARTED ||
-          jobStatus === JOB_STATUS.IN_PROGRESS
-        ) {
-          return 0;
-        } else {
-          return 1;
-        }
+        return 0;
 
       case JOB_TYPE.EXCHANGE:
-        if (jobStatus === JOB_STATUS.COMPLETED) {
-          return index === 0 ? 0 : 1;
-        } else {
-          return index === 0 ? 1 : 0;
-        }
+        return index === 0 ? 1 : 0;
 
       case JOB_TYPE.OUT:
         if (index !== 0) {
           return -1;
         }
 
-        if (jobStatus === JOB_STATUS.COMPLETED) {
-          return 0;
-        } else {
-          return 1;
-        }
+        return 1;
 
       case JOB_TYPE.SHIFT:
         if (
@@ -104,7 +83,10 @@ const JobDetailsScreenView = ({
           return -1;
         }
 
-        if (jobStatus === JOB_STATUS.STARTED) {
+        if (
+          jobStatus === JOB_STATUS.STARTED ||
+          jobStatus === JOB_STATUS.COMPLETED
+        ) {
           return 0;
         } else {
           return 1;
