@@ -388,6 +388,8 @@ PODS:
     - React-RCTText
   - RNBackgroundFetch (3.1.0):
     - React
+  - RNBluetoothEscposPrinter (0.0.6):
+    - React
   - RNCAsyncStorage (1.11.0):
     - React
   - RNFirebase (5.6.0):
@@ -467,6 +469,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeNavigation (from `../node_modules/react-native-navigation`)
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
+  - RNBluetoothEscposPrinter (from `../node_modules/react-native-bluetooth-escpos-printer`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNFS (from `../node_modules/react-native-fs`)
@@ -570,6 +573,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-navigation"
   RNBackgroundFetch:
     :path: "../node_modules/react-native-background-fetch"
+  RNBluetoothEscposPrinter:
+    :path: "../node_modules/react-native-bluetooth-escpos-printer"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNFirebase:
@@ -641,6 +646,7 @@ SPEC CHECKSUMS:
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeNavigation: 78b1e4cce1f14374719e60adf6767e11dd011254
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
+  RNBluetoothEscposPrinter: 19b5ed20827bec727b80409b18af79ed1f3664c2
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
