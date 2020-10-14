@@ -5170,9 +5170,9 @@ react-native-background-fetch@^3.1.0:
     plist "^3.0.1"
     xcode "^2.0.0"
 
-react-native-bluetooth-escpos-printer@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-bluetooth-escpos-printer/-/react-native-bluetooth-escpos-printer-0.0.5.tgz#45a31d37c213f95f2cc590cebcb48e0574ce1b45"
+"react-native-bluetooth-escpos-printer@https://github.com/januslo/react-native-bluetooth-escpos-printer.git":
+  version "0.0.6"
+  resolved "https://github.com/januslo/react-native-bluetooth-escpos-printer.git#743703592ba099277bf8c28386edb6cc3953d729"
 
 react-native-calendars@^1.315.0:
   version "1.315.0"
