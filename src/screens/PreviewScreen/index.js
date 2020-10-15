@@ -336,11 +336,6 @@ const PreviewScreen = ({
         <SpaceView mTop={SIZE2} />
 
         <SpaceView mTop={SIZE4} />
-        <TitleText>
-          JOB COMPLETED
-        </TitleText>
-
-        <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
             <InfoText>
