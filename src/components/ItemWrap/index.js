@@ -35,7 +35,6 @@ const TouchWrap = styled.TouchableOpacity`
     props.deactivated ? 0 : 0.1
   )};
   shadow-radius: 4px;
-  overflow: hidden;
 `;
 
 const ItemWrap = ({
