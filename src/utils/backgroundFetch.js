@@ -54,14 +54,14 @@ const fetchCompleteJobs = async (
 };
 
 //
-const fetchHandler = async () => {
+const fetchHandler = async (param) => {
   console.log('----- fetch handler');
 
   try {
     const fetches = await getCacheItems(BACKGROUND_FETCH_KEY);
 
     if (fetches.length === 0) {
-      BackgroundFetch.finish(taskId);
+      BackgroundFetch.finish(param.taskId || param);
     }
 
     let count = 0;
