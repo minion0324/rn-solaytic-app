@@ -61,6 +61,7 @@ const fetchHandler = async (param) => {
     const fetches = await getCacheItems(BACKGROUND_FETCH_KEY);
 
     if (fetches.length === 0) {
+      console.log('----- fetch finish');
       BackgroundFetch.finish(param.taskId || param);
     }
 
