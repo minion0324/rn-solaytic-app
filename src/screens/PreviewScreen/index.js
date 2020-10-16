@@ -110,31 +110,15 @@ const PreviewScreen = ({
   };
 
   const renderNote = () => {
+    if (!ownerInfo.disclaimer) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
         <InfoText align={'center'}>
-          {
-            'Kindly note that the maximum weight'
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1 / 2} />
-        <InfoText align={'center'}>
-          {
-            'allowed per loading not exceeding 10 (ten)'
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1 / 2} />
-        <InfoText align={'center'}>
-          {
-            'tonnes under ROV regulation, customers'
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1 / 2} />
-        <InfoText align={'center'}>
-          {
-            'are to bear all fine due to overloading.'
-          }
+          {ownerInfo.disclaimer}
         </InfoText>
         <SpaceView mTop={SIZE2} />
       </View>
