@@ -338,30 +338,40 @@ const PreviewScreen = ({
             }
           </InfoText>
         </RowWrap>
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              Driver
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {focusedJob.assignedDriver.driverName}
-          </InfoText>
-        </RowWrap>
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              Vehicle
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {focusedJob.assignedVehicle.vehicleName}
-          </InfoText>
-        </RowWrap>
+        {
+          focusedJob.assignedDriver &&
+          focusedJob.assignedDriver.driverName &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  Driver
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {focusedJob.assignedDriver.driverName}
+              </InfoText>
+            </RowWrap>
+          </View>
+        }
+        {
+          focusedJob.assignedVehicle &&
+          focusedJob.assignedVehicle.vehicleName &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  Vehicle
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {focusedJob.assignedVehicle.vehicleName}
+              </InfoText>
+            </RowWrap>
+          </View>
+        }
         <SpaceView mTop={SIZE2} />
 
         <SpaceView mTop={SIZE4} />
