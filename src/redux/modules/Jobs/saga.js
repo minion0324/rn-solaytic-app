@@ -556,9 +556,9 @@ export function* asyncCompleteJobs({ payload }) {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    if (!attempt) {
-      focusedJob = yield select(Jobs.selectors.getFocusedJob);
+    focusedJob = yield select(Jobs.selectors.getFocusedJob);
 
+    if (!attempt) {
       const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
 
       attempt = {
