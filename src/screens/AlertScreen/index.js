@@ -297,7 +297,12 @@ const AlertScreen = ({
         }
       </Content>
 
-      <BottomBar componentId={componentId} activeIndex={0} />
+      <ShadowWrap forUp>
+        <BottomBar
+          componentId={componentId}
+          activeIndex={0}
+        />
+      </ShadowWrap>
     </Container>
   );
 };
