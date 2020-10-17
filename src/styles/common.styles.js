@@ -37,7 +37,8 @@ const WrapBorder = styled.View`
 const ShadowWrap = styled.View`
   elevation: 10;
   z-index: 1;
-  box-shadow: 0px 8px;
+  box-shadow:
+    0px ${(props) => (props.forUp ? '-' : '+')}8px;
   shadow-color: ${COLORS.BLACK1};
   shadow-opacity: 0.1;
   shadow-radius: 4px;
