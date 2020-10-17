@@ -347,7 +347,12 @@ const JobsScreen = ({
         }
       </Content>
 
-      <BottomBar componentId={componentId} activeIndex={1} />
+      <ShadowWrap forUp>
+        <BottomBar
+          componentId={componentId}
+          activeIndex={1}
+        />
+      </ShadowWrap>
     </Container>
   );
 };
