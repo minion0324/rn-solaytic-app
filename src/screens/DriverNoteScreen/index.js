@@ -208,7 +208,7 @@ const DriverNoteScreen = ({
         </ContentWrap>
       </Content>
 
-      <ShadowWrap>
+      <ShadowWrap forUp>
         <ContentWrap>
           <RowWrap>
             <CommentInput
