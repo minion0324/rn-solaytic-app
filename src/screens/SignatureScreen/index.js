@@ -56,7 +56,7 @@ const SignatureScreen = ({
         return;
       }
 
-      const uri = PLATFORM === 'ios' ? '' : 'file://' +
+      const uri = (PLATFORM === 'ios' ? '' : 'file://') +
         RNFS.DocumentDirectoryPath + `/sign${getTimestamp()}.jpg`;
       const data = signature.replace('data:image/png;base64,', '');
 
