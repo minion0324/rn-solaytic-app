@@ -110,31 +110,15 @@ const PreviewScreen = ({
   };
 
   const renderNote = () => {
+    if (!ownerInfo.disclaimer) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
         <InfoText align={'center'}>
-          {
-            'Kindly note that the maximum weight'
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1 / 2} />
-        <InfoText align={'center'}>
-          {
-            'allowed per loading not exceeding 10 (ten)'
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1 / 2} />
-        <InfoText align={'center'}>
-          {
-            'tonnes under ROV regulation, customers'
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1 / 2} />
-        <InfoText align={'center'}>
-          {
-            'are to bear all fine due to overloading.'
-          }
+          {ownerInfo.disclaimer}
         </InfoText>
         <SpaceView mTop={SIZE2} />
       </View>
@@ -336,11 +320,6 @@ const PreviewScreen = ({
         <SpaceView mTop={SIZE2} />
 
         <SpaceView mTop={SIZE4} />
-        <TitleText>
-          JOB COMPLETED
-        </TitleText>
-
-        <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
             <InfoText>
@@ -359,30 +338,40 @@ const PreviewScreen = ({
             }
           </InfoText>
         </RowWrap>
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              Driver
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {focusedJob.assignedDriver.driverName}
-          </InfoText>
-        </RowWrap>
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              Vehicle
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {focusedJob.assignedVehicle.vehicleName}
-          </InfoText>
-        </RowWrap>
+        {
+          focusedJob.assignedDriver &&
+          focusedJob.assignedDriver.driverName &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  Driver
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {focusedJob.assignedDriver.driverName}
+              </InfoText>
+            </RowWrap>
+          </View>
+        }
+        {
+          focusedJob.assignedVehicle &&
+          focusedJob.assignedVehicle.vehicleName &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  Vehicle
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {focusedJob.assignedVehicle.vehicleName}
+              </InfoText>
+            </RowWrap>
+          </View>
+        }
         <SpaceView mTop={SIZE2} />
 
         <SpaceView mTop={SIZE4} />

@@ -314,21 +314,43 @@ const CompleteView = ({
             }
           </RowWrap>
 
-          <SpaceView mTop={SIZE4} />
-          <RowWrap>
-            <FlexWrap>
-              <LabelText>Driver</LabelText>
-              <InfoText>
-                {focusedJob.assignedDriver.driverName}
-              </InfoText>
-            </FlexWrap>
-            <FlexWrap>
-              <LabelText>Vehicle</LabelText>
-              <InfoText>
-                {focusedJob.assignedVehicle.vehicleName}
-              </InfoText>
-            </FlexWrap>
-          </RowWrap>
+          {
+            (
+              (
+                focusedJob.assignedDriver &&
+                focusedJob.assignedDriver.driverName
+              ) ||
+              (
+                focusedJob.assignedVehicle &&
+                focusedJob.assignedVehicle.vehicleName
+              )
+            ) &&
+            <View>
+              <SpaceView mTop={SIZE4} />
+              <RowWrap>
+                {
+                  focusedJob.assignedDriver &&
+                  focusedJob.assignedDriver.driverName &&
+                  <FlexWrap>
+                    <LabelText>Driver</LabelText>
+                    <InfoText>
+                      {focusedJob.assignedDriver.driverName}
+                    </InfoText>
+                  </FlexWrap>
+                }
+                {
+                  focusedJob.assignedVehicle &&
+                  focusedJob.assignedVehicle.vehicleName &&
+                  <FlexWrap>
+                    <LabelText>Vehicle</LabelText>
+                    <InfoText>
+                      {focusedJob.assignedVehicle.vehicleName}
+                    </InfoText>
+                  </FlexWrap>
+                }
+              </RowWrap>
+            </View>
+          }
 
           <SpaceView mTop={SIZE4} />
         </ContentWrap>

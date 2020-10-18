@@ -215,7 +215,7 @@ const ProgressView = ({
     }
 
     return (
-      <ShadowWrap>
+      <ShadowWrap forUp>
         <PhotoAndSignWrap>
           <TouchableOpacity onPress={onPhoto}>
             <RowWrap>
