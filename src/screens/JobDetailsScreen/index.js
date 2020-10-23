@@ -10,6 +10,7 @@ import {
 } from 'react-native-navigation-hooks';
 
 import {
+  PLATFORM,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
@@ -18,6 +19,7 @@ import {
 } from 'src/constants';
 import {
   showOverlay,
+  showModal,
   pushScreen,
   popScreen,
   SIGNATURE_SCREEN,
@@ -405,13 +407,25 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-    showOverlay(SIGNATURE_SCREEN, {
+    const passProps = {
       setSign,
       signedUserName,
       setSignedUserName,
       signedUserContact,
       setSignedUserContact,
-    });
+    };
+
+    if (PLATFORM === 'ios') {
+      showModal(SIGNATURE_SCREEN, passProps, {
+        screenBackgroundColor: 'transparent',
+        modalPresentationStyle: 'overCurrentContext',
+        layout: {
+          backgroundColor: 'transparent',
+        },
+      });
+    } else {
+      showOverlay(SIGNATURE_SCREEN, passProps);
+    }
   };
 
   const onCancelPhoto = (index) => {
