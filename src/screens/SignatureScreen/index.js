@@ -6,6 +6,7 @@ import RNFS from 'react-native-fs';
 
 import {
   dismissOverlay,
+  dismissModal,
 } from 'src/navigation';
 import {
   HeaderBar,
@@ -46,7 +47,11 @@ const SignatureScreen = ({
   const [ contact, setContact ] = useState(signedUserContact);
 
   const onBack = () => {
-    dismissOverlay(componentId);
+    if (PLATFORM === 'ios') {
+      dismissModal(componentId);
+    } else {
+      dismissOverlay(componentId);
+    }
   };
 
   const onSign = async (signature) => {
