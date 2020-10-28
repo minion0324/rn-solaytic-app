@@ -24,12 +24,14 @@ const ScreenText = styled.Text`
 
 const EmptyWrap = styled.View`
   width: ${SIZE8}px;
-  align-items: ${props => props.align || 'flex-start'};
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 //
 const Back = () => (
-  <EmptyWrap align={'center'}>
+  <EmptyWrap>
     <BackIcon />
   </EmptyWrap>
 );
@@ -47,13 +49,13 @@ const Calendar = () => (
 );
 
 const Sharing = () => (
-  <EmptyWrap align={'center'}>
+  <EmptyWrap>
     <ShareIcon />
   </EmptyWrap>
 );
 
 const Printing = () => (
-  <EmptyWrap align={'center'}>
+  <EmptyWrap>
     <PrintIcon />
   </EmptyWrap>
 );
