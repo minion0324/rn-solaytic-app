@@ -83,6 +83,8 @@ const AlertScreen = ({
   const [ refreshing, setRefreshing ] = useState(false);
 
   useEffect(() => {
+    changeTabIndex(componentId, 1);
+
     pushNotifications.connect(setFCMToken);
 
     return () => {
