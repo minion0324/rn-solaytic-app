@@ -25,8 +25,8 @@ import {
   ItemWrap,
 } from 'src/components';
 import {
-  showOverlay,
-  dismissOverlay,
+  showLightBox,
+  dismissLightBox,
   CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
 import {
@@ -152,7 +152,7 @@ const ProgressView = ({
       return;
     }
 
-    showOverlay(CUSTOM_MODAL_SCREEN, {
+    showLightBox(CUSTOM_MODAL_SCREEN, {
       offsetFromCenter: SIZE10,
       dismissible: false,
       getContent: renderAmountModal,
@@ -163,7 +163,7 @@ const ProgressView = ({
     Keyboard.dismiss();
 
     await delay(100);
-    dismissOverlay(containerId);
+    dismissLightBox(containerId);
   };
 
   const onAddAmount = (amount, containerId) => {
