@@ -54,6 +54,16 @@ export function showLightBox(screenName, passProps = {}, options = {}) {
             layout: {
               componentBackgroundColor: COLORS.TRANSPARENT1,
             },
+            animations: {
+              showModal: {
+                enabled: true,
+                alpha: {
+                  from: 0,
+                  to: 1,
+                  duration: 300,
+                },
+              },
+            },
             ...options,
           },
         },
@@ -63,6 +73,19 @@ export function showLightBox(screenName, passProps = {}, options = {}) {
 }
 
 export function dismissLightBox(componentId) {
+  Navigation.mergeOptions(componentId, {
+    animations: {
+      dismissModal: {
+        enabled: false,
+        alpha: {
+          from: 1,
+          to: 0,
+          duration: 300,
+        },
+      },
+    },
+  });
+
   return Navigation.dismissModal(componentId);
 }
 
