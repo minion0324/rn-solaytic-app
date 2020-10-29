@@ -10,6 +10,7 @@ import {
 } from 'react-native-navigation-hooks';
 
 import {
+  COLORS,
   PLATFORM,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
@@ -417,10 +418,9 @@ const JobDetailsScreen = ({
 
     if (PLATFORM === 'ios') {
       showModal(SIGNATURE_SCREEN, passProps, {
-        screenBackgroundColor: 'transparent',
         modalPresentationStyle: 'overCurrentContext',
         layout: {
-          backgroundColor: 'transparent',
+          componentBackgroundColor: COLORS.TRANSPARENT1,
         },
       });
     } else {
