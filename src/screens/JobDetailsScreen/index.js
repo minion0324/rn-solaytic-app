@@ -11,7 +11,6 @@ import {
 
 import {
   COLORS,
-  PLATFORM,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
@@ -19,7 +18,7 @@ import {
   JOB_DETAILS_LIMIT,
 } from 'src/constants';
 import {
-  showOverlay,
+  showLightBox,
   showModal,
   pushScreen,
   popScreen,
@@ -408,24 +407,13 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-    const passProps = {
+    showLightBox(SIGNATURE_SCREEN, {
       setSign,
       signedUserName,
       setSignedUserName,
       signedUserContact,
       setSignedUserContact,
-    };
-
-    if (PLATFORM === 'ios') {
-      showModal(SIGNATURE_SCREEN, passProps, {
-        modalPresentationStyle: 'overCurrentContext',
-        layout: {
-          componentBackgroundColor: COLORS.TRANSPARENT1,
-        },
-      });
-    } else {
-      showOverlay(SIGNATURE_SCREEN, passProps);
-    }
+    });
   };
 
   const onCancelPhoto = (index) => {
