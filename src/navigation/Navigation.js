@@ -40,6 +40,32 @@ export function dismissDrawer(componentId) {
   });
 }
 
+export function showLightBox(screenName, passProps = {}, options = {}) {
+  Navigation.showModal({
+    stack: {
+      children: [{
+        component: {
+          name: screenName,
+          passProps: {
+            ...passProps,
+          },
+          options: {
+            modalPresentationStyle: 'overCurrentContext',
+            layout: {
+              componentBackgroundColor: COLORS.TRANSPARENT1,
+            },
+            ...options,
+          },
+        },
+      }],
+    },
+  });
+}
+
+export function dismissLightBox(componentId) {
+  return Navigation.dismissModal(componentId);
+}
+
 export function showOverlay(screenName, passProps = {}, options = {}) {
   return Navigation.showOverlay({
     component: {
@@ -72,12 +98,12 @@ export function changeTabIndex(componentId, tabIndex) {
   });
 }
 
-export function showModal(modalName, passProps = {}, options = {}) {
+export function showModal(screenName, passProps = {}, options = {}) {
   Navigation.showModal({
     stack: {
       children: [{
         component: {
-          name: modalName,
+          name: screenName,
           passProps: {
             ...passProps,
           },
