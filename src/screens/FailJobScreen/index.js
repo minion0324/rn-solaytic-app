@@ -14,8 +14,8 @@ import {
   BACKGROUND_FETCH_KEY,
 } from 'src/constants';
 import {
-  showOverlay,
-  dismissOverlay,
+  showLightBox,
+  dismissLightBox,
   popScreen,
   popToRootScreen,
   CUSTOM_MODAL_SCREEN,
@@ -107,7 +107,7 @@ const FailJobScreen = ({
 
   useEffect(() => {
     if (selectedIndex !== -1) {
-      showOverlay(CUSTOM_MODAL_SCREEN, {
+      showLightBox(CUSTOM_MODAL_SCREEN, {
         width: '80%',
         offsetFromCenter: SIZE10,
         getContent: renderAlertModal,
@@ -228,7 +228,7 @@ const FailJobScreen = ({
         <AlertButtonRow>
           <AlertButton
             onPress={() => {
-              dismissOverlay(containerId);
+              dismissLightBox(containerId);
               onFailJobFailure();
             }}
           >
@@ -237,7 +237,7 @@ const FailJobScreen = ({
           <AlertButton
             color={COLORS.RED1}
             onPress={() => {
-              dismissOverlay(containerId);
+              dismissLightBox(containerId);
               onFailJob();
             }}
           >
