@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  dismissOverlay,
+  dismissLightBox,
 } from 'src/navigation';
 import {
   OverlayWrap,
@@ -18,7 +18,7 @@ const CustomModalScreen = ({
   const [ modalData, setModalData ] = useState(null);
 
   const onBack = () => {
-    dismissOverlay(componentId);
+    dismissLightBox(componentId);
   };
 
   return (
