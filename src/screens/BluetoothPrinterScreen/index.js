@@ -80,11 +80,11 @@ const BluetoothPrinterScreen = ({
   const initializeBluetooth = async () => {
     try {
       const isEnabled = await BluetoothManager.isBluetoothEnabled();
-      if (!isEnabled) {
+      if (!isEnabled || isEnabled === 'false') {
         const result = await BluetoothManager.enableBluetooth();
 
         let res = [];
-        if (result.length > 0) {
+        if (result && result.length > 0) {
           result.forEach((item) => {
             try {
               res.push(JSON.parse(item));
@@ -92,11 +92,11 @@ const BluetoothPrinterScreen = ({
               //
             }
           });
+
+          setPairedDevices(res);
+
+          Toast.show('Bluetooth Enabled.');
         }
-
-        setPairedDevices(res);
-
-        Toast.show('Bluetooth Enabled.');
       }
     } catch (error) {
       //
