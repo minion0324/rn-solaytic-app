@@ -314,7 +314,7 @@ const BinInfoScreen = ({
           </View>
 
           {
-            binIndex === 1 &&
+            binInOutInfoIndex === 0 &&
             focusedJob.isEnabledBinWeight &&
             <View>
               <SpaceView mTop={SIZE2} />
