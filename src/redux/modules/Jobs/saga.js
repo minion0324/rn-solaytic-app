@@ -624,6 +624,18 @@ export function* asyncCompleteJobs({ payload }) {
       appExtraData: { binInfo, services, amountCollected },
     }));
 
+    try {
+      const { data } = yield call(apiGetJobById, focusedJob.jobId);
+
+      //
+      let steps = data.steps.slice(0);
+      steps = sortBy(steps, 'stepOrder');
+
+      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    } catch (err) {
+      //
+    }
+
     success && success();
   } catch (error) {
     yield onError(
