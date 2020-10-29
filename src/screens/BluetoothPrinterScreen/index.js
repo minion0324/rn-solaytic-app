@@ -14,7 +14,7 @@ import {
 import Toast from 'react-native-simple-toast';
 
 import {
-  dismissOverlay,
+  dismissLightBox,
 } from 'src/navigation';
 import {
   DefaultButton,
@@ -74,7 +74,7 @@ const BluetoothPrinterScreen = ({
       return;
     }
 
-    dismissOverlay(componentId);
+    dismissLightBox(componentId);
   };
 
   const initializeBluetooth = async () => {
