@@ -250,7 +250,7 @@ const BluetoothPrinterScreen = ({
 
   const renderItem = (item) => {
     return (
-      <View>
+      <View key={item.address}>
         <SpaceView mTop={SIZE1} />
         <TouchableOpacity
           key={item.address}
