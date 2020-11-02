@@ -346,6 +346,18 @@ export function* asyncAcknowledgeJobs({ payload }) {
         successJobIds.includes(focusedJobId) && JOB_STATUS.ACKNOWLEDGED,
     }));
 
+    try {
+      const { data } = yield call(apiGetJobById, focusedJobId);
+
+      //
+      let steps = data.steps.slice(0);
+      steps = sortBy(steps, 'stepOrder');
+
+      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    } catch (err) {
+      //
+    }
+
     success && success();
   } catch (error) {
     yield onError(error);
@@ -403,6 +415,18 @@ export function* asyncStartJobs({ payload }) {
         successJobIds.includes(focusedJobId) && JOB_STATUS.STARTED,
       appExtraData: { binInfo, services, amountCollected },
     }));
+
+    try {
+      const { data } = yield call(apiGetJobById, focusedJobId);
+
+      //
+      let steps = data.steps.slice(0);
+      steps = sortBy(steps, 'stepOrder');
+
+      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    } catch (err) {
+      //
+    }
 
     success && success();
   } catch (error) {
@@ -462,6 +486,18 @@ export function* asyncPullJobs({ payload }) {
       appExtraData: { binInfo, services, amountCollected },
     }));
 
+    try {
+      const { data } = yield call(apiGetJobById, focusedJobId);
+
+      //
+      let steps = data.steps.slice(0);
+      steps = sortBy(steps, 'stepOrder');
+
+      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    } catch (err) {
+      //
+    }
+
     success && success();
   } catch (error) {
     yield onError(error);
@@ -519,6 +555,18 @@ export function* asyncExchangeJobs({ payload }) {
         successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
       appExtraData: { binInfo, services, amountCollected },
     }));
+
+    try {
+      const { data } = yield call(apiGetJobById, focusedJobId);
+
+      //
+      let steps = data.steps.slice(0);
+      steps = sortBy(steps, 'stepOrder');
+
+      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    } catch (err) {
+      //
+    }
 
     success && success();
   } catch (error) {
