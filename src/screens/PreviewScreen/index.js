@@ -325,6 +325,7 @@ const PreviewScreen = ({
             <InfoText>
               {
                 moment(
+                  focusedJob.receiptCompletedDate ||
                   focusedJob.completedDate || focusedJob.jobTimeSpecific
                 ).format('DD/MM/YYYY')
               }
@@ -333,6 +334,7 @@ const PreviewScreen = ({
           <InfoText>
             {
               moment(
+                focusedJob.receiptCompletedDate ||
                 focusedJob.completedDate || focusedJob.jobTimeSpecific
               ).format('hh:mm A')
             }
