@@ -10,6 +10,7 @@ import {
 } from 'react-native-navigation-hooks';
 
 import {
+  COLORS,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
@@ -17,7 +18,8 @@ import {
   JOB_DETAILS_LIMIT,
 } from 'src/constants';
 import {
-  showOverlay,
+  showLightBox,
+  showModal,
   pushScreen,
   popScreen,
   SIGNATURE_SCREEN,
@@ -405,7 +407,7 @@ const JobDetailsScreen = ({
   };
 
   const onSign = () => {
-    showOverlay(SIGNATURE_SCREEN, {
+    showLightBox(SIGNATURE_SCREEN, {
       setSign,
       signedUserName,
       setSignedUserName,

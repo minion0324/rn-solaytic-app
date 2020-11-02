@@ -15,8 +15,8 @@ import {
 } from 'src/components';
 import {
   showDrawer,
-  showOverlay,
-  dismissOverlay,
+  showLightBox,
+  dismissLightBox,
   changeTabIndex,
   pushScreen,
   popToRootScreen,
@@ -246,7 +246,7 @@ const JobsScreen = ({
   };
 
   const onCalendar = () => {
-    showOverlay(CUSTOM_MODAL_SCREEN, {
+    showLightBox(CUSTOM_MODAL_SCREEN, {
       getContent: renderCalendarModal,
     });
   };
@@ -258,7 +258,7 @@ const JobsScreen = ({
         jobDates={jobDates}
         onSelect={(date) => {
           updateDateForJobs(date);
-          dismissOverlay(containerId);
+          dismissLightBox(containerId);
         }}
       />
     );

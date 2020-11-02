@@ -201,7 +201,7 @@ const CompleteView = ({
                   </InfoText>
                 </FlexWrap>
                 {
-                  index === 1 &&
+                  idx === 0 &&
                   focusedJob.isEnabledBinWeight &&
                   <FlexWrap flex={4}>
                     <LabelText>Nett Weight</LabelText>

@@ -40,6 +40,32 @@ export function dismissDrawer(componentId) {
   });
 }
 
+export function showLightBox(screenName, passProps = {}, options = {}) {
+  Navigation.showModal({
+    stack: {
+      children: [{
+        component: {
+          name: screenName,
+          passProps: {
+            ...passProps,
+          },
+          options: {
+            modalPresentationStyle: 'overCurrentContext',
+            layout: {
+              componentBackgroundColor: COLORS.TRANSPARENT1,
+            },
+            ...options,
+          },
+        },
+      }],
+    },
+  });
+}
+
+export function dismissLightBox(componentId) {
+  return Navigation.dismissModal(componentId);
+}
+
 export function showOverlay(screenName, passProps = {}, options = {}) {
   return Navigation.showOverlay({
     component: {
@@ -72,12 +98,12 @@ export function changeTabIndex(componentId, tabIndex) {
   });
 }
 
-export function showModal(modalName, passProps = {}, options = {}) {
+export function showModal(screenName, passProps = {}, options = {}) {
   Navigation.showModal({
     stack: {
       children: [{
         component: {
-          name: modalName,
+          name: screenName,
           passProps: {
             ...passProps,
           },
@@ -135,7 +161,6 @@ export function pushSingleScreenApp() {
       visible: false,
       drawBehind: true,
       animate: false,
-      currentTabIndex: 1,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -144,6 +169,24 @@ export function pushSingleScreenApp() {
       iconInsets: { top: 10, bottom: 5 },
     },
     popGesture: false,
+    animations: {
+      showModal: {
+        enabled: true,
+        alpha: {
+          from: 0,
+          to: 1,
+          duration: 300,
+        },
+      },
+      dismissModal: {
+        enabled: false,
+        alpha: {
+          from: 1,
+          to: 0,
+          duration: 300,
+        },
+      },
+    },
   });
 
   Navigation.setRoot({
@@ -175,7 +218,6 @@ export function pushMultiScreensApp() {
       visible: false,
       drawBehind: true,
       animate: false,
-      currentTabIndex: 1,
     },
     bottomTab: {
       fontSize: FONT(13),
@@ -184,6 +226,24 @@ export function pushMultiScreensApp() {
       iconInsets: { top: 10, bottom: 5 },
     },
     popGesture: false,
+    animations: {
+      showModal: {
+        enabled: true,
+        alpha: {
+          from: 0,
+          to: 1,
+          duration: 300,
+        },
+      },
+      dismissModal: {
+        enabled: false,
+        alpha: {
+          from: 1,
+          to: 0,
+          duration: 300,
+        },
+      },
+    },
   });
 
   Navigation.setRoot({

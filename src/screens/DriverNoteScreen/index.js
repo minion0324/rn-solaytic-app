@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,6 +20,7 @@ import {
 import {
   SVGS,
   COLORS,
+  PLATFORM,
   SIZE1,
   SIZE2,
 } from 'src/constants';
@@ -208,26 +210,32 @@ const DriverNoteScreen = ({
         </ContentWrap>
       </Content>
 
-      <ShadowWrap forUp>
-        <ContentWrap>
-          <RowWrap>
-            <CommentInput
-              placeholder={'Type a message'}
-              underlineColorAndroid={COLORS.TRANSPARENT1}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={text => setNewComment(text)}
-              value={newComment}
-              returnKeyType={'go'}
-              onSubmitEditing={onNewComment}
-            />
-            <SpaceView mLeft={SIZE2} />
-            <TouchableOpacity onPress={onNewComment}>
-              <SendIcon />
-            </TouchableOpacity>
-          </RowWrap>
-        </ContentWrap>
-      </ShadowWrap>
+      <KeyboardAvoidingView
+        behavior={
+          PLATFORM === 'ios' ? 'padding' : 'height'
+        }
+      >
+        <ShadowWrap forUp>
+          <ContentWrap>
+            <RowWrap>
+              <CommentInput
+                placeholder={'Type a message'}
+                underlineColorAndroid={COLORS.TRANSPARENT1}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={text => setNewComment(text)}
+                value={newComment}
+                returnKeyType={'go'}
+                onSubmitEditing={onNewComment}
+              />
+              <SpaceView mLeft={SIZE2} />
+              <TouchableOpacity onPress={onNewComment}>
+                <SendIcon />
+              </TouchableOpacity>
+            </RowWrap>
+          </ContentWrap>
+        </ShadowWrap>
+      </KeyboardAvoidingView>
     </Container>
   );
 };

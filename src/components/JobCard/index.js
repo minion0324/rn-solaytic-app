@@ -148,6 +148,11 @@ const JobCard = ({
   }, [statusName]);
 
   const location = useMemo(() => {
+    const index = steps.findIndex(item => item.customerSiteId);
+    if (index !== -1) {
+      return steps[index].address;
+    }
+
     switch (jobTypeName) {
       case JOB_TYPE.PULL:
         return steps[0].address || steps[1].address;

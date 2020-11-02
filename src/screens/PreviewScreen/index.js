@@ -26,7 +26,7 @@ import {
 } from 'src/navigation';
 
 import {
-  showOverlay,
+  showLightBox,
   BLUETOOTH_PRINTER_SCREEN,
 } from 'src/navigation';
 
@@ -90,7 +90,7 @@ const PreviewScreen = ({
     try {
       const base64Str = await onViewShot();
 
-      showOverlay(BLUETOOTH_PRINTER_SCREEN, { base64Str });
+      showLightBox(BLUETOOTH_PRINTER_SCREEN, { base64Str });
     } catch (error) {
       //
     }
@@ -325,6 +325,7 @@ const PreviewScreen = ({
             <InfoText>
               {
                 moment(
+                  focusedJob.receiptCompletedDate ||
                   focusedJob.completedDate || focusedJob.jobTimeSpecific
                 ).format('DD/MM/YYYY')
               }
@@ -333,6 +334,7 @@ const PreviewScreen = ({
           <InfoText>
             {
               moment(
+                focusedJob.receiptCompletedDate ||
                 focusedJob.completedDate || focusedJob.jobTimeSpecific
               ).format('hh:mm A')
             }

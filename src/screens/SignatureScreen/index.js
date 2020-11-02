@@ -5,7 +5,7 @@ import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
 
 import {
-  dismissOverlay,
+  dismissLightBox,
 } from 'src/navigation';
 import {
   HeaderBar,
@@ -46,7 +46,7 @@ const SignatureScreen = ({
   const [ contact, setContact ] = useState(signedUserContact);
 
   const onBack = () => {
-    dismissOverlay(componentId);
+    dismissLightBox(componentId);
   };
 
   const onSign = async (signature) => {
