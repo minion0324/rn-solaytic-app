@@ -294,8 +294,10 @@ const PreviewScreen = ({
               </InfoText>
             </RowWrap>
             {
-              idx === 0 &&
-              focusedJob.jobTypeName === JOB_TYPE.EXCHANGE &&
+              (
+                idx === 0 ||
+                focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+              ) &&
               <View>
                 <SpaceView mTop={SIZE2} />
                 <RowWrap>
