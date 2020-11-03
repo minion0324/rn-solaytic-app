@@ -10,7 +10,6 @@ import {
 } from 'react-native-navigation-hooks';
 
 import {
-  COLORS,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
   BACKGROUND_FETCH_KEY,
@@ -19,7 +18,6 @@ import {
 } from 'src/constants';
 import {
   showLightBox,
-  showModal,
   pushScreen,
   popScreen,
   SIGNATURE_SCREEN,
