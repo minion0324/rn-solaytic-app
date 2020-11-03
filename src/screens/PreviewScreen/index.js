@@ -292,6 +292,22 @@ const PreviewScreen = ({
                 {item['binType'] && item['binType']['binTypeName']}
               </InfoText>
             </RowWrap>
+            {
+              idx === 0 &&
+              <View>
+                <SpaceView mTop={SIZE2} />
+                <RowWrap>
+                  <FlexWrap>
+                    <InfoText>
+                      Waste Type
+                    </InfoText>
+                  </FlexWrap>
+                  <InfoText>
+                    {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                  </InfoText>
+                </RowWrap>
+              </View>
+            }
             <SpaceView mTop={SIZE2} />
           </View>
         );
