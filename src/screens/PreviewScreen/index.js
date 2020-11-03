@@ -13,6 +13,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -294,6 +295,7 @@ const PreviewScreen = ({
             </RowWrap>
             {
               idx === 0 &&
+              focusedJob.jobTypeName === JOB_TYPE.EXCHANGE &&
               <View>
                 <SpaceView mTop={SIZE2} />
                 <RowWrap>
