@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>539258548030-g7ecfpmiuahuabk1qv6im3e03ulm2b2p.apps.googleusercontent.com</string>
+	<string>1075134018620-n66kpitagcd8cl3cd39camh2nchde13h.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.539258548030-g7ecfpmiuahuabk1qv6im3e03ulm2b2p</string>
+	<string>com.googleusercontent.apps.1075134018620-n66kpitagcd8cl3cd39camh2nchde13h</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>539258548030-sckbfrqj5o3trmctgo3s3ps3v53squc2.apps.googleusercontent.com</string>
+	<string>1075134018620-29utd8725u4861h6f48bhn07qr50krdj.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAnu1kzV3EHkiSLFrlCcrzoULHo9JeANKU</string>
+	<string>AIzaSyCgIwV3qdpAmou_SsZalbOEmhq70xS8ycc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>539258548030</string>
+	<string>1075134018620</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.logisfleet.wasteporter</string>
 	<key>PROJECT_ID</key>
-	<string>wasteporter-64774</string>
+	<string>wtms-2ce51</string>
 	<key>STORAGE_BUCKET</key>
-	<string>wasteporter-64774.appspot.com</string>
+	<string>wtms-2ce51.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:539258548030:ios:a91a1eee8582333ef8866f</string>
+	<string>1:1075134018620:ios:6e3378853eacc6ec44ff39</string>
 	<key>DATABASE_URL</key>
-	<string>https://wasteporter-64774.firebaseio.com</string>
+	<string>https://wtms-2ce51.firebaseio.com</string>
 </dict>
 </plist>

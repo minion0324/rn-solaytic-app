@@ -52,6 +52,7 @@ const getOwnerInfo = createSelector(
 );
 
 export default {
+  getUserInfo,
   getIsRehydrated,
   getToken,
   getAppLogo,

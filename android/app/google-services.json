@@ -1,43 +1,51 @@
 {
   "project_info": {
-    "project_number": "539258548030",
-    "firebase_url": "https://wasteporter-64774.firebaseio.com",
-    "project_id": "wasteporter-64774",
-    "storage_bucket": "wasteporter-64774.appspot.com"
+    "project_number": "1075134018620",
+    "firebase_url": "https://wtms-2ce51.firebaseio.com",
+    "project_id": "wtms-2ce51",
+    "storage_bucket": "wtms-2ce51.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:539258548030:android:dc7bff6c635a1952f8866f",
+        "mobilesdk_app_id": "1:1075134018620:android:cfb1871b351c925844ff39",
         "android_client_info": {
           "package_name": "com.logisfleet.wasteporter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "539258548030-sckbfrqj5o3trmctgo3s3ps3v53squc2.apps.googleusercontent.com",
+          "client_id": "1075134018620-29utd8725u4861h6f48bhn07qr50krdj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.logisfleet.wasteporter",
-            "certificate_hash": "b18516a46f314586b1e4e86cec9eb399cff6f7d9"
+            "certificate_hash": "d919869fa6edbc05e4a8a9353721fafb5ea648b7"
           }
         },
         {
-          "client_id": "539258548030-0t9j1v0pv95q7uev5dehdujuam5pbl36.apps.googleusercontent.com",
+          "client_id": "1075134018620-73f9g5rol9u43poomh49khmdmnqk9k0k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD33N-R4r85pszkbHzwVxVOl3hOZ3XBCeo"
+          "current_key": "AIzaSyC8jKrDzNXM3fzu8BxL4bD0amcdZZhbzPs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "539258548030-0t9j1v0pv95q7uev5dehdujuam5pbl36.apps.googleusercontent.com",
+              "client_id": "1075134018620-73f9g5rol9u43poomh49khmdmnqk9k0k.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1075134018620-n66kpitagcd8cl3cd39camh2nchde13h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.logisfleet.wasteporter",
+                "app_store_id": "1537071791"
+              }
             }
           ]
         }

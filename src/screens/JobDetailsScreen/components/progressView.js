@@ -172,6 +172,11 @@ const ProgressView = ({
       return;
     }
 
+    if (+amount <= 0) {
+      Alert.alert('Warning', 'Please enter amount greater than 0.');
+      return;
+    }
+
     onUpdateAmountCollected(amount);
     onDismissAmountModal(containerId);
   };

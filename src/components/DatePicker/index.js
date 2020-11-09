@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Calendar } from 'react-native-calendars';
 
 import {
+  SVGS,
   COLORS,
   WIDTH,
   DEFAULT_DATE_FORMAT,
@@ -13,6 +14,11 @@ import {
   getDate,
   getStartDate,
 } from 'src/utils';
+
+const {
+  BlueLeftArrowIcon,
+  BlueRightArrowIcon,
+} = SVGS;
 
 const Container = styled.View`
   height: ${WIDTH * 0.9}px;
@@ -61,6 +67,10 @@ const DatePicker = ({
         markedDates={{
           ...markedDates,
           ...selectedDate,
+        }}
+        renderArrow={(direction) => {
+          if (direction === 'left') return <BlueLeftArrowIcon />;
+          if (direction === 'right') return <BlueRightArrowIcon />;
         }}
       />
     </Container>

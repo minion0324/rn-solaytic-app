@@ -13,6 +13,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -292,6 +293,25 @@ const PreviewScreen = ({
                 {item['binType'] && item['binType']['binTypeName']}
               </InfoText>
             </RowWrap>
+            {
+              (
+                idx === 0 ||
+                focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+              ) &&
+              <View>
+                <SpaceView mTop={SIZE2} />
+                <RowWrap>
+                  <FlexWrap>
+                    <InfoText>
+                      Waste Type
+                    </InfoText>
+                  </FlexWrap>
+                  <InfoText>
+                    {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                  </InfoText>
+                </RowWrap>
+              </View>
+            }
             <SpaceView mTop={SIZE2} />
           </View>
         );
