@@ -76,8 +76,8 @@ const JOB_DETAILS_LIMIT = 20;
 
 //
 const API_BASE_URL =
-  'https://staging-tms-dispatch.logisfleet.com/';
-  // 'https://tms-dispatch-api.wasteporter.com/';
+  // 'https://staging-tms-dispatch.logisfleet.com/';
+  'https://tms-dispatch-api.wasteporter.com/';
 
 export {
   PLATFORM,
