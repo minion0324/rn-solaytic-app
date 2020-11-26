@@ -55,10 +55,12 @@ const LoginScreen = ({
   token,
   appLogo,
   rememberedUser,
+  isInitialRun,
   login,
   setRememberedUser,
   authToken,
   fetch,
+  initialRun,
 }) => {
   const inputUserName = useRef(null);
   const inputPassword = useRef(null);
@@ -68,9 +70,15 @@ const LoginScreen = ({
   const [ password, setPassword ] = useState('');
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
+  const [ defaultLogo, setDefaultLogo ] = useState(IMAGES.WASTEPORTER_LOGO);
 
   useEffect(() => {
     if (!isRehydrated) return;
+
+    if (!isInitialRun) {
+      initialRun();
+      setDefaultLogo(IMAGES.APP_LOGO);
+    }
 
     if (rememberedUser) {
       setRememberCheck(true);
@@ -161,7 +169,7 @@ const LoginScreen = ({
           <Logo
             resizeMode={'contain'}
             source={
-              appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+              appLogo ? { uri: appLogo } : defaultLogo
             }
           />
         </LogoWrap>
@@ -249,10 +257,12 @@ LoginScreen.propTypes = {
   token: PropTypes.string.isRequired,
   appLogo: PropTypes.string.isRequired,
   rememberedUser: PropTypes.string.isRequired,
+  isInitialRun: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
   setRememberedUser: PropTypes.func.isRequired,
   authToken: PropTypes.func.isRequired,
   fetch: PropTypes.func.isRequired,
+  initialRun: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -262,6 +272,7 @@ const mapStateToProps = (state) => {
     token: User.selectors.getToken(state),
     appLogo: User.selectors.getAppLogo(state),
     rememberedUser: User.selectors.getRememberedUser(state),
+    isInitialRun: User.selectors.getIsInitialRun(state),
   };
 };
 
@@ -270,6 +281,7 @@ const mapDispatchToProps = {
   setRememberedUser: User.actionCreators.setRememberedUser,
   authToken: User.actionCreators.authToken,
   fetch: User.actionCreators.fetch,
+  initialRun: User.actionCreators.initialRun,
 };
 
 export default connect(

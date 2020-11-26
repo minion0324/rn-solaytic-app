@@ -2,6 +2,7 @@ const PATH = 'src/assets/images/';
 
 export default {
   APP_LOGO: require(`${PATH}app-logo.png`),
+  WASTEPORTER_LOGO: require(`${PATH}wasteporter-logo.png`),
 
   FIRST_TAB: require(`${PATH}first-tab.png`),
   FIRST_TAB_ACTIVE: require(`${PATH}first-tab-active.png`),
