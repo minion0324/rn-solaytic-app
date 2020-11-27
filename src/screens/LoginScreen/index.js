@@ -6,6 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import firebase from 'react-native-firebase';
+import SplashScreen from 'react-native-splash-screen';
 
 import {
   pushMultiScreensApp,
@@ -71,6 +72,10 @@ const LoginScreen = ({
   const [ rememberCheck, setRememberCheck ] = useState(false);
   const [ visibility, setVisibility ] = useState(false);
   const [ defaultLogo, setDefaultLogo ] = useState(IMAGES.WASTEPORTER_LOGO);
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   useEffect(() => {
     if (!isRehydrated) return;
