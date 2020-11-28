@@ -87,16 +87,22 @@ const DrawerScreen = ({
             </TouchableOpacity>
           </ProfileWrap>
 
-          <ItemWrap>
-            <Item onPress={() => {}}>
-              <ItemText>Help & Support</ItemText>
-            </Item>
-          </ItemWrap>
-          <ItemWrap>
-            <Item onPress={() => {}}>
-              <ItemText>Send Feedback</ItemText>
-            </Item>
-          </ItemWrap>
+          {
+            // <ItemWrap>
+            //   <Item onPress={() => {}}>
+            //     <ItemText>Help & Support</ItemText>
+            //   </Item>
+            // </ItemWrap>
+          }
+
+          {
+            // <ItemWrap>
+            //   <Item onPress={() => {}}>
+            //     <ItemText>Send Feedback</ItemText>
+            //   </Item>
+            // </ItemWrap>
+          }
+
           <ItemWrap>
             <Item onPress={onUploadHistory}>
               <ItemText>Upload History</ItemText>
