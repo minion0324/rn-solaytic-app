@@ -51,13 +51,6 @@ const getOwnerInfo = createSelector(
   },
 );
 
-const getIsInitialRun = createSelector(
-  getUserStore,
-  (user) => {
-    return user.isInitialRun || false;
-  },
-);
-
 export default {
   getUserInfo,
   getIsRehydrated,
@@ -66,5 +59,4 @@ export default {
   getRememberedUser,
   getDriverName,
   getOwnerInfo,
-  getIsInitialRun,
 };
