@@ -370,6 +370,8 @@ PODS:
   - react-native-simple-toast (1.1.2):
     - React
     - Toast (~> 4.0.0)
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-view-shot (3.1.2):
     - React
   - react-native-webview (10.3.2):
@@ -508,6 +510,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -607,6 +610,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-restart"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-view-shot:
     :path: "../node_modules/react-native-view-shot"
   react-native-webview:
@@ -654,9 +659,9 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
-  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  Crashlytics: 9220f5bc89e7a618df411b4f639389dbfb0e03d2
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
+  Fabric: ea977e3cd9c20425516d3dafd3bf8c941c51223f
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
   FBReactNativeSpec: 5465d51ccfeecb7faa12f9ae0024f2044ce4044e
   Firebase: 47176280bfba198e531f909cfb1612dad216cb96
@@ -702,6 +707,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-simple-toast: 58b71ef003f01d2c0bf5dcd2fdccc75861dabade
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c

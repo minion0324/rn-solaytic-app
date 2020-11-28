@@ -8,6 +8,7 @@ import {
   SET_REMEMBERED_USER,
   AUTH_TOKEN_SUCCESS,
   LOGOUT,
+  INITIAL_RUN,
 } from './actions';
 
 const DEFAULT = {
@@ -43,6 +44,9 @@ function User(state = DEFAULT, action = {}) {
         break;
       case LOGOUT:
         draft.token = '';
+        break;
+      case INITIAL_RUN:
+        draft.isInitialRun = true;
         break;
     }
   });
