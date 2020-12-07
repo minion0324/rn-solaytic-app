@@ -115,6 +115,18 @@ const JobDetailsScreenView = ({
     if (steps.length === 2) {
       if (
         jobStatus === JOB_STATUS.DISPATCHED ||
+        jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+        jobStatus === JOB_STATUS.STARTED
+      ) {
+        return 0;
+      }
+
+      return 1;
+    }
+
+    if (steps.length === 3) {
+      if (
+        jobStatus === JOB_STATUS.DISPATCHED ||
         jobStatus === JOB_STATUS.ACKNOWLEDGED
       ) {
         return 0;
@@ -125,18 +137,6 @@ const JobDetailsScreenView = ({
       }
 
       return 2;
-    }
-
-    if (steps.length === 3) {
-      if (
-        jobStatus === JOB_STATUS.DISPATCHED ||
-        jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-        jobStatus === JOB_STATUS.STARTED
-      ) {
-        return 0;
-      }
-
-      return 1;
     }
   };
 
