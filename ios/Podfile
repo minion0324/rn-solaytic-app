@@ -80,7 +80,6 @@ target 'Wasteporter' do
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'Firebase/Performance'
-  pod 'Firebase/Crashlytics'
 
   target 'WasteporterTests' do
     inherit! :complete
