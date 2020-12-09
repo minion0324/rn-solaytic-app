@@ -16,7 +16,6 @@ import java.util.List;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
-import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 
 public class MainApplication extends NavigationApplication {
 
@@ -36,7 +35,6 @@ public class MainApplication extends NavigationApplication {
           packages.add(new RNFirebaseMessagingPackage());
           packages.add(new RNFirebaseNotificationsPackage());
           packages.add(new RNFirebasePerformancePackage());
-          packages.add(new RNFirebaseCrashlyticsPackage());
           return packages;
         }
 
