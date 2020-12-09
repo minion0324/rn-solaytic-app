@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import firebase from 'react-native-firebase';
 import SplashScreen from 'react-native-splash-screen';
 
 import {
@@ -51,7 +50,6 @@ const {
 } = SVGS;
 
 const LoginScreen = ({
-  userInfo,
   isRehydrated,
   token,
   appLogo,
@@ -86,18 +84,6 @@ const LoginScreen = ({
       onAuthToken();
     }
   }, [isRehydrated]);
-
-  useEffect(() => {
-    if (userInfo.accountId) {
-      firebase.crashlytics()
-        .setUserIdentifier(String(userInfo.accountId));
-    }
-
-    if (userInfo.accountEmail) {
-      firebase.crashlytics()
-        .setUserEmail(String(userInfo.accountEmail));
-    }
-  }, [userInfo]);
 
   const onSuccess = () => {
     setLoading(false);
@@ -249,7 +235,6 @@ const LoginScreen = ({
 };
 
 LoginScreen.propTypes = {
-  userInfo: PropTypes.object.isRequired,
   isRehydrated: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
   appLogo: PropTypes.string.isRequired,
@@ -262,7 +247,6 @@ LoginScreen.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    userInfo: User.selectors.getUserInfo(state),
     isRehydrated: User.selectors.getIsRehydrated(state),
     token: User.selectors.getToken(state),
     appLogo: User.selectors.getAppLogo(state),
