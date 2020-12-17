@@ -9,6 +9,7 @@
 
 #import "RNSplashScreen.h"
 
+#import <Bugsnag/Bugsnag.h>
 #import <TSBackgroundFetch/TSBackgroundFetch.h>
 
 #if DEBUG
@@ -43,6 +44,8 @@ static void InitializeFlipper(UIApplication *application) {
   [FIRApp configure];
 
   [RNFirebaseNotifications configure];
+
+  [Bugsnag start];
 
   [RNSplashScreen show];
 
