@@ -141,22 +141,24 @@ const PreviewScreen = ({
   };
 
   const renderJobProof = () => {
-    if (
-      !sign.uri ||
-      getReceiptSettingVariable('ShowSignature') !== 'True'
-    ) {
+    if (!sign.uri) {
       return null;
     }
 
     return (
       <View>
         <SpaceView mTop={SIZE4} />
-        <HalfWrap>
-          <FullImage source={{ uri: sign.uri }} />
-        </HalfWrap>
-        <WrapBorder />
         {
-          !!getReceiptSettingVariable('ShowSiteContact') &&
+          getReceiptSettingVariable('ShowSignature') === 'True' &&
+          <View>
+            <HalfWrap>
+              <FullImage source={{ uri: sign.uri }} />
+            </HalfWrap>
+            <WrapBorder />
+          </View>
+        }
+        {
+          getReceiptSettingVariable('ShowSiteContact') === 'True' &&
           <View>
             <SpaceView mTop={SIZE2} />
             <RowWrap>
@@ -174,7 +176,7 @@ const PreviewScreen = ({
           </View>
         }
         {
-          !!getReceiptSettingVariable('ShowSiteTelephone') &&
+          getReceiptSettingVariable('ShowSiteTelephone') === 'True' &&
           <View>
             <SpaceView mTop={SIZE2} />
             <RowWrap>
@@ -196,52 +198,52 @@ const PreviewScreen = ({
     );
   };
 
-  const renderServices = () => {
-    const selectedServices = services.filter(item => item.isSelected);
-    if (selectedServices.length === 0) {
-      return null;
-    }
+  // const renderServices = () => {
+  //   const selectedServices = services.filter(item => item.isSelected);
+  //   if (selectedServices.length === 0) {
+  //     return null;
+  //   }
 
-    return (
-      <View>
-        <SpaceView mTop={SIZE4} />
-        <InfoText>
-          ADDITIONAL SERVICE
-        </InfoText>
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              ITEM
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            QTY
-          </InfoText>
-        </RowWrap>
-        {
-          selectedServices.map((item) => (
-            <View
-              key={`${item.serviceAdditionalChargeTemplateId}`}
-            >
-              <SpaceView mTop={SIZE2} />
-              <RowWrap>
-                <FlexWrap>
-                  <InfoText>
-                    {item.serviceAdditionalChargeName}
-                  </InfoText>
-                </FlexWrap>
-                <InfoText>
-                  {item.quantity || 1}
-                </InfoText>
-              </RowWrap>
-            </View>
-          ))
-        }
-        <SpaceView mTop={SIZE2} />
-      </View>
-    );
-  };
+  //   return (
+  //     <View>
+  //       <SpaceView mTop={SIZE4} />
+  //       <InfoText>
+  //         ADDITIONAL SERVICE
+  //       </InfoText>
+  //       <SpaceView mTop={SIZE2} />
+  //       <RowWrap>
+  //         <FlexWrap>
+  //           <InfoText>
+  //             ITEM
+  //           </InfoText>
+  //         </FlexWrap>
+  //         <InfoText>
+  //           QTY
+  //         </InfoText>
+  //       </RowWrap>
+  //       {
+  //         selectedServices.map((item) => (
+  //           <View
+  //             key={`${item.serviceAdditionalChargeTemplateId}`}
+  //           >
+  //             <SpaceView mTop={SIZE2} />
+  //             <RowWrap>
+  //               <FlexWrap>
+  //                 <InfoText>
+  //                   {item.serviceAdditionalChargeName}
+  //                 </InfoText>
+  //               </FlexWrap>
+  //               <InfoText>
+  //                 {item.quantity || 1}
+  //               </InfoText>
+  //             </RowWrap>
+  //           </View>
+  //         ))
+  //       }
+  //       <SpaceView mTop={SIZE2} />
+  //     </View>
+  //   );
+  // };
 
   const renderPayment = () => {
     if (
@@ -289,37 +291,42 @@ const PreviewScreen = ({
 
         return (
           (item.wasteType || item.binType) &&
-          (
-            (idx === 0 && getReceiptSettingVariable('ShowBinCollected') === 'True') ||
-            (idx === 1 && getReceiptSettingVariable('ShowBinDelivered') === 'True') ||
-            (idx !== 0 && idx !== 1)
-          ) &&
           <View key={`${item.jobStepId}`}>
-            <SpaceView mTop={SIZE4} />
-            <RowWrap>
-              <FlexWrap>
-                <InfoText>
-                  {
-                    (
-                      idx === 0
-                      ? getReceiptSettingVariable('LabelBin_Collected') || 'Bin Collected'
-                      : ''
-                    ) +
-                    (
-                      idx === 1
-                      ? getReceiptSettingVariable('LabelBin_Delivered') || 'Bin Delivered'
-                      : ''
-                    ) +
-                    (
-                      idx !== 0 && idx !== 1 ? 'Bin' : ''
-                    )
-                  }
-                </InfoText>
-              </FlexWrap>
-              <InfoText>
-                {item['binNumber']}
-              </InfoText>
-            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+            {
+              (
+                (idx === 0 && getReceiptSettingVariable('ShowBinCollected') === 'True') ||
+                (idx === 1 && getReceiptSettingVariable('ShowBinDelivered') === 'True') ||
+                (idx !== 0 && idx !== 1)
+              ) &&
+              <View>
+                <SpaceView mTop={SIZE2} />
+                <RowWrap>
+                  <FlexWrap>
+                    <InfoText>
+                      {
+                        (
+                          idx === 0
+                          ? getReceiptSettingVariable('LabelBin_Collected') || 'Bin Collected'
+                          : ''
+                        ) +
+                        (
+                          idx === 1
+                          ? getReceiptSettingVariable('LabelBin_Delivered') || 'Bin Delivered'
+                          : ''
+                        ) +
+                        (
+                          idx !== 0 && idx !== 1 ? 'Bin' : ''
+                        )
+                      }
+                    </InfoText>
+                  </FlexWrap>
+                  <InfoText>
+                    {item['binNumber']}
+                  </InfoText>
+                </RowWrap>
+              </View>
+            }
             {
               (
                 (idx === 0 && getReceiptSettingVariable('ShowBinCollectedType') === 'True') ||
