@@ -585,7 +585,9 @@ const PreviewScreen = ({
             { renderJobInfo() }
             { renderBinInfo() }
             { renderPayment() }
-            { renderServices() }
+            {
+              // renderServices()
+            }
             { renderJobProof() }
             { renderDisclaimerText() }
 
