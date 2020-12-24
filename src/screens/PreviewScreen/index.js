@@ -246,40 +246,47 @@ const PreviewScreen = ({
   // };
 
   const renderPayment = () => {
-    if (
-      !focusedJob.isEnabledCashCollection ||
-      getReceiptSettingVariable('ShowAmountCollected') !== 'True'
-    ) {
+    if (!focusedJob.isEnabledCashCollection) {
       return null;
     }
 
     return (
       <View>
         <SpaceView mTop={SIZE4} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              PAYMENT
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            CASH
-          </InfoText>
-        </RowWrap>
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              {getReceiptSettingVariable('LabelCollected_Cash') || 'Collected'}
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {
-              `$${amountCollected}`
-            }
-          </InfoText>
-        </RowWrap>
-        <SpaceView mTop={SIZE2} />
+        {
+          getReceiptSettingVariable('ShowPaymentType') === 'True' &&
+          <View>
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {getReceiptSettingVariable('LabelPayment_Type') || 'Payment'}
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                CASH
+              </InfoText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+          </View>
+        }
+        {
+          getReceiptSettingVariable('ShowAmountCollected') === 'True' &&
+          <View>
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {getReceiptSettingVariable('LabelCollected_Cash') || 'Collected'}
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {
+                  `$${amountCollected}`
+                }
+              </InfoText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+          </View>
+        }
       </View>
     );
   };
