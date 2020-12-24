@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,7 +8,6 @@ import Share from 'react-native-share';
 
 import {
   SVGS,
-  IMAGES,
   COLORS,
   SIZE1,
   SIZE2,
@@ -19,7 +18,6 @@ import {
   HeaderBar,
 } from 'src/components';
 import {
-  User,
   Jobs,
 } from 'src/redux';
 import {
@@ -61,8 +59,8 @@ const {
 } = SVGS;
 
 const PreviewScreen = ({
-  ownerInfo,
   focusedJob,
+  jobReceiptSetting,
   sign,
   signedUserName,
   signedUserContact,
@@ -74,6 +72,20 @@ const PreviewScreen = ({
   componentId,
 }) => {
   const viewShotRef = useRef(null);
+
+  const getReceiptSettingVariable = useCallback(
+    (key) => {
+      const index = jobReceiptSetting
+        .findIndex(item => item.variableName === key);
+
+      if (index === -1) {
+        return '';
+      }
+
+      return jobReceiptSetting[index].variableValue;
+    },
+    [jobReceiptSetting],
+  );
 
   const onBack = () => {
     popScreen(componentId);
@@ -110,8 +122,10 @@ const PreviewScreen = ({
     }
   };
 
-  const renderNote = () => {
-    if (!ownerInfo.disclaimer) {
+  const renderDisclaimerText = () => {
+    const disclaimerText = getReceiptSettingVariable('StringDisclaimerText');
+
+    if (!disclaimerText) {
       return null;
     }
 
@@ -119,7 +133,7 @@ const PreviewScreen = ({
       <View>
         <SpaceView mTop={SIZE4} />
         <InfoText align={'center'}>
-          {ownerInfo.disclaimer}
+          {disclaimerText}
         </InfoText>
         <SpaceView mTop={SIZE2} />
       </View>
@@ -134,94 +148,102 @@ const PreviewScreen = ({
     return (
       <View>
         <SpaceView mTop={SIZE4} />
-
-        <HalfWrap>
-          <FullImage source={{ uri: sign.uri }} />
-        </HalfWrap>
-        <WrapBorder />
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap flex={4}>
-            <InfoText>
-              Site Contact:
-            </InfoText>
-          </FlexWrap>
-          <FlexWrap flex={6}>
-            <InfoText>
-              {signedUserName}
-            </InfoText>
-          </FlexWrap>
-        </RowWrap>
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap flex={4}>
-            <InfoText>
-              Telephone:
-            </InfoText>
-          </FlexWrap>
-          <FlexWrap flex={6}>
-            <InfoText>
-              {signedUserContact}
-            </InfoText>
-          </FlexWrap>
-        </RowWrap>
-
-        <SpaceView mTop={SIZE2} />
-      </View>
-    );
-  };
-
-  const renderServices = () => {
-    const selectedServices = services.filter(item => item.isSelected);
-    if (selectedServices.length === 0) {
-      return null;
-    }
-
-    return (
-      <View>
-        <SpaceView mTop={SIZE4} />
-
-        <InfoText>
-          ADDITIONAL SERVICE
-        </InfoText>
-
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              ITEM
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            QTY
-          </InfoText>
-        </RowWrap>
-
         {
-          selectedServices.map((item) => (
-            <View
-              key={`${item.serviceAdditionalChargeTemplateId}`}
-            >
-              <SpaceView mTop={SIZE2} />
-              <RowWrap>
-                <FlexWrap>
-                  <InfoText>
-                    {item.serviceAdditionalChargeName}
-                  </InfoText>
-                </FlexWrap>
+          getReceiptSettingVariable('ShowSignature') === 'True' &&
+          <View>
+            <HalfWrap>
+              <FullImage source={{ uri: sign.uri }} />
+            </HalfWrap>
+            <WrapBorder />
+          </View>
+        }
+        {
+          getReceiptSettingVariable('ShowSiteContact') === 'True' &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap flex={4}>
                 <InfoText>
-                  {item.quantity || 1}
+                  Site Contact:
                 </InfoText>
-              </RowWrap>
-            </View>
-          ))
+              </FlexWrap>
+              <FlexWrap flex={6}>
+                <InfoText>
+                  {signedUserName}
+                </InfoText>
+              </FlexWrap>
+            </RowWrap>
+          </View>
+        }
+        {
+          getReceiptSettingVariable('ShowSiteTelephone') === 'True' &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap flex={4}>
+                <InfoText>
+                  Telephone:
+                </InfoText>
+              </FlexWrap>
+              <FlexWrap flex={6}>
+                <InfoText>
+                  {signedUserContact}
+                </InfoText>
+              </FlexWrap>
+            </RowWrap>
+          </View>
         }
         <SpaceView mTop={SIZE2} />
       </View>
     );
   };
+
+  // const renderServices = () => {
+  //   const selectedServices = services.filter(item => item.isSelected);
+  //   if (selectedServices.length === 0) {
+  //     return null;
+  //   }
+
+  //   return (
+  //     <View>
+  //       <SpaceView mTop={SIZE4} />
+  //       <InfoText>
+  //         ADDITIONAL SERVICE
+  //       </InfoText>
+  //       <SpaceView mTop={SIZE2} />
+  //       <RowWrap>
+  //         <FlexWrap>
+  //           <InfoText>
+  //             ITEM
+  //           </InfoText>
+  //         </FlexWrap>
+  //         <InfoText>
+  //           QTY
+  //         </InfoText>
+  //       </RowWrap>
+  //       {
+  //         selectedServices.map((item) => (
+  //           <View
+  //             key={`${item.serviceAdditionalChargeTemplateId}`}
+  //           >
+  //             <SpaceView mTop={SIZE2} />
+  //             <RowWrap>
+  //               <FlexWrap>
+  //                 <InfoText>
+  //                   {item.serviceAdditionalChargeName}
+  //                 </InfoText>
+  //               </FlexWrap>
+  //               <InfoText>
+  //                 {item.quantity || 1}
+  //               </InfoText>
+  //             </RowWrap>
+  //           </View>
+  //         ))
+  //       }
+  //       <SpaceView mTop={SIZE2} />
+  //     </View>
+  //   );
+  // };
 
   const renderPayment = () => {
     if (!focusedJob.isEnabledCashCollection) {
@@ -231,30 +253,40 @@ const PreviewScreen = ({
     return (
       <View>
         <SpaceView mTop={SIZE4} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              PAYMENT
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            CASH
-          </InfoText>
-        </RowWrap>
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              Collected
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {
-              `$${amountCollected}`
-            }
-          </InfoText>
-        </RowWrap>
-        <SpaceView mTop={SIZE2} />
+        {
+          getReceiptSettingVariable('ShowPaymentType') === 'True' &&
+          <View>
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {getReceiptSettingVariable('LabelPayment_Type') || 'Payment'}
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                Cash
+              </InfoText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+          </View>
+        }
+        {
+          getReceiptSettingVariable('ShowAmountCollected') === 'True' &&
+          <View>
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {getReceiptSettingVariable('LabelCollected_Cash') || 'Collected'}
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {
+                  `$${amountCollected}`
+                }
+              </InfoText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+          </View>
+        }
       </View>
     );
   };
@@ -267,43 +299,105 @@ const PreviewScreen = ({
         return (
           (item.wasteType || item.binType) &&
           <View key={`${item.jobStepId}`}>
-            <SpaceView mTop={SIZE4} />
-            <RowWrap>
-              <FlexWrap>
-                <InfoText>
-                  {
-                    'Bin'
-                    + (idx === 0 ? ' Collected' : '')
-                    + (idx === 1 ? ' Delivered' : '')
-                  }
-                </InfoText>
-              </FlexWrap>
-              <InfoText>
-                {item['binNumber']}
-              </InfoText>
-            </RowWrap>
             <SpaceView mTop={SIZE2} />
-            <RowWrap>
-              <FlexWrap>
-                <InfoText>
-                  Bin Type
-                </InfoText>
-              </FlexWrap>
-              <InfoText>
-                {item['binType'] && item['binType']['binTypeName']}
-              </InfoText>
-            </RowWrap>
             {
               (
-                idx === 0 ||
-                focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+                (idx === 0 && getReceiptSettingVariable('ShowBinCollected') === 'True') ||
+                (idx === 1 && getReceiptSettingVariable('ShowBinDelivered') === 'True') ||
+                (idx !== 0 && idx !== 1)
               ) &&
               <View>
                 <SpaceView mTop={SIZE2} />
                 <RowWrap>
                   <FlexWrap>
                     <InfoText>
-                      Waste Type
+                      {
+                        (
+                          idx === 0
+                          ? getReceiptSettingVariable('LabelBin_Collected') || 'Bin Collected'
+                          : ''
+                        ) +
+                        (
+                          idx === 1
+                          ? getReceiptSettingVariable('LabelBin_Delivered') || 'Bin Delivered'
+                          : ''
+                        ) +
+                        (
+                          idx !== 0 && idx !== 1 ? 'Bin' : ''
+                        )
+                      }
+                    </InfoText>
+                  </FlexWrap>
+                  <InfoText>
+                    {item['binNumber']}
+                  </InfoText>
+                </RowWrap>
+              </View>
+            }
+            {
+              (
+                (idx === 0 && getReceiptSettingVariable('ShowBinCollectedType') === 'True') ||
+                (idx === 1 && getReceiptSettingVariable('ShowBinDeliveredType') === 'True') ||
+                (idx !== 0 && idx !== 1)
+              ) &&
+              <View>
+                <SpaceView mTop={SIZE2} />
+                <RowWrap>
+                  <FlexWrap>
+                    <InfoText>
+                      {
+                        (
+                          idx === 0
+                          ? getReceiptSettingVariable('LabelBin_Type_Collected') || 'Bin Type'
+                          : ''
+                        ) +
+                        (
+                          idx === 1
+                          ? getReceiptSettingVariable('LabelBin_Type_Delivered') || 'Bin Type'
+                          : ''
+                        ) +
+                        (
+                          idx !== 0 && idx !== 1 ? 'Bin Type' : ''
+                        )
+                      }
+                    </InfoText>
+                  </FlexWrap>
+                  <InfoText>
+                    {item['binType'] && item['binType']['binTypeName']}
+                  </InfoText>
+                </RowWrap>
+              </View>
+            }
+            {
+              (
+                idx === 0 ||
+                focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
+              ) &&
+              (
+                (idx === 0 && getReceiptSettingVariable('ShowWasteTypeCollected') === 'True') ||
+                (idx === 1 && getReceiptSettingVariable('ShowPlannedWasteType') === 'True') ||
+                (idx !== 0 && idx !== 1)
+              ) &&
+              <View>
+                <SpaceView mTop={SIZE2} />
+                <RowWrap>
+                  <FlexWrap>
+                    <InfoText>
+                      {
+                        (
+                          idx === 0
+                          ? getReceiptSettingVariable('LabelWaste_Type_Collected') || 'Waste Type'
+                          : ''
+                        ) +
+                        (
+                          idx === 1
+                          ? getReceiptSettingVariable('LabelPlanned_Waste_Type') || 'Planned Waste Type'
+                          : ''
+                        ) +
+                        (
+                          idx !== 0 && idx !== 1 ? 'Waste Type' : ''
+                        )
+                      }
                     </InfoText>
                   </FlexWrap>
                   <InfoText>
@@ -328,17 +422,17 @@ const PreviewScreen = ({
         <TitleText>
           {`DO #: ${focusedJob.jobNumber}`}
         </TitleText>
-
         <SpaceView mTop={SIZE4} />
         <InfoText>
-          SITE ADDRESS
+          {
+            getReceiptSettingVariable('LabelSite_Address') || 'Site Address'
+          }
         </InfoText>
         <SpaceView mTop={SIZE2} />
         <InfoText>
           {focusedJob.steps[index].address}
         </InfoText>
         <SpaceView mTop={SIZE2} />
-
         <SpaceView mTop={SIZE4} />
         <RowWrap>
           <FlexWrap>
@@ -363,12 +457,13 @@ const PreviewScreen = ({
         {
           focusedJob.assignedDriver &&
           focusedJob.assignedDriver.driverName &&
+          getReceiptSettingVariable('ShowDriver') === 'True' &&
           <View>
             <SpaceView mTop={SIZE2} />
             <RowWrap>
               <FlexWrap>
                 <InfoText>
-                  Driver
+                  {getReceiptSettingVariable('LabelDriver') || 'Driver'}
                 </InfoText>
               </FlexWrap>
               <InfoText>
@@ -380,12 +475,13 @@ const PreviewScreen = ({
         {
           focusedJob.assignedVehicle &&
           focusedJob.assignedVehicle.vehicleName &&
+          getReceiptSettingVariable('ShowVehicle') === 'True' &&
           <View>
             <SpaceView mTop={SIZE2} />
             <RowWrap>
               <FlexWrap>
                 <InfoText>
-                  Vehicle
+                  {getReceiptSettingVariable('LabelVehicle') || 'Vehicle'}
                 </InfoText>
               </FlexWrap>
               <InfoText>
@@ -395,49 +491,39 @@ const PreviewScreen = ({
           </View>
         }
         <SpaceView mTop={SIZE2} />
-
-        <SpaceView mTop={SIZE4} />
-        <RowWrap>
-          <FlexWrap>
-            <InfoText>
-              Job Type
-            </InfoText>
-          </FlexWrap>
-          <InfoText>
-            {focusedJob.jobTemplateName || focusedJob.jobTypeName}
-          </InfoText>
-        </RowWrap>
-        <SpaceView mTop={SIZE2} />
+        {
+          getReceiptSettingVariable('ShowJobType') === 'True' &&
+          <View>
+            <SpaceView mTop={SIZE4} />
+            <RowWrap>
+              <FlexWrap>
+                <InfoText>
+                  {getReceiptSettingVariable('LabelJob_Type') || 'Job Type'}
+                </InfoText>
+              </FlexWrap>
+              <InfoText>
+                {focusedJob.jobTemplateName || focusedJob.jobTypeName}
+              </InfoText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+          </View>
+        }
       </View>
     );
   };
 
-  const renderOwnerInfo = () => {
+  const renderHeaderText = () => {
+    const headerText = getReceiptSettingVariable('StringHeaderText');
+
+    if (!headerText) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
         <InfoText align={'center'}>
-          {ownerInfo.accountName}
-        </InfoText>
-        <SpaceView mTop={SIZE1} />
-        <InfoText align={'center'}>
-          {ownerInfo.address}
-        </InfoText>
-        <SpaceView mTop={SIZE1} />
-        <InfoText align={'center'}>
-          {
-            (ownerInfo.phone ? `Tel: ${ownerInfo.phone}` : '') +
-            (ownerInfo.phone && ownerInfo.faxNumber ? '  ,  ' : '') +
-            (ownerInfo.faxNumber ? `Fax: ${ownerInfo.faxNumber}` : '')
-          }
-        </InfoText>
-        <SpaceView mTop={SIZE1} />
-        <InfoText align={'center'}>
-          {
-            (ownerInfo.uenNumber ? `UEN: ${ownerInfo.uenNumber}` : '') +
-            (ownerInfo.uenNumber && ownerInfo.gstNumber ? '  ,  ' : '') +
-            (ownerInfo.gstNumber ? `GST: ${ownerInfo.gstNumber}` : '')
-          }
+          {headerText}
         </InfoText>
         <SpaceView mTop={SIZE2} />
       </View>
@@ -445,6 +531,12 @@ const PreviewScreen = ({
   };
 
   const renderLogo = () => {
+    const logo = getReceiptSettingVariable('StringCompanyLogo');
+
+    if (!logo) {
+      return null;
+    }
+
     return (
       <RowWrap>
         <FlexWrap flex={3} />
@@ -452,11 +544,7 @@ const PreviewScreen = ({
           <LogoImageWrap>
             <FullImage
               resizeMode={'contain'}
-              source={
-                ownerInfo.logoImageUrl
-                ? { uri: ownerInfo.logoImageUrl }
-                : IMAGES.APP_LOGO
-              }
+              source={{ uri: logo }}
             />
           </LogoImageWrap>
         </FlexWrap>
@@ -507,13 +595,15 @@ const PreviewScreen = ({
             <SpaceView mTop={SIZE2} />
 
             { renderLogo() }
-            { renderOwnerInfo() }
+            { renderHeaderText() }
             { renderJobInfo() }
             { renderBinInfo() }
             { renderPayment() }
-            { renderServices() }
+            {
+              // renderServices()
+            }
             { renderJobProof() }
-            { renderNote() }
+            { renderDisclaimerText() }
 
             <SpaceView mTop={SIZE4 * 4} />
           </ContentWrap>
@@ -524,8 +614,8 @@ const PreviewScreen = ({
 };
 
 PreviewScreen.propTypes = {
-  ownerInfo: PropTypes.object.isRequired,
   focusedJob: PropTypes.object.isRequired,
+  jobReceiptSetting: PropTypes.array.isRequired,
   sign: PropTypes.object,
   signedUserName: PropTypes.string,
   signedUserContact: PropTypes.string,
@@ -545,8 +635,8 @@ PreviewScreen.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    ownerInfo: User.selectors.getOwnerInfo(state),
     focusedJob: Jobs.selectors.getFocusedJob(state),
+    jobReceiptSetting: Jobs.selectors.getJobReceiptSetting(state),
   };
 };
 
