@@ -108,6 +108,17 @@ const getPhotosAndSign = createSelector(
   },
 );
 
+const getJobReceiptSetting = createSelector(
+  getFocusedJob,
+  (focusedJob) => {
+    try {
+      return focusedJob.receiptSetting.accountDocSettingVariables || [];
+    } catch (error) {
+      return [];
+    }
+  },
+);
+
 export default {
   getAllJobs,
   getCountOfJobs,
@@ -121,4 +132,5 @@ export default {
   getFocusedJobId,
   getJobStatus,
   getPhotosAndSign,
+  getJobReceiptSetting,
 };
