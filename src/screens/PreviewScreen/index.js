@@ -263,7 +263,7 @@ const PreviewScreen = ({
                 </InfoText>
               </FlexWrap>
               <InfoText>
-                CASH
+                Cash
               </InfoText>
             </RowWrap>
             <SpaceView mTop={SIZE2} />
