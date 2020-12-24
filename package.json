@@ -12,6 +12,7 @@
     "lint:staged": "git diff --cached --name-only | grep \".js$\" | xargs eslint"
   },
   "dependencies": {
+    "@bugsnag/react-native": "^7.5.5",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/netinfo": "^5.9.6",
     "axios": "^0.19.2",
