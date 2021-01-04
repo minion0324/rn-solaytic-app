@@ -33,6 +33,7 @@
     "react-native-map-link": "^2.7.17",
     "react-native-navigation": "^6.7.3",
     "react-native-navigation-hooks": "^6.1.0",
+    "react-native-render-html": "^5.0.1",
     "react-native-restart": "^0.0.17",
     "react-native-share": "^4.0.1",
     "react-native-signature-canvas": "^2.7.0",
