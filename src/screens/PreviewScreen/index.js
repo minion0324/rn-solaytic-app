@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
+import HTML from 'react-native-render-html';
 
 import {
   SVGS,
@@ -12,6 +13,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE4,
+  FONT,
   JOB_TYPE,
 } from 'src/constants';
 import {
@@ -513,18 +515,46 @@ const PreviewScreen = ({
   };
 
   const renderHeaderText = () => {
+    const baseFontStyle = {
+      fontSize: FONT(15),
+      color: COLORS.BLACK2,
+      textAlign: 'center',
+    };
+
+    const tagsStyles = {
+      p: {
+        marginTop: 0,
+        marginBottom: 0,
+      },
+    };
+
+    const containerStyle = {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    };
+
     const headerText = getReceiptSettingVariable('StringHeaderText');
 
     if (!headerText) {
       return null;
     }
 
+    const htmlContent =
+      `<div style='text-align: center;'>${headerText}</div>`.replace(
+        /\n/g,
+        `</div>\n<div style='text-align: center;'>`,
+      );
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
-        <InfoText align={'center'}>
-          {headerText}
-        </InfoText>
+        <HTML
+          source={{ html: htmlContent }}
+          baseFontStyle={baseFontStyle}
+          tagsStyles={tagsStyles}
+          containerStyle={containerStyle}
+        />
         <SpaceView mTop={SIZE2} />
       </View>
     );
