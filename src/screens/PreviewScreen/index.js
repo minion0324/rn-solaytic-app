@@ -23,11 +23,8 @@ import {
   Jobs,
 } from 'src/redux';
 import {
-  popScreen,
-} from 'src/navigation';
-
-import {
   showLightBox,
+  popScreen,
   BLUETOOTH_PRINTER_SCREEN,
 } from 'src/navigation';
 
@@ -214,14 +211,16 @@ const PreviewScreen = ({
   //       </InfoText>
   //       <SpaceView mTop={SIZE2} />
   //       <RowWrap>
-  //         <FlexWrap>
+  //         <FlexWrap flex={4}>
   //           <InfoText>
   //             ITEM
   //           </InfoText>
   //         </FlexWrap>
-  //         <InfoText>
-  //           QTY
-  //         </InfoText>
+  //         <FlexWrap flex={6}>
+  //           <InfoText align={'right'}>
+  //             QTY
+  //           </InfoText>
+  //         </FlexWrap>
   //       </RowWrap>
   //       {
   //         selectedServices.map((item) => (
@@ -230,14 +229,16 @@ const PreviewScreen = ({
   //           >
   //             <SpaceView mTop={SIZE2} />
   //             <RowWrap>
-  //               <FlexWrap>
+  //               <FlexWrap flex={4}>
   //                 <InfoText>
   //                   {item.serviceAdditionalChargeName}
   //                 </InfoText>
   //               </FlexWrap>
-  //               <InfoText>
-  //                 {item.quantity || 1}
-  //               </InfoText>
+  //               <FlexWrap flex={6}>
+  //                 <InfoText align={'right'}>
+  //                   {item.quantity || 1}
+  //                 </InfoText>
+  //               </FlexWrap>
   //             </RowWrap>
   //           </View>
   //         ))
@@ -259,14 +260,16 @@ const PreviewScreen = ({
           getReceiptSettingVariable('ShowPaymentType') === 'True' &&
           <View>
             <RowWrap>
-              <FlexWrap>
+              <FlexWrap flex={4}>
                 <InfoText>
                   {getReceiptSettingVariable('LabelPayment_Type') || 'Payment'}
                 </InfoText>
               </FlexWrap>
-              <InfoText>
-                Cash
-              </InfoText>
+              <FlexWrap flex={6}>
+                <InfoText align={'right'}>
+                  Cash
+                </InfoText>
+              </FlexWrap>
             </RowWrap>
             <SpaceView mTop={SIZE2} />
           </View>
@@ -275,16 +278,18 @@ const PreviewScreen = ({
           getReceiptSettingVariable('ShowAmountCollected') === 'True' &&
           <View>
             <RowWrap>
-              <FlexWrap>
+              <FlexWrap flex={4}>
                 <InfoText>
                   {getReceiptSettingVariable('LabelCollected_Cash') || 'Collected'}
                 </InfoText>
               </FlexWrap>
-              <InfoText>
-                {
-                  `$${amountCollected}`
-                }
-              </InfoText>
+              <FlexWrap flex={6}>
+                <InfoText align={'right'}>
+                  {
+                    `$${amountCollected}`
+                  }
+                </InfoText>
+              </FlexWrap>
             </RowWrap>
             <SpaceView mTop={SIZE2} />
           </View>
@@ -311,7 +316,7 @@ const PreviewScreen = ({
               <View>
                 <SpaceView mTop={SIZE2} />
                 <RowWrap>
-                  <FlexWrap>
+                  <FlexWrap flex={4}>
                     <InfoText>
                       {
                         (
@@ -330,9 +335,11 @@ const PreviewScreen = ({
                       }
                     </InfoText>
                   </FlexWrap>
-                  <InfoText>
-                    {item['binNumber']}
-                  </InfoText>
+                  <FlexWrap flex={6}>
+                    <InfoText align={'right'}>
+                      {item['binNumber']}
+                    </InfoText>
+                  </FlexWrap>
                 </RowWrap>
               </View>
             }
@@ -345,7 +352,7 @@ const PreviewScreen = ({
               <View>
                 <SpaceView mTop={SIZE2} />
                 <RowWrap>
-                  <FlexWrap>
+                  <FlexWrap flex={4}>
                     <InfoText>
                       {
                         (
@@ -364,9 +371,11 @@ const PreviewScreen = ({
                       }
                     </InfoText>
                   </FlexWrap>
-                  <InfoText>
-                    {item['binType'] && item['binType']['binTypeName']}
-                  </InfoText>
+                  <FlexWrap flex={6}>
+                    <InfoText align={'right'}>
+                      {item['binType'] && item['binType']['binTypeName']}
+                    </InfoText>
+                  </FlexWrap>
                 </RowWrap>
               </View>
             }
@@ -383,7 +392,7 @@ const PreviewScreen = ({
               <View>
                 <SpaceView mTop={SIZE2} />
                 <RowWrap>
-                  <FlexWrap>
+                  <FlexWrap flex={4}>
                     <InfoText>
                       {
                         (
@@ -402,9 +411,11 @@ const PreviewScreen = ({
                       }
                     </InfoText>
                   </FlexWrap>
-                  <InfoText>
-                    {item['wasteType'] && item['wasteType']['wasteTypeName']}
-                  </InfoText>
+                  <FlexWrap flex={6}>
+                    <InfoText align={'right'}>
+                      {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                    </InfoText>
+                  </FlexWrap>
                 </RowWrap>
               </View>
             }
@@ -437,7 +448,7 @@ const PreviewScreen = ({
         <SpaceView mTop={SIZE2} />
         <SpaceView mTop={SIZE4} />
         <RowWrap>
-          <FlexWrap>
+          <FlexWrap flex={4}>
             <InfoText>
               {
                 moment(
@@ -447,14 +458,16 @@ const PreviewScreen = ({
               }
             </InfoText>
           </FlexWrap>
-          <InfoText>
-            {
-              moment(
-                focusedJob.receiptCompletedDate ||
-                focusedJob.completedDate || focusedJob.jobTimeSpecific
-              ).format('hh:mm A')
-            }
-          </InfoText>
+          <FlexWrap flex={6}>
+            <InfoText align={'right'}>
+              {
+                moment(
+                  focusedJob.receiptCompletedDate ||
+                  focusedJob.completedDate || focusedJob.jobTimeSpecific
+                ).format('hh:mm A')
+              }
+            </InfoText>
+          </FlexWrap>
         </RowWrap>
         {
           focusedJob.assignedDriver &&
@@ -463,14 +476,16 @@ const PreviewScreen = ({
           <View>
             <SpaceView mTop={SIZE2} />
             <RowWrap>
-              <FlexWrap>
+              <FlexWrap flex={4}>
                 <InfoText>
                   {getReceiptSettingVariable('LabelDriver') || 'Driver'}
                 </InfoText>
               </FlexWrap>
-              <InfoText>
-                {focusedJob.assignedDriver.driverName}
-              </InfoText>
+              <FlexWrap flex={6}>
+                <InfoText align={'right'}>
+                  {focusedJob.assignedDriver.driverName}
+                </InfoText>
+              </FlexWrap>
             </RowWrap>
           </View>
         }
@@ -481,14 +496,16 @@ const PreviewScreen = ({
           <View>
             <SpaceView mTop={SIZE2} />
             <RowWrap>
-              <FlexWrap>
+              <FlexWrap flex={4}>
                 <InfoText>
                   {getReceiptSettingVariable('LabelVehicle') || 'Vehicle'}
                 </InfoText>
               </FlexWrap>
-              <InfoText>
-                {focusedJob.assignedVehicle.vehicleName}
-              </InfoText>
+              <FlexWrap flex={6}>
+                <InfoText align={'right'}>
+                  {focusedJob.assignedVehicle.vehicleName}
+                </InfoText>
+              </FlexWrap>
             </RowWrap>
           </View>
         }
@@ -498,14 +515,16 @@ const PreviewScreen = ({
           <View>
             <SpaceView mTop={SIZE4} />
             <RowWrap>
-              <FlexWrap>
+              <FlexWrap flex={4}>
                 <InfoText>
                   {getReceiptSettingVariable('LabelJob_Type') || 'Job Type'}
                 </InfoText>
               </FlexWrap>
-              <InfoText>
-                {focusedJob.jobTemplateName || focusedJob.jobTypeName}
-              </InfoText>
+              <FlexWrap flex={6}>
+                <InfoText align={'right'}>
+                  {focusedJob.jobTemplateName || focusedJob.jobTypeName}
+                </InfoText>
+              </FlexWrap>
             </RowWrap>
             <SpaceView mTop={SIZE2} />
           </View>
