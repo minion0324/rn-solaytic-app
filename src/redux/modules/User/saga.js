@@ -1,7 +1,11 @@
 import {
   take, put, call, fork, all,
 } from 'redux-saga/effects';
+import DeviceInfo from 'react-native-device-info';
 
+import {
+  PLATFORM,
+} from 'src/constants';
 import {
   onError,
 } from 'src/utils';
@@ -77,11 +81,25 @@ export function* watchAuthToken() {
 
 export function* asyncSetFCMToken({ payload }) {
   const {
-    token, success, failure,
+    token: deviceToken,
+    success,
+    failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiSetFCMToken, token);
+    const deviceType = PLATFORM === 'ios' ? 1 : 0;
+    const deviceId = yield call(DeviceInfo.syncUniqueId);
+    const deviceManufacturer = yield call(DeviceInfo.getManufacturer);
+    const deviceModel = DeviceInfo.getDeviceId();
+
+    const { data } = yield call(apiSetFCMToken,
+      deviceToken,
+      deviceType,
+      deviceId,
+      deviceManufacturer,
+      deviceModel,
+    );
+
     yield put(actionCreators.setFCMTokenSuccess(data));
 
     success && success();
