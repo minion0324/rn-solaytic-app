@@ -22,10 +22,20 @@ function apiAuthToken() {
   });
 };
 
-function apiSetFCMToken(deviceToken) {
+function apiSetFCMToken(
+  deviceToken,
+  deviceType,
+  deviceId,
+  deviceManufacturer,
+  deviceModel,
+) {
   return apiCall('api/mobile/driver/authenticate-token', 'post', {
     data: {
       deviceToken,
+      deviceType,
+      deviceId,
+      deviceManufacturer,
+      deviceModel,
     },
   });
 }
