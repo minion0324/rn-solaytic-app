@@ -110,7 +110,7 @@ const DrawerScreen = ({
           </ItemWrap>
 
           <VersionWrap>
-            <VersionText>v 2.3.20</VersionText>
+            <VersionText>v 2.3.21</VersionText>
           </VersionWrap>
         </MainWrap>
         <LogoutButton onPress={onLogout}>
