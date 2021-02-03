@@ -19,6 +19,7 @@ const JobTypeWrap = styled.View`
   align-items: center;
   justify-content: center;
   margin-top: ${SIZE4}px;
+  margin-bottom: ${SIZE2}px;
   align-self: center;
   border-width: 1px;
   border-color: ${COLORS.GRAY1};
