@@ -12,9 +12,6 @@ import ActiveJobsIcon from 'src/assets/svgs/icon-jobs-active.svg';
 import AvatarIcon from 'src/assets/svgs/icon-avatar.svg';
 import UserIcon from 'src/assets/svgs/icon-user.svg';
 import LockIcon from 'src/assets/svgs/icon-lock.svg';
-import Location1Icon from 'src/assets/svgs/icon-location1.svg';
-import Location2Icon from 'src/assets/svgs/icon-location2.svg';
-import Location3Icon from 'src/assets/svgs/icon-location3.svg';
 import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
@@ -45,7 +42,8 @@ import ImageIcon from 'src/assets/svgs/icon-image.svg';
 import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
 import QrCodeIcon from 'src/assets/svgs/icon-code-qr.svg';
-import PhoneIcon from 'src/assets/svgs/icon-phone.svg';
+import Phone1Icon from 'src/assets/svgs/icon-phone1.svg';
+import Phone2Icon from 'src/assets/svgs/icon-phone2.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
 import UpArrowIcon from 'src/assets/svgs/icon-arrow-up.svg';
 import DownArrowIcon from 'src/assets/svgs/icon-arrow-down.svg';
@@ -79,9 +77,6 @@ export default {
   AvatarIcon,
   UserIcon,
   LockIcon,
-  Location1Icon,
-  Location2Icon,
-  Location3Icon,
   CameraIcon,
   SignIcon,
   SearchIcon,
@@ -112,7 +107,8 @@ export default {
   AddressIcon,
   SendIcon,
   QrCodeIcon,
-  PhoneIcon,
+  Phone1Icon,
+  Phone2Icon,
   MapIcon,
   UpArrowIcon,
   DownArrowIcon,
