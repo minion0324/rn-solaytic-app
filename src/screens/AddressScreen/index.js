@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -41,24 +41,23 @@ import {
 } from 'src/styles/header.styles';
 import {
   TitleText,
-  LabelText,
 } from 'src/styles/text.styles';
 
 import {
+  JobTypeWrap,
   LocationWrap,
   IconWrap,
   ButtonWrap,
+  LocationIcon,
   Location1Line,
   Location2Line,
   Location3Line,
 } from './styled';
 
 const {
-  Location1Icon,
-  Location2Icon,
-  Location3Icon,
   AddressIcon,
-  PhoneIcon,
+  Phone1Icon,
+  Phone2Icon,
   MapIcon,
 } = SVGS;
 
@@ -68,6 +67,9 @@ const AddressScreen = ({
   customerSiteIndex,
   componentId,
 }) => {
+  const isDisabled = useMemo(() => {
+    return JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus);
+  }, [jobStatus]);
 
   const onBack = () => {
     popScreen(componentId);
@@ -85,46 +87,41 @@ const AddressScreen = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <ContentWrap>
+        <ContentWrap color={COLORS.WHITE2}>
           <LocationWrap>
             <IconWrap>
-              {
-                index === 0
-                ? <Location1Icon />
-                : index === 1
-                  ? <Location2Icon />
-                  : <Location3Icon />
-              }
+              <LocationIcon>
+                <TitleText>{index + 1}</TitleText>
+              </LocationIcon>
             </IconWrap>
             <FlexWrap>
               <TitleText>
                 {item.address}
               </TitleText>
               {
-                JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                isDisabled
                 ? index === customerSiteIndex &&
                   <ButtonWrap forCenter>
-                    <SpaceView mTop={SIZE2} />
+                    <SpaceView mTop={SIZE1} />
                     <TouchableOpacity
                       onPress={() => onLocation(item.latitude, item.longitude)}
                     >
                       <RowWrap>
                         <MapIcon />
                         <SpaceView mLeft={SIZE1} />
-                        <LabelText>
+                        <TitleText>
                           {'Show map'}
-                        </LabelText>
+                        </TitleText>
                       </RowWrap>
                     </TouchableOpacity>
                   </ButtonWrap>
                 : <ButtonWrap>
-                    <SpaceView mTop={SIZE2} />
                     <TouchableOpacity
                       onPress={() => onLocation(item.latitude, item.longitude)}
                     >
-                      <LabelText color={COLORS.BLUE1}>
+                      <TitleText color={COLORS.BLUE5}>
                         {'Show on map'}
-                      </LabelText>
+                      </TitleText>
                     </TouchableOpacity>
                   </ButtonWrap>
               }
@@ -140,16 +137,19 @@ const AddressScreen = ({
                     !!item.contactNumberOne &&
                     <DefaultButton
                       color={
-                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-                        ? COLORS.GRAY3 : COLORS.GREEN1
+                        isDisabled
+                        ? COLORS.GRAY3 : COLORS.BLUE1
                       }
                       text={item.contactPersonOne}
                       onPress={
-                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                        isDisabled
                         ? null
                         : () => onContact(item.contactNumberOne)
                       }
-                      icon={<PhoneIcon />}
+                      icon={
+                        isDisabled
+                        ? <Phone1Icon /> : <Phone2Icon />
+                      }
                       mTop={SIZE1}
                       mBottom={SIZE1}
                     />
@@ -160,16 +160,19 @@ const AddressScreen = ({
                     !!item.contactNumberTwo &&
                     <DefaultButton
                       color={
-                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
-                        ? COLORS.GRAY3 : COLORS.GREEN1
+                        isDisabled
+                        ? COLORS.GRAY3 : COLORS.BLUE1
                       }
                       text={item.contactPersonTwo}
                       onPress={
-                        JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)
+                        isDisabled
                         ? null
-                        : () => onContact(item.contactNumberOne)
+                        : () => onContact(item.contactNumberTwo)
                       }
-                      icon={<PhoneIcon />}
+                      icon={
+                        isDisabled
+                        ? <Phone1Icon /> : <Phone2Icon />
+                      }
                       mTop={SIZE1}
                       mBottom={SIZE1}
                     />
@@ -200,7 +203,7 @@ const AddressScreen = ({
             <RowWrap>
               <AddressIcon />
               <SpaceView mLeft={SIZE1} />
-              <ScreenText>Address</ScreenText>
+              <ScreenText>ADDRESS</ScreenText>
             </RowWrap>
           }
           leftIcon={<Back />}
@@ -210,6 +213,12 @@ const AddressScreen = ({
       </ShadowWrap>
 
       <Content>
+        <JobTypeWrap>
+          <TitleText>
+            {focusedJob.jobTypeName}
+          </TitleText>
+        </JobTypeWrap>
+
         <FlatList
           bounces={false}
           data={focusedJob.steps}
