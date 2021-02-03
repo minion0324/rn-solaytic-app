@@ -9,6 +9,7 @@ export default {
   BLUE2: '#E5F6FE',
   BLUE3: '#A1E2FF',
   BLUE4: '#D3EBFA',
+  BLUE5: '#0F81C7',
   GRAY1: '#707070',
   GRAY2: '#DADADA',
   GRAY3: '#7F7F7F',
