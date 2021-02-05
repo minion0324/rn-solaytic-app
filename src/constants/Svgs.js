@@ -16,9 +16,10 @@ import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
-import ActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active.svg';
+import RedActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-red.svg';
+import BlueActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-blue.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
-import CloseIcon from 'src/assets/svgs/icon-close.svg';
+import DrawerCloseIcon from 'src/assets/svgs/icon-close-drawer.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
 import ServiceIcon from 'src/assets/svgs/icon-service.svg';
@@ -61,6 +62,7 @@ import Scan2Icon from 'src/assets/svgs/icon-scan2.svg';
 import KeyboardIcon from 'src/assets/svgs/icon-keyboard.svg';
 import PrintIcon from 'src/assets/svgs/icon-print.svg';
 import ShareIcon from 'src/assets/svgs/icon-share.svg';
+import CloseIcon from 'src/assets/svgs/icon-close.svg';
 
 export default {
   ActiveCheckIcon,
@@ -81,9 +83,10 @@ export default {
   SignIcon,
   SearchIcon,
   FailIcon,
-  ActiveCircleCheckIcon,
+  RedActiveCircleCheckIcon,
+  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  CloseIcon,
+  DrawerCloseIcon,
   HappyIcon,
   CalendarIcon,
   ServiceIcon,
@@ -126,4 +129,5 @@ export default {
   KeyboardIcon,
   PrintIcon,
   ShareIcon,
+  CloseIcon,
 };

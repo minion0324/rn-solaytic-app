@@ -1,3 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
-  <path id="ic_close_24px" d="M19,6.41,17.59,5,12,10.59,6.41,5,5,6.41,10.59,12,5,17.59,6.41,19,12,13.41,17.59,19,19,17.59,13.41,12Z" transform="translate(-5 -5)" fill="#484848"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="22.121" height="22.121" viewBox="0 0 22.121 22.121">
+  <g id="Group_16962" data-name="Group 16962" transform="translate(-28.439 -21.569)">
+    <line id="Line_1292" data-name="Line 1292" x1="20" y2="20" transform="translate(29.5 22.63)" fill="none" stroke="#7f7f7f" stroke-width="3"/>
+    <line id="Line_1293" data-name="Line 1293" x2="20" y2="20" transform="translate(29.5 22.63)" fill="none" stroke="#7f7f7f" stroke-width="3"/>
+  </g>
 </svg>
