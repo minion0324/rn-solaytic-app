@@ -314,8 +314,8 @@ const UploadHistoryScreen = ({
           <SearchIcon />
         </SearchIconWrap>
         <SearchInput
-          placeholder={'Search ...'}
-          placeholderTextColor={COLORS.BLACK2}
+          placeholder={'Search'}
+          placeholderTextColor={COLORS.GRAY3}
           underlineColorAndroid={COLORS.TRANSPARENT1}
           returnKeyType={'go'}
           onSubmitEditing={onSearch}
