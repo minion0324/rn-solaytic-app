@@ -142,8 +142,8 @@ const AddServicesScreen = ({
             isSelected: !item.isSelected,
           });
         }}
-        mLeft={SIZE1} mTop={0.5}
-        mRight={SIZE1} mBottom={0.5}
+        mLeft={SIZE2} mTop={0.5}
+        mRight={SIZE2} mBottom={0.5}
       >
         <ServiceItem>
           <FlexWrap flex={2}>
