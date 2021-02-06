@@ -87,7 +87,10 @@ const AddressScreen = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <ContentWrap color={COLORS.WHITE2}>
+        <ContentWrap
+          color={COLORS.WHITE2}
+          mLeft={SIZE1} mRight={SIZE1}
+        >
           <LocationWrap>
             <IconWrap>
               <LocationIcon>
