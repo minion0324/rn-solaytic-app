@@ -25,8 +25,6 @@ import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
 import ServiceIcon from 'src/assets/svgs/icon-service.svg';
 import CancelIcon from 'src/assets/svgs/icon-cancel.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
-import PersonContactIcon from 'src/assets/svgs/icon-contact-person.svg';
-import NumberContactIcon from 'src/assets/svgs/icon-contact-number.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
 import RedRightArrowIcon from 'src/assets/svgs/icon-arrow-right-red.svg';
@@ -93,8 +91,6 @@ export default {
   ServiceIcon,
   CancelIcon,
   RetryIcon,
-  PersonContactIcon,
-  NumberContactIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
   RedRightArrowIcon,
