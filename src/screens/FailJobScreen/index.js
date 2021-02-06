@@ -257,8 +257,8 @@ const FailJobScreen = ({
       <ItemWrap
         deactivated
         onPress={() => setSelectedIndex(index)}
-        mLeft={SIZE1} mTop={0.5}
-        mRight={SIZE1} mBottom={0.5}
+        mLeft={SIZE2} mTop={0.5}
+        mRight={SIZE2} mBottom={0.5}
       >
         <DriverNoteItem>
           {
