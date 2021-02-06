@@ -706,12 +706,23 @@ const JobDetailsScreenView = ({
         >
           <ContentWrap>
             <RowWrap>
-              <ChatIcon />
-              <SpaceView mLeft={SIZE2} />
-              <TitleText>Driver Message</TitleText>
+              <FlexWrap>
+                <RowWrap>
+                  <ChatIcon />
+                  <SpaceView mLeft={SIZE2} />
+                  <TitleText>Driver Message</TitleText>
+                  {
+                    focusedJob.haveUnreadMessage &&
+                    <DriverNoteBadge />
+                  }
+                </RowWrap>
+              </FlexWrap>
               {
-                focusedJob.haveUnreadMessage &&
-                <DriverNoteBadge />
+                isInProgress &&
+                <RowWrap>
+                  <SpaceView mLeft={SIZE2} />
+                  <BlueRightArrowIcon />
+                </RowWrap>
               }
             </RowWrap>
           </ContentWrap>
@@ -725,20 +736,9 @@ const JobDetailsScreenView = ({
               onPress={onDriverNote}
             >
               <ContentWrap>
-                <RowWrap>
-                  <FlexWrap>
-                    <InfoText>
-                      {focusedJob.messages[0].message}
-                    </InfoText>
-                  </FlexWrap>
-                  {
-                    isInProgress &&
-                    <View>
-                      <SpaceView mLeft={SIZE2} />
-                      <BlueRightArrowIcon />
-                    </View>
-                  }
-                </RowWrap>
+                <InfoText>
+                  {focusedJob.messages[0].message}
+                </InfoText>
               </ContentWrap>
             </TouchableOpacity>
           </View>
@@ -797,6 +797,7 @@ const JobDetailsScreenView = ({
       <TouchableOpacity
         onPress={() => onAddress(index)}
       >
+
         <ContentWrap
           mTop={SIZE4}
           color={COLORS.WHITE2}
@@ -807,8 +808,10 @@ const JobDetailsScreenView = ({
                 {steps[index].address}
               </InfoText>
             </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <BlueRightArrowIcon />
+            <RowWrap>
+              <SpaceView mLeft={SIZE2} />
+              <BlueRightArrowIcon />
+            </RowWrap>
           </RowWrap>
         </ContentWrap>
       </TouchableOpacity>
