@@ -153,7 +153,9 @@ const PreviewScreen = ({
             <HalfWrap>
               <FullImage source={{ uri: sign.uri }} />
             </HalfWrap>
-            <WrapBorder />
+            <WrapBorder
+              mLeft={SIZE1} mRight={SIZE1}
+            />
           </View>
         }
         {
