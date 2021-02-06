@@ -63,6 +63,7 @@ import KeyboardIcon from 'src/assets/svgs/icon-keyboard.svg';
 import PrintIcon from 'src/assets/svgs/icon-print.svg';
 import ShareIcon from 'src/assets/svgs/icon-share.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
+import CheckIcon from 'src/assets/svgs/icon-check.svg';
 
 export default {
   ActiveCheckIcon,
@@ -130,4 +131,5 @@ export default {
   PrintIcon,
   ShareIcon,
   CloseIcon,
+  CheckIcon,
 };
