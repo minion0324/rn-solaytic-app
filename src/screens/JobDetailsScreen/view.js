@@ -708,7 +708,7 @@ const JobDetailsScreenView = ({
             <RowWrap>
               <ChatIcon />
               <SpaceView mLeft={SIZE2} />
-              <TitleText>Driver Note</TitleText>
+              <TitleText>Driver Message</TitleText>
               {
                 focusedJob.haveUnreadMessage &&
                 <DriverNoteBadge />
