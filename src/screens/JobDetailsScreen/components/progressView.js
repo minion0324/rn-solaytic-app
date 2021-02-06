@@ -96,7 +96,7 @@ const {
   SignIcon,
   UpArrowIcon,
   DownArrowIcon,
-  ActiveCircleCheckIcon,
+  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   PrintIcon,
 } = SVGS;
@@ -462,7 +462,7 @@ const ProgressView = ({
                 <RowWrap>
                   {
                     cashIndex === 0
-                    ? <ActiveCircleCheckIcon />
+                    ? <BlueActiveCircleCheckIcon />
                     : <DeactiveCircleCheckIcon />
                   }
                   <SpaceView mLeft={SIZE2} />
@@ -488,7 +488,7 @@ const ProgressView = ({
                 <RowWrap>
                   {
                     cashIndex === 1
-                    ? <ActiveCircleCheckIcon />
+                    ? <BlueActiveCircleCheckIcon />
                     : <DeactiveCircleCheckIcon />
                   }
                   <SpaceView mLeft={SIZE2} />

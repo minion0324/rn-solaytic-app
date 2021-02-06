@@ -40,7 +40,7 @@ import {
 } from 'src/styles/text.styles';
 
 const {
-  ActiveCircleCheckIcon,
+  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
 } = SVGS;
 
@@ -260,7 +260,7 @@ const BluetoothPrinterScreen = ({
           <RowWrap>
             {
               item.address === connectedDevice.address
-              ? <ActiveCircleCheckIcon />
+              ? <BlueActiveCircleCheckIcon />
               : <DeactiveCircleCheckIcon />
             }
             <SpaceView mLeft={SIZE2} />

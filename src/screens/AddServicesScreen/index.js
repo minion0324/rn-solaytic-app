@@ -46,7 +46,7 @@ import {
 const {
   SearchIcon,
   ServiceIcon,
-  ActiveCircleCheckIcon,
+  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   AddCircleIcon,
   RemoveCircleIcon,
@@ -150,7 +150,7 @@ const AddServicesScreen = ({
             <RowWrap>
               {
                 item.isSelected
-                ? <ActiveCircleCheckIcon />
+                ? <BlueActiveCircleCheckIcon />
                 : <DeactiveCircleCheckIcon />
               }
               <SpaceView mLeft={SIZE2} />

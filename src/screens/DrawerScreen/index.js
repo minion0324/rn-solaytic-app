@@ -41,7 +41,10 @@ import {
   LogoutText,
 } from './styled';
 
-const { AvatarIcon, CloseIcon } = SVGS;
+const {
+  AvatarIcon,
+  DrawerCloseIcon,
+} = SVGS;
 
 const DrawerScreen = ({
   driverName,
@@ -83,7 +86,7 @@ const DrawerScreen = ({
               <UserName>{driverName}</UserName>
             </Profile>
             <TouchableOpacity onPress={closeDrawer}>
-              <CloseIcon />
+              <DrawerCloseIcon />
             </TouchableOpacity>
           </ProfileWrap>
 
