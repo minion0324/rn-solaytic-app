@@ -188,7 +188,7 @@ const DriverNoteScreen = ({
             <RowWrap>
               <ChatIcon />
               <SpaceView mLeft={SIZE1} />
-              <ScreenText>Driver Note</ScreenText>
+              <ScreenText>Driver Chat</ScreenText>
             </RowWrap>
           }
           leftIcon={<Back />}
