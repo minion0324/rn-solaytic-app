@@ -198,7 +198,10 @@ const DriverNoteScreen = ({
       </ShadowWrap>
 
       <Content>
-        <ContentWrap color={COLORS.WHITE2}>
+        <ContentWrap
+          color={COLORS.WHITE2}
+          mLeft={SIZE1} mRight={SIZE1}
+        >
           <FlatList
             ref={listRef}
             bounces={false}
@@ -216,7 +219,9 @@ const DriverNoteScreen = ({
         }
       >
         <ShadowWrap forUp>
-          <ContentWrap>
+          <ContentWrap
+            mLeft={SIZE1} mRight={SIZE1}
+          >
             <RowWrap>
               <CommentInput
                 placeholder={'Type a message'}
