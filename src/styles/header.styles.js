@@ -14,6 +14,8 @@ const {
   CalendarIcon,
   ShareIcon,
   PrintIcon,
+  CloseIcon,
+  CheckIcon,
 } = SVGS;
 
 const ScreenText = styled.Text`
@@ -60,6 +62,18 @@ const Printing = () => (
   </EmptyWrap>
 );
 
+const Close = () => (
+  <EmptyWrap>
+    <CloseIcon />
+  </EmptyWrap>
+);
+
+const Check = () => (
+  <EmptyWrap>
+    <CheckIcon />
+  </EmptyWrap>
+);
+
 export {
   ScreenText,
   EmptyWrap,
@@ -68,4 +82,6 @@ export {
   Calendar,
   Sharing,
   Printing,
+  Close,
+  Check,
 };
