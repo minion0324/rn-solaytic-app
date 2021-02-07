@@ -8,6 +8,7 @@ import {
   useNavigationComponentDidAppear,
   useNavigationComponentDidDisappear,
 } from 'react-native-navigation-hooks';
+import { pick } from 'lodash';
 
 import {
   JOB_STATUS,
@@ -72,15 +73,12 @@ const JobDetailsScreen = ({
   const [ binInfo, setBinInfo ] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.binInfo
     ? focusedJob.appExtraData.binInfo
-    : [0, 1].map((index) => {
-        const {
-          jobStepId, wasteType, binType, binNumber, binWeight,
-        } = focusedJob.steps[index];
-
-        return {
-          jobStepId, wasteType, binType, binNumber, binWeight,
-        };
-      })
+    : [0, 1].map((index) => pick(
+        focusedJob.steps[index],
+        [
+          'jobStepId', 'wasteType', 'binType', 'binNumber', 'binWeight',
+        ],
+      ))
   );
 
   const [ services, setServices ] = useState(
