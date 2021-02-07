@@ -495,7 +495,10 @@ const JobDetailsScreenView = ({
   // }
 
   const renderFailJob = () => {
-    if (!isInProgress) {
+    if (
+      !isInProgress ||
+      !focusedJob.isEnableFailJob
+    ) {
       return null;
     }
 
