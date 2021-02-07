@@ -27,6 +27,7 @@ const Button = styled.TouchableOpacity`
   margin-right: ${props => props.mRight}px;
   margin-bottom: ${props => props.mBottom}px;
   border-radius: ${props => props.bRadius}px;
+  border-width: 1px;
   border-color: ${props => props.borderColor};
 `;
 
