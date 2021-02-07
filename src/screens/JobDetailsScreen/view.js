@@ -44,6 +44,7 @@ import {
   RowWrap,
   FlexWrap,
   SpaceView,
+  CenteredWrap,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -79,7 +80,6 @@ import {
 
 const {
   BlueRightArrowIcon,
-  RedRightArrowIcon,
   BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
@@ -307,129 +307,129 @@ const JobDetailsScreenView = ({
   //   );
   // };
 
-  const renderPhotoAndSign = () => {
-    if (!isForComplete) {
-      return null;
-    }
+  // const renderPhotoAndSign = () => {
+  //   if (!isForComplete) {
+  //     return null;
+  //   }
 
-    return (
-      <ShadowWrap forUp>
-        <PhotoAndSignWrap>
-          <TouchableOpacity onPress={onPhoto}>
-            <RowWrap>
-              <CameraIcon />
-              <PhotoAndSignText>Photo</PhotoAndSignText>
-            </RowWrap>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onSign}>
-            <RowWrap>
-              <SignIcon />
-              <PhotoAndSignText>Sign</PhotoAndSignText>
-            </RowWrap>
-          </TouchableOpacity>
-        </PhotoAndSignWrap>
-      </ShadowWrap>
-    );
-  };
+  //   return (
+  //     <ShadowWrap forUp>
+  //       <PhotoAndSignWrap>
+  //         <TouchableOpacity onPress={onPhoto}>
+  //           <RowWrap>
+  //             <CameraIcon />
+  //             <PhotoAndSignText>Photo</PhotoAndSignText>
+  //           </RowWrap>
+  //         </TouchableOpacity>
+  //         <TouchableOpacity onPress={onSign}>
+  //           <RowWrap>
+  //             <SignIcon />
+  //             <PhotoAndSignText>Sign</PhotoAndSignText>
+  //           </RowWrap>
+  //         </TouchableOpacity>
+  //       </PhotoAndSignWrap>
+  //     </ShadowWrap>
+  //   );
+  // };
 
-  const renderJobProof = () => {
-    if (
-      (
-        focusedJob.steps.length !== 2 ||
-        jobStatus !== JOB_STATUS.STARTED
-      ) &&
-      jobStatus !== JOB_STATUS.IN_PROGRESS &&
-      (photos.length === 0 && !sign.uri)
-    ) {
-      return null;
-    }
+  // const renderJobProof = () => {
+  //   if (
+  //     (
+  //       focusedJob.steps.length !== 2 ||
+  //       jobStatus !== JOB_STATUS.STARTED
+  //     ) &&
+  //     jobStatus !== JOB_STATUS.IN_PROGRESS &&
+  //     (photos.length === 0 && !sign.uri)
+  //   ) {
+  //     return null;
+  //   }
 
-    return (
-      <View>
-        <SpaceView mTop={SIZE2} />
-        <ContentWrap>
-          <RowWrap>
-            <FlexWrap>
-              <RowWrap>
-                <ImageIcon />
-                <SpaceView mLeft={SIZE2} />
-                <TitleText>
-                  Job Proof
-                </TitleText>
-              </RowWrap>
-            </FlexWrap>
-            <TouchableOpacity
-              onPress={() => onPrint(getBinInOutInfoIndex, getCustomerSiteIndex)}
-            >
-              <RowWrap>
-                <PrintIcon />
-                <SpaceView mLeft={SIZE2} />
-                <TitleText>
-                  Print
-                </TitleText>
-                <SpaceView mLeft={SIZE2} />
-                <BlackRightArrowIcon />
-              </RowWrap>
-            </TouchableOpacity>
-          </RowWrap>
-        </ContentWrap>
-        {
-          !(photos.length === 0 && !sign.uri) &&
-          <View>
-            <WrapBorder />
-            <ContentWrap>
-              {
-                photos.map((photo, index) =>
-                  <ItemWrap
-                    deactivated
-                    mLeft={SIZE1} mRight={SIZE1}
-                    key={photo.uri}
-                  >
-                    <JobProofItem>
-                      <FullImage source={{ uri: photo.uri }} />
-                      <CancelButton
-                        onPress={() => onCancelPhoto(index)}
-                      >
-                        <CancelIcon />
-                      </CancelButton>
-                    </JobProofItem>
-                  </ItemWrap>
-                )
-              }
-              {
-                !!sign.uri &&
-                <ItemWrap
-                  deactivated
-                  mLeft={SIZE1} mRight={SIZE1}
-                >
-                  <JobProofItem>
-                    <HalfWrap>
-                      <FullImage source={{ uri: sign.uri }} />
-                    </HalfWrap>
-                    <HalfWrap>
-                      <SignInfo>
-                        <SignInfoText numberOfLines={1}>
-                          {signedUserName}
-                        </SignInfoText>
-                      </SignInfo>
-                      <SignInfo>
-                        <SignInfoText numberOfLines={1}>
-                          {signedUserContact}
-                        </SignInfoText>
-                      </SignInfo>
-                    </HalfWrap>
-                    <CancelButton onPress={onCancelSign}>
-                      <CancelIcon />
-                    </CancelButton>
-                  </JobProofItem>
-                </ItemWrap>
-              }
-            </ContentWrap>
-          </View>
-        }
-      </View>
-    );
-  }
+  //   return (
+  //     <View>
+  //       <SpaceView mTop={SIZE2} />
+  //       <ContentWrap>
+  //         <RowWrap>
+  //           <FlexWrap>
+  //             <RowWrap>
+  //               <ImageIcon />
+  //               <SpaceView mLeft={SIZE2} />
+  //               <TitleText>
+  //                 Job Proof
+  //               </TitleText>
+  //             </RowWrap>
+  //           </FlexWrap>
+  //           <TouchableOpacity
+  //             onPress={() => onPrint(getBinInOutInfoIndex, getCustomerSiteIndex)}
+  //           >
+  //             <RowWrap>
+  //               <PrintIcon />
+  //               <SpaceView mLeft={SIZE2} />
+  //               <TitleText>
+  //                 Print
+  //               </TitleText>
+  //               <SpaceView mLeft={SIZE2} />
+  //               <BlackRightArrowIcon />
+  //             </RowWrap>
+  //           </TouchableOpacity>
+  //         </RowWrap>
+  //       </ContentWrap>
+  //       {
+  //         !(photos.length === 0 && !sign.uri) &&
+  //         <View>
+  //           <WrapBorder />
+  //           <ContentWrap>
+  //             {
+  //               photos.map((photo, index) =>
+  //                 <ItemWrap
+  //                   deactivated
+  //                   mLeft={SIZE1} mRight={SIZE1}
+  //                   key={photo.uri}
+  //                 >
+  //                   <JobProofItem>
+  //                     <FullImage source={{ uri: photo.uri }} />
+  //                     <CancelButton
+  //                       onPress={() => onCancelPhoto(index)}
+  //                     >
+  //                       <CancelIcon />
+  //                     </CancelButton>
+  //                   </JobProofItem>
+  //                 </ItemWrap>
+  //               )
+  //             }
+  //             {
+  //               !!sign.uri &&
+  //               <ItemWrap
+  //                 deactivated
+  //                 mLeft={SIZE1} mRight={SIZE1}
+  //               >
+  //                 <JobProofItem>
+  //                   <HalfWrap>
+  //                     <FullImage source={{ uri: sign.uri }} />
+  //                   </HalfWrap>
+  //                   <HalfWrap>
+  //                     <SignInfo>
+  //                       <SignInfoText numberOfLines={1}>
+  //                         {signedUserName}
+  //                       </SignInfoText>
+  //                     </SignInfo>
+  //                     <SignInfo>
+  //                       <SignInfoText numberOfLines={1}>
+  //                         {signedUserContact}
+  //                       </SignInfoText>
+  //                     </SignInfo>
+  //                   </HalfWrap>
+  //                   <CancelButton onPress={onCancelSign}>
+  //                     <CancelIcon />
+  //                   </CancelButton>
+  //                 </JobProofItem>
+  //               </ItemWrap>
+  //             }
+  //           </ContentWrap>
+  //         </View>
+  //       }
+  //     </View>
+  //   );
+  // }
 
   const renderFailJob = () => {
     if (!isInProgress) {
@@ -439,25 +439,21 @@ const JobDetailsScreenView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <TouchableOpacity onPress={onFail}>
-          <ContentWrap>
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  <FailIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <TitleText>
-                    Fail Job
-                  </TitleText>
-                </RowWrap>
-              </FlexWrap>
+        <CenteredWrap>
+          <TouchableOpacity onPress={onFail}>
+            <ContentWrap
+              color={COLORS.TRANSPARENT1}
+            >
               <RowWrap>
-                <SpaceView mLeft={SIZE2} />
-                <RedRightArrowIcon />
+                <FailIcon />
+                <SpaceView mLeft={SIZE1} />
+                <TitleText>
+                  Fail Job
+                </TitleText>
               </RowWrap>
-            </RowWrap>
-          </ContentWrap>
-        </TouchableOpacity>
+            </ContentWrap>
+          </TouchableOpacity>
+        </CenteredWrap>
       </View>
     );
   };
@@ -939,13 +935,17 @@ const JobDetailsScreenView = ({
           }
           { renderServices() }
           { renderFailJob() }
-          { renderJobProof() }
+          {
+            // renderJobProof()
+          }
 
           <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
 
-      { renderPhotoAndSign() }
+      {
+        // renderPhotoAndSign()
+      }
     </Container>
   );
 };
