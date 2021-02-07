@@ -16,7 +16,7 @@ import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
-import GrrenActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-green.svg';
+import GreenActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-green.svg';
 import RedActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-red.svg';
 import BlueActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-blue.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
@@ -36,11 +36,11 @@ import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
 import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
 import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
 import DeactiveBinOutIcon from 'src/assets/svgs/icon-out-bin-deactive.svg';
-import PaymentIcon from 'src/assets/svgs/icon-payment.svg';
 import ImageIcon from 'src/assets/svgs/icon-image.svg';
 import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
 import QrCodeIcon from 'src/assets/svgs/icon-code-qr.svg';
+import ScanCodeIcon from 'src/assets/svgs/icon-code-scan.svg';
 import Phone1Icon from 'src/assets/svgs/icon-phone1.svg';
 import Phone2Icon from 'src/assets/svgs/icon-phone2.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
@@ -62,6 +62,12 @@ import PrintIcon from 'src/assets/svgs/icon-print.svg';
 import ShareIcon from 'src/assets/svgs/icon-share.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import CheckIcon from 'src/assets/svgs/icon-check.svg';
+import ActivePhotosIcon from 'src/assets/svgs/icon-photos-active.svg';
+import DeactivePhotosIcon from 'src/assets/svgs/icon-photos-deactive.svg';
+import PhotoAddIcon from 'src/assets/svgs/icon-add-photo.svg';
+import SignAddIcon from 'src/assets/svgs/icon-add-sign.svg';
+import ActivePaymentIcon from 'src/assets/svgs/icon-payment-active.svg';
+import DeactivePaymentIcon from 'src/assets/svgs/icon-payment-deactive.svg';
 
 export default {
   ActiveCheckIcon,
@@ -82,7 +88,7 @@ export default {
   SignIcon,
   SearchIcon,
   FailIcon,
-  GrrenActiveCircleCheckIcon,
+  GreenActiveCircleCheckIcon,
   RedActiveCircleCheckIcon,
   BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
@@ -102,11 +108,11 @@ export default {
   DeactiveBinInIcon,
   ActiveBinOutIcon,
   DeactiveBinOutIcon,
-  PaymentIcon,
   ImageIcon,
   AddressIcon,
   SendIcon,
   QrCodeIcon,
+  ScanCodeIcon,
   Phone1Icon,
   Phone2Icon,
   MapIcon,
@@ -128,4 +134,10 @@ export default {
   ShareIcon,
   CloseIcon,
   CheckIcon,
+  ActivePhotosIcon,
+  DeactivePhotosIcon,
+  PhotoAddIcon,
+  SignAddIcon,
+  ActivePaymentIcon,
+  DeactivePaymentIcon,
 };
