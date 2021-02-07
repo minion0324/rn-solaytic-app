@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
   ScrollView,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { pick } from 'lodash';
 
 import {
   SVGS,
@@ -137,109 +138,140 @@ const JobDetailsScreenView = ({
 }) => {
   // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
-  const isForComplete = useMemo(() => {
-    return (
-      jobStatus === JOB_STATUS.IN_PROGRESS ||
-      (
-        jobStatus === JOB_STATUS.STARTED &&
-        focusedJob.steps.length === 2
-      )
-    );
-  }, [jobStatus]);
+  // const isForComplete = useMemo(() => {
+  //   return (
+  //     jobStatus === JOB_STATUS.IN_PROGRESS ||
+  //     (
+  //       jobStatus === JOB_STATUS.STARTED &&
+  //       focusedJob.steps.length === 2
+  //     )
+  //   );
+  // }, [jobStatus]);
 
-  const getBinInOutInfoIndex = (index) => {
-    switch (focusedJob.jobTypeName) {
-      case JOB_TYPE.PUT:
-        if (
-          index !== 0 ||
-          jobStatus === JOB_STATUS.IN_PROGRESS
-        ) {
+  const getBinInOutInfoIndex = useCallback(
+    (index) => {
+      switch (focusedJob.jobTypeName) {
+        case JOB_TYPE.PUT:
+          if (
+            index !== 0 ||
+            jobStatus === JOB_STATUS.IN_PROGRESS
+          ) {
+            return -1;
+          }
+
+          return 1;
+
+        case JOB_TYPE.PULL:
+          if (index !== 0) {
+            return -1;
+          }
+
+          return 0;
+
+        case JOB_TYPE.EXCHANGE:
+          return index === 0 ? 1 : 0;
+
+        case JOB_TYPE.OUT:
+          if (index !== 0) {
+            return -1;
+          }
+
+          return 1;
+
+        case JOB_TYPE.SHIFT:
+          if (
+            index !== 0 ||
+            jobStatus === JOB_STATUS.IN_PROGRESS
+          ) {
+            return -1;
+          }
+
+          if (
+            jobStatus === JOB_STATUS.STARTED ||
+            jobStatus === JOB_STATUS.COMPLETED
+          ) {
+            return 0;
+          } else {
+            return 1;
+          }
+
+        default:
           return -1;
-        }
+      };
+    },
+    [
+      jobStatus,
+      focusedJob.jobTypeName,
+    ],
+  );
 
-        return 1;
+  const getCustomerSiteIndex = useCallback(
+    () => {
+      const { steps, jobTypeName } = focusedJob;
 
-      case JOB_TYPE.PULL:
-        if (index !== 0) {
-          return -1;
-        }
-
+      if (jobTypeName === JOB_TYPE.PULL) {
         return 0;
+      }
 
-      case JOB_TYPE.EXCHANGE:
-        return index === 0 ? 1 : 0;
-
-      case JOB_TYPE.OUT:
-        if (index !== 0) {
-          return -1;
-        }
-
+      if (jobTypeName === JOB_TYPE.PUT) {
         return 1;
+      }
 
-      case JOB_TYPE.SHIFT:
-        if (
-          index !== 0 ||
-          jobStatus === JOB_STATUS.IN_PROGRESS
-        ) {
-          return -1;
-        }
+      if (jobTypeName === JOB_TYPE.EXCHANGE) {
+        return 1;
+      }
 
+      if (steps.length === 2) {
         if (
-          jobStatus === JOB_STATUS.STARTED ||
-          jobStatus === JOB_STATUS.COMPLETED
+          jobStatus === JOB_STATUS.DISPATCHED ||
+          jobStatus === JOB_STATUS.ACKNOWLEDGED ||
+          jobStatus === JOB_STATUS.STARTED
         ) {
           return 0;
-        } else {
+        }
+
+        return 1;
+      }
+
+      if (steps.length === 3) {
+        if (
+          jobStatus === JOB_STATUS.DISPATCHED ||
+          jobStatus === JOB_STATUS.ACKNOWLEDGED
+        ) {
+          return 0;
+        }
+
+        if (jobStatus === JOB_STATUS.STARTED) {
           return 1;
         }
 
-      default:
-        return -1;
-    };
-  };
-
-  const getCustomerSiteIndex = () => {
-    const { steps, jobTypeName } = focusedJob;
-
-    if (jobTypeName === JOB_TYPE.PULL) {
-      return 0;
-    }
-
-    if (jobTypeName === JOB_TYPE.PUT) {
-      return 1;
-    }
-
-    if (jobTypeName === JOB_TYPE.EXCHANGE) {
-      return 1;
-    }
-
-    if (steps.length === 2) {
-      if (
-        jobStatus === JOB_STATUS.DISPATCHED ||
-        jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-        jobStatus === JOB_STATUS.STARTED
-      ) {
-        return 0;
+        return 2;
       }
+    },
+    [
+      jobStatus,
+      focusedJob.steps,
+      focusedJob.jobTypeName,
+    ],
+  );
 
-      return 1;
-    }
-
-    if (steps.length === 3) {
-      if (
-        jobStatus === JOB_STATUS.DISPATCHED ||
-        jobStatus === JOB_STATUS.ACKNOWLEDGED
-      ) {
-        return 0;
-      }
-
-      if (jobStatus === JOB_STATUS.STARTED) {
-        return 1;
-      }
-
-      return 2;
-    }
-  };
+  const getBinInfoOptions = useCallback(
+    (index) => pick(
+      focusedJob.steps[index],
+      [
+        'isRequireBinNumberToEnd',
+        'isRequireBinNumberToStart',
+        'isRequireBinType',
+        'isRequireBinWeight',
+        'isRequirePaymentCollection',
+        'isRequireReviewWasteType',
+        'mustTakePhoto',
+        'mustTakeSignature',
+        'requireStatusToEnd',
+      ],
+    ),
+    [focusedJob.steps],
+  );
 
   // const onShowAmountModal = () => {
   //   if (!onAlertNotProgress()) {
@@ -608,6 +640,7 @@ const JobDetailsScreenView = ({
     return (
       binInfo.map((item, index) => {
         const idx = getBinInOutInfoIndex(index);
+        const options = getBinInfoOptions(index);
 
         return (
           (item.wasteType || item.binType) &&
