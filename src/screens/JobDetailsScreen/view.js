@@ -82,6 +82,7 @@ import {
   PhotoAndSignText,
   AmountButton,
   DriverNoteBadge,
+  BinWrap,
   BinInput,
   PhotoWrap,
   SignWrap,
@@ -94,7 +95,9 @@ const {
   TimeIcon,
   ChatIcon,
   ActiveBinInIcon,
+  DeactiveBinInIcon,
   ActiveBinOutIcon,
+  DeactiveBinOutIcon,
   PaymentIcon,
   ServiceIcon,
   FailIcon,
@@ -115,6 +118,8 @@ const {
   SignAddIcon,
   ActivePaymentIcon,
   DeactivePaymentIcon,
+  ActiveBinIcon,
+  DeactiveBinIcon,
 } = SVGS;
 
 const JobDetailsScreenView = ({
@@ -152,6 +157,9 @@ const JobDetailsScreenView = ({
   onBinInfo,
   onPrint,
 }) => {
+  const [ started, setStarted ] = useState(
+    jobStatus !== JOB_STATUS.ACKNOWLEDGED,
+  );
 
   // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
@@ -164,6 +172,54 @@ const JobDetailsScreenView = ({
   //     )
   //   );
   // }, [jobStatus]);
+
+  const currentStep = useMemo(() => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PULL:
+        return 0;
+
+      case JOB_TYPE.PUT:
+        return 0;
+
+      case JOB_TYPE.EXCHANGE:
+        if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
+          return started ? 1 : 0;
+        }
+
+        return 0;
+
+      case JOB_TYPE.ON_THE_SPOT:
+        return 0;
+
+      default:
+        return 0; // ?
+    };
+  }, [
+    started,
+    jobStatus,
+    focusedJob.jobTypeName,
+  ]);
+
+  const totalStep = useMemo(() => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PULL:
+        return 2;
+
+      case JOB_TYPE.PUT:
+        return 1;
+
+      case JOB_TYPE.EXCHANGE:
+        return 3;
+
+      case JOB_TYPE.ON_THE_SPOT:
+        return 2;
+
+      default:
+        return 2; // ?
+    };
+  }, [
+    focusedJob.jobTypeName,
+  ]);
 
   const getBinInOutInfoIndex = useCallback(
     (index) => {
@@ -288,6 +344,46 @@ const JobDetailsScreenView = ({
       ],
     ),
     [focusedJob.steps],
+  );
+
+  const getBinInfoStatus = useCallback(
+    (index) => {
+      if (currentStep - index < 1) {
+        return 'NOT_STARTED';
+      } else if (currentStep - index === 1) {
+        return 'ACTIVE';
+      } else {
+        return 'COMPLETED';
+      }
+    },
+    [currentStep],
+  );
+
+  const onStartJob = useCallback(
+    () => {
+      switch (focusedJob.jobTypeName) {
+        case JOB_TYPE.PULL:
+          onStart();
+          return;
+
+        case JOB_TYPE.PUT:
+          return;
+
+        case JOB_TYPE.EXCHANGE:
+          setStarted(true);
+          return;
+
+        case JOB_TYPE.ON_THE_SPOT:
+          return;
+
+        default:
+          return; // ?
+      };
+    },
+    [
+      started,
+      focusedJob.jobTypeName,
+    ],
   );
 
   const onUpdateBinInfo = (binIndex, newInfo) => {
@@ -674,38 +770,67 @@ const JobDetailsScreenView = ({
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
+        if (
+          !item.binType &&
+          !item.wasteType
+        ) {
+          return null;
+        }
+
         const idx = getBinInOutInfoIndex(index);
         const options = getBinInfoOptions(index);
+        const status = getBinInfoStatus(index);
 
         return (
           <View key={`${item.jobStepId}`}>
             <SpaceView mTop={SIZE2} />
-            <View>
-              <ContentWrap>
+            <BinWrap
+              active={status === 'ACTIVE'}
+            >
+              <ContentWrap
+                mLeft={0.1} mRight={0.1}
+              >
                 <RowWrap>
-                  {
-                    idx === 0 &&
-                    <RowWrap>
-                      <ActiveBinInIcon />
-                      <SpaceView mLeft={SIZE2} />
-                    </RowWrap>
-                  }
-                  {
-                    idx === 1 &&
-                    <RowWrap>
-                      <ActiveBinOutIcon />
-                      <SpaceView mLeft={SIZE2} />
-                    </RowWrap>
-                  }
+                  <RowWrap>
+                    {
+                      (
+                        status === 'NOT_STARTED' ||
+                        status === 'ACTIVE'
+                      ) && (
+                        idx === 0
+                        ? <ActiveBinInIcon />
+                        : idx === 1
+                          ? <ActiveBinOutIcon />
+                          : <ActiveBinIcon />
+                      )
+                    }
+                    {
+                      status === 'COMPLETED' && (
+                        idx === 0
+                        ? <DeactiveBinInIcon />
+                        : idx === 1
+                          ? <DeactiveBinOutIcon />
+                          : <DeactiveBinIcon />
+                      )
+                    }
+                    <SpaceView mLeft={SIZE2} />
+                  </RowWrap>
                   <TitleText>
-                    {`Bin ${idx === 0 ? 'In' : idx === 1 ? 'Out' : ''}`}
+                    {
+                      idx === 0
+                      ? 'BIN IN'
+                      : idx === 1
+                        ? 'BIN OUT'
+                        : 'WASTE COLLECTION'
+                    }
                   </TitleText>
                 </RowWrap>
               </ContentWrap>
-              <BorderView
-                mLeft={SIZE2} mRight={SIZE2}
-              />
-              <ContentWrap>
+              <BorderView />
+              <ContentWrap
+                mLeft={0.1} mRight={0.1}
+              >
+                <SpaceView mTop={SIZE3} />
                 <RowWrap>
                   <FlexWrap>
                     <LabelText>
@@ -898,7 +1023,7 @@ const JobDetailsScreenView = ({
                 </RowWrap>
                 <SpaceView mTop={SIZE4} />
               </ContentWrap>
-            </View>
+            </BinWrap>
           </View>
         );
       })
@@ -1044,21 +1169,45 @@ const JobDetailsScreenView = ({
       );
     }
 
-    if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
+    if (currentStep === 0) {
       return (
         <DefaultButton
           color={
             forToday
             ? COLORS.BLUE1 : COLORS.GRAY3
           }
-          text={'Start'}
+          text={'Start Job'}
           onPress={
-            forToday ? onStart : null
+            forToday ? onStartJob : null
           }
           loading={loading}
         />
       );
     }
+
+    if (currentStep === 1) {
+      return (
+        <ScreenText>
+          {`Step ${currentStep}/${totalStep}`}
+        </ScreenText>
+      );
+    }
+
+    // if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
+    //   return (
+    //     <DefaultButton
+    //       color={
+    //         forToday
+    //         ? COLORS.BLUE1 : COLORS.GRAY3
+    //       }
+    //       text={'Start Job'}
+    //       onPress={
+    //         forToday ? onStart : null
+    //       }
+    //       loading={loading}
+    //     />
+    //   );
+    // }
 
     if (
       focusedJob.jobTypeName === JOB_TYPE.PULL &&
