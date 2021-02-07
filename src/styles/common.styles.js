@@ -101,6 +101,12 @@ const SpaceView = styled.View`
   margin-bottom: ${props => props.mBottom || 0}px;
 `;
 
+const CenteredWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
 export {
   Container,
   Content,
@@ -115,4 +121,5 @@ export {
   RowWrap,
   FlexWrap,
   SpaceView,
+  CenteredWrap,
 };
