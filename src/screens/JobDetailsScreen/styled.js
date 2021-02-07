@@ -81,6 +81,32 @@ const DriverNoteBadge = styled.View`
   margin-top: -${SIZE1}px;
 `;
 
+const BinInput = styled.TextInput`
+  flex: 1;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
+  color: ${COLORS.BLACK2};
+`;
+
+const PhotoWrap = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: ${SIZE1}px;
+  background-color: ${COLORS.WHITE5};
+`;
+
+const SignWrap = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1.5;
+  border-radius: ${SIZE1}px;
+  background-color: ${COLORS.WHITE5};
+`;
+
 export {
   JobProofItem,
   HalfWrap,
@@ -91,4 +117,7 @@ export {
   PhotoAndSignText,
   AmountButton,
   DriverNoteBadge,
+  BinInput,
+  PhotoWrap,
+  SignWrap,
 };
