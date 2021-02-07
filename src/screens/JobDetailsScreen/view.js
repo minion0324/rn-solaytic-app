@@ -134,7 +134,7 @@ const JobDetailsScreenView = ({
   onBinInfo,
   onPrint,
 }) => {
-  const [ paymentsActive, setPaymentsActive ] = useState(false);
+  // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
   const isForComplete = useMemo(() => {
     return (
@@ -240,72 +240,72 @@ const JobDetailsScreenView = ({
     }
   };
 
-  const onShowAmountModal = () => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
+  // const onShowAmountModal = () => {
+  //   if (!onAlertNotProgress()) {
+  //     return;
+  //   }
 
-    showLightBox(CUSTOM_MODAL_SCREEN, {
-      offsetFromCenter: SIZE10,
-      dismissible: false,
-      getContent: renderAmountModal,
-    });
-  };
+  //   showLightBox(CUSTOM_MODAL_SCREEN, {
+  //     offsetFromCenter: SIZE10,
+  //     dismissible: false,
+  //     getContent: renderAmountModal,
+  //   });
+  // };
 
-  const onDismissAmountModal = async (containerId) => {
-    Keyboard.dismiss();
+  // const onDismissAmountModal = async (containerId) => {
+  //   Keyboard.dismiss();
 
-    await delay(100);
-    dismissLightBox(containerId);
-  };
+  //   await delay(100);
+  //   dismissLightBox(containerId);
+  // };
 
-  const onAddAmount = (amount, containerId) => {
-    if (!amount) {
-      Alert.alert('Warning', 'Please enter amount.');
-      return;
-    }
+  // const onAddAmount = (amount, containerId) => {
+  //   if (!amount) {
+  //     Alert.alert('Warning', 'Please enter amount.');
+  //     return;
+  //   }
 
-    if (+amount <= 0) {
-      Alert.alert('Warning', 'Please enter amount greater than 0.');
-      return;
-    }
+  //   if (+amount <= 0) {
+  //     Alert.alert('Warning', 'Please enter amount greater than 0.');
+  //     return;
+  //   }
 
-    onUpdateAmountCollected(amount);
-    onDismissAmountModal(containerId);
-  };
+  //   onUpdateAmountCollected(amount);
+  //   onDismissAmountModal(containerId);
+  // };
 
-  const renderAmountModal = (containerId, { modalData, setModalData }) => {
-    return (
-      <ModalWrap>
-        <ModalTopText>Enter amount</ModalTopText>
-        <ModalInput
-          underlineColorAndroid={COLORS.TRANSPARENT1}
-          autoCapitalize={'none'}
-          autoCorrect={false}
-          onChangeText={text => setModalData(text)}
-          value={modalData}
-          keyboardType={'numeric'}
-        />
-        <OkCancelRow>
-          <OkCancelButton
-            onPress={() => {
-              if (!focusedJob.collectedAmount) {
-                setCashIndex(-1);
-              }
-              onDismissAmountModal(containerId);
-            }}
-          >
-            <OkCancelText>Cancel</OkCancelText>
-          </OkCancelButton>
-          <OkCancelButton
-            onPress={() => onAddAmount(modalData, containerId)}
-          >
-            <OkCancelText>Ok</OkCancelText>
-          </OkCancelButton>
-        </OkCancelRow>
-      </ModalWrap>
-    );
-  };
+  // const renderAmountModal = (containerId, { modalData, setModalData }) => {
+  //   return (
+  //     <ModalWrap>
+  //       <ModalTopText>Enter amount</ModalTopText>
+  //       <ModalInput
+  //         underlineColorAndroid={COLORS.TRANSPARENT1}
+  //         autoCapitalize={'none'}
+  //         autoCorrect={false}
+  //         onChangeText={text => setModalData(text)}
+  //         value={modalData}
+  //         keyboardType={'numeric'}
+  //       />
+  //       <OkCancelRow>
+  //         <OkCancelButton
+  //           onPress={() => {
+  //             if (!focusedJob.collectedAmount) {
+  //               setCashIndex(-1);
+  //             }
+  //             onDismissAmountModal(containerId);
+  //           }}
+  //         >
+  //           <OkCancelText>Cancel</OkCancelText>
+  //         </OkCancelButton>
+  //         <OkCancelButton
+  //           onPress={() => onAddAmount(modalData, containerId)}
+  //         >
+  //           <OkCancelText>Ok</OkCancelText>
+  //         </OkCancelButton>
+  //       </OkCancelRow>
+  //     </ModalWrap>
+  //   );
+  // };
 
   const renderPhotoAndSign = () => {
     if (!isForComplete) {
@@ -496,116 +496,116 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderPayments = () => {
-    if (!focusedJob.isEnabledCashCollection) {
-      return null;
-    }
+  // const renderPayments = () => {
+  //   if (!focusedJob.isEnabledCashCollection) {
+  //     return null;
+  //   }
 
-    return (
-      <View>
-        <SpaceView mTop={SIZE2} />
-        <TouchableOpacity
-          disabled={!isInProgress}
-          onPress={() => setPaymentsActive(!paymentsActive)}
-        >
-          <ContentWrap>
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  <PaymentIcon />
-                  <SpaceView mLeft={SIZE2} />
-                  <TitleText>
-                    {
-                      cashIndex === -1
-                      ? 'Payments'
-                      : cashIndex === 0
-                        ? focusedJob.amountToCollect
-                          ? `Payments: Cash $${focusedJob.amountToCollect}`
-                          : 'Payments'
-                        : focusedJob.collectedAmount
-                          ? `Payments: Cash $${focusedJob.collectedAmount}`
-                          : 'Payments'
-                    }
-                  </TitleText>
-                </RowWrap>
-              </FlexWrap>
-              {
-                isInProgress &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  {
-                    paymentsActive
-                    ? <UpArrowIcon />
-                    : <DownArrowIcon />
-                  }
-                </RowWrap>
-              }
-            </RowWrap>
-          </ContentWrap>
-        </TouchableOpacity>
-        {
-          paymentsActive &&
-          <View>
-            <WrapBorder />
-            <ContentWrap>
-              <TouchableOpacity
-                onPress={() => {
-                  if (cashIndex !== 0) {
-                    onUpdateAmountCollected(0);
-                  }
-                  setCashIndex(cashIndex === 0 ? -1 : 0);
-                }}
-              >
-                <RowWrap>
-                  {
-                    cashIndex === 0
-                    ? <BlueActiveCircleCheckIcon />
-                    : <DeactiveCircleCheckIcon />
-                  }
-                  <SpaceView mLeft={SIZE2} />
-                  <InfoText>
-                    {
-                      'Collected: $' +
-                      `${focusedJob.amountToCollect || 0}`
-                    }
-                  </InfoText>
-                </RowWrap>
-              </TouchableOpacity>
-              <SpaceView mTop={SIZE2} />
-              <TouchableOpacity
-                onPress={() => {
-                  if (cashIndex !== 1) {
-                    onShowAmountModal();
-                  } else {
-                    onUpdateAmountCollected(0);
-                  }
-                  setCashIndex(cashIndex === 1 ? -1 : 1);
-                }}
-              >
-                <RowWrap>
-                  {
-                    cashIndex === 1
-                    ? <BlueActiveCircleCheckIcon />
-                    : <DeactiveCircleCheckIcon />
-                  }
-                  <SpaceView mLeft={SIZE2} />
-                  <InfoText>{'Others: $'}</InfoText>
-                  <AmountButton
-                    onPress={onShowAmountModal}
-                    disabled={cashIndex !== 1}
-                  >
-                    <InfoText numberOfLines={1}>
-                      {focusedJob.collectedAmount || ''}
-                    </InfoText>
-                  </AmountButton>
-                </RowWrap>
-              </TouchableOpacity>
-            </ContentWrap>
-          </View>
-        }
-      </View>
-    );
-  };
+  //   return (
+  //     <View>
+  //       <SpaceView mTop={SIZE2} />
+  //       <TouchableOpacity
+  //         disabled={!isInProgress}
+  //         onPress={() => setPaymentsActive(!paymentsActive)}
+  //       >
+  //         <ContentWrap>
+  //           <RowWrap>
+  //             <FlexWrap>
+  //               <RowWrap>
+  //                 <PaymentIcon />
+  //                 <SpaceView mLeft={SIZE2} />
+  //                 <TitleText>
+  //                   {
+  //                     cashIndex === -1
+  //                     ? 'Payments'
+  //                     : cashIndex === 0
+  //                       ? focusedJob.amountToCollect
+  //                         ? `Payments: Cash $${focusedJob.amountToCollect}`
+  //                         : 'Payments'
+  //                       : focusedJob.collectedAmount
+  //                         ? `Payments: Cash $${focusedJob.collectedAmount}`
+  //                         : 'Payments'
+  //                   }
+  //                 </TitleText>
+  //               </RowWrap>
+  //             </FlexWrap>
+  //             {
+  //               isInProgress &&
+  //               <RowWrap>
+  //                 <SpaceView mLeft={SIZE2} />
+  //                 {
+  //                   paymentsActive
+  //                   ? <UpArrowIcon />
+  //                   : <DownArrowIcon />
+  //                 }
+  //               </RowWrap>
+  //             }
+  //           </RowWrap>
+  //         </ContentWrap>
+  //       </TouchableOpacity>
+  //       {
+  //         paymentsActive &&
+  //         <View>
+  //           <WrapBorder />
+  //           <ContentWrap>
+  //             <TouchableOpacity
+  //               onPress={() => {
+  //                 if (cashIndex !== 0) {
+  //                   onUpdateAmountCollected(0);
+  //                 }
+  //                 setCashIndex(cashIndex === 0 ? -1 : 0);
+  //               }}
+  //             >
+  //               <RowWrap>
+  //                 {
+  //                   cashIndex === 0
+  //                   ? <BlueActiveCircleCheckIcon />
+  //                   : <DeactiveCircleCheckIcon />
+  //                 }
+  //                 <SpaceView mLeft={SIZE2} />
+  //                 <InfoText>
+  //                   {
+  //                     'Collected: $' +
+  //                     `${focusedJob.amountToCollect || 0}`
+  //                   }
+  //                 </InfoText>
+  //               </RowWrap>
+  //             </TouchableOpacity>
+  //             <SpaceView mTop={SIZE2} />
+  //             <TouchableOpacity
+  //               onPress={() => {
+  //                 if (cashIndex !== 1) {
+  //                   onShowAmountModal();
+  //                 } else {
+  //                   onUpdateAmountCollected(0);
+  //                 }
+  //                 setCashIndex(cashIndex === 1 ? -1 : 1);
+  //               }}
+  //             >
+  //               <RowWrap>
+  //                 {
+  //                   cashIndex === 1
+  //                   ? <BlueActiveCircleCheckIcon />
+  //                   : <DeactiveCircleCheckIcon />
+  //                 }
+  //                 <SpaceView mLeft={SIZE2} />
+  //                 <InfoText>{'Others: $'}</InfoText>
+  //                 <AmountButton
+  //                   onPress={onShowAmountModal}
+  //                   disabled={cashIndex !== 1}
+  //                 >
+  //                   <InfoText numberOfLines={1}>
+  //                     {focusedJob.collectedAmount || ''}
+  //                   </InfoText>
+  //                 </AmountButton>
+  //               </RowWrap>
+  //             </TouchableOpacity>
+  //           </ContentWrap>
+  //         </View>
+  //       }
+  //     </View>
+  //   );
+  // };
 
   const renderBinInfo = () => {
     return (
@@ -822,7 +822,7 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderButton = () => {
+  const renderHeaderContent = () => {
     const forToday = getDate() ===
       getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
 
@@ -903,7 +903,7 @@ const JobDetailsScreenView = ({
   const renderHeader = () => {
     return (
       <HeaderBar
-        centerIcon={renderButton()}
+        centerIcon={renderHeaderContent()}
         leftIcon={<Back />}
         rightIcon={
           jobStatus === JOB_STATUS.COMPLETED
@@ -934,7 +934,9 @@ const JobDetailsScreenView = ({
           { renderType() }
           { renderDriverNote() }
           { renderBinInfo() }
-          { renderPayments() }
+          {
+            // renderPayments()
+          }
           { renderServices() }
           { renderFailJob() }
           { renderJobProof() }
