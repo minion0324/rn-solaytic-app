@@ -26,7 +26,7 @@ import {
   ADDRESS_SCREEN,
   DRIVER_NOTE_SCREEN,
   ADD_SERVICES_SCREEN,
-  BIN_INFO_SCREEN,
+  SCAN_CODE_SCREEN,
   PREVIEW_SCREEN,
 } from 'src/navigation';
 import {
@@ -462,9 +462,9 @@ const JobDetailsScreen = ({
     pushScreen(componentId, ADD_SERVICES_SCREEN, { services, setServices });
   };
 
-  const onBinInfo = (binIndex, binInOutInfoIndex) => {
-    pushScreen(componentId, BIN_INFO_SCREEN, {
-      binInfo, setBinInfo, binIndex, binInOutInfoIndex,
+  const onScanCode = (binIndex) => {
+    pushScreen(componentId, SCAN_CODE_SCREEN, {
+      binIndex, binInfo, setBinInfo,
     });
   };
 
@@ -513,7 +513,7 @@ const JobDetailsScreen = ({
       onAddress={onAddress}
       onDriverNote={onDriverNote}
       onAddServices={onAddServices}
-      onBinInfo={onBinInfo}
+      onScanCode={onScanCode}
       onPrint={onPrint}
     />
   );

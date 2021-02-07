@@ -1,4 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from 'react';
 import {
   View,
   ScrollView,
@@ -9,6 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { pick } from 'lodash';
+import ActionSheet from 'react-native-actionsheet';
 
 import {
   SVGS,
@@ -27,9 +33,11 @@ import {
   ItemWrap,
 } from 'src/components';
 import {
+  pushScreen,
   showLightBox,
   dismissLightBox,
   CUSTOM_MODAL_SCREEN,
+  SCAN_CODE_SCREEN,
 } from 'src/navigation';
 import {
   delay,
@@ -154,12 +162,18 @@ const JobDetailsScreenView = ({
   onAddress,
   onDriverNote,
   onAddServices,
-  onBinInfo,
+  onScanCode,
   onPrint,
 }) => {
   const [ started, setStarted ] = useState(
     jobStatus !== JOB_STATUS.ACKNOWLEDGED,
   );
+
+  const [ binIndex, setBinIndex ] = useState(-1);
+  const [ actionSheetData, setActionSheetData ] = useState([]);
+
+  const actionSheetRef = useRef(null);
+  const actionSheetKey = useRef(null);
 
   // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
@@ -395,6 +409,35 @@ const JobDetailsScreenView = ({
     };
 
     setBinInfo(newBinInfo);
+  };
+
+  const onActionSheetPress = (index) => {
+    const { charges } = focusedJob;
+
+    if (index === actionSheetData.length) {
+      return;
+    }
+
+    onUpdateBinInfo(binIndex, {
+      wasteType: charges[index].wasteType,
+      binType: charges[index].binType,
+    });
+  };
+
+  const onShowActionSheet = (key) => {
+    const { charges } = focusedJob;
+
+    if (charges.length === 0) {
+      Alert.alert('Warning', 'The customer has no Bin / Waste.');
+      return;
+    }
+
+    actionSheetKey.current = key;
+
+    const data = charges.map(charge => charge[key][`${key}Name`]);
+    setActionSheetData(data);
+
+    actionSheetRef.current.show();
   };
 
   // const onShowAmountModal = () => {
@@ -848,72 +891,88 @@ const JobDetailsScreenView = ({
                       onChangeText={(text) =>
                         onUpdateBinInfo(index, { binNumber: text })
                       }
-                      editable={focusedJob.isAllowDriverEditOnApp}
+                      editable={
+                        status === 'ACTIVE' &&
+                        focusedJob.isAllowDriverEditOnApp
+                      }
                     />
                     <SpaceView mTop={SIZE1} />
                   </FlexWrap>
-                  <SpaceView mLeft={SIZE3} />
-                  <ScanCodeIcon />
-                  <SpaceView mLeft={SIZE3} />
                   {
-                    item['binNumber']
-                    ? <GreenActiveCircleCheckIcon />
-                    : <DeactiveCircleCheckIcon />
-                  }
-
-                  {
-                    // <FlexWrap flex={6}>
-                    //   <LabelText>Waste Type</LabelText>
-                    //   <InfoText>
-                    //     {item['wasteType'] && item['wasteType']['wasteTypeName']}
-                    //   </InfoText>
-                    // </FlexWrap>
-                  }
-
-                  {
-                    // idx === 0 &&
-                    // focusedJob.isEnabledBinWeight &&
-                    // <FlexWrap flex={4}>
-                    //   <LabelText>Nett Weight</LabelText>
-                    //   <InfoText>
-                    //     {item['binWeight'] || '-- --'}
-                    //   </InfoText>
-                    // </FlexWrap>
+                    status !== 'COMPLETED' &&
+                    <RowWrap>
+                      <SpaceView mLeft={SIZE3} />
+                      <TouchableOpacity
+                        disabled={
+                          !(
+                            status === 'ACTIVE' &&
+                            focusedJob.isAllowDriverEditOnApp
+                          )
+                        }
+                        onPress={() => onScanCode(index)}
+                      >
+                        <ScanCodeIcon />
+                      </TouchableOpacity>
+                      <SpaceView mLeft={SIZE3} />
+                      {
+                        item['binNumber']
+                        ? <GreenActiveCircleCheckIcon />
+                        : <DeactiveCircleCheckIcon />
+                      }
+                    </RowWrap>
                   }
                 </RowWrap>
-                <BorderView />
+                <BorderView
+                  color={
+                    status === 'ACTIVE' &&
+                    options.IsRequireBinNumberToEnd
+                    ? COLORS.BLUE1 : COLORS.GRAY2
+                  }
+                />
 
                 <SpaceView mTop={SIZE4} />
                 <RowWrap>
                   <FlexWrap>
                     <LabelText>Bin Type</LabelText>
-                    <InfoText>
-                      {item['binType'] && item['binType']['binTypeName']}
-                    </InfoText>
+                    <TouchableOpacity
+                      disabled={
+                        !(
+                          status === 'ACTIVE' &&
+                          focusedJob.isAllowDriverEditOnApp
+                        )
+                      }
+                      onPress={() => {
+                        setBinIndex(index);
+                        onShowActionSheet('binType');
+                      }}
+                    >
+                      <InfoText>
+                        {
+                          item['binType'] &&
+                          item['binType']['binTypeName']
+                        }
+                      </InfoText>
+                    </TouchableOpacity>
                   </FlexWrap>
-
-                  {
-                    // <FlexWrap flex={6}>
-                    //   <LabelText>Bin Type</LabelText>
-                    //   <InfoText>
-                    //     {item['binType'] && item['binType']['binTypeName']}
-                    //   </InfoText>
-                    // </FlexWrap>
-                    // <FlexWrap flex={4}>
-                    //   <LabelText>Bin ID</LabelText>
-                    //   <InfoText>
-                    //     {item['binNumber']}
-                    //   </InfoText>
-                    // </FlexWrap>
-                  }
                 </RowWrap>
+                <SpaceView mTop={SIZE1} />
+                <BorderView
+                  color={
+                    status === 'ACTIVE' &&
+                    options.IsRequireBinType
+                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                  }
+                />
 
                 <SpaceView mTop={SIZE4} />
                 <RowWrap>
                   <FlexWrap>
                     <LabelText>Waste Type</LabelText>
                     <InfoText>
-                      {item['wasteType'] && item['wasteType']['wasteTypeName']}
+                      {
+                        item['wasteType'] &&
+                        item['wasteType']['wasteTypeName']
+                      }
                     </InfoText>
                   </FlexWrap>
                   <RowWrap>
@@ -1323,6 +1382,14 @@ const JobDetailsScreenView = ({
       {
         // renderPhotoAndSign()
       }
+
+      <ActionSheet
+        ref={actionSheetRef}
+        title={'Please select one.'}
+        options={[ ...actionSheetData, 'Cancel' ]}
+        cancelButtonIndex={actionSheetData.length}
+        onPress={onActionSheetPress}
+      />
     </Container>
   );
 };
@@ -1359,7 +1426,7 @@ JobDetailsScreenView.propTypes = {
   onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
-  onBinInfo: PropTypes.func.isRequired,
+  onScanCode: PropTypes.func.isRequired,
   onPrint: PropTypes.func.isRequired,
 };
 
