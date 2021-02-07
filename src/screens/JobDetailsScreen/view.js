@@ -1013,10 +1013,27 @@ const JobDetailsScreenView = ({
                   <FlexWrap flex={1} />
                   <FlexWrap flex={2}>
                     <DefaultButton
-                      color={COLORS.BLUE1}
-                      text={'Complete'}
+                      color={
+                        status === 'ACTIVE'
+                        ? COLORS.BLUE1 : COLORS.WHITE1
+                      }
+                      text={
+                        status === 'COMPLETED'
+                        ? 'Completed' : 'Complete'
+                      }
                       onPress={null}
+                      textColor={
+                        status === 'NOT_STARTED'
+                        ? COLORS.BLUE1
+                        : status === 'ACTIVE'
+                          ? COLORS.WHITE1
+                          : COLORS.BLACK2
+                      }
                       bRadius={SIZE4}
+                      borderColor={
+                        status === 'NOT_STARTED'
+                        ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                      }
                     />
                   </FlexWrap>
                   <FlexWrap flex={1} />
