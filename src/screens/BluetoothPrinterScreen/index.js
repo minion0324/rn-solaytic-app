@@ -30,7 +30,7 @@ import {
 
 import {
   ContentWrap,
-  WrapBorder,
+  BorderView,
   RowWrap,
   FlexWrap,
   SpaceView,
@@ -296,7 +296,7 @@ const BluetoothPrinterScreen = ({
           </TouchableOpacity>
         </RowWrap>
       </ContentWrap>
-      <WrapBorder />
+      <BorderView />
       <ContentWrap>
         {
           pairedDevices.length > 0
@@ -312,7 +312,7 @@ const BluetoothPrinterScreen = ({
           </InfoText>
         </RowWrap>
       </ContentWrap>
-      <WrapBorder />
+      <BorderView />
       <ContentWrap>
         {
           foundDevices.length > 0
@@ -321,7 +321,7 @@ const BluetoothPrinterScreen = ({
         }
       </ContentWrap>
       <SpaceView mTop={SIZE2} />
-      <WrapBorder />
+      <BorderView />
       <ContentWrap>
         <DefaultButton
           color={
