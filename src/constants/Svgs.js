@@ -39,7 +39,6 @@ import DeactiveBinOutIcon from 'src/assets/svgs/icon-out-bin-deactive.svg';
 import ImageIcon from 'src/assets/svgs/icon-image.svg';
 import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
-import QrCodeIcon from 'src/assets/svgs/icon-code-qr.svg';
 import ScanCodeIcon from 'src/assets/svgs/icon-code-scan.svg';
 import Phone1Icon from 'src/assets/svgs/icon-phone1.svg';
 import Phone2Icon from 'src/assets/svgs/icon-phone2.svg';
@@ -50,7 +49,6 @@ import CircleIcon from 'src/assets/svgs/icon-circle.svg';
 import AddCircleIcon from 'src/assets/svgs/icon-circle-add.svg';
 import RemoveCircleIcon from 'src/assets/svgs/icon-circle-remove.svg';
 import MessageAvatarIcon from 'src/assets/svgs/icon-avatar-message.svg';
-import BinSearchIcon from 'src/assets/svgs/icon-search-bin.svg';
 import Mask1Icon from 'src/assets/svgs/icon-mask1.svg';
 import Mask2Icon from 'src/assets/svgs/icon-mask2.svg';
 import Mask3Icon from 'src/assets/svgs/icon-mask3.svg';
@@ -113,7 +111,6 @@ export default {
   ImageIcon,
   AddressIcon,
   SendIcon,
-  QrCodeIcon,
   ScanCodeIcon,
   Phone1Icon,
   Phone2Icon,
@@ -124,7 +121,6 @@ export default {
   AddCircleIcon,
   RemoveCircleIcon,
   MessageAvatarIcon,
-  BinSearchIcon,
   Mask1Icon,
   Mask2Icon,
   Mask3Icon,
