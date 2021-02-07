@@ -31,7 +31,7 @@ import {
 import {
   Container,
   ContentWrap,
-  WrapBorder,
+  BorderView,
   ShadowWrap,
   FullImage,
   RowWrap,
@@ -153,9 +153,7 @@ const PreviewScreen = ({
             <HalfWrap>
               <FullImage source={{ uri: sign.uri }} />
             </HalfWrap>
-            <WrapBorder
-              mLeft={SIZE1} mRight={SIZE1}
-            />
+            <BorderView />
           </View>
         }
         {
