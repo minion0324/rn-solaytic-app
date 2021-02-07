@@ -22,11 +22,12 @@ const Button = styled.TouchableOpacity`
   background-color: ${props => props.color};
   align-items: center;
   justify-content: center;
-  border-radius: ${SIZE1}px;
   margin-left: ${props => props.mLeft}px;
   margin-top: ${props => props.mTop}px;
   margin-right: ${props => props.mRight}px;
   margin-bottom: ${props => props.mBottom}px;
+  border-radius: ${props => props.bRadius}px;
+  border-color: ${props => props.borderColor};
 `;
 
 const ButtonText = styled.Text`
@@ -47,6 +48,8 @@ const DefaultButton = ({
   mTop,
   mRight,
   mBottom,
+  bRadius,
+  borderColor,
 }) => {
   return (
     <Button
@@ -58,6 +61,8 @@ const DefaultButton = ({
       mTop={mTop}
       mRight={mRight}
       mBottom={mBottom}
+      bRadius={bRadius}
+      borderColor={borderColor}
     >
       {
         loading
@@ -95,6 +100,8 @@ DefaultButton.propTypes = {
   mTop: PropTypes.number,
   mRight: PropTypes.number,
   mBottom: PropTypes.number,
+  bRadius: PropTypes.number,
+  borderColor: PropTypes.string,
 };
 
 DefaultButton.defaultProps = {
@@ -106,6 +113,8 @@ DefaultButton.defaultProps = {
   mTop: 0,
   mRight: 0,
   mBottom: 0,
+  bRadius: SIZE1,
+  borderColor: COLORS.TRANSPARENT1,
 };
 
 export default DefaultButton;
