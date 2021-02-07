@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Dash from 'react-native-dash';
 
 import {
   COLORS,
@@ -28,12 +29,12 @@ const ContentWrap = styled.View`
   background-color: ${props => props.color || COLORS.WHITE1};
 `;
 
-const WrapBorder = styled.View`
-  margin-left: ${props => props.mLeft || SIZE2}px;
-  margin-right: ${props => props.mRight || SIZE2}px;
+const BorderView = styled.View`
+  margin-left: ${props => props.mLeft || 0}px;
+  margin-right: ${props => props.mRight || 0}px;
   height: 0px;
   border-top-width: 1px;
-  border-color: ${COLORS.GRAY2};
+  border-color: ${props => props.color || COLORS.GRAY2};
 `;
 
 const ShadowWrap = styled.View`
@@ -107,11 +108,41 @@ const CenteredWrap = styled.View`
   justify-content: center;
 `;
 
+const LeftDash = styled(Dash)`
+  flex-direction: column;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+`;
+
+const TopDash = styled(Dash)`
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  position: absolute;
+`;
+
+const RightDash = styled(Dash)`
+  flex-direction: column;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  position: absolute;
+`;
+
+const BottomDash = styled(Dash)`
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  position: absolute;
+`;
+
 export {
   Container,
   Content,
   ContentWrap,
-  WrapBorder,
+  BorderView,
   ShadowWrap,
   LoadingWrap,
   FullImage,
@@ -122,4 +153,8 @@ export {
   FlexWrap,
   SpaceView,
   CenteredWrap,
+  LeftDash,
+  TopDash,
+  RightDash,
+  BottomDash,
 };
