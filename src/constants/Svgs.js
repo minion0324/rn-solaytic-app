@@ -16,6 +16,7 @@ import CameraIcon from 'src/assets/svgs/icon-camera.svg';
 import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
+import GrrenActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-green.svg';
 import RedActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-red.svg';
 import BlueActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-blue.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
@@ -81,6 +82,7 @@ export default {
   SignIcon,
   SearchIcon,
   FailIcon,
+  GrrenActiveCircleCheckIcon,
   RedActiveCircleCheckIcon,
   BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
