@@ -451,8 +451,10 @@ const JobDetailsScreenView = ({
                   </TitleText>
                 </RowWrap>
               </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
-              <RedRightArrowIcon />
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <RedRightArrowIcon />
+              </RowWrap>
             </RowWrap>
           </ContentWrap>
         </TouchableOpacity>
@@ -483,8 +485,10 @@ const JobDetailsScreenView = ({
                   </TitleText>
                 </RowWrap>
               </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
-              <BlueRightArrowIcon />
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <BlueRightArrowIcon />
+              </RowWrap>
             </RowWrap>
           </ContentWrap>
         </TouchableOpacity>
@@ -527,14 +531,14 @@ const JobDetailsScreenView = ({
               </FlexWrap>
               {
                 isInProgress &&
-                <View>
+                <RowWrap>
                   <SpaceView mLeft={SIZE2} />
                   {
                     paymentsActive
                     ? <UpArrowIcon />
                     : <DownArrowIcon />
                   }
-                </View>
+                </RowWrap>
               }
             </RowWrap>
           </ContentWrap>
@@ -682,10 +686,10 @@ const JobDetailsScreenView = ({
                   </FlexWrap>
                   {
                     isInProgress &&
-                    <View>
+                    <RowWrap>
                       <SpaceView mLeft={SIZE2} />
                       <BlueRightArrowIcon />
-                    </View>
+                    </RowWrap>
                   }
                 </RowWrap>
               </ContentWrap>
