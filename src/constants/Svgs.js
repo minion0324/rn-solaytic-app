@@ -68,6 +68,8 @@ import PhotoAddIcon from 'src/assets/svgs/icon-add-photo.svg';
 import SignAddIcon from 'src/assets/svgs/icon-add-sign.svg';
 import ActivePaymentIcon from 'src/assets/svgs/icon-payment-active.svg';
 import DeactivePaymentIcon from 'src/assets/svgs/icon-payment-deactive.svg';
+import ActiveBinIcon from 'src/assets/svgs/icon-bin-active.svg';
+import DeactiveBinIcon from 'src/assets/svgs/icon-bin-deactive.svg';
 
 export default {
   ActiveCheckIcon,
@@ -140,4 +142,6 @@ export default {
   SignAddIcon,
   ActivePaymentIcon,
   DeactivePaymentIcon,
+  ActiveBinIcon,
+  DeactiveBinIcon,
 };
