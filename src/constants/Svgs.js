@@ -27,7 +27,6 @@ import CancelIcon from 'src/assets/svgs/icon-cancel.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
-import RedRightArrowIcon from 'src/assets/svgs/icon-arrow-right-red.svg';
 import BlackRightArrowIcon from 'src/assets/svgs/icon-arrow-right-black.svg';
 import DateIcon from 'src/assets/svgs/icon-date.svg';
 import TimeIcon from 'src/assets/svgs/icon-time.svg';
@@ -93,7 +92,6 @@ export default {
   RetryIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
-  RedRightArrowIcon,
   BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
