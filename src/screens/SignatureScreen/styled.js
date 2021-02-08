@@ -4,37 +4,38 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
-  SIZE8,
+  SIZE3,
+  SIZE6,
   FONT,
 } from 'src/constants';
 
 const InfoWrap = styled.View`
-  padding-horizontal: ${SIZE1}px;
   align-items: center;
+  padding-horizontal: ${SIZE1}px;
+  padding-bottom: ${SIZE6}px;
 `;
 
 const NameWrap = styled.View`
   width: 100%;
-  height: ${SIZE8}px;
+  height: ${SIZE6}px;
   justify-content: center;
   margin-top: ${SIZE1}px;
   padding-horizontal: ${SIZE2}px;
-  background-color: ${COLORS.WHITE1};
 `;
 
 const ContactWrap = styled.View`
   width: 100%;
-  height: ${SIZE8}px;
+  height: ${SIZE6}px;
   justify-content: center;
   margin-top: ${SIZE1}px;
   padding-horizontal: ${SIZE2}px;
-  background-color: ${COLORS.WHITE1};
 `;
 
 const SignatureWrap = styled.View`
   width: 100%;
-  aspect-ratio: 1.8;
-  padding: ${SIZE1}px;
+  aspect-ratio: 1.2;
+  padding-vertical: ${SIZE1}px;
+  padding-horizontal: ${SIZE3}px;
 `;
 
 const Input = styled.TextInput`

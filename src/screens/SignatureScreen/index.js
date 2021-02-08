@@ -20,12 +20,13 @@ import {
 } from 'src/utils';
 
 import {
-  ShadowWrap,
-} from 'src/styles/common.styles';
-import {
   ScreenText,
+  Close,
+  Check,
 } from 'src/styles/header.styles';
-
+import {
+  BorderView,
+} from 'src/styles/common.styles';
 import {
   InfoWrap,
   NameWrap,
@@ -45,8 +46,12 @@ const SignatureScreen = ({
   const [ name, setName ] = useState(signedUserName);
   const [ contact, setContact ] = useState(signedUserContact);
 
-  const onBack = () => {
+  const onClose = () => {
     dismissLightBox(componentId);
+  };
+
+  const onCheck = () => {
+
   };
 
   const onSign = async (signature) => {
@@ -67,46 +72,59 @@ const SignatureScreen = ({
       setSignedUserName(name);
       setSignedUserContact(contact);
 
-      onBack();
+      onClose();
     } catch (error) {
       //
     }
   };
 
   return (
-    <OverlayWrap dismissOverlay={onBack}>
-      <ShadowWrap>
-        <HeaderBar
-          centerIcon={<ScreenText>Signature</ScreenText>}
-        />
-      </ShadowWrap>
-      <InfoWrap>
-        <NameWrap>
-          <Input
-            placeholder={'Name'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => setName(text)}
-            value={name}
+    <OverlayWrap
+      dismissOverlay={onClose}
+      color={COLORS.WHITE1}
+    >
+      <HeaderBar
+        centerIcon={
+          <ScreenText>Receiver Signature</ScreenText>
+        }
+        leftIcon={<Close />}
+        rightIcon={<Check />}
+        onPressLeft={onClose}
+        onPressRight={onCheck}
+      />
+        <SignatureWrap>
+          <Signature
+            onOK={onSign}
           />
-        </NameWrap>
-        <ContactWrap>
-          <Input
-            placeholder={'Contact'}
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            onChangeText={text => setContact(text)}
-            value={contact}
-          />
-        </ContactWrap>
-      </InfoWrap>
-      <SignatureWrap>
-        <Signature
-          onOK={onSign}
-        />
-      </SignatureWrap>
+        </SignatureWrap>
+        <InfoWrap>
+          <NameWrap>
+            <Input
+              placeholder={'Name'}
+              underlineColorAndroid={COLORS.TRANSPARENT1}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={text => setName(text)}
+              value={name}
+            />
+            <BorderView
+              color={COLORS.BLUE1}
+            />
+          </NameWrap>
+          <ContactWrap>
+            <Input
+              placeholder={'Contact number'}
+              underlineColorAndroid={COLORS.TRANSPARENT1}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={text => setContact(text)}
+              value={contact}
+            />
+            <BorderView
+              color={COLORS.BLUE1}
+            />
+          </ContactWrap>
+        </InfoWrap>
     </OverlayWrap>
   );
 };
