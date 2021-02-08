@@ -3,6 +3,7 @@ import React, {
   useMemo,
   useCallback,
   useRef,
+  useEffect,
 } from 'react';
 import {
   View,
@@ -162,20 +163,22 @@ const JobDetailsScreenView = ({
   onAddress,
   onDriverNote,
   onAddServices,
+  onAddWasteTypes,
   onScanCode,
   onPrint,
 }) => {
-  const [ started, setStarted ] = useState(
-    jobStatus !== JOB_STATUS.ACKNOWLEDGED,
-  );
+  const [ started, setStarted ] = useState(false);
 
-  const [ binIndex, setBinIndex ] = useState(-1);
   const [ actionSheetData, setActionSheetData ] = useState([]);
 
+  const binIndexRef = useRef(-1);
   const actionSheetRef = useRef(null);
-  const actionSheetKey = useRef(null);
 
   // const [ paymentsActive, setPaymentsActive ] = useState(false);
+
+  useEffect(() => {
+    setStarted(jobStatus !== JOB_STATUS.ACKNOWLEDGED);
+  }, [jobStatus]);
 
   // const isForComplete = useMemo(() => {
   //   return (
@@ -418,13 +421,13 @@ const JobDetailsScreenView = ({
       return;
     }
 
-    onUpdateBinInfo(binIndex, {
+    onUpdateBinInfo(binIndexRef.current, {
       wasteType: charges[index].wasteType,
       binType: charges[index].binType,
     });
   };
 
-  const onShowActionSheet = (key) => {
+  const onShowActionSheet = (binIndex) => {
     const { charges } = focusedJob;
 
     if (charges.length === 0) {
@@ -432,11 +435,10 @@ const JobDetailsScreenView = ({
       return;
     }
 
-    actionSheetKey.current = key;
-
-    const data = charges.map(charge => charge[key][`${key}Name`]);
+    const data = charges.map(charge => charge['binType']['binTypeName']);
     setActionSheetData(data);
 
+    binIndexRef.current = binIndex;
     actionSheetRef.current.show();
   };
 
@@ -941,10 +943,7 @@ const JobDetailsScreenView = ({
                           focusedJob.isAllowDriverEditOnApp
                         )
                       }
-                      onPress={() => {
-                        setBinIndex(index);
-                        onShowActionSheet('binType');
-                      }}
+                      onPress={() => onShowActionSheet(index)}
                     >
                       <InfoText>
                         {
@@ -967,21 +966,44 @@ const JobDetailsScreenView = ({
                 <SpaceView mTop={SIZE4} />
                 <RowWrap>
                   <FlexWrap>
-                    <LabelText>Waste Type</LabelText>
-                    <InfoText>
-                      {
-                        item['wasteType'] &&
-                        item['wasteType']['wasteTypeName']
+                    <LabelText>For Waste Type</LabelText>
+                    <TouchableOpacity
+                      disabled={
+                        !(
+                          status === 'ACTIVE' &&
+                          focusedJob.isAllowDriverEditOnApp
+                        )
                       }
-                    </InfoText>
+                      onPress={() => onAddWasteTypes(index)}
+                    >
+                      <InfoText>
+                        {
+                          item['wasteType'] &&
+                          item['wasteType']['wasteTypeName']
+                        }
+                      </InfoText>
+                    </TouchableOpacity>
                   </FlexWrap>
-                  <RowWrap>
-                    <SpaceView mLeft={SIZE2} />
-                    <BlueRightArrowIcon />
-                  </RowWrap>
+                  {
+                    status === 'ACTIVE' &&
+                    focusedJob.isAllowDriverEditOnApp &&
+                    <TouchableOpacity
+                      onPress={() => onAddWasteTypes(index)}
+                    >
+                      <RowWrap>
+                        <SpaceView mLeft={SIZE2} />
+                        <BlueRightArrowIcon />
+                      </RowWrap>
+                    </TouchableOpacity>
+                  }
                 </RowWrap>
                 <SpaceView mTop={SIZE1} />
-                <BorderView />
+                <BorderView
+                  color={
+                    status === 'ACTIVE'
+                    ? COLORS.GRAY2 : COLORS.TRANSPARENT1
+                  }
+                />
 
                 <SpaceView mTop={SIZE4} />
                 <RowWrap>
@@ -1426,6 +1448,7 @@ JobDetailsScreenView.propTypes = {
   onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
+  onAddWasteTypes: PropTypes.func.isRequired,
   onScanCode: PropTypes.func.isRequired,
   onPrint: PropTypes.func.isRequired,
 };
