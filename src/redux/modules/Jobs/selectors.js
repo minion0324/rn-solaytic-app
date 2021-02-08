@@ -91,7 +91,10 @@ const getPhotosAndSign = createSelector(
 
       return {
         photos: lastAttempt.jobPhotos.map((item) => {
-          return { uri: item.photoUrl };
+          return {
+            jobStepId,
+            uri: item.photoUrl,
+          };
         }),
         sign: { uri: lastAttempt.signatureUrl },
         signedUserName: lastAttempt.signedUserName,
