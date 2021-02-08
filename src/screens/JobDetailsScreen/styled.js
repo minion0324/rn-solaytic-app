@@ -4,6 +4,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE6,
   FONT,
 } from 'src/constants';
 
@@ -52,10 +53,19 @@ const SignWrap = styled.View`
   background-color: ${COLORS.WHITE5};
 `;
 
+const PhotoModalButtonsWrap = styled.View`
+  position: absolute;
+  bottom: ${SIZE6}px;
+  left: 0px;
+  right: 0px;
+  padding-horizontal: ${SIZE6}px;
+`;
+
 export {
   DriverNoteBadge,
   BinWrap,
   BinInput,
   PhotoWrap,
   SignWrap,
+  PhotoModalButtonsWrap,
 };

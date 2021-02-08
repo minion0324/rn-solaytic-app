@@ -83,6 +83,7 @@ import {
   BinInput,
   PhotoWrap,
   SignWrap,
+  PhotoModalButtonsWrap,
 } from './styled';
 
 const {
@@ -110,6 +111,8 @@ const {
   DeactivePaymentIcon,
   ActiveBinIcon,
   DeactiveBinIcon,
+  DeletePhotoIcon,
+  BackPhotoIcon,
 } = SVGS;
 
 const JobDetailsScreenView = ({
@@ -424,6 +427,13 @@ const JobDetailsScreenView = ({
   //   onDismissAmountModal(containerId);
   // };
 
+  const onShowPhotoModal = (selectedPhoto) => {
+    showLightBox(CUSTOM_MODAL_SCREEN, {
+      props: { selectedPhoto },
+      getContent: renderPhotoModal,
+    });
+  };
+
   // const renderAmountModal = (containerId, { modalData, setModalData }) => {
   //   return (
   //     <ModalWrap>
@@ -456,6 +466,42 @@ const JobDetailsScreenView = ({
   //     </ModalWrap>
   //   );
   // };
+
+  const renderPhotoModal = (containerId, { selectedPhoto }) => {
+    return (
+      <PhotoWrap>
+        <FullImage source={{ uri: selectedPhoto.uri }} />
+        <PhotoModalButtonsWrap>
+          <RowWrap>
+            <FlexWrap>
+              <DefaultButton
+                color={COLORS.WHITE1}
+                text={'Back'}
+                onPress={() => {
+                  dismissLightBox(containerId);
+                }}
+                textColor={COLORS.BLACK2}
+                icon={<BackPhotoIcon />}
+              />
+            </FlexWrap>
+            <SpaceView mLeft={SIZE2} />
+            <FlexWrap>
+              <DefaultButton
+                color={COLORS.RED1}
+                text={'Delete'}
+                onPress={() => {
+                  onCancelPhoto(selectedPhoto);
+                  dismissLightBox(containerId);
+                }}
+                textColor={COLORS.WHITE1}
+                icon={<DeletePhotoIcon />}
+              />
+            </FlexWrap>
+          </RowWrap>
+        </PhotoModalButtonsWrap>
+      </PhotoWrap>
+    );
+  };
 
   const renderFailJob = () => {
     if (
@@ -823,10 +869,10 @@ const JobDetailsScreenView = ({
                 }
 
                 {
-                  (
-                    options.mustTakePhoto ||
-                    options.mustTakeSignature
-                  ) &&
+                  // (
+                  //   options.mustTakePhoto ||
+                  //   options.mustTakeSignature
+                  // ) &&
                   <View>
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
@@ -849,7 +895,7 @@ const JobDetailsScreenView = ({
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
                       {
-                        options.mustTakePhoto &&
+                        // options.mustTakePhoto &&
                         [0, 1].map((index) => {
                           const data = photos.filter((photo) => (
                             photo.jobStepId === item.jobStepId
@@ -861,7 +907,7 @@ const JobDetailsScreenView = ({
                                 {
                                   data[index]
                                   ? <TouchableOpacity
-                                      onPress={null}
+                                      onPress={() => onShowPhotoModal(data[index])}
                                       disabled={status !== 'ACTIVE'}
                                     >
                                       <PhotoWrap>
@@ -891,7 +937,8 @@ const JobDetailsScreenView = ({
                       }
 
                       {
-                        options.mustTakeSignature
+                        true
+                        // options.mustTakeSignature
                         ? <>
                             <FlexWrap flex={3}>
                               {
@@ -920,11 +967,11 @@ const JobDetailsScreenView = ({
                               }
                             </FlexWrap>
                             {
-                              !options.mustTakePhoto &&
-                              <>
-                                <SpaceView mLeft={SIZE4} />
-                                <FlexWrap flex={4} />
-                              </>
+                              // !options.mustTakePhoto &&
+                              // <>
+                              //   <SpaceView mLeft={SIZE4} />
+                              //   <FlexWrap flex={4} />
+                              // </>
                             }
                           </>
                         : <FlexWrap flex={3} />

@@ -425,9 +425,10 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onCancelPhoto = (index) => {
-    const newPhotos = photos.slice(0);
-    newPhotos.splice(index, 1);
+  const onCancelPhoto = (selectedPhoto) => {
+    const newPhotos = photos.filter((photo) => (
+      photo.uri !== selectedPhoto.uri
+    ));
 
     setPhotos(newPhotos);
   };
