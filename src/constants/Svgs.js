@@ -12,8 +12,6 @@ import ActiveJobsIcon from 'src/assets/svgs/icon-jobs-active.svg';
 import AvatarIcon from 'src/assets/svgs/icon-avatar.svg';
 import UserIcon from 'src/assets/svgs/icon-user.svg';
 import LockIcon from 'src/assets/svgs/icon-lock.svg';
-import CameraIcon from 'src/assets/svgs/icon-camera.svg';
-import SignIcon from 'src/assets/svgs/icon-sign.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import FailIcon from 'src/assets/svgs/icon-fail.svg';
 import GreenActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-green.svg';
@@ -24,7 +22,6 @@ import DrawerCloseIcon from 'src/assets/svgs/icon-close-drawer.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
 import ServiceIcon from 'src/assets/svgs/icon-service.svg';
-import CancelIcon from 'src/assets/svgs/icon-cancel.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
@@ -36,7 +33,6 @@ import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
 import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
 import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
 import DeactiveBinOutIcon from 'src/assets/svgs/icon-out-bin-deactive.svg';
-import ImageIcon from 'src/assets/svgs/icon-image.svg';
 import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
 import ScanCodeIcon from 'src/assets/svgs/icon-code-scan.svg';
@@ -84,8 +80,6 @@ export default {
   AvatarIcon,
   UserIcon,
   LockIcon,
-  CameraIcon,
-  SignIcon,
   SearchIcon,
   FailIcon,
   GreenActiveCircleCheckIcon,
@@ -96,7 +90,6 @@ export default {
   HappyIcon,
   CalendarIcon,
   ServiceIcon,
-  CancelIcon,
   RetryIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
@@ -108,7 +101,6 @@ export default {
   DeactiveBinInIcon,
   ActiveBinOutIcon,
   DeactiveBinOutIcon,
-  ImageIcon,
   AddressIcon,
   SendIcon,
   ScanCodeIcon,
