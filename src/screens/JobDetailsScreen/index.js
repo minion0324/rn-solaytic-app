@@ -422,6 +422,7 @@ const JobDetailsScreen = ({
       setSignedUserName,
       signedUserContact,
       setSignedUserContact,
+      clearSign: onCancelSign,
     });
   };
 
@@ -528,7 +529,6 @@ const JobDetailsScreen = ({
       onPhoto={onPhoto}
       onSign={onSign}
       onCancelPhoto={onCancelPhoto}
-      onCancelSign={onCancelSign}
       onUpdateAmountCollected={onUpdateAmountCollected}
       onAlertNotProgress={onAlertNotProgress}
       onFail={onFail}
