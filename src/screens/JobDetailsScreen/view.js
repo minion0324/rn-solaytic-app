@@ -987,53 +987,78 @@ const JobDetailsScreenView = ({
                     </RowWrap>
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
-                      <FlexWrap flex={2}>
-                        <TouchableOpacity
-                          onPress={null}
-                          disabled={status !== 'ACTIVE'}
-                        >
-                          <PhotoWrap>
-                            <LeftDash dashColor={COLORS.BLUE1} />
-                            <TopDash dashColor={COLORS.BLUE1} />
-                            <RightDash dashColor={COLORS.BLUE1} />
-                            <BottomDash dashColor={COLORS.BLUE1} />
+                      {
+                        // options.mustTakePhoto &&
+                        [0, 1].map((index) => {
+                          const data = photos.filter((photo) => (
+                            photo.jobStepId === item.jobStepId
+                          ));
 
-                            <PhotoAddIcon />
-                          </PhotoWrap>
-                        </TouchableOpacity>
-                      </FlexWrap>
-                      <SpaceView mLeft={SIZE2} />
-                      <FlexWrap flex={2}>
-                        <TouchableOpacity
-                          onPress={null}
-                          disabled={status !== 'ACTIVE'}
-                        >
-                          <PhotoWrap>
-                            <LeftDash dashColor={COLORS.BLUE1} />
-                            <TopDash dashColor={COLORS.BLUE1} />
-                            <RightDash dashColor={COLORS.BLUE1} />
-                            <BottomDash dashColor={COLORS.BLUE1} />
+                          return (
+                            <>
+                              <FlexWrap flex={2}>
+                                {
+                                  data[index]
+                                  ? <TouchableOpacity
+                                      onPress={null}
+                                      disabled={status !== 'ACTIVE'}
+                                    >
+                                      <PhotoWrap>
+                                        <FullImage source={{ uri: data[index].uri }} />
+                                      </PhotoWrap>
 
-                            <PhotoAddIcon />
-                          </PhotoWrap>
-                        </TouchableOpacity>
-                      </FlexWrap>
-                      <SpaceView mLeft={SIZE2} />
-                      <FlexWrap flex={3}>
-                        <TouchableOpacity
-                          onPress={null}
-                          disabled={status !== 'ACTIVE'}
-                        >
-                          <SignWrap>
-                            <LeftDash dashColor={COLORS.GREEN1} />
-                            <TopDash dashColor={COLORS.GREEN1} />
-                            <RightDash dashColor={COLORS.GREEN1} />
-                            <BottomDash dashColor={COLORS.GREEN1} />
+                                    </TouchableOpacity>
+                                  : <TouchableOpacity
+                                      onPress={() => onPhoto(item.jobStepId)}
+                                      disabled={status !== 'ACTIVE'}
+                                    >
+                                      <PhotoWrap>
+                                        <LeftDash dashColor={COLORS.BLUE1} />
+                                        <TopDash dashColor={COLORS.BLUE1} />
+                                        <RightDash dashColor={COLORS.BLUE1} />
+                                        <BottomDash dashColor={COLORS.BLUE1} />
 
-                            <SignAddIcon />
-                          </SignWrap>
-                        </TouchableOpacity>
-                      </FlexWrap>
+                                        <PhotoAddIcon />
+                                      </PhotoWrap>
+                                    </TouchableOpacity>
+                                }
+                              </FlexWrap>
+                              <SpaceView mLeft={SIZE2} />
+                            </>
+                          );
+                        })
+                      }
+
+                      {
+                        options.mustTakeSignature
+                        ? <>
+                            <FlexWrap flex={3}>
+                              <TouchableOpacity
+                                onPress={null}
+                                disabled={status !== 'ACTIVE'}
+                              >
+                                <SignWrap>
+                                  <LeftDash dashColor={COLORS.GREEN1} />
+                                  <TopDash dashColor={COLORS.GREEN1} />
+                                  <RightDash dashColor={COLORS.GREEN1} />
+                                  <BottomDash dashColor={COLORS.GREEN1} />
+
+                                  <SignAddIcon />
+                                </SignWrap>
+                              </TouchableOpacity>
+                            </FlexWrap>
+                            {
+                              !options.mustTakePhoto &&
+                              <>
+                                <FlexWrap flex={2} />
+                                <SpaceView mLeft={SIZE2} />
+                                <FlexWrap flex={2} />
+                                <SpaceView mLeft={SIZE2} />
+                              </>
+                            }
+                          </>
+                        : <FlexWrap flex={3} />
+                      }
                     </RowWrap>
                     <SpaceView mTop={SIZE4} />
                   </View>

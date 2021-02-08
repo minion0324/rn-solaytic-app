@@ -262,6 +262,10 @@ const JobDetailsScreen = ({
       binInfo,
       services,
       amountCollected,
+      photos,
+      sign,
+      signedUserName,
+      signedUserContact,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -279,6 +283,10 @@ const JobDetailsScreen = ({
       binInfo,
       services,
       amountCollected,
+      photos,
+      sign,
+      signedUserName,
+      signedUserContact,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -296,6 +304,10 @@ const JobDetailsScreen = ({
       binInfo,
       services,
       amountCollected,
+      photos,
+      sign,
+      signedUserName,
+      signedUserContact,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -382,7 +394,7 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onPhoto = () => {
+  const onPhoto = (jobStepId) => {
     const options = {
       title: 'Select Your Photo',
       storageOptions: {
@@ -398,7 +410,7 @@ const JobDetailsScreen = ({
         //
       } else {
         const { uri, data } = response;
-        setPhotos([ ...photos, { uri, data } ]);
+        setPhotos([ ...photos, { jobStepId, uri, data } ]);
       }
     });
   };
