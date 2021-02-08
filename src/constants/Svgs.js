@@ -25,7 +25,6 @@ import ServiceIcon from 'src/assets/svgs/icon-service.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
-import BlackRightArrowIcon from 'src/assets/svgs/icon-arrow-right-black.svg';
 import DateIcon from 'src/assets/svgs/icon-date.svg';
 import TimeIcon from 'src/assets/svgs/icon-time.svg';
 import ChatIcon from 'src/assets/svgs/icon-chat.svg';
@@ -93,7 +92,6 @@ export default {
   RetryIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
-  BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
   ChatIcon,
