@@ -74,40 +74,67 @@ function apiAcknowledgeJobs(jobIds) {
   });
 };
 
-function apiStartJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+function apiStartJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      attempt,
     },
   });
 };
 
-function apiPullJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+function apiPullJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/pull', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      attempt,
     },
   });
 };
 
-function apiExchangeJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+function apiExchangeJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      attempt,
     },
   });
 };
 
-function apiCompleteJobs(jobIds, stepBinUpdate, pricings, amountCollected, attempt) {
+function apiCompleteJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
