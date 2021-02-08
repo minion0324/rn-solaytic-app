@@ -87,7 +87,6 @@ import {
 
 const {
   BlueRightArrowIcon,
-  BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
   ChatIcon,
