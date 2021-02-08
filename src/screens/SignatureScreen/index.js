@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
@@ -27,12 +27,14 @@ import {
 import {
   BorderView,
 } from 'src/styles/common.styles';
+
 import {
   InfoWrap,
   NameWrap,
   ContactWrap,
   SignatureWrap,
   Input,
+  webStyle,
 } from './styled';
 
 const SignatureScreen = ({
@@ -46,12 +48,14 @@ const SignatureScreen = ({
   const [ name, setName ] = useState(signedUserName);
   const [ contact, setContact ] = useState(signedUserContact);
 
+  const signatureRef = useRef(null);
+
   const onClose = () => {
     dismissLightBox(componentId);
   };
 
   const onCheck = () => {
-
+    signatureRef.current.readSignature();
   };
 
   const onSign = async (signature) => {
@@ -94,7 +98,9 @@ const SignatureScreen = ({
       />
         <SignatureWrap>
           <Signature
+            ref={signatureRef}
             onOK={onSign}
+            webStyle={webStyle}
           />
         </SignatureWrap>
         <InfoWrap>
