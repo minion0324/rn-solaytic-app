@@ -102,7 +102,6 @@ const {
   GreenActiveCircleCheckIcon,
   BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  PrintIcon,
   ActivePhotosIcon,
   DeactivePhotosIcon,
   PhotoAddIcon,
@@ -833,7 +832,11 @@ const JobDetailsScreenView = ({
                     <RowWrap>
                       <FlexWrap>
                         <RowWrap>
-                          <ActivePhotosIcon />
+                          {
+                            status === 'COMPLETED'
+                            ? <DeactivePhotosIcon />
+                            : <ActivePhotosIcon />
+                          }
                           <SpaceView mLeft={SIZE2} />
                           <InfoText>Photos</InfoText>
                         </RowWrap>
@@ -932,12 +935,17 @@ const JobDetailsScreenView = ({
                 }
 
                 {
+                  options.isRequirePaymentCollection &&
                   <View>
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
                       <FlexWrap>
                         <RowWrap>
-                          <ActivePaymentIcon />
+                          {
+                            status === 'COMPLETED'
+                            ? <DeactivePhotosIcon />
+                            : <ActivePaymentIcon />
+                          }
                           <SpaceView mLeft={SIZE2} />
                           <InfoText>Collect</InfoText>
                         </RowWrap>
