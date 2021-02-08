@@ -43,6 +43,7 @@ const SignatureScreen = ({
   setSignedUserName,
   signedUserContact,
   setSignedUserContact,
+  clearSign,
   componentId,
 }) => {
   const [ name, setName ] = useState(signedUserName);
@@ -52,6 +53,11 @@ const SignatureScreen = ({
 
   const onClose = () => {
     dismissLightBox(componentId);
+  };
+
+  const onCloseWithClear = () => {
+    clearSign();
+    onClose();
   };
 
   const onCheck = () => {
@@ -93,7 +99,7 @@ const SignatureScreen = ({
         }
         leftIcon={<Close />}
         rightIcon={<Check />}
-        onPressLeft={onClose}
+        onPressLeft={onCloseWithClear}
         onPressRight={onCheck}
       />
         <SignatureWrap>
@@ -141,6 +147,7 @@ SignatureScreen.propTypes = {
   setSignedUserName: PropTypes.func.isRequired,
   signedUserContact: PropTypes.string,
   setSignedUserContact: PropTypes.func.isRequired,
+  clearSign: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
