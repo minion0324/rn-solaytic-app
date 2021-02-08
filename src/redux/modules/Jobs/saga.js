@@ -378,6 +378,10 @@ export function* asyncStartJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    photos,
+    sign,
+    signedUserName,
+    signedUserContact,
     success,
     failure,
   } = payload;
@@ -386,7 +390,51 @@ export function* asyncStartJobs({ payload }) {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    const { data } = yield call(apiStartJobs, jobIds, stepBinUpdate, pricings, amountCollected);
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customer.customerName,
+      amountCollected,
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypeId: focusedJob.steps[0].wasteTypeId,
+      binTypeId: focusedJob.steps[0].binTypeId,
+      binNumber: focusedJob.steps[0].binNumber,
+      binWeight: focusedJob.steps[0].binWeight,
+      wasteType2Id: focusedJob.steps[1].wasteTypeId,
+      binType2Id: focusedJob.steps[1].binTypeId,
+      binNumber2: focusedJob.steps[1].binNumber,
+      binWeight2: focusedJob.steps[1].binWeight,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      base64Signature: sign.data,
+      signatureFileName: (sign.uri || '').split('/').pop(),
+      signedUserName,
+      signedUserContact,
+      driverName: '', //
+      vehicleName: '', //
+      remarks: focusedJob.remarks,
+      jobPhotos: photos.map((photo) => {
+        return {
+          jobStepId: photo.jobStepId,
+          base64Image: photo.data,
+          fileName: (photo.uri || '').split('/').pop(),
+          photoCaption: '', //
+        }
+      }),
+    };
+
+    const { data } = yield call(apiStartJobs,
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+      attempt,
+    );
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -448,6 +496,10 @@ export function* asyncPullJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    photos,
+    sign,
+    signedUserName,
+    signedUserContact,
     success,
     failure,
   } = payload;
@@ -456,7 +508,51 @@ export function* asyncPullJobs({ payload }) {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    const { data } = yield call(apiPullJobs, jobIds, stepBinUpdate, pricings, amountCollected);
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customer.customerName,
+      amountCollected,
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypeId: focusedJob.steps[0].wasteTypeId,
+      binTypeId: focusedJob.steps[0].binTypeId,
+      binNumber: focusedJob.steps[0].binNumber,
+      binWeight: focusedJob.steps[0].binWeight,
+      wasteType2Id: focusedJob.steps[1].wasteTypeId,
+      binType2Id: focusedJob.steps[1].binTypeId,
+      binNumber2: focusedJob.steps[1].binNumber,
+      binWeight2: focusedJob.steps[1].binWeight,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      base64Signature: sign.data,
+      signatureFileName: (sign.uri || '').split('/').pop(),
+      signedUserName,
+      signedUserContact,
+      driverName: '', //
+      vehicleName: '', //
+      remarks: focusedJob.remarks,
+      jobPhotos: photos.map((photo) => {
+        return {
+          jobStepId: photo.jobStepId,
+          base64Image: photo.data,
+          fileName: (photo.uri || '').split('/').pop(),
+          photoCaption: '', //
+        }
+      }),
+    };
+
+    const { data } = yield call(apiPullJobs,
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+      attempt,
+    );
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -518,6 +614,10 @@ export function* asyncExchangeJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    photos,
+    sign,
+    signedUserName,
+    signedUserContact,
     success,
     failure,
   } = payload;
@@ -526,7 +626,51 @@ export function* asyncExchangeJobs({ payload }) {
     const stepBinUpdate = getUpdatedBinInfo(binInfo);
     const pricings = getUpdatedServices(services);
 
-    const { data } = yield call(apiExchangeJobs, jobIds, stepBinUpdate, pricings, amountCollected);
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customer.customerName,
+      amountCollected,
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypeId: focusedJob.steps[0].wasteTypeId,
+      binTypeId: focusedJob.steps[0].binTypeId,
+      binNumber: focusedJob.steps[0].binNumber,
+      binWeight: focusedJob.steps[0].binWeight,
+      wasteType2Id: focusedJob.steps[1].wasteTypeId,
+      binType2Id: focusedJob.steps[1].binTypeId,
+      binNumber2: focusedJob.steps[1].binNumber,
+      binWeight2: focusedJob.steps[1].binWeight,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      base64Signature: sign.data,
+      signatureFileName: (sign.uri || '').split('/').pop(),
+      signedUserName,
+      signedUserContact,
+      driverName: '', //
+      vehicleName: '', //
+      remarks: focusedJob.remarks,
+      jobPhotos: photos.map((photo) => {
+        return {
+          jobStepId: photo.jobStepId,
+          base64Image: photo.data,
+          fileName: (photo.uri || '').split('/').pop(),
+          photoCaption: '', //
+        }
+      }),
+    };
+
+    const { data } = yield call(apiExchangeJobs,
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+      attempt,
+    );
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
@@ -635,7 +779,7 @@ export function* asyncCompleteJobs({ payload }) {
         remarks: focusedJob.remarks,
         jobPhotos: photos.map((photo) => {
           return {
-            jobStepId: lastJobStep.jobStepId,
+            jobStepId: photo.jobStepId,
             base64Image: photo.data,
             fileName: (photo.uri || '').split('/').pop(),
             photoCaption: '', //
@@ -644,7 +788,13 @@ export function* asyncCompleteJobs({ payload }) {
       };
     }
 
-    const { data } = yield call(apiCompleteJobs, jobIds, stepBinUpdate, pricings, amountCollected, attempt);
+    const { data } = yield call(apiCompleteJobs,
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+      attempt,
+    );
 
     const successJobIds = data.successJobs.map(item => item.jobId);
 
