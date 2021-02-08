@@ -911,47 +911,52 @@ const JobDetailsScreenView = ({
                   </View>
                 }
 
-                <SpaceView mTop={SIZE4} />
-                <RowWrap>
-                  <FlexWrap>
-                    <LabelText>For Waste Type</LabelText>
-                    <TouchableOpacity
-                      disabled={
-                        !(
-                          status === 'ACTIVE' &&
-                          focusedJob.isAllowDriverEditOnApp
-                        )
+                {
+                  options.isRequireReviewWasteType &&
+                  <View>
+                    <SpaceView mTop={SIZE4} />
+                    <RowWrap>
+                      <FlexWrap>
+                        <LabelText>For Waste Type</LabelText>
+                        <TouchableOpacity
+                          disabled={
+                            !(
+                              status === 'ACTIVE' &&
+                              focusedJob.isAllowDriverEditOnApp
+                            )
+                          }
+                          onPress={() => onAddWasteTypes(index)}
+                        >
+                          <InfoText>
+                            {
+                              item['wasteType'] &&
+                              item['wasteType']['wasteTypeName']
+                            }
+                          </InfoText>
+                        </TouchableOpacity>
+                      </FlexWrap>
+                      {
+                        status === 'ACTIVE' &&
+                        focusedJob.isAllowDriverEditOnApp &&
+                        <TouchableOpacity
+                          onPress={() => onAddWasteTypes(index)}
+                        >
+                          <RowWrap>
+                            <SpaceView mLeft={SIZE2} />
+                            <BlueRightArrowIcon />
+                          </RowWrap>
+                        </TouchableOpacity>
                       }
-                      onPress={() => onAddWasteTypes(index)}
-                    >
-                      <InfoText>
-                        {
-                          item['wasteType'] &&
-                          item['wasteType']['wasteTypeName']
-                        }
-                      </InfoText>
-                    </TouchableOpacity>
-                  </FlexWrap>
-                  {
-                    status === 'ACTIVE' &&
-                    focusedJob.isAllowDriverEditOnApp &&
-                    <TouchableOpacity
-                      onPress={() => onAddWasteTypes(index)}
-                    >
-                      <RowWrap>
-                        <SpaceView mLeft={SIZE2} />
-                        <BlueRightArrowIcon />
-                      </RowWrap>
-                    </TouchableOpacity>
-                  }
-                </RowWrap>
-                <SpaceView mTop={SIZE1} />
-                <BorderView
-                  color={
-                    status === 'ACTIVE'
-                    ? COLORS.GRAY2 : COLORS.TRANSPARENT1
-                  }
-                />
+                    </RowWrap>
+                    <SpaceView mTop={SIZE1} />
+                    <BorderView
+                      color={
+                        status === 'ACTIVE'
+                        ? COLORS.BLUE1 : COLORS.GRAY2
+                      }
+                    />
+                  </View>
+                }
 
                 <SpaceView mTop={SIZE4} />
                 <RowWrap>
