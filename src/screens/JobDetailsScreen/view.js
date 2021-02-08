@@ -32,11 +32,9 @@ import {
   ItemWrap,
 } from 'src/components';
 import {
-  pushScreen,
   showLightBox,
   dismissLightBox,
   CUSTOM_MODAL_SCREEN,
-  SCAN_CODE_SCREEN,
 } from 'src/navigation';
 import {
   delay,
@@ -80,14 +78,6 @@ import {
 } from 'src/styles/modal.styles';
 
 import {
-  JobProofItem,
-  HalfWrap,
-  SignInfo,
-  SignInfoText,
-  CancelButton,
-  PhotoAndSignWrap,
-  PhotoAndSignText,
-  AmountButton,
   DriverNoteBadge,
   BinWrap,
   BinInput,
