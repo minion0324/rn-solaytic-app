@@ -966,10 +966,10 @@ const JobDetailsScreenView = ({
                 }
 
                 {
-                  // (
-                  //   options.mustTakePhoto ||
-                  //   options.mustTakeSignature
-                  // ) &&
+                  (
+                    options.mustTakePhoto ||
+                    options.mustTakeSignature
+                  ) &&
                   <View>
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
@@ -988,7 +988,7 @@ const JobDetailsScreenView = ({
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
                       {
-                        // options.mustTakePhoto &&
+                        options.mustTakePhoto &&
                         [0, 1].map((index) => {
                           const data = photos.filter((photo) => (
                             photo.jobStepId === item.jobStepId
@@ -1033,27 +1033,36 @@ const JobDetailsScreenView = ({
                         options.mustTakeSignature
                         ? <>
                             <FlexWrap flex={3}>
-                              <TouchableOpacity
-                                onPress={null}
-                                disabled={status !== 'ACTIVE'}
-                              >
-                                <SignWrap>
-                                  <LeftDash dashColor={COLORS.GREEN1} />
-                                  <TopDash dashColor={COLORS.GREEN1} />
-                                  <RightDash dashColor={COLORS.GREEN1} />
-                                  <BottomDash dashColor={COLORS.GREEN1} />
+                              {
+                                sign.uri
+                                ? <TouchableOpacity
+                                    onPress={onSign}
+                                    disabled={status !== 'ACTIVE'}
+                                  >
+                                    <SignWrap>
+                                      <FullImage source={{ uri: sign.uri }} />
+                                    </SignWrap>
+                                  </TouchableOpacity>
+                                : <TouchableOpacity
+                                    onPress={onSign}
+                                    disabled={status !== 'ACTIVE'}
+                                  >
+                                    <SignWrap>
+                                      <LeftDash dashColor={COLORS.GREEN1} />
+                                      <TopDash dashColor={COLORS.GREEN1} />
+                                      <RightDash dashColor={COLORS.GREEN1} />
+                                      <BottomDash dashColor={COLORS.GREEN1} />
 
-                                  <SignAddIcon />
-                                </SignWrap>
-                              </TouchableOpacity>
+                                      <SignAddIcon />
+                                    </SignWrap>
+                                  </TouchableOpacity>
+                              }
                             </FlexWrap>
                             {
                               !options.mustTakePhoto &&
                               <>
-                                <FlexWrap flex={2} />
-                                <SpaceView mLeft={SIZE2} />
-                                <FlexWrap flex={2} />
-                                <SpaceView mLeft={SIZE2} />
+                                <SpaceView mLeft={SIZE4} />
+                                <FlexWrap flex={4} />
                               </>
                             }
                           </>
