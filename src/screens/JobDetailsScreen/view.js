@@ -2,7 +2,6 @@ import React, {
   useState,
   useMemo,
   useCallback,
-  useRef,
   useEffect,
 } from 'react';
 import {
@@ -15,7 +14,6 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { pick } from 'lodash';
-import ActionSheet from 'react-native-actionsheet';
 
 import {
   SVGS,
@@ -168,11 +166,6 @@ const JobDetailsScreenView = ({
   onPrint,
 }) => {
   const [ started, setStarted ] = useState(false);
-
-  const [ actionSheetData, setActionSheetData ] = useState([]);
-
-  const binIndexRef = useRef(-1);
-  const actionSheetRef = useRef(null);
 
   // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
@@ -412,34 +405,6 @@ const JobDetailsScreenView = ({
     };
 
     setBinInfo(newBinInfo);
-  };
-
-  const onActionSheetPress = (index) => {
-    const { charges } = focusedJob;
-
-    if (index === actionSheetData.length) {
-      return;
-    }
-
-    onUpdateBinInfo(binIndexRef.current, {
-      wasteType: charges[index].wasteType,
-      binType: charges[index].binType,
-    });
-  };
-
-  const onShowActionSheet = (binIndex) => {
-    const { charges } = focusedJob;
-
-    if (charges.length === 0) {
-      Alert.alert('Warning', 'The customer has no Bin / Waste.');
-      return;
-    }
-
-    const data = charges.map(charge => charge['binType']['binTypeName']);
-    setActionSheetData(data);
-
-    binIndexRef.current = binIndex;
-    actionSheetRef.current.show();
   };
 
   // const onShowAmountModal = () => {
@@ -878,12 +843,7 @@ const JobDetailsScreenView = ({
                 <SpaceView mTop={SIZE3} />
                 <RowWrap>
                   <FlexWrap>
-                    <LabelText>
-                      {
-                        focusedJob.isRequiredBinNumberToStart
-                        ? 'Bin ID *' : 'Bin ID'
-                      }
-                    </LabelText>
+                    <LabelText>Bin ID</LabelText>
                     <BinInput
                       underlineColorAndroid={COLORS.TRANSPARENT1}
                       autoCapitalize={'none'}
@@ -932,36 +892,24 @@ const JobDetailsScreenView = ({
                   }
                 />
 
-                <SpaceView mTop={SIZE4} />
-                <RowWrap>
-                  <FlexWrap>
-                    <LabelText>Bin Type</LabelText>
-                    <TouchableOpacity
-                      disabled={
-                        !(
-                          status === 'ACTIVE' &&
-                          focusedJob.isAllowDriverEditOnApp
-                        )
-                      }
-                      onPress={() => onShowActionSheet(index)}
-                    >
-                      <InfoText>
-                        {
-                          item['binType'] &&
-                          item['binType']['binTypeName']
-                        }
-                      </InfoText>
-                    </TouchableOpacity>
-                  </FlexWrap>
-                </RowWrap>
-                <SpaceView mTop={SIZE1} />
-                <BorderView
-                  color={
-                    status === 'ACTIVE' &&
-                    options.IsRequireBinType
-                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-                  }
-                />
+                {
+                  item['binType'] &&
+                  item['binType']['binTypeName'] &&
+                  <View>
+                    <SpaceView mTop={SIZE4} />
+                    <RowWrap>
+                      <FlexWrap>
+                        <LabelText>Bin Type</LabelText>
+                        <InfoText>
+                          {
+                            item['binType'] &&
+                            item['binType']['binTypeName']
+                          }
+                        </InfoText>
+                      </FlexWrap>
+                    </RowWrap>
+                  </View>
+                }
 
                 <SpaceView mTop={SIZE4} />
                 <RowWrap>
@@ -1405,13 +1353,6 @@ const JobDetailsScreenView = ({
         // renderPhotoAndSign()
       }
 
-      <ActionSheet
-        ref={actionSheetRef}
-        title={'Please select one.'}
-        options={[ ...actionSheetData, 'Cancel' ]}
-        cancelButtonIndex={actionSheetData.length}
-        onPress={onActionSheetPress}
-      />
     </Container>
   );
 };
