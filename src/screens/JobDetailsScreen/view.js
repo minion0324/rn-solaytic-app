@@ -113,6 +113,8 @@ const {
   DeactiveBinIcon,
   DeletePhotoIcon,
   BackPhotoIcon,
+  ActiveBinWeightIcon,
+  DeactiveBinWeightIcon,
 } = SVGS;
 
 const STEP_STATUS_MARK = '_Next';
@@ -189,6 +191,8 @@ const JobDetailsScreenView = ({
             return 1.5;
           case JOB_STATUS.STARTED + STEP_STATUS_MARK:
             return 2;
+          case JOB_STATUS.IN_PROGRESS:
+            return 3;
         }
 
         return 0.5;
@@ -220,6 +224,27 @@ const JobDetailsScreenView = ({
 
       default:
         return 2; // ?
+    };
+  }, [
+    focusedJob.jobTypeName,
+  ]);
+
+  const binWeightStepIndex = useMemo(() => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PULL:
+        return 1;
+
+      case JOB_TYPE.PUT:
+        return -1;
+
+      case JOB_TYPE.EXCHANGE:
+        return 2;
+
+      case JOB_TYPE.ON_THE_SPOT:
+        return 2;
+
+      default:
+        return -1; // ?
     };
   }, [
     focusedJob.jobTypeName,
@@ -700,6 +725,366 @@ const JobDetailsScreenView = ({
   //   );
   // };
 
+  const renderBinNumber = ({
+    item,
+    index,
+    idx,
+    options,
+    status,
+  }) => (
+    <View>
+      <SpaceView mTop={SIZE2} />
+      <RowWrap>
+        <FlexWrap>
+          <LabelText>Bin ID</LabelText>
+          <BinInput
+            underlineColorAndroid={COLORS.TRANSPARENT1}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            placeholder={'BIN NUMBER'}
+            value={`${item['binNumber'] || ''}`}
+            onChangeText={(text) =>
+              onUpdateBinInfo(index, { binNumber: text })
+            }
+            editable={
+              status === 'ACTIVE' &&
+              focusedJob.isAllowDriverEditOnApp
+            }
+          />
+          <SpaceView mTop={SIZE1} />
+        </FlexWrap>
+        {
+          status !== 'COMPLETED' &&
+          <RowWrap>
+            <SpaceView mLeft={SIZE3} />
+            <TouchableOpacity
+              disabled={
+                !(
+                  status === 'ACTIVE' &&
+                  focusedJob.isAllowDriverEditOnApp
+                )
+              }
+              onPress={() => onScanCode(index)}
+            >
+              <ScanCodeIcon />
+            </TouchableOpacity>
+            <SpaceView mLeft={SIZE3} />
+            {
+              item['binNumber']
+              ? <GreenActiveCircleCheckIcon />
+              : <DeactiveCircleCheckIcon />
+            }
+          </RowWrap>
+        }
+      </RowWrap>
+      <BorderView
+        color={
+          status === 'ACTIVE' &&
+          options.IsRequireBinNumberToEnd
+          ? COLORS.BLUE1 : COLORS.GRAY2
+        }
+      />
+      <SpaceView mTop={SIZE2} />
+    </View>
+  );
+
+  const renderBinType = ({
+    item,
+    index,
+    idx,
+    options,
+    status,
+  }) => (
+      item['binType'] &&
+      item['binType']['binTypeName'] &&
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <FlexWrap>
+            <LabelText>Bin Type</LabelText>
+            <InfoText>
+              {
+                item['binType'] &&
+                item['binType']['binTypeName']
+              }
+            </InfoText>
+          </FlexWrap>
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+      </View>
+  );
+
+  const renderWasteType = ({
+    item,
+    index,
+    idx,
+    options,
+    status,
+  }) => (
+    options.isRequireReviewWasteType &&
+    <View>
+      <SpaceView mTop={SIZE2} />
+      <RowWrap>
+        <FlexWrap>
+          <LabelText>For Waste Type</LabelText>
+          <TouchableOpacity
+            disabled={
+              !(
+                status === 'ACTIVE' &&
+                focusedJob.isAllowDriverEditOnApp
+              )
+            }
+            onPress={() => onAddWasteTypes(index)}
+          >
+            <InfoText>
+              {
+                item['wasteType'] &&
+                item['wasteType']['wasteTypeName']
+              }
+            </InfoText>
+          </TouchableOpacity>
+        </FlexWrap>
+        {
+          status === 'ACTIVE' &&
+          focusedJob.isAllowDriverEditOnApp &&
+          <TouchableOpacity
+            onPress={() => onAddWasteTypes(index)}
+          >
+            <RowWrap>
+              <SpaceView mLeft={SIZE2} />
+              <BlueRightArrowIcon />
+            </RowWrap>
+          </TouchableOpacity>
+        }
+      </RowWrap>
+      <SpaceView mTop={SIZE1} />
+      <BorderView
+        color={
+          status === 'ACTIVE'
+          ? COLORS.BLUE1 : COLORS.GRAY2
+        }
+      />
+      <SpaceView mTop={SIZE2} />
+    </View>
+  );
+
+  const renderPhotosAndSign = ({
+    item,
+    index,
+    idx,
+    options,
+    status,
+  }) => (
+    (
+      options.mustTakePhoto ||
+      options.mustTakeSignature
+    ) &&
+    <View>
+      <SpaceView mTop={SIZE4} />
+      <RowWrap>
+        <FlexWrap>
+          <RowWrap>
+            {
+              status === 'COMPLETED'
+              ? <DeactivePhotosIcon />
+              : <ActivePhotosIcon />
+            }
+            <SpaceView mLeft={SIZE2} />
+            <InfoText>Photos</InfoText>
+          </RowWrap>
+        </FlexWrap>
+        <RowWrap>
+          <SpaceView mLeft={SIZE2} />
+          <DeactiveCircleCheckIcon />
+        </RowWrap>
+      </RowWrap>
+      <SpaceView mTop={SIZE4} />
+      <RowWrap>
+        {
+          options.mustTakePhoto &&
+          [0, 1].map((index) => {
+            const data = photos.filter((photo) => (
+              photo.jobStepId === item.jobStepId
+            ));
+
+            return (
+              <>
+                <FlexWrap flex={2}>
+                  {
+                    data[index]
+                    ? <TouchableOpacity
+                        onPress={() => onShowPhotoModal(data[index])}
+                        disabled={status !== 'ACTIVE'}
+                      >
+                        <PhotoWrap>
+                          <FullImage source={{ uri: data[index].uri }} />
+                        </PhotoWrap>
+
+                      </TouchableOpacity>
+                    : <TouchableOpacity
+                        onPress={() => onPhoto(item.jobStepId)}
+                        disabled={status !== 'ACTIVE'}
+                      >
+                        <PhotoWrap>
+                          <LeftDash dashColor={COLORS.BLUE1} />
+                          <TopDash dashColor={COLORS.BLUE1} />
+                          <RightDash dashColor={COLORS.BLUE1} />
+                          <BottomDash dashColor={COLORS.BLUE1} />
+
+                          <PhotoAddIcon />
+                        </PhotoWrap>
+                      </TouchableOpacity>
+                  }
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+              </>
+            );
+          })
+        }
+
+        {
+          options.mustTakeSignature
+          ? <>
+              <FlexWrap flex={3}>
+                {
+                  sign.uri
+                  ? <TouchableOpacity
+                      onPress={onSign}
+                      disabled={status !== 'ACTIVE'}
+                    >
+                      <SignWrap>
+                        <FullImage source={{ uri: sign.uri }} />
+                      </SignWrap>
+                    </TouchableOpacity>
+                  : <TouchableOpacity
+                      onPress={onSign}
+                      disabled={status !== 'ACTIVE'}
+                    >
+                      <SignWrap>
+                        <LeftDash dashColor={COLORS.GREEN1} />
+                        <TopDash dashColor={COLORS.GREEN1} />
+                        <RightDash dashColor={COLORS.GREEN1} />
+                        <BottomDash dashColor={COLORS.GREEN1} />
+
+                        <SignAddIcon />
+                      </SignWrap>
+                    </TouchableOpacity>
+                }
+              </FlexWrap>
+              {
+                !options.mustTakePhoto &&
+                <>
+                  <SpaceView mLeft={SIZE4} />
+                  <FlexWrap flex={4} />
+                </>
+              }
+            </>
+          : <FlexWrap flex={3} />
+        }
+      </RowWrap>
+      <SpaceView mTop={SIZE4} />
+    </View>
+  );
+
+  const renderPayment = ({
+    item,
+    index,
+    idx,
+    options,
+    status,
+  }) => (
+    options.isRequirePaymentCollection &&
+    <View>
+      <SpaceView mTop={SIZE4} />
+      <RowWrap>
+        <FlexWrap>
+          <RowWrap>
+            {
+              status === 'COMPLETED'
+              ? <DeactivePaymentIcon />
+              : <ActivePaymentIcon />
+            }
+            <SpaceView mLeft={SIZE2} />
+            <InfoText>Collect</InfoText>
+          </RowWrap>
+        </FlexWrap>
+        <RowWrap>
+          <SpaceView mLeft={SIZE2} />
+          <DeactiveCircleCheckIcon />
+        </RowWrap>
+      </RowWrap>
+      <SpaceView mTop={SIZE4} />
+      <RowWrap>
+        <View>
+          <InfoText>$</InfoText>
+          <SpaceView mTop={SIZE1} />
+        </View>
+        <SpaceView mLeft={SIZE4} />
+        <FlexWrap>
+          <InfoText>100</InfoText>
+          <SpaceView mTop={SIZE1} />
+          <BorderView />
+        </FlexWrap>
+        <SpaceView mLeft={SIZE4} />
+        <FlexWrap>
+          <InfoText>CASH</InfoText>
+          <SpaceView mTop={SIZE1} />
+          <BorderView />
+        </FlexWrap>
+      </RowWrap>
+      <SpaceView mTop={SIZE4} />
+    </View>
+  );
+
+  const renderCompleteButton = ({
+    item,
+    index,
+    idx,
+    options,
+    status,
+  }) => (
+    <View>
+      <SpaceView mTop={SIZE4} />
+      <RowWrap>
+        <FlexWrap flex={1} />
+        <FlexWrap flex={2}>
+          <DefaultButton
+            color={
+              status === 'ACTIVE'
+              ? COLORS.BLUE1 : COLORS.WHITE1
+            }
+            text={
+              status === 'COMPLETED'
+              ? 'Completed' : 'Complete'
+            }
+            onPress={
+              status === 'ACTIVE'
+              ? onNextStep : null
+            }
+            loading={
+              status === 'ACTIVE'
+              ? loading : null
+            }
+            textColor={
+              status === 'NOT_STARTED'
+              ? COLORS.BLUE1
+              : status === 'ACTIVE'
+                ? COLORS.WHITE1
+                : COLORS.BLACK2
+            }
+            bRadius={SIZE4}
+            borderColor={
+              status === 'NOT_STARTED'
+              ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+            }
+          />
+        </FlexWrap>
+        <FlexWrap flex={1} />
+      </RowWrap>
+      <SpaceView mTop={SIZE4} />
+    </View>
+  );
+
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
@@ -764,333 +1149,150 @@ const JobDetailsScreenView = ({
                 mLeft={0.1} mRight={0.1}
               >
                 {
-                  <View>
-                    <SpaceView mTop={SIZE2} />
-                    <RowWrap>
-                      <FlexWrap>
-                        <LabelText>Bin ID</LabelText>
-                        <BinInput
-                          underlineColorAndroid={COLORS.TRANSPARENT1}
-                          autoCapitalize={'none'}
-                          autoCorrect={false}
-                          placeholder={'BIN NUMBER'}
-                          value={`${item['binNumber'] || ''}`}
-                          onChangeText={(text) =>
-                            onUpdateBinInfo(index, { binNumber: text })
-                          }
-                          editable={
-                            status === 'ACTIVE' &&
-                            focusedJob.isAllowDriverEditOnApp
-                          }
-                        />
-                        <SpaceView mTop={SIZE1} />
-                      </FlexWrap>
-                      {
-                        status !== 'COMPLETED' &&
-                        <RowWrap>
-                          <SpaceView mLeft={SIZE3} />
-                          <TouchableOpacity
-                            disabled={
-                              !(
-                                status === 'ACTIVE' &&
-                                focusedJob.isAllowDriverEditOnApp
-                              )
-                            }
-                            onPress={() => onScanCode(index)}
-                          >
-                            <ScanCodeIcon />
-                          </TouchableOpacity>
-                          <SpaceView mLeft={SIZE3} />
-                          {
-                            item['binNumber']
-                            ? <GreenActiveCircleCheckIcon />
-                            : <DeactiveCircleCheckIcon />
-                          }
-                        </RowWrap>
-                      }
-                    </RowWrap>
-                    <BorderView
-                      color={
-                        status === 'ACTIVE' &&
-                        options.IsRequireBinNumberToEnd
-                        ? COLORS.BLUE1 : COLORS.GRAY2
-                      }
-                    />
-                    <SpaceView mTop={SIZE2} />
-                  </View>
+                  renderBinNumber({
+                    item,
+                    index,
+                    idx,
+                    options,
+                    status,
+                  })
                 }
-
                 {
-                  item['binType'] &&
-                  item['binType']['binTypeName'] &&
-                  <View>
-                    <SpaceView mTop={SIZE2} />
-                    <RowWrap>
-                      <FlexWrap>
-                        <LabelText>Bin Type</LabelText>
-                        <InfoText>
-                          {
-                            item['binType'] &&
-                            item['binType']['binTypeName']
-                          }
-                        </InfoText>
-                      </FlexWrap>
-                    </RowWrap>
-                    <SpaceView mTop={SIZE2} />
-                  </View>
+                  renderBinType({
+                    item,
+                    index,
+                    idx,
+                    options,
+                    status,
+                  })
                 }
-
                 {
-                  options.isRequireReviewWasteType &&
-                  <View>
-                    <SpaceView mTop={SIZE2} />
-                    <RowWrap>
-                      <FlexWrap>
-                        <LabelText>For Waste Type</LabelText>
-                        <TouchableOpacity
-                          disabled={
-                            !(
-                              status === 'ACTIVE' &&
-                              focusedJob.isAllowDriverEditOnApp
-                            )
-                          }
-                          onPress={() => onAddWasteTypes(index)}
-                        >
-                          <InfoText>
-                            {
-                              item['wasteType'] &&
-                              item['wasteType']['wasteTypeName']
-                            }
-                          </InfoText>
-                        </TouchableOpacity>
-                      </FlexWrap>
-                      {
-                        status === 'ACTIVE' &&
-                        focusedJob.isAllowDriverEditOnApp &&
-                        <TouchableOpacity
-                          onPress={() => onAddWasteTypes(index)}
-                        >
-                          <RowWrap>
-                            <SpaceView mLeft={SIZE2} />
-                            <BlueRightArrowIcon />
-                          </RowWrap>
-                        </TouchableOpacity>
-                      }
-                    </RowWrap>
-                    <SpaceView mTop={SIZE1} />
-                    <BorderView
-                      color={
-                        status === 'ACTIVE'
-                        ? COLORS.BLUE1 : COLORS.GRAY2
-                      }
-                    />
-                    <SpaceView mTop={SIZE2} />
-                  </View>
+                  renderWasteType({
+                    item,
+                    index,
+                    idx,
+                    options,
+                    status,
+                  })
                 }
-
                 {
-                  (
-                    options.mustTakePhoto ||
-                    options.mustTakeSignature
-                  ) &&
-                  <View>
-                    <SpaceView mTop={SIZE4} />
-                    <RowWrap>
-                      <FlexWrap>
-                        <RowWrap>
-                          {
-                            status === 'COMPLETED'
-                            ? <DeactivePhotosIcon />
-                            : <ActivePhotosIcon />
-                          }
-                          <SpaceView mLeft={SIZE2} />
-                          <InfoText>Photos</InfoText>
-                        </RowWrap>
-                      </FlexWrap>
-                      <RowWrap>
-                        <SpaceView mLeft={SIZE2} />
-                        <DeactiveCircleCheckIcon />
-                      </RowWrap>
-                    </RowWrap>
-                    <SpaceView mTop={SIZE4} />
-                    <RowWrap>
-                      {
-                        options.mustTakePhoto &&
-                        [0, 1].map((index) => {
-                          const data = photos.filter((photo) => (
-                            photo.jobStepId === item.jobStepId
-                          ));
-
-                          return (
-                            <>
-                              <FlexWrap flex={2}>
-                                {
-                                  data[index]
-                                  ? <TouchableOpacity
-                                      onPress={() => onShowPhotoModal(data[index])}
-                                      disabled={status !== 'ACTIVE'}
-                                    >
-                                      <PhotoWrap>
-                                        <FullImage source={{ uri: data[index].uri }} />
-                                      </PhotoWrap>
-
-                                    </TouchableOpacity>
-                                  : <TouchableOpacity
-                                      onPress={() => onPhoto(item.jobStepId)}
-                                      disabled={status !== 'ACTIVE'}
-                                    >
-                                      <PhotoWrap>
-                                        <LeftDash dashColor={COLORS.BLUE1} />
-                                        <TopDash dashColor={COLORS.BLUE1} />
-                                        <RightDash dashColor={COLORS.BLUE1} />
-                                        <BottomDash dashColor={COLORS.BLUE1} />
-
-                                        <PhotoAddIcon />
-                                      </PhotoWrap>
-                                    </TouchableOpacity>
-                                }
-                              </FlexWrap>
-                              <SpaceView mLeft={SIZE2} />
-                            </>
-                          );
-                        })
-                      }
-
-                      {
-                        options.mustTakeSignature
-                        ? <>
-                            <FlexWrap flex={3}>
-                              {
-                                sign.uri
-                                ? <TouchableOpacity
-                                    onPress={onSign}
-                                    disabled={status !== 'ACTIVE'}
-                                  >
-                                    <SignWrap>
-                                      <FullImage source={{ uri: sign.uri }} />
-                                    </SignWrap>
-                                  </TouchableOpacity>
-                                : <TouchableOpacity
-                                    onPress={onSign}
-                                    disabled={status !== 'ACTIVE'}
-                                  >
-                                    <SignWrap>
-                                      <LeftDash dashColor={COLORS.GREEN1} />
-                                      <TopDash dashColor={COLORS.GREEN1} />
-                                      <RightDash dashColor={COLORS.GREEN1} />
-                                      <BottomDash dashColor={COLORS.GREEN1} />
-
-                                      <SignAddIcon />
-                                    </SignWrap>
-                                  </TouchableOpacity>
-                              }
-                            </FlexWrap>
-                            {
-                              !options.mustTakePhoto &&
-                              <>
-                                <SpaceView mLeft={SIZE4} />
-                                <FlexWrap flex={4} />
-                              </>
-                            }
-                          </>
-                        : <FlexWrap flex={3} />
-                      }
-                    </RowWrap>
-                    <SpaceView mTop={SIZE4} />
-                  </View>
+                  renderPhotosAndSign({
+                    item,
+                    index,
+                    idx,
+                    options,
+                    status,
+                  })
                 }
-
                 {
-                  options.isRequirePaymentCollection &&
-                  <View>
-                    <SpaceView mTop={SIZE4} />
-                    <RowWrap>
-                      <FlexWrap>
-                        <RowWrap>
-                          {
-                            status === 'COMPLETED'
-                            ? <DeactivePhotosIcon />
-                            : <ActivePaymentIcon />
-                          }
-                          <SpaceView mLeft={SIZE2} />
-                          <InfoText>Collect</InfoText>
-                        </RowWrap>
-                      </FlexWrap>
-                      <RowWrap>
-                        <SpaceView mLeft={SIZE2} />
-                        <DeactiveCircleCheckIcon />
-                      </RowWrap>
-                    </RowWrap>
-                    <SpaceView mTop={SIZE4} />
-                    <RowWrap>
-                      <View>
-                        <InfoText>$</InfoText>
-                        <SpaceView mTop={SIZE1} />
-                      </View>
-                      <SpaceView mLeft={SIZE4} />
-                      <FlexWrap>
-                        <InfoText>100</InfoText>
-                        <SpaceView mTop={SIZE1} />
-                        <BorderView />
-                      </FlexWrap>
-                      <SpaceView mLeft={SIZE4} />
-                      <FlexWrap>
-                        <InfoText>CASH</InfoText>
-                        <SpaceView mTop={SIZE1} />
-                        <BorderView />
-                      </FlexWrap>
-                    </RowWrap>
-                    <SpaceView mTop={SIZE4} />
-                  </View>
+                  renderPayment({
+                    item,
+                    index,
+                    idx,
+                    options,
+                    status,
+                  })
                 }
-
                 {
-                  <View>
-                    <SpaceView mTop={SIZE4} />
-                    <RowWrap>
-                      <FlexWrap flex={1} />
-                      <FlexWrap flex={2}>
-                        <DefaultButton
-                          color={
-                            status === 'ACTIVE'
-                            ? COLORS.BLUE1 : COLORS.WHITE1
-                          }
-                          text={
-                            status === 'COMPLETED'
-                            ? 'Completed' : 'Complete'
-                          }
-                          onPress={
-                            status === 'ACTIVE'
-                            ? onNextStep : null
-                          }
-                          loading={
-                            status === 'ACTIVE'
-                            ? loading : null
-                          }
-                          textColor={
-                            status === 'NOT_STARTED'
-                            ? COLORS.BLUE1
-                            : status === 'ACTIVE'
-                              ? COLORS.WHITE1
-                              : COLORS.BLACK2
-                          }
-                          bRadius={SIZE4}
-                          borderColor={
-                            status === 'NOT_STARTED'
-                            ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-                          }
-                        />
-                      </FlexWrap>
-                      <FlexWrap flex={1} />
-                    </RowWrap>
-                    <SpaceView mTop={SIZE4} />
-                  </View>
+                  renderCompleteButton({
+                    item,
+                    index,
+                    idx,
+                    options,
+                    status,
+                  })
                 }
               </ContentWrap>
             </BinWrap>
           </View>
         );
       })
+    );
+  };
+
+  const renderBinWeight = () => {
+    const index = binWeightStepIndex;
+
+    if (index === -1) {
+      return null;
+    }
+
+    const item = focusedJob.steps[index]
+
+    const options = getBinInfoOptions(index);
+    const status = getBinInfoStatus(index);
+    const idx = getBinInOutInfoIndex(index);
+
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <BinWrap
+          active={status === 'ACTIVE'}
+        >
+          <ContentWrap
+            mLeft={0.1} mRight={0.1}
+          >
+            <RowWrap>
+              <FlexWrap>
+                <RowWrap>
+                  {
+                    status === 'COMPLETED'
+                    ? <DeactiveBinWeightIcon />
+                    : <ActiveBinWeightIcon />
+                  }
+                  <SpaceView mLeft={SIZE2} />
+                  <TitleText>Bin Weight</TitleText>
+                </RowWrap>
+              </FlexWrap>
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <DeactiveCircleCheckIcon />
+              </RowWrap>
+            </RowWrap>
+          </ContentWrap>
+          <BorderView />
+          <ContentWrap
+            mLeft={0.1} mRight={0.1}
+          >
+            {
+              renderWasteType({
+                item,
+                index,
+                idx,
+                options,
+                status,
+              })
+            }
+            {
+              renderPhotosAndSign({
+                item,
+                index,
+                idx,
+                options,
+                status,
+              })
+            }
+            {
+              renderPayment({
+                item,
+                index,
+                idx,
+                options,
+                status,
+              })
+            }
+            {
+              renderCompleteButton({
+                item,
+                index,
+                idx,
+                options,
+                status,
+              })
+            }
+          </ContentWrap>
+        </BinWrap>
+      </View>
     );
   };
 
@@ -1251,7 +1453,8 @@ const JobDetailsScreenView = ({
 
     if (
       currentStep === 1 ||
-      currentStep === 2
+      currentStep === 2 ||
+      currentStep === 3
     ) {
       return (
         <ScreenText>
@@ -1368,6 +1571,7 @@ const JobDetailsScreenView = ({
           { renderType() }
           { renderDriverNote() }
           { renderBinInfo() }
+          { renderBinWeight() }
           {
             // renderPayments()
           }

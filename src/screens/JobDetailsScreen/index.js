@@ -314,20 +314,20 @@ const JobDetailsScreen = ({
   };
 
   const onComplete = () => {
-    if (focusedJob.mustTakePhoto && photos.length === 0) {
-      Alert.alert('Warning', 'Please upload photos.');
-      return;
-    }
+    // if (focusedJob.mustTakePhoto && photos.length === 0) {
+    //   Alert.alert('Warning', 'Please upload photos.');
+    //   return;
+    // }
 
-    if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
-      Alert.alert('Warning', 'Please upload signature.');
-      return;
-    }
+    // if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
+    //   Alert.alert('Warning', 'Please upload signature.');
+    //   return;
+    // }
 
-    if (focusedJob.isEnabledCashCollection && cashIndex === -1) {
-      Alert.alert('Warning', 'Please select payments.');
-      return;
-    }
+    // if (focusedJob.isEnabledCashCollection && cashIndex === -1) {
+    //   Alert.alert('Warning', 'Please select payments.');
+    //   return;
+    // }
 
     if (isInBackgroundMode) {
       Alert.alert(
