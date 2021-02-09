@@ -160,16 +160,6 @@ const JobDetailsScreenView = ({
     setStepStatus(jobStatus);
   }, [jobStatus]);
 
-  // const isForComplete = useMemo(() => {
-  //   return (
-  //     jobStatus === JOB_STATUS.IN_PROGRESS ||
-  //     (
-  //       jobStatus === JOB_STATUS.STARTED &&
-  //       focusedJob.steps.length === 2
-  //     )
-  //   );
-  // }, [jobStatus]);
-
   const currentStep = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
@@ -202,7 +192,7 @@ const JobDetailsScreenView = ({
         return 0.5;
 
       default:
-        return 0.5; // ?
+        return 0.5;
     };
   }, [
     stepStatus,
