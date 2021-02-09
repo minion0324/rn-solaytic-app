@@ -119,8 +119,6 @@ const JobDetailsScreenView = ({
   loading,
   photos,
   sign,
-  signedUserName,
-  signedUserContact,
   binInfo,
   setBinInfo,
   jobStatus,
@@ -377,6 +375,36 @@ const JobDetailsScreenView = ({
     },
     [
       started,
+      focusedJob.jobTypeName,
+    ],
+  );
+
+  const onNextStep = useCallback(
+    () => {
+      switch (focusedJob.jobTypeName) {
+        case JOB_TYPE.PULL:
+
+          return;
+
+        case JOB_TYPE.PUT:
+          return;
+
+        case JOB_TYPE.EXCHANGE:
+
+          console.log(currentStep);
+
+          return;
+
+        case JOB_TYPE.ON_THE_SPOT:
+          return;
+
+        default:
+          return; // ?
+      };
+    },
+    [
+      currentStep,
+      jobStatus,
       focusedJob.jobTypeName,
     ],
   );
@@ -1038,7 +1066,7 @@ const JobDetailsScreenView = ({
                             status === 'COMPLETED'
                             ? 'Completed' : 'Complete'
                           }
-                          onPress={null}
+                          onPress={onNextStep}
                           textColor={
                             status === 'NOT_STARTED'
                             ? COLORS.BLUE1
@@ -1342,8 +1370,6 @@ JobDetailsScreenView.propTypes = {
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
   sign: PropTypes.object,
-  signedUserName: PropTypes.string,
-  signedUserContact: PropTypes.string,
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
@@ -1376,8 +1402,6 @@ JobDetailsScreenView.propTypes = {
 
 JobDetailsScreenView.defaultProps = {
   sign: null,
-  signedUserName: '',
-  signedUserContact: '',
 };
 
 export default JobDetailsScreenView;
