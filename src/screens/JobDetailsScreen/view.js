@@ -170,6 +170,16 @@ const JobDetailsScreenView = ({
         return 0.5;
 
       case JOB_TYPE.PUT:
+        switch (stepStatus) {
+          case JOB_STATUS.ACKNOWLEDGED:
+            return 0.5;
+          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
+            return 1;
+          case JOB_STATUS.STARTED:
+            return 3.5;
+          case JOB_STATUS.COMPLETED:
+            return 4;
+        }
         return 0.5;
 
       case JOB_TYPE.EXCHANGE:
@@ -391,6 +401,15 @@ const JobDetailsScreenView = ({
           return;
 
         case JOB_TYPE.PUT:
+          if (
+            currentStep === 0.5
+          ) {
+            setStepStatus(jobStatus + STEP_STATUS_MARK);
+          } else if (currentStep === 1) {
+            onStart();
+          } else if (currentStep === 3.5) {
+            onComplete();
+          }
           return;
 
         case JOB_TYPE.EXCHANGE:
