@@ -192,6 +192,8 @@ const JobDetailsScreenView = ({
             return 3;
           case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
             return 3.5;
+          case JOB_STATUS.COMPLETED:
+            return 4;
         }
 
         return 0.5;
@@ -895,10 +897,13 @@ const JobDetailsScreenView = ({
             <InfoText>Photos</InfoText>
           </RowWrap>
         </FlexWrap>
-        <RowWrap>
-          <SpaceView mLeft={SIZE2} />
-          <DeactiveCircleCheckIcon />
-        </RowWrap>
+        {
+          status !== 'COMPLETED' &&
+          <RowWrap>
+            <SpaceView mLeft={SIZE2} />
+            <DeactiveCircleCheckIcon />
+          </RowWrap>
+        }
       </RowWrap>
       <SpaceView mTop={SIZE4} />
       <RowWrap>
@@ -1026,10 +1031,13 @@ const JobDetailsScreenView = ({
             <InfoText>Collect</InfoText>
           </RowWrap>
         </FlexWrap>
-        <RowWrap>
-          <SpaceView mLeft={SIZE2} />
-          <DeactiveCircleCheckIcon />
-        </RowWrap>
+        {
+          status !== 'COMPLETED' &&
+          <RowWrap>
+            <SpaceView mLeft={SIZE2} />
+            <DeactiveCircleCheckIcon />
+          </RowWrap>
+        }
       </RowWrap>
       <SpaceView mTop={SIZE4} />
       <RowWrap>
@@ -1262,14 +1270,17 @@ const JobDetailsScreenView = ({
                   <TitleText>Bin Weight</TitleText>
                 </RowWrap>
               </FlexWrap>
-              <RowWrap>
-                <SpaceView mLeft={SIZE2} />
-                {
-                  binInfo[binIndex]['binWeight']
-                  ? <GreenActiveCircleCheckIcon />
-                  : <DeactiveCircleCheckIcon />
-                }
-              </RowWrap>
+              {
+                status !== 'COMPLETED' &&
+                <RowWrap>
+                  <SpaceView mLeft={SIZE2} />
+                  {
+                    binInfo[binIndex]['binWeight']
+                    ? <GreenActiveCircleCheckIcon />
+                    : <DeactiveCircleCheckIcon />
+                  }
+                </RowWrap>
+              }
             </RowWrap>
           </ContentWrap>
           <BorderView />
