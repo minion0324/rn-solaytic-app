@@ -54,7 +54,7 @@ import {
 } from './styled';
 
 const {
-  PrintIcon,
+  ActivePrintIcon,
 } = SVGS;
 
 const PreviewScreen = ({
@@ -608,7 +608,7 @@ const PreviewScreen = ({
         centerIcon={
           <TouchableOpacity onPress={onPrint}>
             <RowWrap>
-              <PrintIcon />
+              <ActivePrintIcon />
               <SpaceView mLeft={SIZE1} />
               <ScreenText
                 color={COLORS.BLUE1}
