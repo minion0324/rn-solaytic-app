@@ -21,13 +21,17 @@ import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.
 import DrawerCloseIcon from 'src/assets/svgs/icon-close-drawer.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
-import ServiceIcon from 'src/assets/svgs/icon-service.svg';
+import ActiveServiceIcon from 'src/assets/svgs/icon-service-active.svg';
+import DeactiveServiceIcon from 'src/assets/svgs/icon-service-deactive.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
-import DateIcon from 'src/assets/svgs/icon-date.svg';
-import TimeIcon from 'src/assets/svgs/icon-time.svg';
-import ChatIcon from 'src/assets/svgs/icon-chat.svg';
+import ActiveDateIcon from 'src/assets/svgs/icon-date-active.svg';
+import DeactiveDateIcon from 'src/assets/svgs/icon-date-deactive.svg';
+import ActiveTimeIcon from 'src/assets/svgs/icon-time-active.svg';
+import DeactiveTimeIcon from 'src/assets/svgs/icon-time-deactive.svg';
+import ActiveChatIcon from 'src/assets/svgs/icon-chat-active.svg';
+import DeactiveChatIcon from 'src/assets/svgs/icon-chat-deactive.svg';
 import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
 import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
 import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
@@ -51,7 +55,8 @@ import Mask4Icon from 'src/assets/svgs/icon-mask4.svg';
 import Scan1Icon from 'src/assets/svgs/icon-scan1.svg';
 import Scan2Icon from 'src/assets/svgs/icon-scan2.svg';
 import KeyboardIcon from 'src/assets/svgs/icon-keyboard.svg';
-import PrintIcon from 'src/assets/svgs/icon-print.svg';
+import ActivePrintIcon from 'src/assets/svgs/icon-print-active.svg';
+import DeactivePrintIcon from 'src/assets/svgs/icon-print-deactive.svg';
 import ShareIcon from 'src/assets/svgs/icon-share.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import CheckIcon from 'src/assets/svgs/icon-check.svg';
@@ -92,13 +97,17 @@ export default {
   DrawerCloseIcon,
   HappyIcon,
   CalendarIcon,
-  ServiceIcon,
+  ActiveServiceIcon,
+  DeactiveServiceIcon,
   RetryIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
-  DateIcon,
-  TimeIcon,
-  ChatIcon,
+  ActiveDateIcon,
+  DeactiveDateIcon,
+  ActiveTimeIcon,
+  DeactiveTimeIcon,
+  ActiveChatIcon,
+  DeactiveChatIcon,
   ActiveBinInIcon,
   DeactiveBinInIcon,
   ActiveBinOutIcon,
@@ -122,7 +131,8 @@ export default {
   Scan1Icon,
   Scan2Icon,
   KeyboardIcon,
-  PrintIcon,
+  ActivePrintIcon,
+  DeactivePrintIcon,
   ShareIcon,
   CloseIcon,
   CheckIcon,
