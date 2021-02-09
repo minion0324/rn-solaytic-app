@@ -13,7 +13,7 @@ const {
   SideMenuIcon,
   CalendarIcon,
   ShareIcon,
-  PrintIcon,
+  DeactivePrintIcon,
   CloseIcon,
   CheckIcon,
 } = SVGS;
@@ -58,7 +58,7 @@ const Sharing = () => (
 
 const Printing = () => (
   <EmptyWrap>
-    <PrintIcon />
+    <DeactivePrintIcon />
   </EmptyWrap>
 );
 
