@@ -868,10 +868,10 @@ const JobDetailsScreenView = ({
                 }
 
                 {
-                  // (
-                  //   options.mustTakePhoto ||
-                  //   options.mustTakeSignature
-                  // ) &&
+                  (
+                    options.mustTakePhoto ||
+                    options.mustTakeSignature
+                  ) &&
                   <View>
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
@@ -894,7 +894,7 @@ const JobDetailsScreenView = ({
                     <SpaceView mTop={SIZE4} />
                     <RowWrap>
                       {
-                        // options.mustTakePhoto &&
+                        options.mustTakePhoto &&
                         [0, 1].map((index) => {
                           const data = photos.filter((photo) => (
                             photo.jobStepId === item.jobStepId
@@ -936,8 +936,7 @@ const JobDetailsScreenView = ({
                       }
 
                       {
-                        true
-                        // options.mustTakeSignature
+                        options.mustTakeSignature
                         ? <>
                             <FlexWrap flex={3}>
                               {
@@ -966,11 +965,11 @@ const JobDetailsScreenView = ({
                               }
                             </FlexWrap>
                             {
-                              // !options.mustTakePhoto &&
-                              // <>
-                              //   <SpaceView mLeft={SIZE4} />
-                              //   <FlexWrap flex={4} />
-                              // </>
+                              !options.mustTakePhoto &&
+                              <>
+                                <SpaceView mLeft={SIZE4} />
+                                <FlexWrap flex={4} />
+                              </>
                             }
                           </>
                         : <FlexWrap flex={3} />
