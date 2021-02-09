@@ -58,7 +58,7 @@ import {
 } from './styled';
 
 const {
-  ChatIcon,
+  ActiveChatIcon,
   SendIcon,
   MessageAvatarIcon,
 } = SVGS;
@@ -186,7 +186,7 @@ const DriverNoteScreen = ({
         <HeaderBar
           centerIcon={
             <RowWrap>
-              <ChatIcon />
+              <ActiveChatIcon />
               <SpaceView mLeft={SIZE1} />
               <ScreenText>Driver Chat</ScreenText>
             </RowWrap>
