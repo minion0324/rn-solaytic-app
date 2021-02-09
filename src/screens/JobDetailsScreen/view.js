@@ -232,19 +232,19 @@ const JobDetailsScreenView = ({
   const binWeightStepIndex = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
-        return 1;
+        return { index: 1, binIndex: 0 };
 
       case JOB_TYPE.PUT:
-        return -1;
+        return { index: -1 };
 
       case JOB_TYPE.EXCHANGE:
-        return 2;
+        return { index: 2, binIndex: 1 };
 
       case JOB_TYPE.ON_THE_SPOT:
-        return 2;
+        return { index: 2, binIndex: 0 };
 
       default:
-        return -1; // ?
+        return { index: -1 };
     };
   }, [
     focusedJob.jobTypeName,
@@ -908,8 +908,11 @@ const JobDetailsScreenView = ({
             ));
 
             return (
-              <>
-                <FlexWrap flex={2}>
+              [
+                <FlexWrap
+                  key={`${index}-FlexWrap`}
+                  flex={2}
+                >
                   {
                     data[index]
                     ? <TouchableOpacity
@@ -936,8 +939,12 @@ const JobDetailsScreenView = ({
                       </TouchableOpacity>
                   }
                 </FlexWrap>
-                <SpaceView mLeft={SIZE2} />
-              </>
+                ,
+                <SpaceView
+                  key={`${index}-SpaceView`}
+                  mLeft={SIZE2}
+                />
+              ]
             );
           })
         }
@@ -1211,13 +1218,13 @@ const JobDetailsScreenView = ({
   };
 
   const renderBinWeight = () => {
-    const index = binWeightStepIndex;
+    const { index, binIndex } = binWeightStepIndex;
 
     if (index === -1) {
       return null;
     }
 
-    const item = focusedJob.steps[index]
+    const item = focusedJob.steps[index];
 
     const options = getBinInfoOptions(index);
     const status = getBinInfoStatus(index);
@@ -1246,7 +1253,11 @@ const JobDetailsScreenView = ({
               </FlexWrap>
               <RowWrap>
                 <SpaceView mLeft={SIZE2} />
-                <DeactiveCircleCheckIcon />
+                {
+                  binInfo[binIndex]['binWeight']
+                  ? <GreenActiveCircleCheckIcon />
+                  : <DeactiveCircleCheckIcon />
+                }
               </RowWrap>
             </RowWrap>
           </ContentWrap>
@@ -1254,6 +1265,46 @@ const JobDetailsScreenView = ({
           <ContentWrap
             mLeft={0.1} mRight={0.1}
           >
+              <SpaceView mTop={SIZE2} />
+              <RowWrap>
+                <FlexWrap>
+                  <RowWrap>
+                    <FlexWrap>
+                      <BinInput
+                        underlineColorAndroid={COLORS.TRANSPARENT1}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        placeholder={'BIN WEIGHT'}
+                        value={`${binInfo[binIndex]['binWeight'] || ''}`}
+                        onChangeText={(text) =>
+                          onUpdateBinInfo(binIndex, { binWeight: text })
+                        }
+                        editable={
+                          status === 'ACTIVE' &&
+                          focusedJob.isAllowDriverEditOnApp
+                        }
+                        keyboardType={'numeric'}
+                      />
+                      <SpaceView mTop={SIZE1} />
+                    </FlexWrap>
+                  </RowWrap>
+                  <BorderView
+                    color={
+                      status === 'ACTIVE' &&
+                      options.isRequireBinWeight
+                      ? COLORS.BLUE1 : COLORS.GRAY2
+                    }
+                  />
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+                <View>
+                  <InfoText>tons</InfoText>
+                  <SpaceView mTop={SIZE1} />
+                </View>
+              </RowWrap>
+              <SpaceView mTop={SIZE2} />
+
+
             {
               renderWasteType({
                 item,
