@@ -45,7 +45,7 @@ import {
 
 const {
   SearchIcon,
-  ServiceIcon,
+  ActiveServiceIcon,
   BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   AddCircleIcon,
@@ -202,7 +202,7 @@ const AddServicesScreen = ({
         <HeaderBar
           centerIcon={
             <RowWrap>
-              <ServiceIcon />
+              <ActiveServiceIcon />
               <SpaceView mLeft={SIZE1} />
               <ScreenText>Add Services</ScreenText>
             </RowWrap>
