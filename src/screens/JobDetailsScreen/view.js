@@ -167,6 +167,18 @@ const JobDetailsScreenView = ({
   const currentStep = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
+        switch (stepStatus) {
+          case JOB_STATUS.ACKNOWLEDGED:
+            return 0.5;
+          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
+            return 1;
+          case JOB_STATUS.STARTED:
+            return 2;
+          case JOB_STATUS.IN_PROGRESS:
+            return 3.5;
+          case JOB_STATUS.COMPLETED:
+            return 4;
+        }
         return 0.5;
 
       case JOB_TYPE.PUT:
@@ -199,10 +211,21 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.COMPLETED:
             return 4;
         }
-
         return 0.5;
 
       case JOB_TYPE.ON_THE_SPOT:
+        switch (stepStatus) {
+          case JOB_STATUS.ACKNOWLEDGED:
+            return 0.5;
+          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
+            return 1;
+          case JOB_STATUS.STARTED:
+            return 2;
+          case JOB_STATUS.IN_PROGRESS:
+            return 3.5;
+          case JOB_STATUS.COMPLETED:
+            return 4;
+        }
         return 0.5;
 
       default:
@@ -246,7 +269,7 @@ const JobDetailsScreenView = ({
         return { index: 2, binIndex: 1 };
 
       case JOB_TYPE.ON_THE_SPOT:
-        return { index: 2, binIndex: 0 };
+        return { index: 1, binIndex: 0 };
 
       default:
         return { index: -1 };
@@ -397,13 +420,19 @@ const JobDetailsScreenView = ({
     () => {
       switch (focusedJob.jobTypeName) {
         case JOB_TYPE.PULL:
-
+          if (currentStep === 0.5) {
+            setStepStatus(jobStatus + STEP_STATUS_MARK);
+          } else if (currentStep === 1) {
+            onStart();
+          } else if (currentStep === 2) {
+            onPull();
+          } else if (currentStep === 3.5) {
+            onComplete();
+          }
           return;
 
         case JOB_TYPE.PUT:
-          if (
-            currentStep === 0.5
-          ) {
+          if (currentStep === 0.5) {
             setStepStatus(jobStatus + STEP_STATUS_MARK);
           } else if (currentStep === 1) {
             onStart();
@@ -413,7 +442,6 @@ const JobDetailsScreenView = ({
           return;
 
         case JOB_TYPE.EXCHANGE:
-
           if (
             currentStep === 0.5 ||
             currentStep === 1.5 ||
@@ -427,14 +455,23 @@ const JobDetailsScreenView = ({
           } else if (currentStep === 3.5) {
             onComplete();
           }
-
           return;
 
         case JOB_TYPE.ON_THE_SPOT:
+          case JOB_TYPE.PULL:
+            if (currentStep === 0.5) {
+              setStepStatus(jobStatus + STEP_STATUS_MARK);
+            } else if (currentStep === 1) {
+              onStart();
+            } else if (currentStep === 2) {
+              onExchange();
+            } else if (currentStep === 3.5) {
+              onComplete();
+            }
           return;
 
         default:
-          return; // ?
+          return;
       };
     },
     [
@@ -1527,8 +1564,10 @@ const JobDetailsScreenView = ({
   };
 
   const renderHeaderContent = () => {
-    const forToday = getDate() ===
-      getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
+    // const forToday = getDate() ===
+    //   getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
+
+    const forToday = true;
 
     if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
       return (
