@@ -42,8 +42,6 @@ import ScanCodeIcon from 'src/assets/svgs/icon-code-scan.svg';
 import Phone1Icon from 'src/assets/svgs/icon-phone1.svg';
 import Phone2Icon from 'src/assets/svgs/icon-phone2.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
-import UpArrowIcon from 'src/assets/svgs/icon-arrow-up.svg';
-import DownArrowIcon from 'src/assets/svgs/icon-arrow-down.svg';
 import CircleIcon from 'src/assets/svgs/icon-circle.svg';
 import AddCircleIcon from 'src/assets/svgs/icon-circle-add.svg';
 import RemoveCircleIcon from 'src/assets/svgs/icon-circle-remove.svg';
@@ -118,8 +116,6 @@ export default {
   Phone1Icon,
   Phone2Icon,
   MapIcon,
-  UpArrowIcon,
-  DownArrowIcon,
   CircleIcon,
   AddCircleIcon,
   RemoveCircleIcon,
