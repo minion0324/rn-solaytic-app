@@ -61,7 +61,7 @@ const JOB_TYPE = {
   PULL: 'Pull',
   PUT: 'Put',
   EXCHANGE: 'Exchange',
-  ON_THE_SPOT: 'OnTheSpot',
+  ON_THE_SPOT: 'On The Spot',
   OUT: 'Out',
   SHIFT: 'Shift',
   THROW_AT_CUSTOMER: 'ThrowAtCustomer',
