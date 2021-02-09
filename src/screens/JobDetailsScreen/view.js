@@ -115,6 +115,8 @@ const {
   BackPhotoIcon,
 } = SVGS;
 
+const STEP_STATUS_MARK = '_Next';
+
 const JobDetailsScreenView = ({
   loading,
   photos,
@@ -148,12 +150,12 @@ const JobDetailsScreenView = ({
   onScanCode,
   onPrint,
 }) => {
-  const [ started, setStarted ] = useState(false);
+  const [ stepStatus, setStepStatus ] = useState('');
 
   // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
   useEffect(() => {
-    setStarted(jobStatus !== JOB_STATUS.ACKNOWLEDGED);
+    setStepStatus(jobStatus);
   }, [jobStatus]);
 
   // const isForComplete = useMemo(() => {
@@ -167,29 +169,38 @@ const JobDetailsScreenView = ({
   // }, [jobStatus]);
 
   const currentStep = useMemo(() => {
+    console.log('------------- step status');
+    console.log(stepStatus);
+
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
-        return 0;
+        return 0.5;
 
       case JOB_TYPE.PUT:
-        return 0;
+        return 0.5;
 
       case JOB_TYPE.EXCHANGE:
-        if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
-          return started ? 1 : 0;
+        switch (stepStatus) {
+          case JOB_STATUS.ACKNOWLEDGED:
+            return 0.5;
+          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
+            return 1;
+          case JOB_STATUS.STARTED:
+            return 1.5;
+          case JOB_STATUS.STARTED + STEP_STATUS_MARK:
+            return 2;
         }
 
-        return 0;
+        return 0.5;
 
       case JOB_TYPE.ON_THE_SPOT:
-        return 0;
+        return 0.5;
 
       default:
-        return 0; // ?
+        return 0.5; // ?
     };
   }, [
-    started,
-    jobStatus,
+    stepStatus,
     focusedJob.jobTypeName,
   ]);
 
@@ -352,33 +363,6 @@ const JobDetailsScreenView = ({
     [currentStep],
   );
 
-  const onStartJob = useCallback(
-    () => {
-      switch (focusedJob.jobTypeName) {
-        case JOB_TYPE.PULL:
-          onStart();
-          return;
-
-        case JOB_TYPE.PUT:
-          return;
-
-        case JOB_TYPE.EXCHANGE:
-          setStarted(true);
-          return;
-
-        case JOB_TYPE.ON_THE_SPOT:
-          return;
-
-        default:
-          return; // ?
-      };
-    },
-    [
-      started,
-      focusedJob.jobTypeName,
-    ],
-  );
-
   const onNextStep = useCallback(
     () => {
       switch (focusedJob.jobTypeName) {
@@ -391,7 +375,16 @@ const JobDetailsScreenView = ({
 
         case JOB_TYPE.EXCHANGE:
 
-          console.log(currentStep);
+          if (
+            currentStep === 0.5 ||
+            currentStep === 1.5
+          ) {
+            setStepStatus(jobStatus + STEP_STATUS_MARK);
+          } else if (currentStep === 1) {
+            onStart();
+          } else if (currentStep === 2) {
+            onExchange();
+          }
 
           return;
 
@@ -1066,7 +1059,14 @@ const JobDetailsScreenView = ({
                             status === 'COMPLETED'
                             ? 'Completed' : 'Complete'
                           }
-                          onPress={onNextStep}
+                          onPress={
+                            status === 'ACTIVE'
+                            ? onNextStep : null
+                          }
+                          loading={
+                            status === 'ACTIVE'
+                            ? loading : null
+                          }
                           textColor={
                             status === 'NOT_STARTED'
                             ? COLORS.BLUE1
@@ -1233,7 +1233,7 @@ const JobDetailsScreenView = ({
       );
     }
 
-    if (currentStep === 0) {
+    if (currentStep === 0.5) {
       return (
         <DefaultButton
           color={
@@ -1242,18 +1242,32 @@ const JobDetailsScreenView = ({
           }
           text={'Start Job'}
           onPress={
-            forToday ? onStartJob : null
+            forToday ? onNextStep : null
           }
           loading={loading}
         />
       );
     }
 
-    if (currentStep === 1) {
+    if (
+      currentStep === 1 ||
+      currentStep === 2
+    ) {
       return (
         <ScreenText>
           {`Step ${currentStep}/${totalStep}`}
         </ScreenText>
+      );
+    }
+
+    if (currentStep === 1.5) {
+      return (
+        <DefaultButton
+          color={COLORS.BLUE1}
+          text={'In Progress'}
+          onPress={onNextStep}
+          loading={loading}
+        />
       );
     }
 
@@ -1273,47 +1287,47 @@ const JobDetailsScreenView = ({
     //   );
     // }
 
-    if (
-      focusedJob.jobTypeName === JOB_TYPE.PULL &&
-      jobStatus === JOB_STATUS.STARTED
-    ) {
-      return (
-        <DefaultButton
-          color={COLORS.PURPLE1}
-          text={'Pull'}
-          onPress={onPull}
-          loading={loading}
-        />
-      );
-    }
+    // if (
+    //   focusedJob.jobTypeName === JOB_TYPE.PULL &&
+    //   jobStatus === JOB_STATUS.STARTED
+    // ) {
+    //   return (
+    //     <DefaultButton
+    //       color={COLORS.PURPLE1}
+    //       text={'Pull'}
+    //       onPress={onPull}
+    //       loading={loading}
+    //     />
+    //   );
+    // }
 
-    if (
-      focusedJob.steps.length === 3 &&
-      jobStatus === JOB_STATUS.STARTED
-    ) {
-      return (
-        <DefaultButton
-          color={COLORS.PURPLE1}
-          text={'Exchange'}
-          onPress={onExchange}
-          loading={loading}
-        />
-      );
-    }
+    // if (
+    //   focusedJob.steps.length === 3 &&
+    //   jobStatus === JOB_STATUS.STARTED
+    // ) {
+    //   return (
+    //     <DefaultButton
+    //       color={COLORS.PURPLE1}
+    //       text={'Exchange'}
+    //       onPress={onExchange}
+    //       loading={loading}
+    //     />
+    //   );
+    // }
 
-    if (
-      jobStatus === JOB_STATUS.STARTED ||
-      jobStatus === JOB_STATUS.IN_PROGRESS
-    ) {
-      return (
-        <DefaultButton
-          color={COLORS.GREEN1}
-          text={'Complete'}
-          onPress={onComplete}
-          loading={loading}
-        />
-      );
-    }
+    // if (
+    //   jobStatus === JOB_STATUS.STARTED ||
+    //   jobStatus === JOB_STATUS.IN_PROGRESS
+    // ) {
+    //   return (
+    //     <DefaultButton
+    //       color={COLORS.GREEN1}
+    //       text={'Complete'}
+    //       onPress={onComplete}
+    //       loading={loading}
+    //     />
+    //   );
+    // }
 
     return (
       <ScreenText>{jobStatus}</ScreenText>
