@@ -88,14 +88,18 @@ import {
 
 const {
   BlueRightArrowIcon,
-  DateIcon,
-  TimeIcon,
-  ChatIcon,
+  ActiveDateIcon,
+  DeactiveDateIcon,
+  ActiveTimeIcon,
+  DeactiveTimeIcon,
+  ActiveChatIcon,
+  DeactiveChatIcon,
   ActiveBinInIcon,
   DeactiveBinInIcon,
   ActiveBinOutIcon,
   DeactiveBinOutIcon,
-  ServiceIcon,
+  ActiveServiceIcon,
+  DeactiveServiceIcon,
   FailIcon,
   ScanCodeIcon,
   UpArrowIcon,
@@ -588,7 +592,11 @@ const JobDetailsScreenView = ({
             <RowWrap>
               <FlexWrap>
                 <RowWrap>
-                  <ServiceIcon />
+                  {
+                    jobStatus === JOB_STATUS.COMPLETED
+                    ? <DeactiveServiceIcon />
+                    : <ActiveServiceIcon />
+                  }
                   <SpaceView mLeft={SIZE2} />
                   <TitleText>
                     Add Services
@@ -1371,7 +1379,11 @@ const JobDetailsScreenView = ({
             <RowWrap>
               <FlexWrap>
                 <RowWrap>
-                  <ChatIcon />
+                  {
+                    jobStatus === JOB_STATUS.COMPLETED
+                    ? <DeactiveChatIcon />
+                    : <ActiveChatIcon />
+                  }
                   <SpaceView mLeft={SIZE2} />
                   <TitleText>Driver Message</TitleText>
                   {
@@ -1429,7 +1441,11 @@ const JobDetailsScreenView = ({
               </TitleText>
             </FlexWrap>
               <RowWrap>
-                <DateIcon />
+                {
+                  jobStatus === JOB_STATUS.COMPLETED
+                  ? <DeactiveDateIcon />
+                  : <ActiveDateIcon />
+                }
                 <SpaceView mLeft={SIZE1} />
                 <LabelText>
                   {
@@ -1438,7 +1454,11 @@ const JobDetailsScreenView = ({
                   }
                 </LabelText>
                 <SpaceView mLeft={SIZE2} />
-                <TimeIcon />
+                {
+                  jobStatus === JOB_STATUS.COMPLETED
+                  ? <DeactiveTimeIcon />
+                  : <ActiveTimeIcon />
+                }
                 <SpaceView mLeft={SIZE1} />
                 <LabelText>
                   {
@@ -1461,6 +1481,7 @@ const JobDetailsScreenView = ({
     return (
       <TouchableOpacity
         onPress={() => onAddress(index)}
+        disabled={jobStatus === JOB_STATUS.COMPLETED}
       >
 
         <ContentWrap
@@ -1473,10 +1494,13 @@ const JobDetailsScreenView = ({
                 {steps[index].address}
               </InfoText>
             </FlexWrap>
-            <RowWrap>
-              <SpaceView mLeft={SIZE2} />
-              <BlueRightArrowIcon />
-            </RowWrap>
+            {
+              jobStatus !== JOB_STATUS.COMPLETED &&
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <BlueRightArrowIcon />
+              </RowWrap>
+            }
           </RowWrap>
         </ContentWrap>
       </TouchableOpacity>
