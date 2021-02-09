@@ -24,7 +24,6 @@ import {
   apiGetJobById,
   apiMarkMessagesAsRead,
   apiAddMessage,
-  apiUpdateAmountCollected,
 } from 'src/services';
 import {
   Jobs,
@@ -1012,34 +1011,6 @@ export function* watchAddMessage() {
   }
 }
 
-export function* asyncUpdateAmountCollected({ payload }) {
-  const {
-    jobIds, amountCollected, success, failure,
-  } = payload;
-
-  try {
-    const attempt = {
-      amountCollected,
-    };
-
-    yield call(apiUpdateAmountCollected, jobIds, attempt);
-
-    yield put(actionCreators.updateAmountCollectedSuccess(amountCollected));
-
-    success && success();
-  } catch (error) {
-    yield onError(error);
-    failure && failure();
-  }
-}
-
-export function* watchUpdateAmountCollected() {
-  while (true) {
-    const action = yield take(UPDATE_AMOUNT_COLLECTED);
-    yield* asyncUpdateAmountCollected(action);
-  }
-}
-
 export function* fetchData() {
   try {
     const res = yield all([
@@ -1079,6 +1050,5 @@ export default function* () {
     fork(watchGetJobById),
     fork(watchMarkMessagesAsRead),
     fork(watchAddMessage),
-    fork(watchUpdateAmountCollected),
   ]);
 }

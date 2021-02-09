@@ -55,7 +55,6 @@ const JobDetailsScreen = ({
   pullJobs,
   exchangeJobs,
   completeJobs,
-  updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
   getJobDates,
@@ -441,26 +440,6 @@ const JobDetailsScreen = ({
     setSignedUserContact(photosAndSign.signedUserContact);
   };
 
-  const onUpdateAmountCollected = (amount) => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
-
-    updateAmountCollected({
-      jobIds: `${focusedJob.jobId}`,
-      amountCollected: +amount,
-    });
-  };
-
-  const onAlertNotProgress = () => {
-    if (!isInProgress) {
-      Alert.alert('Warning', 'This job is not in progress now.');
-      return false;
-    }
-
-    return true;
-  };
-
   const onFail = () => {
     pushScreen(componentId, FAIL_JOB_SCREEN);
   };
@@ -527,8 +506,6 @@ const JobDetailsScreen = ({
       onPhoto={onPhoto}
       onSign={onSign}
       onCancelPhoto={onCancelPhoto}
-      onUpdateAmountCollected={onUpdateAmountCollected}
-      onAlertNotProgress={onAlertNotProgress}
       onFail={onFail}
       onAddress={onAddress}
       onDriverNote={onDriverNote}
@@ -551,7 +528,6 @@ JobDetailsScreen.propTypes = {
   pullJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
   getJobDates: PropTypes.func.isRequired,
@@ -578,7 +554,6 @@ const mapDispatchToProps = {
   pullJobs: Jobs.actionCreators.pullJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
   getJobDates: ViewStore.actionCreators.getJobDates,

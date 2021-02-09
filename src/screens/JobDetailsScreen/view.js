@@ -8,8 +8,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Alert,
-  Keyboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -22,24 +20,18 @@ import {
   SIZE2,
   SIZE3,
   SIZE4,
-  SIZE10,
   JOB_TYPE,
   JOB_STATUS,
 } from 'src/constants';
 import {
   HeaderBar,
   DefaultButton,
-  ItemWrap,
 } from 'src/components';
 import {
   showLightBox,
   dismissLightBox,
   CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
-import {
-  delay,
-  getDate,
-} from 'src/utils';
 
 import {
   Container,
@@ -68,14 +60,6 @@ import {
   InfoText,
   LabelText,
 } from 'src/styles/text.styles';
-import {
-  ModalWrap,
-  ModalTopText,
-  ModalInput,
-  OkCancelRow,
-  OkCancelButton,
-  OkCancelText,
-} from 'src/styles/modal.styles';
 
 import {
   DriverNoteBadge,
@@ -102,10 +86,7 @@ const {
   DeactiveServiceIcon,
   FailIcon,
   ScanCodeIcon,
-  UpArrowIcon,
-  DownArrowIcon,
   GreenActiveCircleCheckIcon,
-  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   ActivePhotosIcon,
   DeactivePhotosIcon,
@@ -131,8 +112,6 @@ const JobDetailsScreenView = ({
   setBinInfo,
   jobStatus,
   services,
-  cashIndex,
-  setCashIndex,
   isInProgress,
 
   focusedJob,
@@ -146,8 +125,6 @@ const JobDetailsScreenView = ({
   onPhoto,
   onSign,
   onCancelPhoto,
-  onUpdateAmountCollected,
-  onAlertNotProgress,
   onFail,
   onAddress,
   onDriverNote,
@@ -157,8 +134,6 @@ const JobDetailsScreenView = ({
   onPrint,
 }) => {
   const [ stepStatus, setStepStatus ] = useState('');
-
-  // const [ paymentsActive, setPaymentsActive ] = useState(false);
 
   useEffect(() => {
     setStepStatus(jobStatus);
@@ -251,7 +226,7 @@ const JobDetailsScreenView = ({
         return 2;
 
       default:
-        return 2; // ?
+        return 2;
     };
   }, [
     focusedJob.jobTypeName,
@@ -492,79 +467,12 @@ const JobDetailsScreenView = ({
     setBinInfo(newBinInfo);
   };
 
-  // const onShowAmountModal = () => {
-  //   if (!onAlertNotProgress()) {
-  //     return;
-  //   }
-
-  //   showLightBox(CUSTOM_MODAL_SCREEN, {
-  //     offsetFromCenter: SIZE10,
-  //     dismissible: false,
-  //     getContent: renderAmountModal,
-  //   });
-  // };
-
-  // const onDismissAmountModal = async (containerId) => {
-  //   Keyboard.dismiss();
-
-  //   await delay(100);
-  //   dismissLightBox(containerId);
-  // };
-
-  // const onAddAmount = (amount, containerId) => {
-  //   if (!amount) {
-  //     Alert.alert('Warning', 'Please enter amount.');
-  //     return;
-  //   }
-
-  //   if (+amount <= 0) {
-  //     Alert.alert('Warning', 'Please enter amount greater than 0.');
-  //     return;
-  //   }
-
-  //   onUpdateAmountCollected(amount);
-  //   onDismissAmountModal(containerId);
-  // };
-
   const onShowPhotoModal = (selectedPhoto) => {
     showLightBox(CUSTOM_MODAL_SCREEN, {
       props: { selectedPhoto },
       getContent: renderPhotoModal,
     });
   };
-
-  // const renderAmountModal = (containerId, { modalData, setModalData }) => {
-  //   return (
-  //     <ModalWrap>
-  //       <ModalTopText>Enter amount</ModalTopText>
-  //       <ModalInput
-  //         underlineColorAndroid={COLORS.TRANSPARENT1}
-  //         autoCapitalize={'none'}
-  //         autoCorrect={false}
-  //         onChangeText={text => setModalData(text)}
-  //         value={modalData}
-  //         keyboardType={'numeric'}
-  //       />
-  //       <OkCancelRow>
-  //         <OkCancelButton
-  //           onPress={() => {
-  //             if (!focusedJob.collectedAmount) {
-  //               setCashIndex(-1);
-  //             }
-  //             onDismissAmountModal(containerId);
-  //           }}
-  //         >
-  //           <OkCancelText>Cancel</OkCancelText>
-  //         </OkCancelButton>
-  //         <OkCancelButton
-  //           onPress={() => onAddAmount(modalData, containerId)}
-  //         >
-  //           <OkCancelText>Ok</OkCancelText>
-  //         </OkCancelButton>
-  //       </OkCancelRow>
-  //     </ModalWrap>
-  //   );
-  // };
 
   const renderPhotoModal = (containerId, { selectedPhoto }) => {
     return (
@@ -669,119 +577,6 @@ const JobDetailsScreenView = ({
       </View>
     );
   };
-
-  // const renderPayments = () => {
-  //   if (!focusedJob.isEnabledCashCollection) {
-  //     return null;
-  //   }
-
-  //   return (
-  //     <View>
-  //       <SpaceView mTop={SIZE2} />
-  //       <TouchableOpacity
-  //         disabled={!isInProgress}
-  //         onPress={() => setPaymentsActive(!paymentsActive)}
-  //       >
-  //         <ContentWrap>
-  //           <RowWrap>
-  //             <FlexWrap>
-  //               <RowWrap>
-  //                 <PaymentIcon />
-  //                 <SpaceView mLeft={SIZE2} />
-  //                 <TitleText>
-  //                   {
-  //                     cashIndex === -1
-  //                     ? 'Payments'
-  //                     : cashIndex === 0
-  //                       ? focusedJob.amountToCollect
-  //                         ? `Payments: Cash $${focusedJob.amountToCollect}`
-  //                         : 'Payments'
-  //                       : focusedJob.collectedAmount
-  //                         ? `Payments: Cash $${focusedJob.collectedAmount}`
-  //                         : 'Payments'
-  //                   }
-  //                 </TitleText>
-  //               </RowWrap>
-  //             </FlexWrap>
-  //             {
-  //               isInProgress &&
-  //               <RowWrap>
-  //                 <SpaceView mLeft={SIZE2} />
-  //                 {
-  //                   paymentsActive
-  //                   ? <UpArrowIcon />
-  //                   : <DownArrowIcon />
-  //                 }
-  //               </RowWrap>
-  //             }
-  //           </RowWrap>
-  //         </ContentWrap>
-  //       </TouchableOpacity>
-  //       {
-  //         paymentsActive &&
-  //         <View>
-  //           <BorderView
-  //             mLeft={SIZE2} mRight={SIZE2}
-  //           />
-  //           <ContentWrap>
-  //             <TouchableOpacity
-  //               onPress={() => {
-  //                 if (cashIndex !== 0) {
-  //                   onUpdateAmountCollected(0);
-  //                 }
-  //                 setCashIndex(cashIndex === 0 ? -1 : 0);
-  //               }}
-  //             >
-  //               <RowWrap>
-  //                 {
-  //                   cashIndex === 0
-  //                   ? <BlueActiveCircleCheckIcon />
-  //                   : <DeactiveCircleCheckIcon />
-  //                 }
-  //                 <SpaceView mLeft={SIZE2} />
-  //                 <InfoText>
-  //                   {
-  //                     'Collected: $' +
-  //                     `${focusedJob.amountToCollect || 0}`
-  //                   }
-  //                 </InfoText>
-  //               </RowWrap>
-  //             </TouchableOpacity>
-  //             <SpaceView mTop={SIZE2} />
-  //             <TouchableOpacity
-  //               onPress={() => {
-  //                 if (cashIndex !== 1) {
-  //                   onShowAmountModal();
-  //                 } else {
-  //                   onUpdateAmountCollected(0);
-  //                 }
-  //                 setCashIndex(cashIndex === 1 ? -1 : 1);
-  //               }}
-  //             >
-  //               <RowWrap>
-  //                 {
-  //                   cashIndex === 1
-  //                   ? <BlueActiveCircleCheckIcon />
-  //                   : <DeactiveCircleCheckIcon />
-  //                 }
-  //                 <SpaceView mLeft={SIZE2} />
-  //                 <InfoText>{'Others: $'}</InfoText>
-  //                 <AmountButton
-  //                   onPress={onShowAmountModal}
-  //                   disabled={cashIndex !== 1}
-  //                 >
-  //                   <InfoText numberOfLines={1}>
-  //                     {focusedJob.collectedAmount || ''}
-  //                   </InfoText>
-  //                 </AmountButton>
-  //               </RowWrap>
-  //             </TouchableOpacity>
-  //           </ContentWrap>
-  //         </View>
-  //       }
-  //     </View>
-  //   );
-  // };
 
   const renderBinNumber = ({
     item,
@@ -1070,7 +865,7 @@ const JobDetailsScreenView = ({
     options,
     status,
   }) => (
-    options.isRequirePaymentCollection &&
+    // options.isRequirePaymentCollection &&
     <View>
       <SpaceView mTop={SIZE4} />
       <RowWrap>
@@ -1630,64 +1425,6 @@ const JobDetailsScreenView = ({
       );
     }
 
-    // if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
-    //   return (
-    //     <DefaultButton
-    //       color={
-    //         forToday
-    //         ? COLORS.BLUE1 : COLORS.GRAY3
-    //       }
-    //       text={'Start Job'}
-    //       onPress={
-    //         forToday ? onStart : null
-    //       }
-    //       loading={loading}
-    //     />
-    //   );
-    // }
-
-    // if (
-    //   focusedJob.jobTypeName === JOB_TYPE.PULL &&
-    //   jobStatus === JOB_STATUS.STARTED
-    // ) {
-    //   return (
-    //     <DefaultButton
-    //       color={COLORS.PURPLE1}
-    //       text={'Pull'}
-    //       onPress={onPull}
-    //       loading={loading}
-    //     />
-    //   );
-    // }
-
-    // if (
-    //   focusedJob.steps.length === 3 &&
-    //   jobStatus === JOB_STATUS.STARTED
-    // ) {
-    //   return (
-    //     <DefaultButton
-    //       color={COLORS.PURPLE1}
-    //       text={'Exchange'}
-    //       onPress={onExchange}
-    //       loading={loading}
-    //     />
-    //   );
-    // }
-
-    // if (
-    //   jobStatus === JOB_STATUS.STARTED ||
-    //   jobStatus === JOB_STATUS.IN_PROGRESS
-    // ) {
-    //   return (
-    //     <DefaultButton
-    //       color={COLORS.GREEN1}
-    //       text={'Complete'}
-    //       onPress={onComplete}
-    //       loading={loading}
-    //     />
-    //   );
-    // }
-
     return (
       <ScreenText>{jobStatus}</ScreenText>
     );
@@ -1728,9 +1465,6 @@ const JobDetailsScreenView = ({
           { renderDriverNote() }
           { renderBinInfo() }
           { renderBinWeight() }
-          {
-            // renderPayments()
-          }
           { renderServices() }
           { renderFailJob() }
           <SpaceView mTop={SIZE2} />
@@ -1748,8 +1482,6 @@ JobDetailsScreenView.propTypes = {
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
-  cashIndex: PropTypes.number.isRequired,
-  setCashIndex: PropTypes.func.isRequired,
   isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
@@ -1763,8 +1495,6 @@ JobDetailsScreenView.propTypes = {
   onPhoto: PropTypes.func.isRequired,
   onSign: PropTypes.func.isRequired,
   onCancelPhoto: PropTypes.func.isRequired,
-  onUpdateAmountCollected: PropTypes.func.isRequired,
-  onAlertNotProgress: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,
   onDriverNote: PropTypes.func.isRequired,

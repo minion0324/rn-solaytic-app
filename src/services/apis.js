@@ -194,15 +194,6 @@ function apiAddMessage(jobId, message) {
   });
 };
 
-function apiUpdateAmountCollected(jobIds, attempt) {
-  return apiCall('api/mobile/driver/jobs/update-amount-collected', 'post', {
-    data: {
-      jobIds,
-      attempt,
-    },
-  });
-};
-
 function apiGetBinNumbers(
   searchQuery,
   currentPage = 1,
@@ -242,7 +233,6 @@ export {
   apiGetJobById,
   apiMarkMessagesAsRead,
   apiAddMessage,
-  apiUpdateAmountCollected,
   apiGetBinNumbers,
   apiGetJobDates,
 };
