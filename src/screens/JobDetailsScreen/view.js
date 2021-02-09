@@ -171,9 +171,6 @@ const JobDetailsScreenView = ({
   // }, [jobStatus]);
 
   const currentStep = useMemo(() => {
-    console.log('------------- step status');
-    console.log(stepStatus);
-
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
         return 0.5;
@@ -193,6 +190,8 @@ const JobDetailsScreenView = ({
             return 2;
           case JOB_STATUS.IN_PROGRESS:
             return 3;
+          case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
+            return 3.5;
         }
 
         return 0.5;
@@ -402,13 +401,16 @@ const JobDetailsScreenView = ({
 
           if (
             currentStep === 0.5 ||
-            currentStep === 1.5
+            currentStep === 1.5 ||
+            currentStep === 3
           ) {
             setStepStatus(jobStatus + STEP_STATUS_MARK);
           } else if (currentStep === 1) {
             onStart();
           } else if (currentStep === 2) {
             onExchange();
+          } else if (currentStep === 3.5) {
+            onComplete();
           }
 
           return;
@@ -951,8 +953,11 @@ const JobDetailsScreenView = ({
 
         {
           options.mustTakeSignature
-          ? <>
-              <FlexWrap flex={3}>
+          ? [
+              <FlexWrap
+                key={`Signature-FlexWrap`}
+                flex={3}
+              >
                 {
                   sign.uri
                   ? <TouchableOpacity
@@ -978,14 +983,20 @@ const JobDetailsScreenView = ({
                     </TouchableOpacity>
                 }
               </FlexWrap>
-              {
-                !options.mustTakePhoto &&
-                <>
-                  <SpaceView mLeft={SIZE4} />
-                  <FlexWrap flex={4} />
-                </>
-              }
-            </>
+              ,
+              !options.mustTakePhoto &&
+              [
+                <SpaceView
+                  key={`EmptyPhoto-SpaceView`}
+                  mLeft={SIZE4}
+                />
+                ,
+                <FlexWrap
+                  key={`EmptyPhoto-FlexWrap`}
+                  flex={4}
+                />
+              ]
+            ]
           : <FlexWrap flex={3} />
         }
       </RowWrap>
@@ -1519,6 +1530,17 @@ const JobDetailsScreenView = ({
         <DefaultButton
           color={COLORS.BLUE1}
           text={'In Progress'}
+          onPress={onNextStep}
+          loading={loading}
+        />
+      );
+    }
+
+    if (currentStep === 3.5) {
+      return (
+        <DefaultButton
+          color={COLORS.GREEN1}
+          text={'Complete'}
           onPress={onNextStep}
           loading={loading}
         />
