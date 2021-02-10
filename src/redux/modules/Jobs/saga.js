@@ -378,9 +378,7 @@ export function* asyncStartJobs({ payload }) {
     amountCollected,
     jobPaymentType,
     photos,
-    sign,
-    signedUserName,
-    signedUserContact,
+    signs,
     success,
     failure,
   } = payload;
@@ -413,10 +411,6 @@ export function* asyncStartJobs({ payload }) {
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
-      base64Signature: sign.data,
-      signatureFileName: (sign.uri || '').split('/').pop(),
-      signedUserName,
-      signedUserContact,
       driverName: '', //
       vehicleName: '', //
       remarks: focusedJob.remarks,
@@ -426,7 +420,16 @@ export function* asyncStartJobs({ payload }) {
           base64Image: photo.data,
           fileName: (photo.uri || '').split('/').pop(),
           photoCaption: '', //
-        }
+        };
+      }),
+      jobSignatures: signs.map((sign) => {
+        return {
+          jobStepId: sign.jobStepId,
+          jobSignatureFileName: (sign.uri || '').split('/').pop(),
+          base64Signature: sign.data,
+          jobSignedUserName: sign.signedUserName,
+          jobSignedUserContact: sign.signedUserContact,
+        };
       }),
     };
 
@@ -506,9 +509,7 @@ export function* asyncPullJobs({ payload }) {
     amountCollected,
     jobPaymentType,
     photos,
-    sign,
-    signedUserName,
-    signedUserContact,
+    signs,
     success,
     failure,
   } = payload;
@@ -541,10 +542,6 @@ export function* asyncPullJobs({ payload }) {
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
-      base64Signature: sign.data,
-      signatureFileName: (sign.uri || '').split('/').pop(),
-      signedUserName,
-      signedUserContact,
       driverName: '', //
       vehicleName: '', //
       remarks: focusedJob.remarks,
@@ -555,6 +552,15 @@ export function* asyncPullJobs({ payload }) {
           fileName: (photo.uri || '').split('/').pop(),
           photoCaption: '', //
         }
+      }),
+      jobSignatures: signs.map((sign) => {
+        return {
+          jobStepId: sign.jobStepId,
+          jobSignatureFileName: (sign.uri || '').split('/').pop(),
+          base64Signature: sign.data,
+          jobSignedUserName: sign.signedUserName,
+          jobSignedUserContact: sign.signedUserContact,
+        };
       }),
     };
 
@@ -634,9 +640,7 @@ export function* asyncExchangeJobs({ payload }) {
     amountCollected,
     jobPaymentType,
     photos,
-    sign,
-    signedUserName,
-    signedUserContact,
+    signs,
     success,
     failure,
   } = payload;
@@ -669,10 +673,6 @@ export function* asyncExchangeJobs({ payload }) {
       submittedLat: lastJobStep.latitude,
       submittedLng: lastJobStep.longitude,
       submittedLocation: '', //
-      base64Signature: sign.data,
-      signatureFileName: (sign.uri || '').split('/').pop(),
-      signedUserName,
-      signedUserContact,
       driverName: '', //
       vehicleName: '', //
       remarks: focusedJob.remarks,
@@ -683,6 +683,15 @@ export function* asyncExchangeJobs({ payload }) {
           fileName: (photo.uri || '').split('/').pop(),
           photoCaption: '', //
         }
+      }),
+      jobSignatures: signs.map((sign) => {
+        return {
+          jobStepId: sign.jobStepId,
+          jobSignatureFileName: (sign.uri || '').split('/').pop(),
+          base64Signature: sign.data,
+          jobSignedUserName: sign.signedUserName,
+          jobSignedUserContact: sign.signedUserContact,
+        };
       }),
     };
 
@@ -762,9 +771,7 @@ export function* asyncCompleteJobs({ payload }) {
     amountCollected,
     jobPaymentType,
     photos,
-    sign,
-    signedUserName,
-    signedUserContact,
+    signs,
     attempt: attemptData,
     success,
     failure,
@@ -802,10 +809,6 @@ export function* asyncCompleteJobs({ payload }) {
         submittedLat: lastJobStep.latitude,
         submittedLng: lastJobStep.longitude,
         submittedLocation: '', //
-        base64Signature: sign.data,
-        signatureFileName: (sign.uri || '').split('/').pop(),
-        signedUserName,
-        signedUserContact,
         driverName: '', //
         vehicleName: '', //
         remarks: focusedJob.remarks,
@@ -816,6 +819,15 @@ export function* asyncCompleteJobs({ payload }) {
             fileName: (photo.uri || '').split('/').pop(),
             photoCaption: '', //
           }
+        }),
+        jobSignatures: signs.map((sign) => {
+          return {
+            jobStepId: sign.jobStepId,
+            jobSignatureFileName: (sign.uri || '').split('/').pop(),
+            base64Signature: sign.data,
+            jobSignedUserName: sign.signedUserName,
+            jobSignedUserContact: sign.signedUserContact,
+          };
         }),
       };
     }
