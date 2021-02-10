@@ -401,37 +401,49 @@ const JobDetailsScreenView = ({
     [currentStep],
   );
 
-  const onNextStep = useCallback(
-    () => {
-      switch (focusedJob.jobTypeName) {
+  const onNextStep = () => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PULL:
+        if (currentStep === 0.5) {
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
+        } else if (currentStep === 1) {
+          onStart();
+        } else if (currentStep === 2) {
+          onPull();
+        } else if (currentStep === 3.5) {
+          onComplete();
+        }
+        return;
+
+      case JOB_TYPE.PUT:
+        if (currentStep === 0.5) {
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
+        } else if (currentStep === 1) {
+          onStart();
+        } else if (currentStep === 3.5) {
+          onComplete();
+        }
+        return;
+
+      case JOB_TYPE.EXCHANGE:
+        if (
+          currentStep === 0.5 ||
+          currentStep === 1.5 ||
+          currentStep === 3
+        ) {
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
+        } else if (currentStep === 1) {
+          onStart();
+        } else if (currentStep === 2) {
+          onExchange();
+        } else if (currentStep === 3.5) {
+          onComplete();
+        }
+        return;
+
+      case JOB_TYPE.ON_THE_SPOT:
         case JOB_TYPE.PULL:
           if (currentStep === 0.5) {
-            setStepStatus(jobStatus + STEP_STATUS_MARK);
-          } else if (currentStep === 1) {
-            onStart();
-          } else if (currentStep === 2) {
-            onPull();
-          } else if (currentStep === 3.5) {
-            onComplete();
-          }
-          return;
-
-        case JOB_TYPE.PUT:
-          if (currentStep === 0.5) {
-            setStepStatus(jobStatus + STEP_STATUS_MARK);
-          } else if (currentStep === 1) {
-            onStart();
-          } else if (currentStep === 3.5) {
-            onComplete();
-          }
-          return;
-
-        case JOB_TYPE.EXCHANGE:
-          if (
-            currentStep === 0.5 ||
-            currentStep === 1.5 ||
-            currentStep === 3
-          ) {
             setStepStatus(jobStatus + STEP_STATUS_MARK);
           } else if (currentStep === 1) {
             onStart();
@@ -440,31 +452,12 @@ const JobDetailsScreenView = ({
           } else if (currentStep === 3.5) {
             onComplete();
           }
-          return;
+        return;
 
-        case JOB_TYPE.ON_THE_SPOT:
-          case JOB_TYPE.PULL:
-            if (currentStep === 0.5) {
-              setStepStatus(jobStatus + STEP_STATUS_MARK);
-            } else if (currentStep === 1) {
-              onStart();
-            } else if (currentStep === 2) {
-              onExchange();
-            } else if (currentStep === 3.5) {
-              onComplete();
-            }
-          return;
-
-        default:
-          return;
-      };
-    },
-    [
-      currentStep,
-      jobStatus,
-      focusedJob.jobTypeName,
-    ],
-  );
+      default:
+        return;
+    };
+  };
 
   const onUpdateBinInfo = (binIndex, newInfo) => {
     const newBinInfo = binInfo.slice(0);
