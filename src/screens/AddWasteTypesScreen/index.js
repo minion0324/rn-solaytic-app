@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-  Jobs,
   ViewStore,
 } from 'src/redux';
 import {
@@ -91,11 +90,23 @@ const AddWasteTypesScreen = ({
     }, 1500);
   }, [searchText]);
 
+  const onUpdateBinInfo = (newInfo) => {
+    const newBinInfo = binInfo.slice(0);
+
+    newBinInfo[binIndex] = {
+      ...newBinInfo[binIndex],
+      ...newInfo,
+    };
+
+    setBinInfo(newBinInfo);
+  };
+
   const onClose = () => {
     popScreen(componentId);
   };
 
   const onCheck = () => {
+    onUpdateBinInfo({ wasteTypes: selectedWasteTypes });
     onClose();
   };
 
