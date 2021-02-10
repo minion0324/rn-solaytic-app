@@ -244,7 +244,11 @@ const FailJobScreen = ({
               onFailJob();
             }}
           >
-            <AlertButtonText color={COLORS.RED1}>Proceed</AlertButtonText>
+            <AlertButtonText
+              color={COLORS.RED1}
+            >
+              Proceed
+            </AlertButtonText>
           </AlertButton>
         </AlertButtonRow>
       </ModalWrap>
