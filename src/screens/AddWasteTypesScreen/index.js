@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 
 import {
   Jobs,
+  ViewStore,
 } from 'src/redux';
 import {
   HeaderBar,
@@ -57,26 +58,25 @@ const {
 } = SVGS;
 
 const AddWasteTypesScreen = ({
-  focusedJob,
+  wasteTypes,
+  pageOfWasteTypes,
+  getWasteTypes,
   binIndex,
   binInfo,
   setBinInfo,
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(true);
-  const [ originWasteTypes, setOriginWasteTypes ] = useState([]);
-  const [ searchedWasteTypes, setSearchedWasteTypes ] = useState([]);
+  const [ refreshing, setRefreshing ] = useState(false);
 
   const [ searchText, setSearchText ] = useState('');
+
+  const [ selectedWasteTypes, setSelectedWasteTypes ] = useState([]);
 
   const timerId = useRef(null);
 
   useEffect(() => {
-    const { charges } = focusedJob;
-
-    const data = charges.map(charge => charge['wasteType']);
-
-    setOriginWasteTypes(data);
+    //
   }, []);
 
   useEffect(() => {
@@ -89,69 +89,79 @@ const AddWasteTypesScreen = ({
       timerId.current = null;
       onSearch();
     }, 1500);
-  }, [searchText, originWasteTypes]);
-
-  const getSearchedWasteTypes = (newWasteTypes) => {
-    if (!searchText) {
-      setSearchedWasteTypes(newWasteTypes || originWasteTypes);
-      return;
-    }
-
-    const searched = (newWasteTypes || originWasteTypes).map((item) => {
-      if (
-        item.wasteTypeName
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      ) {
-        return item;
-      } else {
-        return { ...item, notShow: true };
-      }
-    });
-
-    setSearchedWasteTypes(searched);
-  };
+  }, [searchText]);
 
   const onClose = () => {
     popScreen(componentId);
   };
 
   const onCheck = () => {
-    popScreen(componentId);
+    onClose();
+  };
+
+  const onEnd = () => {
+    getWasteTypes({
+      search: searchText,
+      page: pageOfWasteTypes,
+      success: () => {},
+      failure: () => {},
+    });
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    getWasteTypes({
+      search: searchText,
+      success: () => setRefreshing(false),
+      failure: () => setRefreshing(false),
+    });
+  };
+
+  const onReload = () => {
+    setLoading(true);
+
+    getWasteTypes({
+      search: searchText,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
   };
 
   const onSearch = () => {
     Keyboard.dismiss();
-    getSearchedWasteTypes();
-    setLoading(false);
+    onReload();
+  };
+
+  const onPressItem = (item) => {
+    const newSelectedWasteTypes = selectedWasteTypes.slice(0);
+
+    const index = selectedWasteTypes.findIndex((el) => (
+      el.wasteTypeId === item.wasteTypeId
+    ));
+
+    if (index === -1) {
+      newSelectedWasteTypes.push(item);
+    } else {
+      newSelectedWasteTypes.splice(index, 1);
+    }
+
+    setSelectedWasteTypes(newSelectedWasteTypes);
   };
 
   const onChangeSearchText = (text) => {
     setSearchText(text);
   };
 
-  const onUpdateOriginWasteTypes = (index, newItem) => {
-    const newWasteTypes = originWasteTypes.slice(0);
-    newWasteTypes.splice(index, 1, newItem);
-
-    setOriginWasteTypes(newWasteTypes);
-    getSearchedWasteTypes(newWasteTypes);
-  };
-
-  const renderItem = ({ item, index }) => {
-    if (item.notShow) {
-      return null;
-    }
+  const renderItem = ({ item }) => {
+    const index = selectedWasteTypes.findIndex((el) => (
+      el.wasteTypeId === item.wasteTypeId
+    ));
 
     return (
       <ItemWrap
         deactivated
-        onPress={() => {
-          onUpdateOriginWasteTypes(index, {
-            ...item,
-            isSelected: !item.isSelected,
-          });
-        }}
+        onPress={() => onPressItem(item)}
         mLeft={SIZE2} mTop={0.5}
         mRight={SIZE2} mBottom={0.5}
       >
@@ -159,7 +169,7 @@ const AddWasteTypesScreen = ({
           <FlexWrap flex={2}>
             <RowWrap>
               {
-                item.isSelected
+                index !== -1
                 ? <BlueActiveCircleCheckIcon />
                 : <DeactiveCircleCheckIcon />
               }
@@ -207,9 +217,12 @@ const AddWasteTypesScreen = ({
 
       <Content>
         <ListWrap
-          data={searchedWasteTypes}
+          data={wasteTypes}
           keyExtractor={(item) => `${item.wasteTypeId}`}
           renderItem={renderItem}
+          onEndProcess={onEnd}
+          onRefreshProcess={onRefresh}
+          refreshing={refreshing}
         />
 
         {
@@ -224,7 +237,9 @@ const AddWasteTypesScreen = ({
 };
 
 AddWasteTypesScreen.propTypes = {
-  focusedJob: PropTypes.object.isRequired,
+  wasteTypes: PropTypes.array.isRequired,
+  pageOfWasteTypes: PropTypes.number.isRequired,
+  getWasteTypes: PropTypes.func.isRequired,
   binIndex: PropTypes.number.isRequired,
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
@@ -237,12 +252,13 @@ AddWasteTypesScreen.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    focusedJob: Jobs.selectors.getFocusedJob(state),
+    wasteTypes: ViewStore.selectors.getWasteTypes(state),
+    pageOfWasteTypes: ViewStore.selectors.getPageOfWasteTypes(state),
   };
 };
 
 const mapDispatchToProps = {
-  //
+  getWasteTypes: ViewStore.actionCreators.getWasteTypes,
 };
 
 export default connect(
