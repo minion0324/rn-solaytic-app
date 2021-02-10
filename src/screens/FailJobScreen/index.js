@@ -7,7 +7,6 @@ import Toast from 'react-native-simple-toast';
 import {
   SVGS,
   COLORS,
-  SIZE1,
   SIZE2,
   SIZE10,
   JOB_STATUS,
