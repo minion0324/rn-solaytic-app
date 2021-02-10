@@ -79,6 +79,7 @@ function apiStartJobs(
   stepBinUpdate,
   pricings,
   amountCollected,
+  jobPaymentType,
   attempt,
 ) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
@@ -87,6 +88,7 @@ function apiStartJobs(
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     },
   });
@@ -97,6 +99,7 @@ function apiPullJobs(
   stepBinUpdate,
   pricings,
   amountCollected,
+  jobPaymentType,
   attempt,
 ) {
   return apiCall('api/mobile/driver/jobs/pull', 'post', {
@@ -105,6 +108,7 @@ function apiPullJobs(
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     },
   });
@@ -115,6 +119,7 @@ function apiExchangeJobs(
   stepBinUpdate,
   pricings,
   amountCollected,
+  jobPaymentType,
   attempt,
 ) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
@@ -123,6 +128,7 @@ function apiExchangeJobs(
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     },
   });
@@ -133,6 +139,7 @@ function apiCompleteJobs(
   stepBinUpdate,
   pricings,
   amountCollected,
+  jobPaymentType,
   attempt,
 ) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
@@ -141,6 +148,7 @@ function apiCompleteJobs(
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     },
   });
