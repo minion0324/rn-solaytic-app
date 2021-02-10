@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Keyboard, ActivityIndicator } from 'react-native';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
+import {
+  Keyboard,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { useNavigationComponentDidDisappear } from 'react-native-navigation-hooks';
 
 import {
   HeaderBar,
@@ -32,14 +39,14 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
-  EmptyWrap,
-  Back,
+  Close,
+  Check,
 } from 'src/styles/header.styles';
 
 import {
   ServiceItem,
   ServiceText,
-  IconButton,
+  ServiceInput,
   QuantityWrap,
 } from './styled';
 
@@ -48,8 +55,6 @@ const {
   ActiveServiceIcon,
   BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  AddCircleIcon,
-  RemoveCircleIcon,
 } = SVGS;
 
 const AddServicesScreen = ({
@@ -81,10 +86,6 @@ const AddServicesScreen = ({
     }, 1500);
   }, [searchText, originServices]);
 
-  useNavigationComponentDidDisappear(() => {
-    setServices(originServices);
-  });
-
   const getSearchedServices = (newServices) => {
     if (!searchText) {
       setSearchedServices(newServices || originServices);
@@ -106,8 +107,13 @@ const AddServicesScreen = ({
     setSearchedServices(searched);
   };
 
-  const onBack = () => {
+  const onClose = () => {
     popScreen(componentId);
+  };
+
+  const onCheck = () => {
+    setServices(originServices);
+    onClose();
   };
 
   const onSearch = () => {
@@ -146,7 +152,7 @@ const AddServicesScreen = ({
         mRight={SIZE2} mBottom={0.5}
       >
         <ServiceItem>
-          <FlexWrap flex={2}>
+          <FlexWrap>
             <RowWrap>
               {
                 item.isSelected
@@ -159,38 +165,26 @@ const AddServicesScreen = ({
               </ServiceText>
             </RowWrap>
           </FlexWrap>
-          {
-            item.isSelected &&
-            <FlexWrap flex={1}>
-              <RowWrap>
-                <IconButton
-                  onPress={() => {
+          <TouchableWithoutFeedback>
+            <QuantityWrap>
+              {
+                item.isSelected &&
+                <ServiceInput
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  value={`${item.quantity || 1}`}
+                  onChangeText={(text) =>
                     onUpdateOriginService(index, {
                       ...item,
-                      quantity: +(item.quantity || 1) + 1,
-                    });
-                  }}
-                >
-                  <AddCircleIcon />
-                </IconButton>
-                <QuantityWrap>
-                  <ServiceText>
-                    {item.quantity || 1}
-                  </ServiceText>
-                </QuantityWrap>
-                <IconButton
-                  onPress={() => {
-                    onUpdateOriginService(index, {
-                      ...item,
-                      quantity: +(item.quantity || 1) - 1,
-                    });
-                  }}
-                >
-                  <RemoveCircleIcon />
-                </IconButton>
-              </RowWrap>
-            </FlexWrap>
-          }
+                      quantity: text,
+                    })
+                  }
+                  keyboardType={'numeric'}
+                />
+              }
+            </QuantityWrap>
+          </TouchableWithoutFeedback>
         </ServiceItem>
       </ItemWrap>
     );
@@ -207,9 +201,10 @@ const AddServicesScreen = ({
               <ScreenText>Add Services</ScreenText>
             </RowWrap>
           }
-          leftIcon={<Back />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
+          leftIcon={<Close />}
+          rightIcon={<Check />}
+          onPressLeft={onClose}
+          onPressRight={onCheck}
         />
       </ShadowWrap>
 
@@ -233,7 +228,9 @@ const AddServicesScreen = ({
       <Content>
         <ListWrap
           data={searchedServices}
-          keyExtractor={(item) => `${item.serviceAdditionalChargeTemplateId}`}
+          keyExtractor={(item) =>
+            `${item.serviceAdditionalChargeTemplateId}`
+          }
           renderItem={renderItem}
         />
 
