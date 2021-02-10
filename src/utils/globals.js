@@ -44,7 +44,12 @@ function getEndDate(date, key, format) {
 function getUpdatedBinInfo(binInfo) {
   return [0, 1].map((index) => {
     const {
-      jobStepId, wasteType, binType, binNumber, binWeight,
+      jobStepId,
+      wasteType,
+      binType,
+      binNumber,
+      binWeight,
+      wasteTypes,
     } = binInfo[index];
 
     return {
@@ -53,6 +58,7 @@ function getUpdatedBinInfo(binInfo) {
       binTypeId: binType && binType.binTypeId,
       binNumber: binNumber,
       binWeight: binWeight,
+      wasteTypes: wasteTypes,
     }
   });
 };
