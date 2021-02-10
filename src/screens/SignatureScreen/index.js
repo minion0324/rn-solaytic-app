@@ -1,4 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+} from 'react';
 import { Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
@@ -38,25 +43,46 @@ import {
 } from './styled';
 
 const SignatureScreen = ({
-  setSign,
-  signedUserName,
-  setSignedUserName,
-  signedUserContact,
-  setSignedUserContact,
-  clearSign,
+  jobStepId,
+  signs,
+  setSigns,
   componentId,
 }) => {
-  const [ name, setName ] = useState(signedUserName);
-  const [ contact, setContact ] = useState(signedUserContact);
+  const [ name, setName ] = useState('');
+  const [ contact, setContact ] = useState('');
 
   const signatureRef = useRef(null);
+
+  useEffect(() => {
+    if (indexOfSign !== -1) {
+      setName(signs[indexOfSign].signedUserName);
+      setContact(signs[indexOfSign].signedUserContact);
+    }
+  }, []);
+
+  const indexOfSign = useMemo(() => {
+    const index = signs.findIndex((sign) => (
+      sign.jobStepId === jobStepId
+    ));
+
+    return index;
+  }, [
+    jobStepId,
+    signs,
+  ]);
 
   const onClose = () => {
     dismissLightBox(componentId);
   };
 
   const onCloseWithClear = () => {
-    clearSign();
+    const newSigns = signs.slice(0);
+
+    if (indexOfSign !== -1) {
+      newSigns.splice(indexOfSign, 1);
+    }
+    setSigns(newSigns);
+
     onClose();
   };
 
@@ -77,10 +103,20 @@ const SignatureScreen = ({
 
       await RNFS.writeFile(uri, data, 'base64');
 
-      setSign({ uri, data });
+      const newSign = {
+        jobStepId,
+        uri, data,
+        signedUserName: name,
+        signedUserContact: contact,
+      };
+      const newSigns = signs.slice(0);
 
-      setSignedUserName(name);
-      setSignedUserContact(contact);
+      if (indexOfSign === -1) {
+        newSigns.push(newSign);
+      } else {
+        newSigns.splice(indexOfSign, 1, newSign);
+      }
+      setSigns(newSigns);
 
       onClose();
     } catch (error) {
@@ -142,18 +178,10 @@ const SignatureScreen = ({
 };
 
 SignatureScreen.propTypes = {
-  setSign: PropTypes.func.isRequired,
-  signedUserName: PropTypes.string,
-  setSignedUserName: PropTypes.func.isRequired,
-  signedUserContact: PropTypes.string,
-  setSignedUserContact: PropTypes.func.isRequired,
-  clearSign: PropTypes.func.isRequired,
+  jobStepId: PropTypes.number.isRequired,
+  signs: PropTypes.array.isRequired,
+  setSigns: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
-};
-
-SignatureScreen.defaultProps = {
-  signedUserName: '',
-  signedUserContact: '',
 };
 
 export default SignatureScreen;
