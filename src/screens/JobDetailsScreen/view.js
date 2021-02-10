@@ -34,6 +34,7 @@ import {
   dismissLightBox,
   CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
+import { getDate } from 'src/utils';
 
 import {
   Container,
@@ -831,7 +832,27 @@ const JobDetailsScreenView = ({
           status !== 'COMPLETED' &&
           <RowWrap>
             <SpaceView mLeft={SIZE2} />
-            <DeactiveCircleCheckIcon />
+            {
+              (
+                !options.numberofPhotosRequired ||
+                (
+                  options.numberofPhotosRequired &&
+                  photos.filter((photo) => (
+                    photo.jobStepId === item.jobStepId
+                  )).length === options.numberofPhotosRequired
+                )
+              ) && (
+                !options.mustTakeSignature ||
+                (
+                  options.mustTakeSignature &&
+                  signs.findIndex((sign) => (
+                    sign.jobStepId === item.jobStepId
+                  )) !== -1
+                )
+              )
+              ? <GreenActiveCircleCheckIcon />
+              : <DeactiveCircleCheckIcon />
+            }
           </RowWrap>
         }
       </RowWrap>
@@ -1129,10 +1150,7 @@ const JobDetailsScreenView = ({
                 {
                   renderPhotosAndSign({
                     item,
-                    options: {
-                      numberofPhotosRequired: 1,
-                      mustTakeSignature: true,
-                    },
+                    options,
                     status,
                   })
                 }
