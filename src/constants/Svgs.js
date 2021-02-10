@@ -70,6 +70,7 @@ import DeletePhotoIcon from 'src/assets/svgs/icon-photo-delete.svg';
 import BackPhotoIcon from 'src/assets/svgs/icon-photo-back.svg';
 import ActiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-active.svg';
 import DeactiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-deactive.svg';
+import DropdownArrowIcon from 'src/assets/svgs/icon-arrow-dropdown.svg';
 
 export default {
   ActiveCheckIcon,
@@ -144,4 +145,5 @@ export default {
   BackPhotoIcon,
   ActiveBinWeightIcon,
   DeactiveBinWeightIcon,
+  DropdownArrowIcon,
 };
