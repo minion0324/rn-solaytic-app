@@ -381,6 +381,7 @@ const JobDetailsScreenView = ({
         'isRequireReviewWasteType',
         'mustTakePhoto',
         'mustTakeSignature',
+        'numberofPhotosRequired',
         'requireStatusToEnd',
       ],
     ),
@@ -731,7 +732,7 @@ const JobDetailsScreenView = ({
     status,
   }) => (
     (
-      options.mustTakePhoto ||
+      options.numberofPhotosRequired ||
       options.mustTakeSignature
     ) &&
     <View>
@@ -759,8 +760,8 @@ const JobDetailsScreenView = ({
       <SpaceView mTop={SIZE4} />
       <RowWrap>
         {
-          options.mustTakePhoto &&
-          [0, 1].map((index) => {
+          options.numberofPhotosRequired &&
+          Array(options.numberofPhotosRequired).fill(0).map((empty, index) => {
             const data = photos.filter((photo) => (
               photo.jobStepId === item.jobStepId
             ));
@@ -768,7 +769,7 @@ const JobDetailsScreenView = ({
             return (
               [
                 <FlexWrap
-                  key={`${index}-FlexWrap`}
+                  key={`${index}-Photos-FlexWrap`}
                   flex={2}
                 >
                   {
@@ -799,61 +800,58 @@ const JobDetailsScreenView = ({
                 </FlexWrap>
                 ,
                 <SpaceView
-                  key={`${index}-SpaceView`}
+                  key={`${index}-Photos-SpaceView`}
                   mLeft={SIZE2}
                 />
               ]
             );
           })
         }
-
         {
           options.mustTakeSignature
-          ? [
-              <FlexWrap
-                key={`Signature-FlexWrap`}
-                flex={3}
-              >
-                {
-                  sign.uri
-                  ? <TouchableOpacity
-                      onPress={onSign}
-                      disabled={status !== 'ACTIVE'}
-                    >
-                      <SignWrap>
-                        <FullImage source={{ uri: sign.uri }} />
-                      </SignWrap>
-                    </TouchableOpacity>
-                  : <TouchableOpacity
-                      onPress={onSign}
-                      disabled={status !== 'ACTIVE'}
-                    >
-                      <SignWrap>
-                        <LeftDash dashColor={COLORS.GREEN1} />
-                        <TopDash dashColor={COLORS.GREEN1} />
-                        <RightDash dashColor={COLORS.GREEN1} />
-                        <BottomDash dashColor={COLORS.GREEN1} />
+          ? <FlexWrap flex={3}>
+              {
+                sign.uri
+                ? <TouchableOpacity
+                    onPress={onSign}
+                    disabled={status !== 'ACTIVE'}
+                  >
+                    <SignWrap>
+                      <FullImage source={{ uri: sign.uri }} />
+                    </SignWrap>
+                  </TouchableOpacity>
+                : <TouchableOpacity
+                    onPress={onSign}
+                    disabled={status !== 'ACTIVE'}
+                  >
+                    <SignWrap>
+                      <LeftDash dashColor={COLORS.GREEN1} />
+                      <TopDash dashColor={COLORS.GREEN1} />
+                      <RightDash dashColor={COLORS.GREEN1} />
+                      <BottomDash dashColor={COLORS.GREEN1} />
 
-                        <SignAddIcon />
-                      </SignWrap>
-                    </TouchableOpacity>
-                }
-              </FlexWrap>
-              ,
-              !options.mustTakePhoto &&
-              [
-                <SpaceView
-                  key={`EmptyPhoto-SpaceView`}
-                  mLeft={SIZE4}
-                />
-                ,
-                <FlexWrap
-                  key={`EmptyPhoto-FlexWrap`}
-                  flex={4}
-                />
-              ]
-            ]
+                      <SignAddIcon />
+                    </SignWrap>
+                  </TouchableOpacity>
+              }
+            </FlexWrap>
           : <FlexWrap flex={3} />
+        }
+        {
+          (options.numberofPhotosRequired || 0) < 2 &&
+          Array(2 - (options.numberofPhotosRequired || 0)).fill(0).map((empty, index) => (
+            [
+              <SpaceView
+                key={`${index}-Empty-SpaceView`}
+                mLeft={SIZE2}
+              />
+              ,
+              <FlexWrap
+                key={`${index}-Empty-FlexWrap`}
+                flex={2}
+              />
+            ]
+          ))
         }
       </RowWrap>
       <SpaceView mTop={SIZE4} />
