@@ -376,6 +376,7 @@ export function* asyncStartJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    jobPaymentType,
     photos,
     sign,
     signedUserName,
@@ -396,6 +397,7 @@ export function* asyncStartJobs({ payload }) {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
       amountCollected,
+      jobPaymentType,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -431,6 +433,7 @@ export function* asyncStartJobs({ payload }) {
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     );
 
@@ -459,7 +462,12 @@ export function* asyncStartJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJobId) && JOB_STATUS.STARTED,
-      appExtraData: { binInfo, services, amountCollected },
+      appExtraData: {
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+      },
     }));
 
     try {
@@ -494,6 +502,7 @@ export function* asyncPullJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    jobPaymentType,
     photos,
     sign,
     signedUserName,
@@ -514,6 +523,7 @@ export function* asyncPullJobs({ payload }) {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
       amountCollected,
+      jobPaymentType,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -549,6 +559,7 @@ export function* asyncPullJobs({ payload }) {
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     );
 
@@ -577,7 +588,12 @@ export function* asyncPullJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
-      appExtraData: { binInfo, services, amountCollected },
+      appExtraData: {
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+      },
     }));
 
     try {
@@ -612,6 +628,7 @@ export function* asyncExchangeJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    jobPaymentType,
     photos,
     sign,
     signedUserName,
@@ -632,6 +649,7 @@ export function* asyncExchangeJobs({ payload }) {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
       amountCollected,
+      jobPaymentType,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -667,6 +685,7 @@ export function* asyncExchangeJobs({ payload }) {
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     );
 
@@ -695,7 +714,12 @@ export function* asyncExchangeJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
-      appExtraData: { binInfo, services, amountCollected },
+      appExtraData: {
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+      },
     }));
 
     try {
@@ -730,6 +754,7 @@ export function* asyncCompleteJobs({ payload }) {
     binInfo,
     services,
     amountCollected,
+    jobPaymentType,
     photos,
     sign,
     signedUserName,
@@ -755,6 +780,7 @@ export function* asyncCompleteJobs({ payload }) {
         jobStepId: lastJobStep.jobStepId,
         customerName: focusedJob.customer.customerName,
         amountCollected,
+        jobPaymentType,
         siteName: lastJobStep.siteName,
         address: lastJobStep.address,
         wasteTypeId: focusedJob.steps[0].wasteTypeId,
@@ -791,6 +817,7 @@ export function* asyncCompleteJobs({ payload }) {
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     );
 
@@ -817,7 +844,12 @@ export function* asyncCompleteJobs({ payload }) {
       ...result,
       statusName:
         successJobIds.includes(focusedJob.jobId) && JOB_STATUS.COMPLETED,
-      appExtraData: { binInfo, services, amountCollected },
+      appExtraData: {
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+      },
     }));
 
     try {
@@ -841,7 +873,12 @@ export function* asyncCompleteJobs({ payload }) {
         jobNumber: focusedJob.jobNumber,
       },
       [
-        jobIds, binInfo, services, amountCollected, attempt,
+        jobIds,
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+        attempt,
       ],
     );
     failure && failure();
@@ -868,7 +905,7 @@ export function* asyncFailJobs({ payload }) {
     const attempt = {
       jobStepId: lastJobStep.jobStepId,
       customerName: focusedJob.customer.customerName,
-      amountCollected: focusedJob.collectedAmount || focusedJob.amountToCollect,
+      amountCollected: 0,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
