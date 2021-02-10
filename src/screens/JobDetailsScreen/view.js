@@ -1415,10 +1415,8 @@ const JobDetailsScreenView = ({
   };
 
   const renderHeaderContent = () => {
-    // const forToday = getDate() ===
-    //   getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
-
-    const forToday = true;
+    const forToday = getDate() ===
+      getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
 
     if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
       return (
