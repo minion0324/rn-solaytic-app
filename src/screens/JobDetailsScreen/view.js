@@ -3,6 +3,7 @@ import React, {
   useMemo,
   useCallback,
   useEffect,
+  useRef,
 } from 'react';
 import {
   View,
@@ -12,6 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { pick } from 'lodash';
+import ActionSheet from 'react-native-actionsheet';
 
 import {
   SVGS,
@@ -139,6 +141,8 @@ const JobDetailsScreenView = ({
   onPrint,
 }) => {
   const [ stepStatus, setStepStatus ] = useState('');
+
+  const actionSheetRef = useRef(null);
 
   useEffect(() => {
     setStepStatus(jobStatus);
@@ -882,7 +886,17 @@ const JobDetailsScreenView = ({
               : <ActivePaymentIcon />
             }
             <SpaceView mLeft={SIZE2} />
-            <InfoText>Collect</InfoText>
+            <InfoText>
+              {
+                'Collect' +
+                (
+                  amountCollected
+                  ? `: $${amountCollected} ` +
+                    focusedJob.jobPaymentTypeList[jobPaymentType]
+                  : ''
+                )
+              }
+            </InfoText>
           </RowWrap>
         </FlexWrap>
         {
@@ -891,7 +905,7 @@ const JobDetailsScreenView = ({
             <SpaceView mLeft={SIZE2} />
             {
               amountCollected
-              ? <ActiveCircleCheckIcon />
+              ? <GreenActiveCircleCheckIcon />
               : <DeactiveCircleCheckIcon />
             }
           </RowWrap>
@@ -926,7 +940,7 @@ const JobDetailsScreenView = ({
         <SpaceView mLeft={SIZE4} />
         <FlexWrap>
           <TouchableOpacity
-            onPress={null}
+            onPress={() => actionSheetRef.current.show()}
             disabled={
               !(
                 status === 'ACTIVE' &&
@@ -937,7 +951,9 @@ const JobDetailsScreenView = ({
             <RowWrap>
               <SpaceView mLeft={SIZE1} />
               <FlexWrap>
-                <InfoText>CASH</InfoText>
+                <InfoText>
+                  {focusedJob.jobPaymentTypeList[jobPaymentType]}
+                </InfoText>
               </FlexWrap>
               <SpaceView mLeft={SIZE1} />
               <DropdownArrowIcon />
@@ -1511,6 +1527,13 @@ const JobDetailsScreenView = ({
           <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
+
+      <ActionSheet
+        ref={actionSheetRef}
+        title={'Please select one'}
+        options={focusedJob.jobPaymentTypeList}
+        onPress={(index) => setJobPaymentType(index)}
+      />
     </Container>
   );
 };
