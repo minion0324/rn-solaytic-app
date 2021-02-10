@@ -75,7 +75,9 @@ const AddWasteTypesScreen = ({
   const timerId = useRef(null);
 
   useEffect(() => {
-    //
+    setSelectedWasteTypes(
+      binInfo[binIndex].wasteTypes,
+    );
   }, []);
 
   useEffect(() => {
