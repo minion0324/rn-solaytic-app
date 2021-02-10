@@ -19,7 +19,6 @@ import {
   GET_JOB_BY_ID_SUCCESS,
   MARK_MESSAGES_AS_READ_SUCCESS,
   ADD_MESSAGE_SUCCESS,
-  UPDATE_AMOUNT_COLLECTED_SUCCESS,
   UPDATE_DATE_FOR_JOBS,
 } from './actions';
 
@@ -98,9 +97,6 @@ function Jobs(state = DEFAULT, action = {}) {
         break;
       case ADD_MESSAGE_SUCCESS:
         draft.focusedJob.messages.push(payload);
-        break;
-      case UPDATE_AMOUNT_COLLECTED_SUCCESS:
-        draft.focusedJob.collectedAmount = payload;
         break;
       case UPDATE_DATE_FOR_JOBS:
         draft.dateForJobs = payload;

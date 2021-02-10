@@ -51,7 +51,6 @@ import {
   GET_JOB_BY_ID,
   MARK_MESSAGES_AS_READ,
   ADD_MESSAGE,
-  UPDATE_AMOUNT_COLLECTED,
   actionCreators,
 } from './actions';
 
