@@ -105,7 +105,8 @@ const SignatureScreen = ({
 
       const newSign = {
         jobStepId,
-        uri, data,
+        uri,
+        data,
         signedUserName: name,
         signedUserContact: contact,
       };
