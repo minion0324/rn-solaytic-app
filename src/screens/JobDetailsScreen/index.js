@@ -47,7 +47,7 @@ import JobDetailsScreenView from './view';
 const JobDetailsScreen = ({
   focusedJob,
   jobStatus,
-  photosAndSign,
+  photosAndSigns,
   newCommentInfo,
   coreScreenInfo,
   acknowledgeJobs,
@@ -64,11 +64,8 @@ const JobDetailsScreen = ({
 
   const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
 
-  const [ photos, setPhotos ] = useState(photosAndSign.photos);
-  const [ sign, setSign ] = useState(photosAndSign.sign);
-
-  const [ signedUserName, setSignedUserName ] = useState(photosAndSign.signedUserName);
-  const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
+  const [ photos, setPhotos ] = useState(photosAndSigns.photos);
+  const [ signs, setSigns ] = useState(photosAndSigns.signs);
 
   const [ binInfo, setBinInfo ] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.binInfo
@@ -110,7 +107,7 @@ const JobDetailsScreen = ({
   }, [jobStatus]);
 
   useEffect(() => {
-    getSavedPhotosAndSign();
+    getSavedPhotosAndSigns();
     checkIsInBackgroundMode();
   }, []);
 
@@ -167,18 +164,16 @@ const JobDetailsScreen = ({
     }
   };
 
-  const getSavedPhotosAndSign = async () => {
+  const getSavedPhotosAndSigns = async () => {
     try {
       const {
         value: { appExtraData },
       } = await getCacheItemById(JOB_DETAILS_KEY, { jobId: focusedJob.jobId });
 
       const {
-        photosAndSign: {
+        photosAndSigns: {
           photos: savedPhotos,
-          sign: savedSign,
-          signedUserName: savedSignedUserName,
-          signedUserContact: savedSignedUserContact,
+          signs: savedSigns,
         }
       } = appExtraData;
 
@@ -186,11 +181,8 @@ const JobDetailsScreen = ({
         setPhotos(savedPhotos);
       }
 
-      if (!sign.uri && savedSign.uri) {
-        setSign(savedSign);
-
-        setSignedUserName(savedSignedUserName);
-        setSignedUserContact(savedSignedUserContact);
+      if (signs.length <= 0 && savedSigns.length > 0) {
+        setSigns(savedSigns);
       }
     } catch (error) {
       //
@@ -203,11 +195,9 @@ const JobDetailsScreen = ({
         ...focusedJob,
         appExtraData: {
           ...(focusedJob.appExtraData || {}),
-          photosAndSign: {
+          photosAndSigns: {
             photos,
-            sign,
-            signedUserName,
-            signedUserContact,
+            signs,
           },
         },
       };
@@ -262,9 +252,7 @@ const JobDetailsScreen = ({
       amountCollected,
       jobPaymentType,
       photos,
-      sign,
-      signedUserName,
-      signedUserContact,
+      signs,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -280,9 +268,7 @@ const JobDetailsScreen = ({
       amountCollected,
       jobPaymentType,
       photos,
-      sign,
-      signedUserName,
-      signedUserContact,
+      signs,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -298,9 +284,7 @@ const JobDetailsScreen = ({
       amountCollected,
       jobPaymentType,
       photos,
-      sign,
-      signedUserName,
-      signedUserContact,
+      signs,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -361,9 +345,7 @@ const JobDetailsScreen = ({
       amountCollected,
       jobPaymentType,
       photos,
-      sign,
-      signedUserName,
-      signedUserContact,
+      signs,
       success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });
@@ -390,14 +372,11 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onSign = () => {
+  const onSign = (jobStepId) => {
     showLightBox(SIGNATURE_SCREEN, {
-      setSign,
-      signedUserName,
-      setSignedUserName,
-      signedUserContact,
-      setSignedUserContact,
-      clearSign: onCancelSign,
+      jobStepId,
+      signs,
+      setSigns,
     });
   };
 
@@ -407,13 +386,6 @@ const JobDetailsScreen = ({
     ));
 
     setPhotos(newPhotos);
-  };
-
-  const onCancelSign = () => {
-    setSign(photosAndSign.sign);
-
-    setSignedUserName(photosAndSign.signedUserName);
-    setSignedUserContact(photosAndSign.signedUserContact);
   };
 
   const onFail = () => {
@@ -448,7 +420,7 @@ const JobDetailsScreen = ({
 
   const onPrint = (getBinInOutInfoIndex, getCustomerSiteIndex) => {
     pushScreen(componentId, PREVIEW_SCREEN, {
-      sign, signedUserName, signedUserContact,
+      signs,
       binInfo, services, amountCollected, jobPaymentType,
       getBinInOutInfoIndex, getCustomerSiteIndex,
     });
@@ -458,7 +430,7 @@ const JobDetailsScreen = ({
     <JobDetailsScreenView
       loading={loading}
       photos={photos}
-      sign={sign}
+      signs={signs}
       binInfo={binInfo}
       setBinInfo={setBinInfo}
       jobStatus={jobStatus}
@@ -494,7 +466,7 @@ const JobDetailsScreen = ({
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  photosAndSign: PropTypes.object.isRequired,
+  photosAndSigns: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
   coreScreenInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
@@ -516,7 +488,7 @@ const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
     jobStatus: Jobs.selectors.getJobStatus(state),
-    photosAndSign: Jobs.selectors.getPhotosAndSign(state),
+    photosAndSigns: Jobs.selectors.getPhotosAndSigns(state),
     newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };

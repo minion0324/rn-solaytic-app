@@ -110,7 +110,7 @@ const STEP_STATUS_MARK = '_Next';
 const JobDetailsScreenView = ({
   loading,
   photos,
-  sign,
+  signs,
   binInfo,
   setBinInfo,
   jobStatus,
@@ -726,6 +726,91 @@ const JobDetailsScreenView = ({
     </View>
   );
 
+  const renderPhoto = ({
+    item,
+    status,
+
+    photoIndex: index,
+  }) => {
+    const data = photos.filter((photo) => (
+      photo.jobStepId === item.jobStepId
+    ));
+
+    return (
+      [
+        <FlexWrap
+          key={`${index}-Photos-FlexWrap`}
+          flex={2}
+        >
+          {
+            data[index]
+            ? <TouchableOpacity
+                onPress={() => onShowPhotoModal(data[index])}
+                disabled={status !== 'ACTIVE'}
+              >
+                <PhotoWrap>
+                  <FullImage source={{ uri: data[index].uri }} />
+                </PhotoWrap>
+
+              </TouchableOpacity>
+            : <TouchableOpacity
+                onPress={() => onPhoto(item.jobStepId)}
+                disabled={status !== 'ACTIVE'}
+              >
+                <PhotoWrap>
+                  <LeftDash dashColor={COLORS.BLUE1} />
+                  <TopDash dashColor={COLORS.BLUE1} />
+                  <RightDash dashColor={COLORS.BLUE1} />
+                  <BottomDash dashColor={COLORS.BLUE1} />
+
+                  <PhotoAddIcon />
+                </PhotoWrap>
+              </TouchableOpacity>
+          }
+        </FlexWrap>
+        ,
+        <SpaceView
+          key={`${index}-Photos-SpaceView`}
+          mLeft={SIZE2}
+        />
+      ]
+    );
+  };
+
+  const renderSign = ({
+    item,
+    status,
+  }) => {
+    const index = signs.findIndex((sign) => (
+      sign.jobStepId === item.jobStepId
+    ));
+
+    return (
+      index !== -1
+      ? <TouchableOpacity
+          onPress={() => onSign(item.jobStepId)}
+          disabled={status !== 'ACTIVE'}
+        >
+          <SignWrap>
+            <FullImage source={{ uri: signs[index].uri }} />
+          </SignWrap>
+        </TouchableOpacity>
+      : <TouchableOpacity
+          onPress={() => onSign(item.jobStepId)}
+          disabled={status !== 'ACTIVE'}
+        >
+          <SignWrap>
+            <LeftDash dashColor={COLORS.GREEN1} />
+            <TopDash dashColor={COLORS.GREEN1} />
+            <RightDash dashColor={COLORS.GREEN1} />
+            <BottomDash dashColor={COLORS.GREEN1} />
+
+            <SignAddIcon />
+          </SignWrap>
+        </TouchableOpacity>
+    );
+  };
+
   const renderPhotosAndSign = ({
     item,
     options,
@@ -761,97 +846,45 @@ const JobDetailsScreenView = ({
       <RowWrap>
         {
           options.numberofPhotosRequired &&
-          Array(options.numberofPhotosRequired).fill(0).map((empty, index) => {
-            const data = photos.filter((photo) => (
-              photo.jobStepId === item.jobStepId
-            ));
+          Array(options.numberofPhotosRequired)
+            .fill(0)
+            .map((empty, index) => (
+              renderPhoto({
+                item,
+                status,
 
-            return (
-              [
-                <FlexWrap
-                  key={`${index}-Photos-FlexWrap`}
-                  flex={2}
-                >
-                  {
-                    data[index]
-                    ? <TouchableOpacity
-                        onPress={() => onShowPhotoModal(data[index])}
-                        disabled={status !== 'ACTIVE'}
-                      >
-                        <PhotoWrap>
-                          <FullImage source={{ uri: data[index].uri }} />
-                        </PhotoWrap>
-
-                      </TouchableOpacity>
-                    : <TouchableOpacity
-                        onPress={() => onPhoto(item.jobStepId)}
-                        disabled={status !== 'ACTIVE'}
-                      >
-                        <PhotoWrap>
-                          <LeftDash dashColor={COLORS.BLUE1} />
-                          <TopDash dashColor={COLORS.BLUE1} />
-                          <RightDash dashColor={COLORS.BLUE1} />
-                          <BottomDash dashColor={COLORS.BLUE1} />
-
-                          <PhotoAddIcon />
-                        </PhotoWrap>
-                      </TouchableOpacity>
-                  }
-                </FlexWrap>
-                ,
-                <SpaceView
-                  key={`${index}-Photos-SpaceView`}
-                  mLeft={SIZE2}
-                />
-              ]
-            );
-          })
+                photoIndex: index,
+              })
+            ))
         }
         {
-          options.mustTakeSignature
-          ? <FlexWrap flex={3}>
-              {
-                sign.uri
-                ? <TouchableOpacity
-                    onPress={onSign}
-                    disabled={status !== 'ACTIVE'}
-                  >
-                    <SignWrap>
-                      <FullImage source={{ uri: sign.uri }} />
-                    </SignWrap>
-                  </TouchableOpacity>
-                : <TouchableOpacity
-                    onPress={onSign}
-                    disabled={status !== 'ACTIVE'}
-                  >
-                    <SignWrap>
-                      <LeftDash dashColor={COLORS.GREEN1} />
-                      <TopDash dashColor={COLORS.GREEN1} />
-                      <RightDash dashColor={COLORS.GREEN1} />
-                      <BottomDash dashColor={COLORS.GREEN1} />
-
-                      <SignAddIcon />
-                    </SignWrap>
-                  </TouchableOpacity>
-              }
-            </FlexWrap>
-          : <FlexWrap flex={3} />
+          <FlexWrap flex={3}>
+            {
+              options.mustTakeSignature &&
+              renderSign({
+                item,
+                status,
+              })
+            }
+          </FlexWrap>
         }
         {
           (options.numberofPhotosRequired || 0) < 2 &&
-          Array(2 - (options.numberofPhotosRequired || 0)).fill(0).map((empty, index) => (
-            [
-              <SpaceView
-                key={`${index}-Empty-SpaceView`}
-                mLeft={SIZE2}
-              />
-              ,
-              <FlexWrap
-                key={`${index}-Empty-FlexWrap`}
-                flex={2}
-              />
-            ]
-          ))
+          Array(2 - (options.numberofPhotosRequired || 0))
+            .fill(0)
+            .map((empty, index) => (
+              [
+                <SpaceView
+                  key={`${index}-Empty-SpaceView`}
+                  mLeft={SIZE2}
+                />
+                ,
+                <FlexWrap
+                  key={`${index}-Empty-FlexWrap`}
+                  flex={2}
+                />
+              ]
+            ))
         }
       </RowWrap>
       <SpaceView mTop={SIZE4} />
@@ -1103,7 +1136,10 @@ const JobDetailsScreenView = ({
                 {
                   renderPhotosAndSign({
                     item,
-                    options,
+                    options: {
+                      numberofPhotosRequired: 1,
+                      mustTakeSignature: true,
+                    },
                     status,
                   })
                 }
@@ -1511,7 +1547,7 @@ const JobDetailsScreenView = ({
 JobDetailsScreenView.propTypes = {
   loading: PropTypes.bool.isRequired,
   photos: PropTypes.array.isRequired,
-  sign: PropTypes.object,
+  signs: PropTypes.array.isRequired,
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
@@ -1545,7 +1581,6 @@ JobDetailsScreenView.propTypes = {
 };
 
 JobDetailsScreenView.defaultProps = {
-  sign: null,
   amountCollected: '',
 };
 
