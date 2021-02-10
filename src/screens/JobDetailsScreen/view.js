@@ -100,6 +100,7 @@ const {
   BackPhotoIcon,
   ActiveBinWeightIcon,
   DeactiveBinWeightIcon,
+  DropdownArrowIcon,
 } = SVGS;
 
 const STEP_STATUS_MARK = '_Next';
@@ -112,6 +113,10 @@ const JobDetailsScreenView = ({
   setBinInfo,
   jobStatus,
   services,
+  amountCollected,
+  setAmountCollected,
+  jobPaymentType,
+  setJobPaymentType,
   isInProgress,
 
   focusedJob,
@@ -674,7 +679,7 @@ const JobDetailsScreenView = ({
     options,
     status,
   }) => (
-    options.isRequireReviewWasteType &&
+    // options.isRequireReviewWasteType &&
     <View>
       <SpaceView mTop={SIZE2} />
       <RowWrap>
@@ -884,7 +889,11 @@ const JobDetailsScreenView = ({
           status !== 'COMPLETED' &&
           <RowWrap>
             <SpaceView mLeft={SIZE2} />
-            <DeactiveCircleCheckIcon />
+            {
+              amountCollected
+              ? <ActiveCircleCheckIcon />
+              : <DeactiveCircleCheckIcon />
+            }
           </RowWrap>
         }
       </RowWrap>
@@ -896,13 +905,45 @@ const JobDetailsScreenView = ({
         </View>
         <SpaceView mLeft={SIZE4} />
         <FlexWrap>
-          <InfoText>100</InfoText>
+          <BinInput
+            underlineColorAndroid={COLORS.TRANSPARENT1}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            placeholder={'Amount Collected'}
+            value={amountCollected}
+            onChangeText={(text) =>
+              setAmountCollected(text)
+            }
+            editable={
+              status === 'ACTIVE' &&
+              focusedJob.isAllowDriverEditOnApp
+            }
+            keyboardType={'numeric'}
+          />
           <SpaceView mTop={SIZE1} />
           <BorderView />
         </FlexWrap>
         <SpaceView mLeft={SIZE4} />
         <FlexWrap>
-          <InfoText>CASH</InfoText>
+          <TouchableOpacity
+            onPress={null}
+            disabled={
+              !(
+                status === 'ACTIVE' &&
+                focusedJob.isAllowDriverEditOnApp
+              )
+            }
+          >
+            <RowWrap>
+              <SpaceView mLeft={SIZE1} />
+              <FlexWrap>
+                <InfoText>CASH</InfoText>
+              </FlexWrap>
+              <SpaceView mLeft={SIZE1} />
+              <DropdownArrowIcon />
+              <SpaceView mLeft={SIZE1} />
+            </RowWrap>
+          </TouchableOpacity>
           <SpaceView mTop={SIZE1} />
           <BorderView />
         </FlexWrap>
@@ -1482,6 +1523,12 @@ JobDetailsScreenView.propTypes = {
   setBinInfo: PropTypes.func.isRequired,
   jobStatus: PropTypes.string.isRequired,
   services: PropTypes.array.isRequired,
+  amountCollected: PropTypes.oneOfType([
+    PropTypes.string, PropTypes.number,
+  ]),
+  setAmountCollected: PropTypes.func.isRequired,
+  jobPaymentType: PropTypes.number.isRequired,
+  setJobPaymentType: PropTypes.func.isRequired,
   isInProgress: PropTypes.bool.isRequired,
 
   focusedJob: PropTypes.object.isRequired,
@@ -1506,6 +1553,7 @@ JobDetailsScreenView.propTypes = {
 
 JobDetailsScreenView.defaultProps = {
   sign: null,
+  amountCollected: '',
 };
 
 export default JobDetailsScreenView;

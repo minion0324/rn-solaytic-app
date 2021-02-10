@@ -86,16 +86,14 @@ const JobDetailsScreen = ({
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
-  const [ cashIndex, setCashIndex ] = useState(
-    !focusedJob.isEnabledCashCollection
-    ? -1
-    : (focusedJob.appExtraData && focusedJob.appExtraData.amountCollected)
-      ? focusedJob.appExtraData.amountCollected === focusedJob.amountToCollect
-        ? 0 : 1
-      : focusedJob.collectedAmount
-        ? focusedJob.collectedAmount === focusedJob.amountToCollect
-          ? 0 : 1
-        : -1
+  const [ amountCollected, setAmountCollected ] = useState(
+    focusedJob.appExtraData && focusedJob.appExtraData.amountCollected
+    ? focusedJob.appExtraData.amountCollected : focusedJob.collectedAmount
+  );
+
+  const [ jobPaymentType, setJobPaymentType ] = useState(
+    focusedJob.appExtraData && focusedJob.appExtraData.jobPaymentType
+    ? focusedJob.appExtraData.jobPaymentType : focusedJob.jobPaymentType || 0
   );
 
   const isInProgress = useMemo(() => {
@@ -252,15 +250,12 @@ const JobDetailsScreen = ({
   const onStart = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     startJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
       photos,
       sign,
       signedUserName,
@@ -273,15 +268,12 @@ const JobDetailsScreen = ({
   const onPull = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     pullJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
       photos,
       sign,
       signedUserName,
@@ -294,15 +286,12 @@ const JobDetailsScreen = ({
   const onExchange = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
       photos,
       sign,
       signedUserName,
@@ -313,21 +302,6 @@ const JobDetailsScreen = ({
   };
 
   const onComplete = () => {
-    // if (focusedJob.mustTakePhoto && photos.length === 0) {
-    //   Alert.alert('Warning', 'Please upload photos.');
-    //   return;
-    // }
-
-    // if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
-    //   Alert.alert('Warning', 'Please upload signature.');
-    //   return;
-    // }
-
-    // if (focusedJob.isEnabledCashCollection && cashIndex === -1) {
-    //   Alert.alert('Warning', 'Please select payments.');
-    //   return;
-    // }
-
     if (isInBackgroundMode) {
       Alert.alert(
         'Warning',
@@ -375,15 +349,12 @@ const JobDetailsScreen = ({
   const onCompleteJobs = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
       photos,
       sign,
       signedUserName,
@@ -471,13 +442,9 @@ const JobDetailsScreen = ({
   };
 
   const onPrint = (getBinInOutInfoIndex, getCustomerSiteIndex) => {
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     pushScreen(componentId, PREVIEW_SCREEN, {
       sign, signedUserName, signedUserContact,
-      binInfo, services, amountCollected,
+      binInfo, services, amountCollected, jobPaymentType,
       getBinInOutInfoIndex, getCustomerSiteIndex,
     });
   };
@@ -491,8 +458,10 @@ const JobDetailsScreen = ({
       setBinInfo={setBinInfo}
       jobStatus={jobStatus}
       services={services}
-      cashIndex={cashIndex}
-      setCashIndex={setCashIndex}
+      amountCollected={amountCollected}
+      setAmountCollected={setAmountCollected}
+      jobPaymentType={jobPaymentType}
+      setJobPaymentType={setJobPaymentType}
       isInProgress={isInProgress}
 
       focusedJob={focusedJob}
