@@ -676,7 +676,7 @@ const JobDetailsScreenView = ({
     index,
     status,
   }) => (
-    // options.isRequireReviewWasteType &&
+    options.isRequireReviewWasteType &&
     <View>
       <SpaceView mTop={SIZE2} />
       <RowWrap>
@@ -924,7 +924,12 @@ const JobDetailsScreenView = ({
             keyboardType={'numeric'}
           />
           <SpaceView mTop={SIZE1} />
-          <BorderView />
+          <BorderView
+            color={
+              status === 'ACTIVE'
+              ? COLORS.BLUE1 : COLORS.GRAY2
+            }
+          />
         </FlexWrap>
         <SpaceView mLeft={SIZE4} />
         <FlexWrap>
@@ -944,13 +949,23 @@ const JobDetailsScreenView = ({
                   {focusedJob.jobPaymentTypeList[jobPaymentType]}
                 </InfoText>
               </FlexWrap>
-              <SpaceView mLeft={SIZE1} />
-              <DropdownArrowIcon />
+              {
+                status === 'ACTIVE' &&
+                <RowWrap>
+                  <SpaceView mLeft={SIZE1} />
+                  <DropdownArrowIcon />
+                </RowWrap>
+              }
               <SpaceView mLeft={SIZE1} />
             </RowWrap>
           </TouchableOpacity>
           <SpaceView mTop={SIZE1} />
-          <BorderView />
+          <BorderView
+            color={
+              status === 'ACTIVE'
+              ? COLORS.BLUE1 : COLORS.GRAY2
+            }
+          />
         </FlexWrap>
       </RowWrap>
       <SpaceView mTop={SIZE4} />
