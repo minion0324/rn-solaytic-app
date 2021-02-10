@@ -226,6 +226,24 @@ function apiGetJobDates(
   });
 };
 
+function apiGetWasteTypes(
+  searchQuery = '',
+  currentPage = 1,
+  pageSize = 10,
+  sortColumn = '',
+  sortDir = 'asc',
+) {
+  return apiCall('api/mobile/driver/wastetype', 'get', {
+    params: {
+      searchQuery,
+      currentPage,
+      pageSize,
+      sortColumn,
+      sortDir,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -243,4 +261,5 @@ export {
   apiAddMessage,
   apiGetBinNumbers,
   apiGetJobDates,
+  apiGetWasteTypes,
 };
