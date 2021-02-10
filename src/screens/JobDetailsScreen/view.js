@@ -692,9 +692,9 @@ const JobDetailsScreenView = ({
             onPress={() => onAddWasteTypes(index)}
           >
             {
-              item['wasteTypes'].map((wasteType) => (
-                <InfoText key={wasteType.wasteTypeId}>
-                  {wasteType.wasteTypeName || ''}
+              item['wasteTypes'].map((el) => (
+                <InfoText key={el.wasteTypeId}>
+                  {el.wasteType.wasteTypeName || ''}
                 </InfoText>
               ))
             }
