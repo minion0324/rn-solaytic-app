@@ -43,8 +43,6 @@ import Phone1Icon from 'src/assets/svgs/icon-phone1.svg';
 import Phone2Icon from 'src/assets/svgs/icon-phone2.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
 import CircleIcon from 'src/assets/svgs/icon-circle.svg';
-import AddCircleIcon from 'src/assets/svgs/icon-circle-add.svg';
-import RemoveCircleIcon from 'src/assets/svgs/icon-circle-remove.svg';
 import MessageAvatarIcon from 'src/assets/svgs/icon-avatar-message.svg';
 import Mask1Icon from 'src/assets/svgs/icon-mask1.svg';
 import Mask2Icon from 'src/assets/svgs/icon-mask2.svg';
@@ -118,8 +116,6 @@ export default {
   Phone2Icon,
   MapIcon,
   CircleIcon,
-  AddCircleIcon,
-  RemoveCircleIcon,
   MessageAvatarIcon,
   Mask1Icon,
   Mask2Icon,
