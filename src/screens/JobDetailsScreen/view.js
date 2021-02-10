@@ -674,6 +674,7 @@ const JobDetailsScreenView = ({
   const renderWasteType = ({
     item,
     index,
+    options,
     status,
   }) => (
     options.isRequireReviewWasteType &&
@@ -1097,6 +1098,7 @@ const JobDetailsScreenView = ({
                   renderWasteType({
                     item,
                     index,
+                    options,
                     status,
                   })
                 }
@@ -1217,6 +1219,7 @@ const JobDetailsScreenView = ({
               renderWasteType({
                 item: binInfo[binIndex],
                 index: binIndex,
+                options,
                 status,
               })
             }
