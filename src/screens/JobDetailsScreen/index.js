@@ -76,7 +76,12 @@ const JobDetailsScreen = ({
     : [0, 1].map((index) => pick(
         focusedJob.steps[index],
         [
-          'jobStepId', 'wasteType', 'binType', 'binNumber', 'binWeight',
+          'jobStepId',
+          'wasteType',
+          'binType',
+          'binNumber',
+          'binWeight',
+          'wasteTypes',
         ],
       ))
   );

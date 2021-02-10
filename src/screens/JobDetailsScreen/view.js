@@ -241,22 +241,22 @@ const JobDetailsScreenView = ({
     focusedJob.jobTypeName,
   ]);
 
-  const binWeightStepIndex = useMemo(() => {
+  const binWeightIndexes = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
-        return { index: 1, binIndex: 0 };
+        return { stepIndex: 1, binIndex: 0 };
 
       case JOB_TYPE.PUT:
-        return { index: -1 };
+        return { stepIndex: -1 };
 
       case JOB_TYPE.EXCHANGE:
-        return { index: 2, binIndex: 1 };
+        return { stepIndex: 2, binIndex: 1 };
 
       case JOB_TYPE.ON_THE_SPOT:
-        return { index: 1, binIndex: 0 };
+        return { stepIndex: 1, binIndex: 0 };
 
       default:
-        return { index: -1 };
+        return { stepIndex: -1 };
     };
   }, [
     focusedJob.jobTypeName,
@@ -590,7 +590,6 @@ const JobDetailsScreenView = ({
   const renderBinNumber = ({
     item,
     index,
-    idx,
     options,
     status,
   }) => (
@@ -652,10 +651,6 @@ const JobDetailsScreenView = ({
 
   const renderBinType = ({
     item,
-    index,
-    idx,
-    options,
-    status,
   }) => (
       item['binType'] &&
       item['binType']['binTypeName'] &&
@@ -679,8 +674,6 @@ const JobDetailsScreenView = ({
   const renderWasteType = ({
     item,
     index,
-    idx,
-    options,
     status,
   }) => (
     // options.isRequireReviewWasteType &&
@@ -688,7 +681,7 @@ const JobDetailsScreenView = ({
       <SpaceView mTop={SIZE2} />
       <RowWrap>
         <FlexWrap>
-          <LabelText>For Waste Type</LabelText>
+          <LabelText>with Waste Type</LabelText>
           <TouchableOpacity
             disabled={
               !(
@@ -698,12 +691,13 @@ const JobDetailsScreenView = ({
             }
             onPress={() => onAddWasteTypes(index)}
           >
-            <InfoText>
-              {
-                item['wasteType'] &&
-                item['wasteType']['wasteTypeName']
-              }
-            </InfoText>
+            {
+              item['wasteTypes'].map((wasteType) => (
+                <InfoText key={wasteType.wasteTypeId}>
+                  {wasteType.wasteTypeName || ''}
+                </InfoText>
+              ))
+            }
           </TouchableOpacity>
         </FlexWrap>
         {
@@ -732,8 +726,6 @@ const JobDetailsScreenView = ({
 
   const renderPhotosAndSign = ({
     item,
-    index,
-    idx,
     options,
     status,
   }) => (
@@ -868,9 +860,6 @@ const JobDetailsScreenView = ({
   );
 
   const renderPayment = ({
-    item,
-    index,
-    idx,
     options,
     status,
   }) => (
@@ -969,10 +958,6 @@ const JobDetailsScreenView = ({
   );
 
   const renderCompleteButton = ({
-    item,
-    index,
-    idx,
-    options,
     status,
   }) => (
     <View>
@@ -1084,7 +1069,6 @@ const JobDetailsScreenView = ({
                   renderBinNumber({
                     item,
                     index,
-                    idx,
                     options,
                     status,
                   })
@@ -1092,45 +1076,30 @@ const JobDetailsScreenView = ({
                 {
                   renderBinType({
                     item,
-                    index,
-                    idx,
-                    options,
-                    status,
                   })
                 }
                 {
                   renderWasteType({
                     item,
                     index,
-                    idx,
-                    options,
                     status,
                   })
                 }
                 {
                   renderPhotosAndSign({
                     item,
-                    index,
-                    idx,
                     options,
                     status,
                   })
                 }
                 {
                   renderPayment({
-                    item,
-                    index,
-                    idx,
                     options,
                     status,
                   })
                 }
                 {
                   renderCompleteButton({
-                    item,
-                    index,
-                    idx,
-                    options,
                     status,
                   })
                 }
@@ -1143,17 +1112,14 @@ const JobDetailsScreenView = ({
   };
 
   const renderBinWeight = () => {
-    const { index, binIndex } = binWeightStepIndex;
+    const { stepIndex, binIndex } = binWeightIndexes;
 
-    if (index === -1) {
+    if (stepIndex === -1) {
       return null;
     }
 
-    const item = focusedJob.steps[index];
-
-    const options = getBinInfoOptions(index);
-    const status = getBinInfoStatus(index);
-    const idx = getBinInOutInfoIndex(index);
+    const options = getBinInfoOptions(stepIndex);
+    const status = getBinInfoStatus(stepIndex);
 
     return (
       <View>
@@ -1193,79 +1159,67 @@ const JobDetailsScreenView = ({
           <ContentWrap
             mLeft={0.1} mRight={0.1}
           >
-              <SpaceView mTop={SIZE2} />
-              <RowWrap>
-                <FlexWrap>
-                  <RowWrap>
-                    <FlexWrap>
-                      <BinInput
-                        underlineColorAndroid={COLORS.TRANSPARENT1}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        placeholder={'BIN WEIGHT'}
-                        value={`${binInfo[binIndex]['binWeight'] || ''}`}
-                        onChangeText={(text) =>
-                          onUpdateBinInfo(binIndex, { binWeight: text })
-                        }
-                        editable={
-                          status === 'ACTIVE' &&
-                          focusedJob.isAllowDriverEditOnApp
-                        }
-                        keyboardType={'numeric'}
-                      />
-                      <SpaceView mTop={SIZE1} />
-                    </FlexWrap>
-                  </RowWrap>
-                  <BorderView
-                    color={
-                      status === 'ACTIVE' &&
-                      options.isRequireBinWeight
-                      ? COLORS.BLUE1 : COLORS.GRAY2
-                    }
-                  />
-                </FlexWrap>
-                <SpaceView mLeft={SIZE2} />
-                <View>
-                  <InfoText>tons</InfoText>
-                  <SpaceView mTop={SIZE1} />
-                </View>
-              </RowWrap>
-              <SpaceView mTop={SIZE2} />
-
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap>
+                <RowWrap>
+                  <FlexWrap>
+                    <BinInput
+                      underlineColorAndroid={COLORS.TRANSPARENT1}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      placeholder={'BIN WEIGHT'}
+                      value={`${binInfo[binIndex]['binWeight'] || ''}`}
+                      onChangeText={(text) =>
+                        onUpdateBinInfo(binIndex, { binWeight: text })
+                      }
+                      editable={
+                        status === 'ACTIVE' &&
+                        focusedJob.isAllowDriverEditOnApp
+                      }
+                      keyboardType={'numeric'}
+                    />
+                    <SpaceView mTop={SIZE1} />
+                  </FlexWrap>
+                </RowWrap>
+                <BorderView
+                  color={
+                    status === 'ACTIVE' &&
+                    options.isRequireBinWeight
+                    ? COLORS.BLUE1 : COLORS.GRAY2
+                  }
+                />
+              </FlexWrap>
+              <SpaceView mLeft={SIZE2} />
+              <View>
+                <InfoText>tons</InfoText>
+                <SpaceView mTop={SIZE1} />
+              </View>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
 
             {
               renderWasteType({
-                item,
-                index,
-                idx,
-                options,
+                item: binInfo[binIndex],
+                index: binIndex,
                 status,
               })
             }
             {
               renderPhotosAndSign({
-                item,
-                index,
-                idx,
+                item: focusedJob.steps[stepIndex],
                 options,
                 status,
               })
             }
             {
               renderPayment({
-                item,
-                index,
-                idx,
                 options,
                 status,
               })
             }
             {
               renderCompleteButton({
-                item,
-                index,
-                idx,
-                options,
                 status,
               })
             }
