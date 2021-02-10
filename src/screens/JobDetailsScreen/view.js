@@ -874,7 +874,7 @@ const JobDetailsScreenView = ({
     options,
     status,
   }) => (
-    // options.isRequirePaymentCollection &&
+    options.isRequirePaymentCollection &&
     <View>
       <SpaceView mTop={SIZE4} />
       <RowWrap>
@@ -924,7 +924,7 @@ const JobDetailsScreenView = ({
             autoCapitalize={'none'}
             autoCorrect={false}
             placeholder={'Amount Collected'}
-            value={amountCollected}
+            value={`${amountCollected || ''}`}
             onChangeText={(text) =>
               setAmountCollected(text)
             }
