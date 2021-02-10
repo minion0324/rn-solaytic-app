@@ -152,7 +152,11 @@ const AddWasteTypesScreen = ({
     ));
 
     if (index === -1) {
-      newSelectedWasteTypes.push(item);
+      newSelectedWasteTypes.push({
+        jobStepId: binInfo[binIndex].jobStepId,
+        wasteType: item,
+        wasteTypeId: item.wasteTypeId,
+      });
     } else {
       newSelectedWasteTypes.splice(index, 1);
     }
