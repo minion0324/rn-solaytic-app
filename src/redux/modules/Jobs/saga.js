@@ -400,6 +400,8 @@ export function* asyncStartJobs({ payload }) {
       jobPaymentType,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
+      wasteTypes: focusedJob.steps[0].wasteTypes
+        .concat(focusedJob.steps[1].wasteTypes),
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
       binTypeId: focusedJob.steps[0].binTypeId,
       binNumber: focusedJob.steps[0].binNumber,
@@ -526,6 +528,8 @@ export function* asyncPullJobs({ payload }) {
       jobPaymentType,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
+      wasteTypes: focusedJob.steps[0].wasteTypes
+        .concat(focusedJob.steps[1].wasteTypes),
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
       binTypeId: focusedJob.steps[0].binTypeId,
       binNumber: focusedJob.steps[0].binNumber,
@@ -652,6 +656,8 @@ export function* asyncExchangeJobs({ payload }) {
       jobPaymentType,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
+      wasteTypes: focusedJob.steps[0].wasteTypes
+        .concat(focusedJob.steps[1].wasteTypes),
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
       binTypeId: focusedJob.steps[0].binTypeId,
       binNumber: focusedJob.steps[0].binNumber,
@@ -783,6 +789,8 @@ export function* asyncCompleteJobs({ payload }) {
         jobPaymentType,
         siteName: lastJobStep.siteName,
         address: lastJobStep.address,
+        wasteTypes: focusedJob.steps[0].wasteTypes
+          .concat(focusedJob.steps[1].wasteTypes),
         wasteTypeId: focusedJob.steps[0].wasteTypeId,
         binTypeId: focusedJob.steps[0].binTypeId,
         binNumber: focusedJob.steps[0].binNumber,
@@ -908,6 +916,8 @@ export function* asyncFailJobs({ payload }) {
       amountCollected: 0,
       siteName: lastJobStep.siteName,
       address: lastJobStep.address,
+      wasteTypes: focusedJob.steps[0].wasteTypes
+        .concat(focusedJob.steps[1].wasteTypes),
       wasteTypeId: focusedJob.steps[0].wasteTypeId,
       binTypeId: focusedJob.steps[0].binTypeId,
       binNumber: focusedJob.steps[0].binNumber,
