@@ -60,12 +60,11 @@ const {
 const PreviewScreen = ({
   focusedJob,
   jobReceiptSetting,
-  sign,
-  signedUserName,
-  signedUserContact,
+  signs,
   binInfo,
   // services,
   amountCollected,
+  jobPaymentType,
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
   componentId,
@@ -140,6 +139,8 @@ const PreviewScreen = ({
   };
 
   const renderJobProof = () => {
+    const sign = signs[signs.length - 1];
+
     if (!sign.uri) {
       return null;
     }
@@ -168,7 +169,7 @@ const PreviewScreen = ({
               </FlexWrap>
               <FlexWrap flex={6}>
                 <InfoText>
-                  {signedUserName}
+                  {sign.signedUserName}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -186,7 +187,7 @@ const PreviewScreen = ({
               </FlexWrap>
               <FlexWrap flex={6}>
                 <InfoText>
-                  {signedUserContact}
+                  {sign.signedUserContact}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -267,7 +268,7 @@ const PreviewScreen = ({
               </FlexWrap>
               <FlexWrap flex={6}>
                 <InfoText align={'right'}>
-                  Cash
+                  {focusedJob.jobPaymentTypeList[jobPaymentType]}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -665,21 +666,20 @@ const PreviewScreen = ({
 PreviewScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   jobReceiptSetting: PropTypes.array.isRequired,
-  sign: PropTypes.object,
-  signedUserName: PropTypes.string,
-  signedUserContact: PropTypes.string,
+  signs: PropTypes.array.isRequired,
   binInfo: PropTypes.array.isRequired,
   // services: PropTypes.array.isRequired,
-  amountCollected: PropTypes.number.isRequired,
+  amountCollected: PropTypes.oneOfType([
+    PropTypes.string, PropTypes.number,
+  ]),
+  jobPaymentType: PropTypes.number.isRequired,
   getBinInOutInfoIndex: PropTypes.func.isRequired,
   getCustomerSiteIndex: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 PreviewScreen.defaultProps = {
-  sign: null,
-  signedUserName: '',
-  signedUserContact: '',
+  amountCollected: '',
 };
 
 const mapStateToProps = (state) => {
