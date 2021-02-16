@@ -144,7 +144,9 @@ const JobDetailsScreenView = ({
   const [ stepStatus, setStepStatus ] = useState('');
   const [ actionSheetData, setActionSheetData ] = useState([]);
 
+  const binIndexRef = useRef(null);
   const actionSheetRef = useRef(null);
+  const actionSheetKey = useRef(null);
 
   useEffect(() => {
     setStepStatus(jobStatus);
@@ -472,6 +474,48 @@ const JobDetailsScreenView = ({
     setBinInfo(newBinInfo);
   };
 
+  const onShowActionSheetForBinType = (binIndex) => {
+    const { charges } = focusedJob;
+
+    if (charges.length === 0) {
+      Alert.alert('Warning', 'The customer has no Bin Type.');
+      return;
+    }
+
+    const data = charges
+      .map(charge => charge['binType']['binTypeName']);
+
+    setActionSheetData(data);
+
+    binIndexRef.current = binIndex;
+    actionSheetKey.current = 'binType';
+    actionSheetRef.current.show();
+  };
+
+  const onShowActionSheetForPaymentType = () => {
+    setActionSheetData(focusedJob.jobPaymentTypeList);
+
+    actionSheetKey.current = 'paymentType';
+    actionSheetRef.current.show();
+  };
+
+  const onActionSheetPress = (index) => {
+    if (index === actionSheetData.length) {
+      return;
+    }
+
+    if (actionSheetKey.current === 'binType') {
+      const { charges } = focusedJob;
+
+      onUpdateBinInfo(binIndexRef.current, {
+        binType: charges[index].binType,
+        wasteType: charges[index].wasteType,
+      });
+    } else {
+      setJobPaymentType(index);
+    }
+  };
+
   const onShowPhotoModal = (selectedPhoto) => {
     showLightBox(CUSTOM_MODAL_SCREEN, {
       props: { selectedPhoto },
@@ -647,6 +691,7 @@ const JobDetailsScreenView = ({
 
   const renderBinType = ({
     item,
+    index,
     idx,
     status,
   }) => (
@@ -668,14 +713,14 @@ const JobDetailsScreenView = ({
                   )
                 )
               }
-              onPress={null}
+              onPress={() => onShowActionSheetForBinType(index)}
             >
-            <InfoText>
-              {
-                item['binType'] &&
-                item['binType']['binTypeName']
-              }
-            </InfoText>
+              <InfoText>
+                {
+                  item['binType'] &&
+                  item['binType']['binTypeName']
+                }
+              </InfoText>
             </TouchableOpacity>
           </FlexWrap>
         </RowWrap>
@@ -1006,7 +1051,7 @@ const JobDetailsScreenView = ({
         <SpaceView mLeft={SIZE4} />
         <FlexWrap>
           <TouchableOpacity
-            onPress={() => actionSheetRef.current.show()}
+            onPress={onShowActionSheetForPaymentType}
             disabled={
               !(
                 status === 'ACTIVE' &&
@@ -1163,6 +1208,7 @@ const JobDetailsScreenView = ({
                 {
                   renderBinType({
                     item,
+                    index,
                     idx,
                     status,
                   })
@@ -1577,8 +1623,9 @@ const JobDetailsScreenView = ({
       <ActionSheet
         ref={actionSheetRef}
         title={'Please select one'}
-        options={focusedJob.jobPaymentTypeList}
-        onPress={(index) => setJobPaymentType(index)}
+        options={[ ...actionSheetData, 'Cancel' ]}
+        cancelButtonIndex={actionSheetData.length}
+        onPress={onActionSheetPress}
       />
     </Container>
   );
