@@ -64,8 +64,8 @@ const JobDetailsScreen = ({
 
   const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
 
-  const [ photos, setPhotos ] = useState(photosAndSigns.photos);
-  const [ signs, setSigns ] = useState(photosAndSigns.signs);
+  const [ photos, setPhotos ] = useState([]);
+  const [ signs, setSigns ] = useState([]);
 
   const [ binInfo, setBinInfo ] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.binInfo
@@ -110,6 +110,10 @@ const JobDetailsScreen = ({
     getSavedPhotosAndSigns();
     checkIsInBackgroundMode();
   }, []);
+
+  useEffect(() => {
+    getPhotosAndSigns();
+  }, [photosAndSigns]);
 
   useEffect(() => {
     onNewCommentInfo();
@@ -162,6 +166,11 @@ const JobDetailsScreen = ({
     } catch (error) {
       //
     }
+  };
+
+  const getPhotosAndSigns = () => {
+    setPhotos(photosAndSigns.photos);
+    setSigns(photosAndSigns.signs);
   };
 
   const getSavedPhotosAndSigns = async () => {
