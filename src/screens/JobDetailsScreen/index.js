@@ -169,8 +169,18 @@ const JobDetailsScreen = ({
   };
 
   const getPhotosAndSigns = () => {
-    setPhotos(photosAndSigns.photos);
-    setSigns(photosAndSigns.signs);
+    const {
+      photos: newPhotos,
+      signs: newSigns,
+    } = photosAndSigns;
+
+    if (photos.length <= 0 && newPhotos.length > 0) {
+      setPhotos(newPhotos);
+    }
+
+    if (signs.length <= 0 && newSigns.length > 0) {
+      setSigns(newSigns);
+    }
   };
 
   const getSavedPhotosAndSigns = async () => {
