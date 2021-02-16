@@ -415,6 +415,13 @@ export function* asyncStartJobs({ payload }) {
       vehicleName: '', //
       remarks: focusedJob.remarks,
       jobPhotos: photos.map((photo) => {
+        if (!photo.data) {
+          return {
+            jobStepId: photo.jobStepId,
+            photoUrl: photo.uri,
+          };
+        }
+
         return {
           jobStepId: photo.jobStepId,
           base64Image: photo.data,
@@ -423,6 +430,15 @@ export function* asyncStartJobs({ payload }) {
         };
       }),
       jobSignatures: signs.map((sign) => {
+        if (!sign.data) {
+          return {
+            jobStepId: sign.jobStepId,
+            jobSignatureUrl: sign.uri,
+            jobSignedUserName: sign.signedUserName,
+            jobSignedUserContact: sign.signedUserContact,
+          };
+        }
+
         return {
           jobStepId: sign.jobStepId,
           jobSignatureFileName: (sign.uri || '').split('/').pop(),
@@ -546,6 +562,13 @@ export function* asyncPullJobs({ payload }) {
       vehicleName: '', //
       remarks: focusedJob.remarks,
       jobPhotos: photos.map((photo) => {
+        if (!photo.data) {
+          return {
+            jobStepId: photo.jobStepId,
+            photoUrl: photo.uri,
+          };
+        }
+
         return {
           jobStepId: photo.jobStepId,
           base64Image: photo.data,
@@ -554,6 +577,15 @@ export function* asyncPullJobs({ payload }) {
         }
       }),
       jobSignatures: signs.map((sign) => {
+        if (!sign.data) {
+          return {
+            jobStepId: sign.jobStepId,
+            jobSignatureUrl: sign.uri,
+            jobSignedUserName: sign.signedUserName,
+            jobSignedUserContact: sign.signedUserContact,
+          };
+        }
+
         return {
           jobStepId: sign.jobStepId,
           jobSignatureFileName: (sign.uri || '').split('/').pop(),
@@ -677,6 +709,13 @@ export function* asyncExchangeJobs({ payload }) {
       vehicleName: '', //
       remarks: focusedJob.remarks,
       jobPhotos: photos.map((photo) => {
+        if (!photo.data) {
+          return {
+            jobStepId: photo.jobStepId,
+            photoUrl: photo.uri,
+          }
+        }
+
         return {
           jobStepId: photo.jobStepId,
           base64Image: photo.data,
@@ -685,6 +724,15 @@ export function* asyncExchangeJobs({ payload }) {
         }
       }),
       jobSignatures: signs.map((sign) => {
+        if (!sign.data) {
+          return {
+            jobStepId: sign.jobStepId,
+            jobSignatureUrl: sign.uri,
+            jobSignedUserName: sign.signedUserName,
+            jobSignedUserContact: sign.signedUserContact,
+          };
+        }
+
         return {
           jobStepId: sign.jobStepId,
           jobSignatureFileName: (sign.uri || '').split('/').pop(),
@@ -813,6 +861,13 @@ export function* asyncCompleteJobs({ payload }) {
         vehicleName: '', //
         remarks: focusedJob.remarks,
         jobPhotos: photos.map((photo) => {
+          if (!photo.data) {
+            return {
+              jobStepId: photo.jobStepId,
+              photoUrl: photo.uri,
+            };
+          }
+
           return {
             jobStepId: photo.jobStepId,
             base64Image: photo.data,
@@ -821,6 +876,15 @@ export function* asyncCompleteJobs({ payload }) {
           }
         }),
         jobSignatures: signs.map((sign) => {
+          if (!sign.data) {
+            return {
+              jobStepId: sign.jobStepId,
+              jobSignatureUrl: sign.uri,
+              jobSignedUserName: sign.signedUserName,
+              jobSignedUserContact: sign.signedUserContact,
+            };
+          }
+
           return {
             jobStepId: sign.jobStepId,
             jobSignatureFileName: (sign.uri || '').split('/').pop(),
