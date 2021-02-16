@@ -174,11 +174,11 @@ const JobDetailsScreen = ({
       signs: newSigns,
     } = photosAndSigns;
 
-    if (photos.length <= 0 && newPhotos.length > 0) {
+    if (photos.length <= newPhotos.length) {
       setPhotos(newPhotos);
     }
 
-    if (signs.length <= 0 && newSigns.length > 0) {
+    if (signs.length <= newSigns.length) {
       setSigns(newSigns);
     }
   };
@@ -196,11 +196,11 @@ const JobDetailsScreen = ({
         }
       } = appExtraData;
 
-      if (photos.length <= 0 && savedPhotos.length > 0) {
+      if (photos.length < savedPhotos.length) {
         setPhotos(savedPhotos);
       }
 
-      if (signs.length <= 0 && savedSigns.length > 0) {
+      if (signs.length < savedSigns.length) {
         setSigns(savedSigns);
       }
     } catch (error) {
