@@ -142,6 +142,7 @@ const JobDetailsScreenView = ({
   onPrint,
 }) => {
   const [ stepStatus, setStepStatus ] = useState('');
+  const [ actionSheetData, setActionSheetData ] = useState([]);
 
   const actionSheetRef = useRef(null);
 
@@ -646,6 +647,8 @@ const JobDetailsScreenView = ({
 
   const renderBinType = ({
     item,
+    idx,
+    status,
   }) => (
       item['binType'] &&
       item['binType']['binTypeName'] &&
@@ -654,12 +657,26 @@ const JobDetailsScreenView = ({
         <RowWrap>
           <FlexWrap>
             <LabelText>Bin Type</LabelText>
+            <TouchableOpacity
+              disabled={
+                !(
+                  status === 'ACTIVE' &&
+                  focusedJob.isAllowDriverEditOnApp &&
+                  (
+                    idx === 1 &&
+                    focusedJob.isEditableBinTypeOut
+                  )
+                )
+              }
+              onPress={null}
+            >
             <InfoText>
               {
                 item['binType'] &&
                 item['binType']['binTypeName']
               }
             </InfoText>
+            </TouchableOpacity>
           </FlexWrap>
         </RowWrap>
         <SpaceView mTop={SIZE2} />
@@ -669,6 +686,7 @@ const JobDetailsScreenView = ({
   const renderWasteType = ({
     item,
     index,
+    idx,
     options,
     status,
   }) => (
@@ -682,7 +700,11 @@ const JobDetailsScreenView = ({
             disabled={
               !(
                 status === 'ACTIVE' &&
-                focusedJob.isAllowDriverEditOnApp
+                focusedJob.isAllowDriverEditOnApp &&
+                (
+                  (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
+                  (idx === 1 && focusedJob.isEditableWasteTypeOut)
+                )
               )
             }
             onPress={() => onAddWasteTypes(index)}
@@ -699,6 +721,10 @@ const JobDetailsScreenView = ({
         {
           status === 'ACTIVE' &&
           focusedJob.isAllowDriverEditOnApp &&
+          (
+            (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
+            (idx === 1 && focusedJob.isEditableWasteTypeOut)
+          ) &&
           <TouchableOpacity
             onPress={() => onAddWasteTypes(index)}
           >
@@ -1137,12 +1163,15 @@ const JobDetailsScreenView = ({
                 {
                   renderBinType({
                     item,
+                    idx,
+                    status,
                   })
                 }
                 {
                   renderWasteType({
                     item,
                     index,
+                    idx,
                     options,
                     status,
                   })
@@ -1180,6 +1209,7 @@ const JobDetailsScreenView = ({
       return null;
     }
 
+    const idx = getBinInOutInfoIndex(stepIndex);
     const options = getBinInfoOptions(stepIndex);
     const status = getBinInfoStatus(stepIndex);
 
@@ -1264,6 +1294,7 @@ const JobDetailsScreenView = ({
               renderWasteType({
                 item: binInfo[binIndex],
                 index: binIndex,
+                idx,
                 options,
                 status,
               })
