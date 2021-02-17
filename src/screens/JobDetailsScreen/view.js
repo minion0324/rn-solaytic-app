@@ -930,7 +930,7 @@ const JobDetailsScreenView = ({
       <SpaceView mTop={SIZE4} />
       <RowWrap>
         {
-          options.numberofPhotosRequired &&
+          !!options.numberofPhotosRequired &&
           Array(options.numberofPhotosRequired)
             .fill(0)
             .map((empty, index) => (
