@@ -9,6 +9,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -405,6 +406,84 @@ const JobDetailsScreenView = ({
     [currentStep],
   );
 
+  const onValidateStep = (stepIndex, binIndex) => {
+    const { jobStepId } = focusedJob.steps[stepIndex];
+    const options = getBinInfoOptions(stepIndex);
+
+     if (
+       options.isRequireBinNumberToEnd &&
+       !binInfo[binIndex]['binNumber']
+     ) {
+      Alert.alert('Warning', 'Please insert bin number');
+      return false;
+     }
+
+     if (
+      options.isRequireBinType &&
+      !(
+        binInfo[binIndex]['binType'] &&
+        binInfo[binIndex]['binType']['binTypeName']
+      )
+     ) {
+      Alert.alert('Warning', 'Please insert bin type');
+      return false;
+     }
+
+     if (
+      options.isRequireBinWeight &&
+      !binInfo[binIndex]['binWeight']
+     ) {
+      Alert.alert('Warning', 'Please insert bin weight');
+      return false;
+     }
+
+     if (
+      binInfo[binIndex]['binWeight'] &&
+      binInfo[binIndex]['binWeight'] > 99.999
+     ) {
+      Alert.alert('Warning', 'The max value for bin weight is 99.999');
+      return false;
+     }
+
+     if (
+      options.isRequireReviewWasteType &&
+      !binInfo[binIndex]['wasteTypes'].length
+     ) {
+      Alert.alert('Warning', 'Please insert waste type(s)');
+      return false;
+     }
+
+     if (
+      options.numberofPhotosRequired &&
+      photos.filter((photo) => (
+        photo.jobStepId === jobStepId
+      )).length !== options.numberofPhotosRequired
+     ) {
+      Alert.alert('Warning', `Please include ${options.numberofPhotosRequired} photo(s)`);
+      return false;
+     }
+
+     if (
+      options.mustTakeSignature &&
+      signs.findIndex((sign) => (
+        sign.jobStepId === jobStepId
+      )) === -1
+     ) {
+      Alert.alert('Warning', 'Please include signature');
+      return false;
+     }
+
+     if (
+      options.isRequirePaymentCollection &&
+      !amountCollected
+     ) {
+      Alert.alert('Warning', 'Please insert collect payment');
+      return false;
+     }
+
+     return true;
+  };
+
   const onNextStep = () => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
@@ -430,16 +509,16 @@ const JobDetailsScreenView = ({
         return;
 
       case JOB_TYPE.EXCHANGE:
-        if (
-          currentStep === 0.5 ||
-          currentStep === 1.5 ||
-          currentStep === 3
-        ) {
+        if (currentStep === 0.5 || currentStep === 1.5) {
           setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 1) {
-          onStart();
+          onValidateStep(0, 0) && onStart();
         } else if (currentStep === 2) {
-          onExchange();
+          onValidateStep(1, 1) && onExchange();
+        } else if (currentStep === 3) {
+          const { stepIndex, binIndex } = binWeightIndexes;
+          onValidateStep(stepIndex, binIndex) &&
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 3.5) {
           onComplete();
         }
@@ -681,7 +760,7 @@ const JobDetailsScreenView = ({
       <BorderView
         color={
           status === 'ACTIVE' &&
-          options.IsRequireBinNumberToEnd
+          options.isRequireBinNumberToEnd
           ? COLORS.BLUE1 : COLORS.GRAY2
         }
       />
