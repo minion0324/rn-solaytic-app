@@ -101,7 +101,7 @@ const getPhotosAndSigns = createSelector(
             jobStepId: item.jobStepId,
             uri: item.jobSignatureUrl,
             signedUserName: item.jobSignedUserName,
-            signedUserContact: item.JobSignedUserContact,
+            signedUserContact: item.jobSignedUserContact,
           }
         }),
       };
