@@ -170,9 +170,11 @@ const JobDetailsScreenView = ({
             return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
             setCurrentStep(1);
+            onScroll(binInfo1Ref);
             return;
           case JOB_STATUS.STARTED:
             setCurrentStep(2);
+            onScroll(binWeightRef);
             return;
           case JOB_STATUS.IN_PROGRESS:
             setCurrentStep(3.5);
@@ -190,6 +192,7 @@ const JobDetailsScreenView = ({
             return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
             setCurrentStep(1);
+            onScroll(binInfo1Ref);
             return;
           case JOB_STATUS.STARTED:
             setCurrentStep(3.5);
@@ -236,9 +239,11 @@ const JobDetailsScreenView = ({
             return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
             setCurrentStep(1);
+            onScroll(binInfo1Ref);
             return;
           case JOB_STATUS.STARTED:
             setCurrentStep(2);
+            onScroll(binWeightRef);
             return;
           case JOB_STATUS.IN_PROGRESS:
             setCurrentStep(3.5);
@@ -1276,6 +1281,13 @@ const JobDetailsScreenView = ({
         const idx = getBinInOutInfoIndex(index);
         const options = getBinInfoOptions(index);
         const status = getBinInfoStatus(index);
+
+        if (
+          idx !== 0 && idx !== 1 &&
+          index === binWeightIndexes.stepIndex
+        ) {
+          return null;
+        }
 
         return (
           <View
