@@ -10,6 +10,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  UIManager,
+  findNodeHandle,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -35,7 +37,7 @@ import {
   dismissLightBox,
   CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
-import { getDate } from 'src/utils';
+import { getDate, delay } from 'src/utils';
 
 import {
   Container,
@@ -143,82 +145,112 @@ const JobDetailsScreenView = ({
   onPrint,
 }) => {
   const [ stepStatus, setStepStatus ] = useState('');
+  const [ currentStep, setCurrentStep ] = useState(0.5);
   const [ actionSheetData, setActionSheetData ] = useState([]);
 
   const binIndexRef = useRef(null);
   const actionSheetRef = useRef(null);
   const actionSheetKey = useRef(null);
 
+  const binInfo1Ref = useRef(null);
+  const binInfo2Ref = useRef(null);
+  const binWeightRef = useRef(null);
+  const scrollRef = useRef(null);
+
   useEffect(() => {
     setStepStatus(jobStatus);
   }, [jobStatus]);
 
-  const currentStep = useMemo(() => {
+  useEffect(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
         switch (stepStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            return 0.5;
+            setCurrentStep(0.5);
+            return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            return 1;
+            setCurrentStep(1);
+            return;
           case JOB_STATUS.STARTED:
-            return 2;
+            setCurrentStep(2);
+            return;
           case JOB_STATUS.IN_PROGRESS:
-            return 3.5;
+            setCurrentStep(3.5);
+            return;
           case JOB_STATUS.COMPLETED:
-            return 4;
+            setCurrentStep(4);
+            return;
         }
-        return 0.5;
+        return;
 
       case JOB_TYPE.PUT:
         switch (stepStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            return 0.5;
+            setCurrentStep(0.5);
+            return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            return 1;
+            setCurrentStep(1);
+            return;
           case JOB_STATUS.STARTED:
-            return 3.5;
+            setCurrentStep(3.5);
+            return;
           case JOB_STATUS.COMPLETED:
-            return 4;
+            setCurrentStep(4);
+            return;
         }
-        return 0.5;
+        return;
 
       case JOB_TYPE.EXCHANGE:
         switch (stepStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            return 0.5;
+            setCurrentStep(0.5);
+            return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            return 1;
+            setCurrentStep(1);
+            onScroll(binInfo1Ref);
+            return;
           case JOB_STATUS.STARTED:
-            return 1.5;
+            setCurrentStep(1.5);
+            return;
           case JOB_STATUS.STARTED + STEP_STATUS_MARK:
-            return 2;
+            setCurrentStep(2);
+            onScroll(binInfo2Ref);
+            return;
           case JOB_STATUS.IN_PROGRESS:
-            return 3;
+            setCurrentStep(3);
+            onScroll(binWeightRef);
+            return;
           case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
-            return 3.5;
+            setCurrentStep(3.5);
+            return;
           case JOB_STATUS.COMPLETED:
-            return 4;
+            setCurrentStep(4);
+            return;
         }
-        return 0.5;
+        return;
 
       case JOB_TYPE.ON_THE_SPOT:
         switch (stepStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            return 0.5;
+            setCurrentStep(0.5);
+            return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            return 1;
+            setCurrentStep(1);
+            return;
           case JOB_STATUS.STARTED:
-            return 2;
+            setCurrentStep(2);
+            return;
           case JOB_STATUS.IN_PROGRESS:
-            return 3.5;
+            setCurrentStep(3.5);
+            return;
           case JOB_STATUS.COMPLETED:
-            return 4;
+            setCurrentStep(4);
+            return;
         }
-        return 0.5;
+        return;
 
       default:
-        return 0.5;
+        return;
     };
   }, [
     stepStatus,
@@ -509,10 +541,12 @@ const JobDetailsScreenView = ({
         return;
 
       case JOB_TYPE.EXCHANGE:
-        if (currentStep === 0.5 || currentStep === 1.5) {
+        if (currentStep === 0.5) {
           setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 1) {
           onValidateStep(0, 0) && onStart();
+        } else if (currentStep === 1.5) {
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 2) {
           onValidateStep(1, 1) && onExchange();
         } else if (currentStep === 3) {
@@ -540,6 +574,22 @@ const JobDetailsScreenView = ({
       default:
         return;
     };
+  };
+
+  const onScroll = async (ref) => {
+    try {
+      await delay(100);
+
+      UIManager.measureLayoutRelativeToParent(
+        findNodeHandle(ref.current),
+        () => {},
+        (x, y) => {
+          scrollRef.current.scrollTo({ x: 0, y: y });
+        },
+      );
+    } catch (error) {
+      //
+    }
   };
 
   const onUpdateBinInfo = (binIndex, newInfo) => {
@@ -1228,7 +1278,10 @@ const JobDetailsScreenView = ({
         const status = getBinInfoStatus(index);
 
         return (
-          <View key={`${item.jobStepId}`}>
+          <View
+            ref={index === 0 ? binInfo1Ref : binInfo2Ref}
+            key={`${item.jobStepId}`}
+          >
             <SpaceView mTop={SIZE2} />
             <BinWrap
               active={status === 'ACTIVE'}
@@ -1339,7 +1392,9 @@ const JobDetailsScreenView = ({
     const status = getBinInfoStatus(stepIndex);
 
     return (
-      <View>
+      <View
+        ref={binWeightRef}
+      >
         <SpaceView mTop={SIZE2} />
         <BinWrap
           active={status === 'ACTIVE'}
@@ -1685,6 +1740,7 @@ const JobDetailsScreenView = ({
 
       <Content>
         <ScrollView
+          ref={scrollRef}
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
