@@ -141,7 +141,7 @@ const PreviewScreen = ({
   const renderJobProof = () => {
     const sign = signs[signs.length - 1];
 
-    if (!sign) {
+    if (!sign || !sign.uri) {
       return null;
     }
 
