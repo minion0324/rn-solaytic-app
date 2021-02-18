@@ -490,7 +490,7 @@ const JobDetailsScreenView = ({
         if (currentStep === 0.5) {
           setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 1) {
-          onStart();
+          onValidateStep(0, 0) && onStart();
         } else if (currentStep === 2) {
           onPull();
         } else if (currentStep === 3.5) {
@@ -502,7 +502,7 @@ const JobDetailsScreenView = ({
         if (currentStep === 0.5) {
           setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 1) {
-          onStart();
+          onValidateStep(0, 0) && onStart();
         } else if (currentStep === 3.5) {
           onComplete();
         }
@@ -529,7 +529,7 @@ const JobDetailsScreenView = ({
           if (currentStep === 0.5) {
             setStepStatus(jobStatus + STEP_STATUS_MARK);
           } else if (currentStep === 1) {
-            onStart();
+            onValidateStep(0, 0) && onStart();
           } else if (currentStep === 2) {
             onExchange();
           } else if (currentStep === 3.5) {
