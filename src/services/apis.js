@@ -28,6 +28,7 @@ function apiSetFCMToken(
   deviceId,
   deviceManufacturer,
   deviceModel,
+  appVersion,
 ) {
   return apiCall('api/mobile/driver/authenticate-token', 'post', {
     data: {
@@ -36,6 +37,7 @@ function apiSetFCMToken(
       deviceId,
       deviceManufacturer,
       deviceModel,
+      appVersion,
     },
   });
 }
