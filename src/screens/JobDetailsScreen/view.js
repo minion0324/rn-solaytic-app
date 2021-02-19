@@ -144,9 +144,76 @@ const JobDetailsScreenView = ({
   onScanCode,
   onPrint,
 }) => {
-  const [ stepStatus, setStepStatus ] = useState('');
-  const [ currentStep, setCurrentStep ] = useState(0.5);
   const [ actionSheetData, setActionSheetData ] = useState([]);
+
+  let initialStepStatus = jobStatus;
+  let initialCurrentStep;
+
+  switch (focusedJob.jobTypeName) {
+    case JOB_TYPE.PULL:
+      switch (initialStepStatus) {
+        case JOB_STATUS.ACKNOWLEDGED:
+          initialCurrentStep = 0.5;
+          break;
+        case JOB_STATUS.STARTED:
+          initialCurrentStep = 2;
+          break;
+        case JOB_STATUS.IN_PROGRESS:
+          initialCurrentStep = 3.5;
+          break;
+        case JOB_STATUS.COMPLETED:
+          initialCurrentStep = 4;
+          break;
+      }
+
+    case JOB_TYPE.PUT:
+      switch (initialStepStatus) {
+        case JOB_STATUS.ACKNOWLEDGED:
+          initialCurrentStep = 0.5;
+          break;
+        case JOB_STATUS.STARTED:
+          initialCurrentStep = 3.5;
+          break;
+        case JOB_STATUS.COMPLETED:
+          initialCurrentStep = 4;
+          break;
+      }
+
+    case JOB_TYPE.EXCHANGE:
+      switch (initialStepStatus) {
+        case JOB_STATUS.ACKNOWLEDGED:
+          initialCurrentStep = 0.5;
+          break;
+        case JOB_STATUS.STARTED:
+          initialCurrentStep = 1.5;
+          break;
+        case JOB_STATUS.IN_PROGRESS:
+          initialCurrentStep = 3;
+          break;
+        case JOB_STATUS.COMPLETED:
+          initialCurrentStep = 4;
+          break;
+      }
+
+    case JOB_TYPE.ON_THE_SPOT:
+      switch (initialStepStatus) {
+        case JOB_STATUS.ACKNOWLEDGED:
+          initialCurrentStep = 0.5;
+          break;
+        case JOB_STATUS.STARTED:
+          initialCurrentStep = 2;
+          break;
+        case JOB_STATUS.IN_PROGRESS:
+          initialCurrentStep = 3.5;
+          break;
+        case JOB_STATUS.COMPLETED:
+          initialCurrentStep = 4;
+          break;
+      }
+  };
+
+  const [ stepStatus, setStepStatus ] = useState(initialStepStatus);
+  const [ currentStep, setCurrentStep ] = useState(initialCurrentStep);
 
   const binIndexRef = useRef(null);
   const actionSheetRef = useRef(null);
@@ -158,7 +225,9 @@ const JobDetailsScreenView = ({
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    setStepStatus(jobStatus);
+    if (stepStatus !== jobStatus) {
+      setStepStatus(jobStatus);
+    }
   }, [jobStatus]);
 
   useEffect(() => {
