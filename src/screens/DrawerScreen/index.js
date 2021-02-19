@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 
 import {
   dismissDrawer,
@@ -113,7 +114,9 @@ const DrawerScreen = ({
           </ItemWrap>
 
           <VersionWrap>
-            <VersionText>v 2.3.11</VersionText>
+            <VersionText>
+              {`v ${DeviceInfo.getVersion()}`}
+            </VersionText>
           </VersionWrap>
         </MainWrap>
         <LogoutButton onPress={onLogout}>
