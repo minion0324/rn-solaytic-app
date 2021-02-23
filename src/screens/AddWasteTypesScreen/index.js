@@ -170,10 +170,17 @@ const AddWasteTypesScreen = ({
     setSearchText(text);
   };
 
-  const renderItem = ({ item }) => {
-    const index = selectedWasteTypes.findIndex((el) => (
+  const renderItem = ({ item, index }) => {
+    const idx = selectedWasteTypes.findIndex((el) => (
       el.wasteTypeId === item.wasteTypeId
     ));
+
+    if (
+      idx !== -1 &&
+      index >= selectedWasteTypes.length
+    ) {
+      return null;
+    }
 
     return (
       <ItemWrap
@@ -186,7 +193,7 @@ const AddWasteTypesScreen = ({
           <FlexWrap flex={2}>
             <RowWrap>
               {
-                index !== -1
+                idx !== -1
                 ? <BlueActiveCircleCheckIcon />
                 : <DeactiveCircleCheckIcon />
               }
@@ -234,8 +241,14 @@ const AddWasteTypesScreen = ({
 
       <Content>
         <ListWrap
-          data={wasteTypes}
-          keyExtractor={(item) => `${item.wasteTypeId}`}
+          data={
+            selectedWasteTypes.map(item => item.wasteType)
+              .concat(wasteTypes)
+          }
+          keyExtractor={(item, index) => (
+            `${item.wasteTypeId}` +
+            `${index < selectedWasteTypes.length ? '_selected' : ''}`
+          )}
           renderItem={renderItem}
           onEndProcess={onEnd}
           onRefreshProcess={onRefresh}
