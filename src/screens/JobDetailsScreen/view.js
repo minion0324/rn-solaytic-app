@@ -167,6 +167,7 @@ const JobDetailsScreenView = ({
         default:
           initialCurrentStep = 0;
       }
+      break;
 
     case JOB_TYPE.PUT:
       switch (initialStepStatus) {
@@ -182,6 +183,7 @@ const JobDetailsScreenView = ({
         default:
           initialCurrentStep = 0;
       }
+      break;
 
     case JOB_TYPE.EXCHANGE:
       switch (initialStepStatus) {
@@ -200,6 +202,7 @@ const JobDetailsScreenView = ({
         default:
           initialCurrentStep = 0;
       }
+      break;
 
     case JOB_TYPE.ON_THE_SPOT:
       switch (initialStepStatus) {
@@ -218,6 +221,7 @@ const JobDetailsScreenView = ({
         default:
           initialCurrentStep = 0;
       }
+      break;
   };
 
   const [ stepStatus, setStepStatus ] = useState(initialStepStatus);
@@ -250,8 +254,12 @@ const JobDetailsScreenView = ({
             onScroll(binInfo1Ref);
             return;
           case JOB_STATUS.STARTED:
-            setCurrentStep(2);
-            onScroll(binWeightRef);
+            if (hasBinWeight) {
+              setCurrentStep(2);
+              onScroll(binWeightRef);
+            } else {
+              setCurrentStep(1.5);
+            }
             return;
           case JOB_STATUS.IN_PROGRESS:
             setCurrentStep(3.5);
@@ -301,8 +309,12 @@ const JobDetailsScreenView = ({
             onScroll(binInfo2Ref);
             return;
           case JOB_STATUS.IN_PROGRESS:
-            setCurrentStep(3);
-            onScroll(binWeightRef);
+            if (hasBinWeight) {
+              setCurrentStep(3);
+              onScroll(binWeightRef);
+            } else {
+              setCurrentStep(3.5);
+            }
             return;
           case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
             setCurrentStep(3.5);
@@ -325,8 +337,12 @@ const JobDetailsScreenView = ({
             onScroll(binInfo1Ref);
             return;
           case JOB_STATUS.STARTED:
-            setCurrentStep(2);
-            onScroll(binWeightRef);
+            if (hasBinWeight) {
+              setCurrentStep(2);
+              onScroll(binWeightRef);
+            } else {
+              setCurrentStep(1.5);
+            }
             return;
           case JOB_STATUS.IN_PROGRESS:
             setCurrentStep(3.5);
@@ -348,27 +364,6 @@ const JobDetailsScreenView = ({
     focusedJob.jobTypeName,
   ]);
 
-  const totalStep = useMemo(() => {
-    switch (focusedJob.jobTypeName) {
-      case JOB_TYPE.PULL:
-        return 2;
-
-      case JOB_TYPE.PUT:
-        return 1;
-
-      case JOB_TYPE.EXCHANGE:
-        return 3;
-
-      case JOB_TYPE.ON_THE_SPOT:
-        return 2;
-
-      default:
-        return 2;
-    };
-  }, [
-    focusedJob.jobTypeName,
-  ]);
-
   const binWeightIndexes = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
@@ -387,6 +382,40 @@ const JobDetailsScreenView = ({
         return { stepIndex: -1 };
     };
   }, [
+    focusedJob.jobTypeName,
+  ]);
+
+  const hasBinWeight = useMemo(() => {
+    const { stepIndex } = binWeightIndexes;
+
+    if (stepIndex === -1) {
+      return false;
+    }
+
+    return focusedJob.steps[stepIndex].isRequireBinWeight;
+  }, [
+    binWeightIndexes,
+  ]);
+
+  const totalStep = useMemo(() => {
+    switch (focusedJob.jobTypeName) {
+      case JOB_TYPE.PULL:
+        return hasBinWeight ? 2 : 1;
+
+      case JOB_TYPE.PUT:
+        return hasBinWeight ? 1 : 1;
+
+      case JOB_TYPE.EXCHANGE:
+        return hasBinWeight ? 3 : 2;
+
+      case JOB_TYPE.ON_THE_SPOT:
+        return hasBinWeight ? 2 : 1;
+
+      default:
+        return hasBinWeight ? 2 : 1;
+    };
+  }, [
+    hasBinWeight,
     focusedJob.jobTypeName,
   ]);
 
@@ -614,7 +643,7 @@ const JobDetailsScreenView = ({
           setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 1) {
           onValidateStep(0, 0) && onStart();
-        } else if (currentStep === 2) {
+        } else if (currentStep === 1.5 || currentStep === 2) {
           onPull();
         } else if (currentStep === 3.5) {
           onComplete();
@@ -655,7 +684,7 @@ const JobDetailsScreenView = ({
             setStepStatus(jobStatus + STEP_STATUS_MARK);
           } else if (currentStep === 1) {
             onValidateStep(0, 0) && onStart();
-          } else if (currentStep === 2) {
+          } else if (currentStep === 1.5 || currentStep === 2) {
             onExchange();
           } else if (currentStep === 3.5) {
             onComplete();
@@ -1548,7 +1577,10 @@ const JobDetailsScreenView = ({
     const options = getBinInfoOptions(stepIndex);
     const status = getBinInfoStatus(stepIndex);
 
-    if (status === 'NOT_STARTED') {
+    if (
+      !hasBinWeight ||
+      status === 'NOT_STARTED'
+    ) {
       return null;
     }
 
