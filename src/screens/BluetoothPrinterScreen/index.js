@@ -5,6 +5,7 @@ import {
   NativeEventEmitter,
   DeviceEventEmitter,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
@@ -38,6 +39,10 @@ import {
 import {
   InfoText,
 } from 'src/styles/text.styles';
+
+import {
+  ListWrap,
+} from './styled';
 
 const {
   BlueActiveCircleCheckIcon,
@@ -248,12 +253,11 @@ const BluetoothPrinterScreen = ({
     }
   };
 
-  const renderItem = (item) => {
+  const renderItem = ({ item }) => {
     return (
-      <View key={item.address}>
+      <View>
         <SpaceView mTop={SIZE1} />
         <TouchableOpacity
-          key={item.address}
           onPress={() => onPressItem(item)}
           disabled={loading}
         >
@@ -300,7 +304,15 @@ const BluetoothPrinterScreen = ({
       <ContentWrap>
         {
           pairedDevices.length > 0
-          ? pairedDevices.map(renderItem)
+          ? <ListWrap>
+              <FlatList
+                bounces={false}
+                data={pairedDevices}
+                keyExtractor={item => item.address}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+              />
+            </ListWrap>
           : <InfoText color={COLORS.RED1}>No Device</InfoText>
         }
       </ContentWrap>
@@ -316,7 +328,15 @@ const BluetoothPrinterScreen = ({
       <ContentWrap>
         {
           foundDevices.length > 0
-          ? foundDevices.map(renderItem)
+          ? <ListWrap>
+              <FlatList
+                bounces={false}
+                data={foundDevices}
+                keyExtractor={item => item.address}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+              />
+            </ListWrap>
           : <InfoText color={COLORS.RED1}>No Device</InfoText>
         }
       </ContentWrap>
