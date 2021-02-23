@@ -1312,6 +1312,7 @@ const JobDetailsScreenView = ({
   const renderCompleteButton = ({
     status,
   }) => (
+    !JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
     <View>
       <SpaceView mTop={SIZE4} />
       <RowWrap>
