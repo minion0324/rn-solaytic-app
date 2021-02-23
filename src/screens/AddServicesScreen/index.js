@@ -112,7 +112,12 @@ const AddServicesScreen = ({
   };
 
   const onCheck = () => {
-    setServices(originServices);
+    const newServices = originServices.map((item) => (
+      item.isSelected && !item.quantity
+      ? { ...item, isSelected: false }
+      : item
+    ));
+    setServices(newServices);
     onClose();
   };
 
