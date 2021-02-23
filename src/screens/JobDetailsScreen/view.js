@@ -1027,10 +1027,16 @@ const JobDetailsScreenView = ({
             onPress={() => onAddWasteTypes(index)}
           >
             {
-              item['wasteTypes'].map((el) => (
-                <InfoText key={el.wasteTypeId}>
-                  {el.wasteType.wasteTypeName || ''}
-                </InfoText>
+              item['wasteTypes'].map((el, i) => (
+                <View key={el.wasteTypeId}>
+                  {
+                    i > 0 &&
+                    <SpaceView mTop={SIZE1} />
+                  }
+                  <InfoText>
+                    {el.wasteType.wasteTypeName || ''}
+                  </InfoText>
+                </View>
               ))
             }
           </TouchableOpacity>
