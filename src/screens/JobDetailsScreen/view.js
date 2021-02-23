@@ -1490,6 +1490,10 @@ const JobDetailsScreenView = ({
     const options = getBinInfoOptions(stepIndex);
     const status = getBinInfoStatus(stepIndex);
 
+    if (status === 'NOT_STARTED') {
+      return null;
+    }
+
     return (
       <View
         ref={binWeightRef}
