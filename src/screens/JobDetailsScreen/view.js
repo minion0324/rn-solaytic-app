@@ -164,6 +164,8 @@ const JobDetailsScreenView = ({
         case JOB_STATUS.COMPLETED:
           initialCurrentStep = 4;
           break;
+        default:
+          initialCurrentStep = 0;
       }
 
     case JOB_TYPE.PUT:
@@ -177,6 +179,8 @@ const JobDetailsScreenView = ({
         case JOB_STATUS.COMPLETED:
           initialCurrentStep = 4;
           break;
+        default:
+          initialCurrentStep = 0;
       }
 
     case JOB_TYPE.EXCHANGE:
@@ -193,6 +197,8 @@ const JobDetailsScreenView = ({
         case JOB_STATUS.COMPLETED:
           initialCurrentStep = 4;
           break;
+        default:
+          initialCurrentStep = 0;
       }
 
     case JOB_TYPE.ON_THE_SPOT:
@@ -209,6 +215,8 @@ const JobDetailsScreenView = ({
         case JOB_STATUS.COMPLETED:
           initialCurrentStep = 4;
           break;
+        default:
+          initialCurrentStep = 0;
       }
   };
 
@@ -251,8 +259,10 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.COMPLETED:
             setCurrentStep(4);
             return;
+          default:
+            setCurrentStep(0);
+            return;
         }
-        return;
 
       case JOB_TYPE.PUT:
         switch (stepStatus) {
@@ -269,8 +279,10 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.COMPLETED:
             setCurrentStep(4);
             return;
+          default:
+            setCurrentStep(0);
+            return;
         }
-        return;
 
       case JOB_TYPE.EXCHANGE:
         switch (stepStatus) {
@@ -298,8 +310,10 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.COMPLETED:
             setCurrentStep(4);
             return;
+          default:
+            setCurrentStep(0);
+            return;
         }
-        return;
 
       case JOB_TYPE.ON_THE_SPOT:
         switch (stepStatus) {
@@ -320,10 +334,13 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.COMPLETED:
             setCurrentStep(4);
             return;
+          default:
+            setCurrentStep(0);
+            return;
         }
-        return;
 
       default:
+        setCurrentStep(0);
         return;
     };
   }, [
