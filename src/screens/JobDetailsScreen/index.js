@@ -425,9 +425,9 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onAddWasteTypes = (binIndex) => {
+  const onAddWasteTypes = (binIndex, binInOutIndex) => {
     pushScreen(componentId, ADD_WASTE_TYPES_SCREEN, {
-      binIndex, binInfo, setBinInfo,
+      binIndex, binInOutIndex, binInfo, setBinInfo,
     });
   };
 

@@ -1024,7 +1024,7 @@ const JobDetailsScreenView = ({
                 )
               )
             }
-            onPress={() => onAddWasteTypes(index)}
+            onPress={() => onAddWasteTypes(index, idx)}
           >
             {
               item['wasteTypes'].map((el, i) => (
@@ -1049,7 +1049,7 @@ const JobDetailsScreenView = ({
             (idx === 1 && focusedJob.isEditableWasteTypeOut)
           ) &&
           <TouchableOpacity
-            onPress={() => onAddWasteTypes(index)}
+            onPress={() => onAddWasteTypes(index, idx)}
           >
             <RowWrap>
               <SpaceView mLeft={SIZE2} />
