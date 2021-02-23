@@ -863,20 +863,26 @@ const JobDetailsScreenView = ({
             >
               <ContentWrap>
                 {
-                  selectedServices.map((item) => (
-                    <RowWrap
+                  selectedServices.map((item, index) => (
+                    <View
                       key={`${item.serviceAdditionalChargeTemplateId}`}
                     >
-                      <FlexWrap>
+                      {
+                        index > 0 &&
+                        <SpaceView mTop={SIZE1} />
+                      }
+                      <RowWrap>
+                        <FlexWrap>
+                          <InfoText>
+                            {item.serviceAdditionalChargeName}
+                          </InfoText>
+                        </FlexWrap>
+                        <SpaceView mLeft={SIZE2} />
                         <InfoText>
-                          {item.serviceAdditionalChargeName}
+                          {item.quantity}
                         </InfoText>
-                      </FlexWrap>
-                      <SpaceView mLeft={SIZE2} />
-                      <InfoText>
-                        {item.quantity}
-                      </InfoText>
-                    </RowWrap>
+                      </RowWrap>
+                    </View>
                   ))
                 }
               </ContentWrap>
