@@ -960,7 +960,13 @@ const JobDetailsScreenView = ({
       <SpaceView mTop={SIZE2} />
       <RowWrap>
         <FlexWrap>
-          <LabelText>with Waste Type</LabelText>
+          <LabelText>
+            {
+              idx === 1
+              ? 'For Waste Type'
+              : 'With Waste Type'
+            }
+          </LabelText>
           <TouchableOpacity
             disabled={
               !(
