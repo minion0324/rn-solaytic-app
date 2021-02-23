@@ -1677,7 +1677,7 @@ const JobDetailsScreenView = ({
           color={COLORS.WHITE2}
         >
           <RowWrap>
-            <FlexWrap flex={1}>
+            <FlexWrap>
               <TitleText>
                 {
                   (focusedJob.jobTemplateName || focusedJob.jobTypeName)
@@ -1685,33 +1685,34 @@ const JobDetailsScreenView = ({
                 }
               </TitleText>
             </FlexWrap>
-              <RowWrap>
+            <SpaceView mLeft={SIZE2} />
+            <RowWrap>
+              {
+                jobStatus === JOB_STATUS.COMPLETED
+                ? <DeactiveDateIcon />
+                : <ActiveDateIcon />
+              }
+              <SpaceView mLeft={SIZE1} />
+              <LabelText>
                 {
-                  jobStatus === JOB_STATUS.COMPLETED
-                  ? <DeactiveDateIcon />
-                  : <ActiveDateIcon />
+                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                    .format('DD-MMM (ddd)')
                 }
-                <SpaceView mLeft={SIZE1} />
-                <LabelText>
-                  {
-                    moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                      .format('DD-MMM (ddd)')
-                  }
-                </LabelText>
-                <SpaceView mLeft={SIZE2} />
+              </LabelText>
+              <SpaceView mLeft={SIZE2} />
+              {
+                jobStatus === JOB_STATUS.COMPLETED
+                ? <DeactiveTimeIcon />
+                : <ActiveTimeIcon />
+              }
+              <SpaceView mLeft={SIZE1} />
+              <LabelText>
                 {
-                  jobStatus === JOB_STATUS.COMPLETED
-                  ? <DeactiveTimeIcon />
-                  : <ActiveTimeIcon />
+                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                    .format('hh:mm A')
                 }
-                <SpaceView mLeft={SIZE1} />
-                <LabelText>
-                  {
-                    moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                      .format('hh:mm A')
-                  }
-                </LabelText>
-              </RowWrap>
+              </LabelText>
+            </RowWrap>
           </RowWrap>
         </ContentWrap>
       </View>
