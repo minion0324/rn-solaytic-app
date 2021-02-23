@@ -173,7 +173,7 @@ const AddServicesScreen = ({
                   underlineColorAndroid={COLORS.TRANSPARENT1}
                   autoCapitalize={'none'}
                   autoCorrect={false}
-                  value={`${item.quantity || 1}`}
+                  value={`${item.quantity}`}
                   onChangeText={(text) =>
                     onUpdateOriginService(index, {
                       ...item,
