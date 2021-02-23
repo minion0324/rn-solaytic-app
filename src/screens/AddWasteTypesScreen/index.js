@@ -6,6 +6,7 @@ import React, {
 import {
   Keyboard,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -61,6 +62,7 @@ const AddWasteTypesScreen = ({
   pageOfWasteTypes,
   getWasteTypes,
   binIndex,
+  binInOutIndex,
   binInfo,
   setBinInfo,
   componentId,
@@ -154,6 +156,14 @@ const AddWasteTypesScreen = ({
     ));
 
     if (index === -1) {
+      if (
+        binInOutIndex === 1 &&
+        selectedWasteTypes.length > 0
+      ) {
+        Alert.alert('Warning', 'You can select only 1 for waste type');
+        return;
+      }
+
       newSelectedWasteTypes.push({
         jobStepId: binInfo[binIndex].jobStepId,
         wasteType: item,
@@ -271,6 +281,7 @@ AddWasteTypesScreen.propTypes = {
   pageOfWasteTypes: PropTypes.number.isRequired,
   getWasteTypes: PropTypes.func.isRequired,
   binIndex: PropTypes.number.isRequired,
+  binInOutIndex: PropTypes.number.isRequired,
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
