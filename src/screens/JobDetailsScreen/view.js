@@ -810,9 +810,11 @@ const JobDetailsScreenView = ({
   };
 
   const renderServices = () => {
+    const selectedServices = services.filter(item => item.isSelected);
+
     if (
-      !isInProgress ||
-      services.length === 0
+      jobStatus === JOB_STATUS.COMPLETED &&
+      selectedServices.length === 0
     ) {
       return null;
     }
@@ -820,7 +822,10 @@ const JobDetailsScreenView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <TouchableOpacity onPress={onAddServices}>
+        <TouchableOpacity
+          disabled={!isInProgress}
+          onPress={onAddServices}
+        >
           <ContentWrap>
             <RowWrap>
               <FlexWrap>
@@ -836,13 +841,48 @@ const JobDetailsScreenView = ({
                   </TitleText>
                 </RowWrap>
               </FlexWrap>
-              <RowWrap>
-                <SpaceView mLeft={SIZE2} />
-                <BlueRightArrowIcon />
-              </RowWrap>
+              {
+                isInProgress &&
+                <RowWrap>
+                  <SpaceView mLeft={SIZE2} />
+                  <BlueRightArrowIcon />
+                </RowWrap>
+              }
             </RowWrap>
           </ContentWrap>
         </TouchableOpacity>
+        {
+          selectedServices.length > 0 &&
+          <View>
+            <BorderView
+              mLeft={SIZE2} mRight={SIZE2}
+            />
+            <TouchableOpacity
+              disabled={!isInProgress}
+              onPress={onAddServices}
+            >
+              <ContentWrap>
+                {
+                  selectedServices.map((item) => (
+                    <RowWrap
+                      key={`${item.serviceAdditionalChargeTemplateId}`}
+                    >
+                      <FlexWrap>
+                        <InfoText>
+                          {item.serviceAdditionalChargeName}
+                        </InfoText>
+                      </FlexWrap>
+                      <SpaceView mLeft={SIZE2} />
+                      <InfoText>
+                        {item.quantity}
+                      </InfoText>
+                    </RowWrap>
+                  ))
+                }
+              </ContentWrap>
+            </TouchableOpacity>
+          </View>
+        }
       </View>
     );
   };
@@ -1613,6 +1653,13 @@ const JobDetailsScreenView = ({
   };
 
   const renderDriverNote = () => {
+    if (
+      jobStatus === JOB_STATUS.COMPLETED &&
+      focusedJob.messages.length === 0
+    ) {
+      return null;
+    }
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
