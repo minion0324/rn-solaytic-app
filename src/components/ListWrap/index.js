@@ -15,6 +15,7 @@ const ListWrap = ({
 }) => {
   return (
     <FlatList
+      bounces={false}
       data={data}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
