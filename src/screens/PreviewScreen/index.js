@@ -255,7 +255,10 @@ const PreviewScreen = ({
   };
 
   const renderPayment = () => {
-    if (!focusedJob.isEnabledCashCollection) {
+    if (
+      !amountCollected ||
+      !focusedJob.isEnabledCashCollection
+    ) {
       return null;
     }
 
@@ -386,10 +389,6 @@ const PreviewScreen = ({
               </View>
             }
             {
-              (
-                idx === 0 ||
-                focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
-              ) &&
               (
                 (idx === 0 && getReceiptSettingVariable('ShowWasteTypeCollected') === 'True') ||
                 (idx === 1 && getReceiptSettingVariable('ShowPlannedWasteType') === 'True') ||
