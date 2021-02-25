@@ -54,6 +54,7 @@ const BluetoothPrinterScreen = ({
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+  const [ connecting, setConnecting ] = useState(false);
 
   const [ connectedDevice, setConnectedDevice ] = useState({});
 
@@ -73,6 +74,12 @@ const BluetoothPrinterScreen = ({
       destroyBluetooth();
     };
   }, []);
+
+  useEffect(() => {
+    if (!loading && connecting) {
+      setLoading(connecting);
+    }
+  }, [loading]);
 
   const onBack = () => {
     if (loading) {
@@ -241,14 +248,18 @@ const BluetoothPrinterScreen = ({
   const onPressItem = async (item) => {
     try {
       setLoading(true);
+      setConnecting(true);
 
       await BluetoothManager.connect(item.address);
 
       setConnectedDevice(item);
 
+      setConnecting(false);
       setLoading(false);
     } catch (error) {
+      setConnecting(false);
       setLoading(false);
+
       Alert.alert('Warning', error.message || 'Something went wrong.');
     }
   };
@@ -259,7 +270,6 @@ const BluetoothPrinterScreen = ({
         <SpaceView mTop={SIZE1} />
         <TouchableOpacity
           onPress={() => onPressItem(item)}
-          disabled={loading}
         >
           <RowWrap>
             {
