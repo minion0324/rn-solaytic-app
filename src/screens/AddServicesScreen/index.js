@@ -141,15 +141,32 @@ const AddServicesScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
+    if (
+      !item.isSelected &&
+      index < originServices.length
+    ) {
+      return null;
+    }
+
+    if (
+      item.isSelected &&
+      index >= originServices.length
+    ) {
+      return null;
+    }
+
     if (item.notShow) {
       return null;
     }
+
+    const idx = index < originServices.length
+      ? index : index - originServices.length;
 
     return (
       <ItemWrap
         deactivated
         onPress={() => {
-          onUpdateOriginService(index, {
+          onUpdateOriginService(idx, {
             ...item,
             isSelected: !item.isSelected,
             quantity:
@@ -184,7 +201,7 @@ const AddServicesScreen = ({
                   autoCorrect={false}
                   value={`${item.quantity}`}
                   onChangeText={(text) =>
-                    onUpdateOriginService(index, {
+                    onUpdateOriginService(idx, {
                       ...item,
                       quantity: text,
                     })
@@ -236,10 +253,13 @@ const AddServicesScreen = ({
 
       <Content>
         <ListWrap
-          data={searchedServices}
-          keyExtractor={(item) =>
-            `${item.serviceAdditionalChargeTemplateId}`
+          data={
+            originServices.concat(searchedServices)
           }
+          keyExtractor={(item, index) => (
+            `${item.serviceAdditionalChargeTemplateId}` +
+            `${index < originServices.length ? '_origin' : ''}`
+          )}
           renderItem={renderItem}
         />
 
