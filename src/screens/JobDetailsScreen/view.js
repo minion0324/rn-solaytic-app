@@ -1284,6 +1284,7 @@ const JobDetailsScreenView = ({
   );
 
   const renderPayment = ({
+    index,
     options,
     status,
   }) => (
@@ -1303,8 +1304,8 @@ const JobDetailsScreenView = ({
               {
                 'Collect' +
                 (
-                  amountCollected
-                  ? `: $${amountCollected} ` +
+                  focusedJob.steps[index].amountToCollect
+                  ? `: $${focusedJob.steps[index].amountToCollect} ` +
                     focusedJob.jobPaymentTypeList[jobPaymentType]
                   : ''
                 )
@@ -1549,6 +1550,7 @@ const JobDetailsScreenView = ({
                 }
                 {
                   renderPayment({
+                    index,
                     options,
                     status,
                   })
@@ -1675,12 +1677,6 @@ const JobDetailsScreenView = ({
             {
               renderPhotosAndSign({
                 item: focusedJob.steps[stepIndex],
-                options,
-                status,
-              })
-            }
-            {
-              renderPayment({
                 options,
                 status,
               })
