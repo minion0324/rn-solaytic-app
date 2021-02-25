@@ -41,6 +41,7 @@ import {
 } from 'src/styles/header.styles';
 import {
   TitleText,
+  InfoText,
 } from 'src/styles/text.styles';
 
 import {
@@ -84,6 +85,8 @@ const AddressScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
+    console.log(item);
+
     return (
       <View>
         <SpaceView mTop={SIZE2} />
@@ -101,6 +104,49 @@ const AddressScreen = ({
               <TitleText>
                 {item.address}
               </TitleText>
+              {
+                item.site &&
+                index === customerSiteIndex &&
+                <View>
+                  <SpaceView mTop={SIZE1} />
+                  {
+                    !!item.site.blockNo &&
+                    <View>
+                      <SpaceView mTop={SIZE1} />
+                      <InfoText>
+                        {`Block: ${item.site.blockNo}`}
+                      </InfoText>
+                    </View>
+                  }
+                  {
+                    !!item.site.unitNo &&
+                    <View>
+                      <SpaceView mTop={SIZE1} />
+                      <InfoText>
+                        {`Unit No.: ${item.site.unitNo}`}
+                      </InfoText>
+                    </View>
+                  }
+                  {
+                    !!item.site.postalCode &&
+                    <View>
+                      <SpaceView mTop={SIZE1} />
+                      <InfoText>
+                        {`Postal Code: ${item.site.postalCode}`}
+                      </InfoText>
+                    </View>
+                  }
+                  {
+                    !!item.site.instructions &&
+                    <View>
+                      <SpaceView mTop={SIZE2} />
+                      <InfoText>
+                        {item.site.instructions}
+                      </InfoText>
+                    </View>
+                  }
+                </View>
+              }
               {
                 isDisabled
                 ? index === customerSiteIndex &&
