@@ -113,7 +113,8 @@ const AddServicesScreen = ({
 
   const onCheck = () => {
     const newServices = originServices.map((item) => (
-      item.isSelected && !item.quantity
+      item.isSelected &&
+      (!item.quantity || item.quantity === '0')
       ? { ...item, isSelected: false }
       : item
     ));
@@ -151,6 +152,9 @@ const AddServicesScreen = ({
           onUpdateOriginService(index, {
             ...item,
             isSelected: !item.isSelected,
+            quantity:
+              (!item.quantity || item.quantity === '0')
+              ? '1' : item.quantity,
           });
         }}
         mLeft={SIZE2} mTop={0.5}
