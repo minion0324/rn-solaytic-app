@@ -1306,7 +1306,9 @@ const JobDetailsScreenView = ({
                 (
                   focusedJob.steps[index].amountToCollect
                   ? `: $${focusedJob.steps[index].amountToCollect} ` +
-                    focusedJob.jobPaymentTypeList[jobPaymentType]
+                    focusedJob.jobPaymentTypeList[
+                      focusedJob.steps[index].jobPaymentType
+                    ]
                   : ''
                 )
               }
