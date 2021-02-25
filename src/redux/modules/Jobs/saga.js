@@ -344,17 +344,17 @@ export function* asyncAcknowledgeJobs({ payload }) {
         successJobIds.includes(focusedJobId) && JOB_STATUS.ACKNOWLEDGED,
     }));
 
-    try {
-      const { data } = yield call(apiGetJobById, focusedJobId);
+    // try {
+    //   const { data } = yield call(apiGetJobById, focusedJobId);
 
-      //
-      let steps = data.steps.slice(0);
-      steps = sortBy(steps, 'stepOrder');
+    //   //
+    //   let steps = data.steps.slice(0);
+    //   steps = sortBy(steps, 'stepOrder');
 
-      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
-    } catch (err) {
-      //
-    }
+    //   yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    // } catch (err) {
+    //   //
+    // }
 
     success && success();
   } catch (error) {
@@ -491,17 +491,17 @@ export function* asyncStartJobs({ payload }) {
       },
     }));
 
-    try {
-      const { data } = yield call(apiGetJobById, focusedJobId);
+    // try {
+    //   const { data } = yield call(apiGetJobById, focusedJobId);
 
-      //
-      let steps = data.steps.slice(0);
-      steps = sortBy(steps, 'stepOrder');
+    //   //
+    //   let steps = data.steps.slice(0);
+    //   steps = sortBy(steps, 'stepOrder');
 
-      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
-    } catch (err) {
-      //
-    }
+    //   yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    // } catch (err) {
+    //   //
+    // }
 
     success && success();
   } catch (error) {
@@ -638,17 +638,17 @@ export function* asyncPullJobs({ payload }) {
       },
     }));
 
-    try {
-      const { data } = yield call(apiGetJobById, focusedJobId);
+    // try {
+    //   const { data } = yield call(apiGetJobById, focusedJobId);
 
-      //
-      let steps = data.steps.slice(0);
-      steps = sortBy(steps, 'stepOrder');
+    //   //
+    //   let steps = data.steps.slice(0);
+    //   steps = sortBy(steps, 'stepOrder');
 
-      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
-    } catch (err) {
-      //
-    }
+    //   yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    // } catch (err) {
+    //   //
+    // }
 
     success && success();
   } catch (error) {
@@ -785,17 +785,17 @@ export function* asyncExchangeJobs({ payload }) {
       },
     }));
 
-    try {
-      const { data } = yield call(apiGetJobById, focusedJobId);
+    // try {
+    //   const { data } = yield call(apiGetJobById, focusedJobId);
 
-      //
-      let steps = data.steps.slice(0);
-      steps = sortBy(steps, 'stepOrder');
+    //   //
+    //   let steps = data.steps.slice(0);
+    //   steps = sortBy(steps, 'stepOrder');
 
-      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
-    } catch (err) {
-      //
-    }
+    //   yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    // } catch (err) {
+    //   //
+    // }
 
     success && success();
   } catch (error) {
