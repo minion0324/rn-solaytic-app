@@ -964,11 +964,16 @@ const JobDetailsScreenView = ({
             >
               <ScanCodeIcon />
             </TouchableOpacity>
-            <SpaceView mLeft={SIZE3} />
             {
-              item['binNumber']
-              ? <GreenActiveCircleCheckIcon />
-              : <DeactiveCircleCheckIcon />
+              options.isRequireBinNumberToEnd &&
+              <RowWrap>
+                <SpaceView mLeft={SIZE3} />
+                {
+                  item['binNumber']
+                  ? <GreenActiveCircleCheckIcon />
+                  : <DeactiveCircleCheckIcon />
+                }
+              </RowWrap>
             }
           </RowWrap>
         }
@@ -976,7 +981,7 @@ const JobDetailsScreenView = ({
       <BorderView
         color={
           status === 'ACTIVE' &&
-          options.isRequireBinNumberToEnd
+          focusedJob.isAllowDriverEditOnApp
           ? COLORS.BLUE1 : COLORS.GRAY2
         }
       />
@@ -1090,7 +1095,12 @@ const JobDetailsScreenView = ({
       <SpaceView mTop={SIZE1} />
       <BorderView
         color={
-          status === 'ACTIVE'
+          status === 'ACTIVE' &&
+          focusedJob.isAllowDriverEditOnApp &&
+          (
+            (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
+            (idx === 1 && focusedJob.isEditableWasteTypeOut)
+          )
           ? COLORS.BLUE1 : COLORS.GRAY2
         }
       />
@@ -1353,7 +1363,8 @@ const JobDetailsScreenView = ({
           <SpaceView mTop={SIZE1} />
           <BorderView
             color={
-              status === 'ACTIVE'
+              status === 'ACTIVE' &&
+              focusedJob.isAllowDriverEditOnApp
               ? COLORS.BLUE1 : COLORS.GRAY2
             }
           />
@@ -1389,7 +1400,8 @@ const JobDetailsScreenView = ({
           <SpaceView mTop={SIZE1} />
           <BorderView
             color={
-              status === 'ACTIVE'
+              status === 'ACTIVE' &&
+              focusedJob.isAllowDriverEditOnApp
               ? COLORS.BLUE1 : COLORS.GRAY2
             }
           />
@@ -1613,6 +1625,7 @@ const JobDetailsScreenView = ({
               </FlexWrap>
               {
                 status !== 'COMPLETED' &&
+                options.isRequireBinWeight &&
                 <RowWrap>
                   <SpaceView mLeft={SIZE2} />
                   {
@@ -1654,7 +1667,7 @@ const JobDetailsScreenView = ({
                 <BorderView
                   color={
                     status === 'ACTIVE' &&
-                    options.isRequireBinWeight
+                    focusedJob.isAllowDriverEditOnApp
                     ? COLORS.BLUE1 : COLORS.GRAY2
                   }
                 />
