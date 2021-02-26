@@ -85,7 +85,52 @@ const AddressScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    console.log(item);
+    let address = item.address;
+
+    if (
+      item.site &&
+      index === customerSiteIndex
+    ) {
+      const {
+        blockNo, streetName, unitNo, postCode,
+      } = item.site;
+
+      if (blockNo || streetName || unitNo || postCode) {
+        address += ' (';
+      }
+
+      if (blockNo) {
+        address += `Block ${blockNo}`;
+
+        if (streetName || unitNo || postCode) {
+          address += ', ';
+        }
+      }
+
+      if (streetName) {
+        address += streetName;
+
+        if (unitNo || postCode) {
+          address += ', ';
+        }
+      }
+
+      if (unitNo) {
+        address += `Unit No. ${unitNo}`;
+
+        if (postCode) {
+          address += ', ';
+        }
+      }
+
+      if (postCode) {
+        address += `Post Code ${postCode}`;
+      }
+
+      if (blockNo || streetName || unitNo || postCode) {
+        address += ')';
+      }
+    }
 
     return (
       <View>
@@ -102,51 +147,8 @@ const AddressScreen = ({
             </IconWrap>
             <FlexWrap>
               <TitleText>
-                {item.address}
+                {address}
               </TitleText>
-              {
-                item.site &&
-                index === customerSiteIndex &&
-                <View>
-                  <SpaceView mTop={SIZE1} />
-                  {
-                    !!item.site.blockNo &&
-                    <View>
-                      <SpaceView mTop={SIZE1} />
-                      <InfoText>
-                        {`Block: ${item.site.blockNo}`}
-                      </InfoText>
-                    </View>
-                  }
-                  {
-                    !!item.site.unitNo &&
-                    <View>
-                      <SpaceView mTop={SIZE1} />
-                      <InfoText>
-                        {`Unit No.: ${item.site.unitNo}`}
-                      </InfoText>
-                    </View>
-                  }
-                  {
-                    !!item.site.postalCode &&
-                    <View>
-                      <SpaceView mTop={SIZE1} />
-                      <InfoText>
-                        {`Postal Code: ${item.site.postalCode}`}
-                      </InfoText>
-                    </View>
-                  }
-                  {
-                    !!item.site.instructions &&
-                    <View>
-                      <SpaceView mTop={SIZE2} />
-                      <InfoText>
-                        {item.site.instructions}
-                      </InfoText>
-                    </View>
-                  }
-                </View>
-              }
               {
                 isDisabled
                 ? index === customerSiteIndex &&
@@ -227,6 +229,17 @@ const AddressScreen = ({
                     />
                   }
                 </ButtonWrap>
+              }
+              {
+                !!item.siteRemarks &&
+                index === customerSiteIndex &&
+                <ContentWrap
+                  mLeft={0.5} mRight={0.5}
+                >
+                  <InfoText>
+                    {item.siteRemarks}
+                  </InfoText>
+                </ContentWrap>
               }
             </FlexWrap>
           </LocationWrap>
