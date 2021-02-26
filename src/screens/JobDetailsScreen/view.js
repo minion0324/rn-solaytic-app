@@ -765,45 +765,50 @@ const JobDetailsScreenView = ({
     }
   };
 
-  const onShowPhotoModal = (selectedPhoto) => {
+  const onShowPhotoModal = (selectedPhoto, isEditable) => {
     showLightBox(CUSTOM_MODAL_SCREEN, {
-      props: { selectedPhoto },
+      props: { selectedPhoto, isEditable },
       getContent: renderPhotoModal,
     });
   };
 
-  const renderPhotoModal = (containerId, { selectedPhoto }) => {
+  const renderPhotoModal = (containerId, { selectedPhoto, isEditable }) => {
     return (
       <PhotoWrap>
-        <FullImage source={{ uri: selectedPhoto.uri }} />
-        <PhotoModalButtonsWrap>
-          <RowWrap>
-            <FlexWrap>
-              <DefaultButton
-                color={COLORS.WHITE1}
-                text={'Back'}
-                onPress={() => {
-                  dismissLightBox(containerId);
-                }}
-                textColor={COLORS.BLACK2}
-                icon={<BackPhotoIcon />}
-              />
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <FlexWrap>
-              <DefaultButton
-                color={COLORS.RED1}
-                text={'Delete'}
-                onPress={() => {
-                  onCancelPhoto(selectedPhoto);
-                  dismissLightBox(containerId);
-                }}
-                textColor={COLORS.WHITE1}
-                icon={<DeletePhotoIcon />}
-              />
-            </FlexWrap>
-          </RowWrap>
-        </PhotoModalButtonsWrap>
+        <FullImage
+          source={{ uri: selectedPhoto.uri }}
+        />
+        {
+          isEditable &&
+          <PhotoModalButtonsWrap>
+            <RowWrap>
+              <FlexWrap>
+                <DefaultButton
+                  color={COLORS.WHITE1}
+                  text={'Back'}
+                  onPress={() => {
+                    dismissLightBox(containerId);
+                  }}
+                  textColor={COLORS.BLACK2}
+                  icon={<BackPhotoIcon />}
+                />
+              </FlexWrap>
+              <SpaceView mLeft={SIZE2} />
+              <FlexWrap>
+                <DefaultButton
+                  color={COLORS.RED1}
+                  text={'Delete'}
+                  onPress={() => {
+                    onCancelPhoto(selectedPhoto);
+                    dismissLightBox(containerId);
+                  }}
+                  textColor={COLORS.WHITE1}
+                  icon={<DeletePhotoIcon />}
+                />
+              </FlexWrap>
+            </RowWrap>
+          </PhotoModalButtonsWrap>
+        }
       </PhotoWrap>
     );
   };
@@ -1127,8 +1132,10 @@ const JobDetailsScreenView = ({
           {
             data[index]
             ? <TouchableOpacity
-                onPress={() => onShowPhotoModal(data[index])}
-                disabled={status !== 'ACTIVE'}
+                onPress={() => onShowPhotoModal(
+                  data[index],
+                  status === 'ACTIVE',
+                )}
               >
                 <PhotoWrap>
                   <FullImage source={{ uri: data[index].uri }} />
