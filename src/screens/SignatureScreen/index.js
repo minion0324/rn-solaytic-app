@@ -139,41 +139,41 @@ const SignatureScreen = ({
         onPressLeft={onCloseWithClear}
         onPressRight={onCheck}
       />
-        <SignatureWrap>
-          <Signature
-            ref={signatureRef}
-            onOK={onSign}
-            webStyle={webStyle}
+      <SignatureWrap>
+        <Signature
+          ref={signatureRef}
+          onOK={onSign}
+          webStyle={webStyle}
+        />
+      </SignatureWrap>
+      <InfoWrap>
+        <NameWrap>
+          <Input
+            placeholder={'Name'}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            onChangeText={text => setName(text)}
+            value={name}
           />
-        </SignatureWrap>
-        <InfoWrap>
-          <NameWrap>
-            <Input
-              placeholder={'Name'}
-              underlineColorAndroid={COLORS.TRANSPARENT1}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={text => setName(text)}
-              value={name}
-            />
-            <BorderView
-              color={COLORS.BLUE1}
-            />
-          </NameWrap>
-          <ContactWrap>
-            <Input
-              placeholder={'Contact number'}
-              underlineColorAndroid={COLORS.TRANSPARENT1}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={text => setContact(text)}
-              value={contact}
-            />
-            <BorderView
-              color={COLORS.BLUE1}
-            />
-          </ContactWrap>
-        </InfoWrap>
+          <BorderView
+            color={COLORS.BLUE1}
+          />
+        </NameWrap>
+        <ContactWrap>
+          <Input
+            placeholder={'Contact number'}
+            underlineColorAndroid={COLORS.TRANSPARENT1}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            onChangeText={text => setContact(text)}
+            value={contact}
+          />
+          <BorderView
+            color={COLORS.BLUE1}
+          />
+        </ContactWrap>
+      </InfoWrap>
     </OverlayWrap>
   );
 };
