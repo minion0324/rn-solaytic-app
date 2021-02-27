@@ -340,19 +340,19 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.ACKNOWLEDGED:
             setCurrentStep(0.5);
             return;
-          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
+          case JOB_STATUS.STARTED:
             setCurrentStep(1);
             onScroll(binInfo1Ref);
             return;
-          case JOB_STATUS.STARTED:
+          case JOB_STATUS.IN_PROGRESS:
             if (hasBinWeight) {
               setCurrentStep(2);
               onScroll(binWeightRef);
             } else {
-              setCurrentStep(1.5);
+              setCurrentStep(3.5);
             }
             return;
-          case JOB_STATUS.IN_PROGRESS:
+          case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
             setCurrentStep(3.5);
             return;
           case JOB_STATUS.COMPLETED:
@@ -691,17 +691,22 @@ const JobDetailsScreenView = ({
         return;
 
       case JOB_TYPE.ON_THE_SPOT:
-        case JOB_TYPE.PULL:
-          if (currentStep === 0.5) {
-            setStepStatus(jobStatus + STEP_STATUS_MARK);
-          } else if (currentStep === 1) {
-            onValidateStep(0, 0) && onStart();
-          } else if (currentStep === 1.5 || currentStep === 2) {
-            onExchange();
-          } else if (currentStep === 3.5) {
-            onComplete();
+        if (currentStep === 0.5) {
+          if (focusedJob.steps[0].isRequireBinNumberToEnd) {
+            onBinInput(0, () => setBinInput(true));
+          } else {
+            onStart();
           }
-        return;
+        } else if (currentStep === 1) {
+          onValidateStep(0, 0) && onExchange();
+        } else if (currentStep === 2) {
+          const { stepIndex, binIndex } = binWeightIndexes;
+          onValidateStep(stepIndex, binIndex) &&
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
+        } else if (currentStep === 3.5) {
+          onComplete();
+        }
+      return;
 
       default:
         return;
