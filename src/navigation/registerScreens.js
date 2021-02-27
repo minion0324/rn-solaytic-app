@@ -21,6 +21,7 @@ import {
   BluetoothPrinterScreen,
   PreviewScreen,
   AddWasteTypesScreen,
+  BinInputScreen,
 } from 'src/screens';
 
 import {
@@ -40,6 +41,7 @@ import {
   BLUETOOTH_PRINTER_SCREEN,
   PREVIEW_SCREEN,
   ADD_WASTE_TYPES_SCREEN,
+  BIN_INPUT_SCREEN,
 } from './Screens';
 
 function WrappedComponent(Component) {
@@ -75,4 +77,5 @@ export default function () {
   Navigation.registerComponent(BLUETOOTH_PRINTER_SCREEN, () => WrappedComponent(BluetoothPrinterScreen));
   Navigation.registerComponent(PREVIEW_SCREEN, () => WrappedComponent(PreviewScreen));
   Navigation.registerComponent(ADD_WASTE_TYPES_SCREEN, () => WrappedComponent(AddWasteTypesScreen));
+  Navigation.registerComponent(BIN_INPUT_SCREEN, () => WrappedComponent(BinInputScreen));
 };

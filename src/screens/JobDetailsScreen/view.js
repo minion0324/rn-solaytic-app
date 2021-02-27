@@ -143,6 +143,7 @@ const JobDetailsScreenView = ({
   onAddWasteTypes,
   onScanCode,
   onPrint,
+  onBinInput,
 }) => {
   const [ actionSheetData, setActionSheetData ] = useState([]);
 
@@ -278,8 +279,16 @@ const JobDetailsScreenView = ({
             setCurrentStep(0.5);
             return;
           case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            setCurrentStep(1);
-            onScroll(binInfo1Ref);
+            if (focusedJob.steps[0].isRequireBinNumberToEnd) {
+              console.log('------------- step info');
+              console.log(focusedJob.steps[0]);
+
+              onBinInput(0);
+            }
+
+
+            // setCurrentStep(1);
+            // onScroll(binInfo1Ref);
             return;
           case JOB_STATUS.STARTED:
             setCurrentStep(3.5);
@@ -2019,6 +2028,7 @@ JobDetailsScreenView.propTypes = {
   onAddWasteTypes: PropTypes.func.isRequired,
   onScanCode: PropTypes.func.isRequired,
   onPrint: PropTypes.func.isRequired,
+  onBinInput: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {
