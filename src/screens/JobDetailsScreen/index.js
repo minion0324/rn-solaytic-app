@@ -446,10 +446,10 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onBinInput = (binIndex, onSuccess, onFailure) => {
+  const onBinInput = (binIndex, onPress) => {
     showLightBox(BIN_INPUT_SCREEN, {
       binIndex, binInfo, setBinInfo,
-      onSuccess, onFailure,
+      onPress,
     });
   };
 

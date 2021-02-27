@@ -146,6 +146,7 @@ const JobDetailsScreenView = ({
   onBinInput,
 }) => {
   const [ actionSheetData, setActionSheetData ] = useState([]);
+  const [ binInput, setBinInput ] = useState(false);
 
   let initialStepStatus = jobStatus;
   let initialCurrentStep;
@@ -244,6 +245,12 @@ const JobDetailsScreenView = ({
   }, [jobStatus]);
 
   useEffect(() => {
+    if (binInput) {
+      onStart();
+    }
+  }, [binInput]);
+
+  useEffect(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
         switch (stepStatus) {
@@ -278,19 +285,11 @@ const JobDetailsScreenView = ({
           case JOB_STATUS.ACKNOWLEDGED:
             setCurrentStep(0.5);
             return;
-          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            if (focusedJob.steps[0].isRequireBinNumberToEnd) {
-              console.log('------------- step info');
-              console.log(focusedJob.steps[0]);
-
-              onBinInput(0);
-            }
-
-
-            // setCurrentStep(1);
-            // onScroll(binInfo1Ref);
-            return;
           case JOB_STATUS.STARTED:
+            setCurrentStep(1);
+            onScroll(binInfo1Ref);
+            return;
+          case JOB_STATUS.STARTED + STEP_STATUS_MARK:
             setCurrentStep(3.5);
             return;
           case JOB_STATUS.COMPLETED:
@@ -661,11 +660,15 @@ const JobDetailsScreenView = ({
 
       case JOB_TYPE.PUT:
         if (currentStep === 0.5) {
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
+          if (focusedJob.steps[0].isRequireBinNumberToEnd) {
+            onBinInput(0, () => setBinInput(true));
+          } else {
+            onStart();
+          }
         } else if (currentStep === 1) {
-          onValidateStep(0, 0) && onStart();
+          setStepStatus(jobStatus + STEP_STATUS_MARK);
         } else if (currentStep === 3.5) {
-          onComplete();
+          onValidateStep(0, 0) && onComplete();
         }
         return;
 

@@ -108,6 +108,7 @@ const AddServicesScreen = ({
   };
 
   const onClose = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
   };
 

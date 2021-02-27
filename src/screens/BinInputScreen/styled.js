@@ -2,9 +2,6 @@ import styled from 'styled-components';
 
 import {
   COLORS,
-  SIZE1,
-  SIZE2,
-  SIZE6,
   FONT,
 } from 'src/constants';
 

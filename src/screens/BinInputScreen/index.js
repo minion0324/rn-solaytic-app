@@ -1,5 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -22,6 +27,7 @@ import {
   pushScreen,
   SCAN_CODE_SCREEN,
 } from 'src/navigation';
+import { delay } from 'src/utils';
 
 import {
   ContentWrap,
@@ -54,8 +60,7 @@ const BinInputScreen = ({
   binIndex,
   binInfo,
   setBinInfo,
-  onSuccess,
-  onFailure,
+  onPress,
   componentId,
 }) => {
   const [ originBinInfo, setOriginBinInfo ] = useState([]);
@@ -79,8 +84,22 @@ const BinInputScreen = ({
     setOriginBinInfo(newBinInfo);
   };
 
-  const onClose = () => {
+  const onClose = async () => {
+    Keyboard.dismiss();
+    await delay(100);
     dismissLightBox(componentId);
+  };
+
+  const onButtonPress = () => {
+    if (!bin['binNumber']) {
+      Alert.alert('Warning', 'Please insert bin number');
+      return;
+    }
+
+    setBinInfo(originBinInfo);
+
+    onPress();
+    onClose();
   };
 
   const onScanCode = () => {
@@ -159,9 +178,8 @@ const BinInputScreen = ({
           <LabelText>
             For Waste Type
           </LabelText>
-
           {
-            bin['wasteTypes'].map((el, i) => (
+            (bin['wasteTypes'] || []).map((el, i) => (
               <View key={el.wasteTypeId}>
                 {
                   i > 0 &&
@@ -188,11 +206,7 @@ const BinInputScreen = ({
           <DefaultButton
             color={COLORS.BLUE1}
             text={'Complete'}
-            onPress={onSuccess}
-            // loading={
-            //   status === 'ACTIVE'
-            //   ? loading : null
-            // }
+            onPress={onButtonPress}
             textColor={COLORS.WHITE1}
             bRadius={SIZE4}
           />
@@ -233,8 +247,7 @@ BinInputScreen.propTypes = {
   binIndex: PropTypes.number.isRequired,
   binInfo: PropTypes.array.isRequired,
   setBinInfo: PropTypes.func.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-  onFailure: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 

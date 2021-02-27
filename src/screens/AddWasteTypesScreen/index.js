@@ -106,6 +106,7 @@ const AddWasteTypesScreen = ({
   };
 
   const onClose = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
   };
 

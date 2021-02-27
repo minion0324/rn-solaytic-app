@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
 import RNFS from 'react-native-fs';
@@ -21,6 +21,7 @@ import {
   COLORS,
 } from 'src/constants';
 import {
+  delay,
   getTimestamp,
 } from 'src/utils';
 
@@ -71,7 +72,9 @@ const SignatureScreen = ({
     signs,
   ]);
 
-  const onClose = () => {
+  const onClose = async () => {
+    Keyboard.dismiss();
+    await delay(100);
     dismissLightBox(componentId);
   };
 
