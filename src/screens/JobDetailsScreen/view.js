@@ -492,11 +492,11 @@ const JobDetailsScreenView = ({
         return 0;
       }
 
-      if (jobTypeName === JOB_TYPE.PUT) {
-        return 1;
-      }
-
-      if (jobTypeName === JOB_TYPE.EXCHANGE) {
+      if (
+        jobTypeName === JOB_TYPE.PUT ||
+        jobTypeName === JOB_TYPE.EXCHANGE ||
+        jobTypeName === JOB_TYPE.ON_THE_SPOT
+      ) {
         return 1;
       }
 
