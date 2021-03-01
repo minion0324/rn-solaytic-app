@@ -92,25 +92,29 @@ const AddressScreen = ({
       index === customerSiteIndex
     ) {
       const {
-        blockNo, streetName, unitNo, postCode,
+        siteName, blockNo, street, unitNo, postalCode,
       } = item.site;
 
-      if (blockNo || streetName || unitNo || postCode) {
+      if (siteName) {
+        address = siteName;
+      }
+
+      if (blockNo || street || unitNo || postalCode) {
         address += ' (';
       }
 
       if (blockNo) {
         address += `Block ${blockNo}`;
 
-        if (streetName || unitNo || postCode) {
+        if (street || unitNo || postalCode) {
           address += ', ';
         }
       }
 
-      if (streetName) {
-        address += streetName;
+      if (street) {
+        address += street;
 
-        if (unitNo || postCode) {
+        if (unitNo || postalCode) {
           address += ', ';
         }
       }
@@ -118,16 +122,16 @@ const AddressScreen = ({
       if (unitNo) {
         address += `Unit No. ${unitNo}`;
 
-        if (postCode) {
+        if (postalCode) {
           address += ', ';
         }
       }
 
-      if (postCode) {
-        address += `Post Code ${postCode}`;
+      if (postalCode) {
+        address += `Post Code ${postalCode}`;
       }
 
-      if (blockNo || streetName || unitNo || postCode) {
+      if (blockNo || street || unitNo || postalCode) {
         address += ')';
       }
     }
