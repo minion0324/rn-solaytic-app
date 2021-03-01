@@ -8,23 +8,8 @@ import {
   SIZE2,
   SIZE3,
   SIZE4,
-  SIZE6,
   SIZE8,
-  SIZE20,
 } from 'src/constants';
-
-const JobTypeWrap = styled.View`
-  width: ${SIZE20}px;
-  height: ${SIZE6}px;
-  align-items: center;
-  justify-content: center;
-  margin-top: ${SIZE4}px;
-  margin-bottom: ${SIZE2}px;
-  align-self: center;
-  border-width: 1px;
-  border-color: ${COLORS.GRAY1};
-  border-radius: ${SIZE1}px;
-`;
 
 const LocationWrap = styled.View`
   flex-direction: row;
@@ -95,7 +80,6 @@ const Location2Line = () => (
 );
 
 export {
-  JobTypeWrap,
   LocationWrap,
   IconWrap,
   ButtonWrap,

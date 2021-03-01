@@ -45,7 +45,6 @@ import {
 } from 'src/styles/text.styles';
 
 import {
-  JobTypeWrap,
   LocationWrap,
   IconWrap,
   ButtonWrap,
@@ -279,12 +278,6 @@ const AddressScreen = ({
       </ShadowWrap>
 
       <Content>
-        <JobTypeWrap>
-          <TitleText>
-            {focusedJob.jobTypeName}
-          </TitleText>
-        </JobTypeWrap>
-
         <FlatList
           bounces={false}
           data={focusedJob.steps}
