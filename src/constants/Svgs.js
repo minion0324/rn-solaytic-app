@@ -1,7 +1,6 @@
 import ActiveCheckIcon from 'src/assets/svgs/icon-check-active.svg';
 import DeactiveCheckIcon from 'src/assets/svgs/icon-check-deactive.svg';
 import SideMenuIcon from 'src/assets/svgs/icon-side-menu.svg';
-import LocationIcon from 'src/assets/svgs/icon-location.svg';
 import BackIcon from 'src/assets/svgs/icon-back.svg';
 import VisibilityOnIcon from 'src/assets/svgs/icon-visibility-on.svg';
 import VisibilityOffIcon from 'src/assets/svgs/icon-visibility-off.svg';
@@ -69,12 +68,13 @@ import BackPhotoIcon from 'src/assets/svgs/icon-photo-back.svg';
 import ActiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-active.svg';
 import DeactiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-deactive.svg';
 import DropdownArrowIcon from 'src/assets/svgs/icon-arrow-dropdown.svg';
+import ChatIcon from 'src/assets/svgs/icon-chat.svg';
+import CircleCurrencyIcon from 'src/assets/svgs/icon-currency-circle.svg';
 
 export default {
   ActiveCheckIcon,
   DeactiveCheckIcon,
   SideMenuIcon,
-  LocationIcon,
   BackIcon,
   VisibilityOnIcon,
   VisibilityOffIcon,
@@ -142,4 +142,6 @@ export default {
   ActiveBinWeightIcon,
   DeactiveBinWeightIcon,
   DropdownArrowIcon,
+  ChatIcon,
+  CircleCurrencyIcon,
 };
