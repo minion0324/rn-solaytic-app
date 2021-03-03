@@ -12,7 +12,6 @@ import AvatarIcon from 'src/assets/svgs/icon-avatar.svg';
 import UserIcon from 'src/assets/svgs/icon-user.svg';
 import LockIcon from 'src/assets/svgs/icon-lock.svg';
 import SearchIcon from 'src/assets/svgs/icon-search.svg';
-import FailIcon from 'src/assets/svgs/icon-fail.svg';
 import GreenActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-green.svg';
 import RedActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-red.svg';
 import BlueActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-blue.svg';
@@ -25,12 +24,10 @@ import DeactiveServiceIcon from 'src/assets/svgs/icon-service-deactive.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
-import ActiveDateIcon from 'src/assets/svgs/icon-date-active.svg';
-import DeactiveDateIcon from 'src/assets/svgs/icon-date-deactive.svg';
-import ActiveTimeIcon from 'src/assets/svgs/icon-time-active.svg';
-import DeactiveTimeIcon from 'src/assets/svgs/icon-time-deactive.svg';
-import ActiveChatIcon from 'src/assets/svgs/icon-chat-active.svg';
-import DeactiveChatIcon from 'src/assets/svgs/icon-chat-deactive.svg';
+import BlackRightArrowIcon from 'src/assets/svgs/icon-arrow-right-black.svg';
+import DateIcon from 'src/assets/svgs/icon-date.svg';
+import TimeIcon from 'src/assets/svgs/icon-time.svg';
+import ChatIcon from 'src/assets/svgs/icon-chat.svg';
 import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
 import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
 import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
@@ -68,8 +65,8 @@ import BackPhotoIcon from 'src/assets/svgs/icon-photo-back.svg';
 import ActiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-active.svg';
 import DeactiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-deactive.svg';
 import DropdownArrowIcon from 'src/assets/svgs/icon-arrow-dropdown.svg';
-import ChatIcon from 'src/assets/svgs/icon-chat.svg';
 import CircleCurrencyIcon from 'src/assets/svgs/icon-currency-circle.svg';
+import CircleHelpIcon from 'src/assets/svgs/icon-help-circle.svg';
 
 export default {
   ActiveCheckIcon,
@@ -86,7 +83,6 @@ export default {
   UserIcon,
   LockIcon,
   SearchIcon,
-  FailIcon,
   GreenActiveCircleCheckIcon,
   RedActiveCircleCheckIcon,
   BlueActiveCircleCheckIcon,
@@ -99,12 +95,10 @@ export default {
   RetryIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
-  ActiveDateIcon,
-  DeactiveDateIcon,
-  ActiveTimeIcon,
-  DeactiveTimeIcon,
-  ActiveChatIcon,
-  DeactiveChatIcon,
+  BlackRightArrowIcon,
+  DateIcon,
+  TimeIcon,
+  ChatIcon,
   ActiveBinInIcon,
   DeactiveBinInIcon,
   ActiveBinOutIcon,
@@ -142,6 +136,6 @@ export default {
   ActiveBinWeightIcon,
   DeactiveBinWeightIcon,
   DropdownArrowIcon,
-  ChatIcon,
   CircleCurrencyIcon,
+  CircleHelpIcon,
 };

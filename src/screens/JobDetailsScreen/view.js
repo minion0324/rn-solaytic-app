@@ -67,7 +67,7 @@ import {
 } from 'src/styles/text.styles';
 
 import {
-  DriverNoteBadge,
+  DriverMessageBadge,
   BinWrap,
   BinInput,
   PhotoWrap,
@@ -77,12 +77,8 @@ import {
 
 const {
   BlackRightArrowIcon,
-  ActiveDateIcon,
-  DeactiveDateIcon,
-  ActiveTimeIcon,
-  DeactiveTimeIcon,
-  ActiveChatIcon,
-  DeactiveChatIcon,
+  DateIcon,
+  TimeIcon,
   ActiveBinInIcon,
   DeactiveBinInIcon,
   ActiveBinOutIcon,
@@ -136,7 +132,7 @@ const JobDetailsScreenView = ({
   onCancelPhoto,
   onFail,
   onAddress,
-  onDriverNote,
+  onDriverMessage,
   onAddServices,
   onAddWasteTypes,
   onScanCode,
@@ -1699,139 +1695,29 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderDriverNote = () => {
-    if (
-      jobStatus === JOB_STATUS.COMPLETED &&
-      focusedJob.messages.length === 0
-    ) {
-      return null;
-    }
-
+  const renderDriverMessage = () => {
     return (
-      <View>
+      <ContentWrap mTop={SIZE1}>
+        <RowWrap>
+          <LabelText>Driver Message</LabelText>
+          {
+            focusedJob.haveUnreadMessage &&
+            <DriverMessageBadge />
+          }
+        </RowWrap>
         <SpaceView mTop={SIZE2} />
         <TouchableOpacity
-          disabled={!isInProgress}
-          onPress={onDriverNote}
-        >
-          <ContentWrap>
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  {
-                    jobStatus === JOB_STATUS.COMPLETED
-                    ? <DeactiveChatIcon />
-                    : <ActiveChatIcon />
-                  }
-                  <SpaceView mLeft={SIZE2} />
-                  <TitleText>Driver Message</TitleText>
-                  {
-                    focusedJob.haveUnreadMessage &&
-                    <DriverNoteBadge />
-                  }
-                </RowWrap>
-              </FlexWrap>
-              {
-                isInProgress &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <BlackRightArrowIcon />
-                </RowWrap>
-              }
-            </RowWrap>
-          </ContentWrap>
-        </TouchableOpacity>
-        {
-          focusedJob.messages.length > 0 &&
-          <View>
-            <BorderView
-              mLeft={SIZE2} mRight={SIZE2}
-            />
-            <TouchableOpacity
-              disabled={!isInProgress}
-              onPress={onDriverNote}
-            >
-              <ContentWrap>
-                <InfoText>
-                  {focusedJob.messages[0].message}
-                </InfoText>
-              </ContentWrap>
-            </TouchableOpacity>
-          </View>
-        }
-      </View>
-    );
-  };
-
-  const renderType = () => {
-    return (
-      <View>
-        <ContentWrap
-          mTop={SIZE2}
-          color={COLORS.WHITE2}
+          onPress={onDriverMessage}
+          disabled={jobStatus === JOB_STATUS.COMPLETED}
         >
           <RowWrap>
             <FlexWrap>
-              <TitleText>
+              <InfoText numberOfLines={2}>
                 {
-                  (focusedJob.jobTemplateName || focusedJob.jobTypeName)
-                    .toUpperCase()
+                  focusedJob.messages.length > 0
+                  ? focusedJob.messages[0].messages
+                  : ' --- '
                 }
-              </TitleText>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <RowWrap>
-              {
-                jobStatus === JOB_STATUS.COMPLETED
-                ? <DeactiveDateIcon />
-                : <ActiveDateIcon />
-              }
-              <SpaceView mLeft={SIZE1} />
-              <LabelText>
-                {
-                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                    .format('DD-MMM (ddd)')
-                }
-              </LabelText>
-              <SpaceView mLeft={SIZE2} />
-              {
-                jobStatus === JOB_STATUS.COMPLETED
-                ? <DeactiveTimeIcon />
-                : <ActiveTimeIcon />
-              }
-              <SpaceView mLeft={SIZE1} />
-              <LabelText>
-                {
-                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                    .format('hh:mm A')
-                }
-              </LabelText>
-            </RowWrap>
-          </RowWrap>
-        </ContentWrap>
-      </View>
-    );
-  };
-
-  const renderLocation = () => {
-    const { steps } = focusedJob;
-
-    const index = getCustomerSiteIndex();
-
-    return (
-      <TouchableOpacity
-        onPress={() => onAddress(index)}
-        disabled={jobStatus === JOB_STATUS.COMPLETED}
-      >
-
-        <ContentWrap
-          mTop={SIZE4}
-          color={COLORS.WHITE2}
-        >
-          <RowWrap>
-            <FlexWrap>
-              <InfoText>
-                {steps[index].address}
               </InfoText>
             </FlexWrap>
             {
@@ -1842,8 +1728,60 @@ const JobDetailsScreenView = ({
               </RowWrap>
             }
           </RowWrap>
-        </ContentWrap>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </ContentWrap>
+    );
+  };
+
+  const renderLocationAndTime = () => {
+    const { steps } = focusedJob;
+
+    const index = getCustomerSiteIndex();
+
+    return (
+      <ContentWrap mTop={SIZE4}>
+        <LabelText>Location & Time</LabelText>
+        <SpaceView mTop={SIZE2} />
+        <TouchableOpacity
+          onPress={() => onAddress(index)}
+          disabled={jobStatus === JOB_STATUS.COMPLETED}
+        >
+          <RowWrap>
+            <FlexWrap>
+              <InfoText numberOfLines={1}>
+                {steps[index].address}
+              </InfoText>
+              <SpaceView mTop={SIZE1} />
+              <RowWrap>
+                <DateIcon />
+                <SpaceView mLeft={SIZE1} />
+                <LabelText>
+                  {
+                    moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                      .format('DD-MMM (ddd)')
+                  }
+                </LabelText>
+                <SpaceView mLeft={SIZE2} />
+                <TimeIcon />
+                <SpaceView mLeft={SIZE1} />
+                <LabelText>
+                  {
+                    moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                      .format('hh:mm A')
+                  }
+                </LabelText>
+              </RowWrap>
+            </FlexWrap>
+            {
+              jobStatus !== JOB_STATUS.COMPLETED &&
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <BlackRightArrowIcon />
+              </RowWrap>
+            }
+          </RowWrap>
+        </TouchableOpacity>
+      </ContentWrap>
     );
   };
 
@@ -1920,7 +1858,15 @@ const JobDetailsScreenView = ({
   const renderHeader = () => {
     return (
       <HeaderBar
-        centerIcon={renderHeaderContent()}
+        centerIcon={
+          renderHeaderContent()
+          // <ScreenText>
+          //   {
+          //     (focusedJob.jobTemplateName || focusedJob.jobTypeName)
+          //     .toUpperCase()
+          //   }
+          // </ScreenText>
+        }
         leftIcon={<Back />}
         rightIcon={
           isInProgress &&
@@ -1949,9 +1895,8 @@ const JobDetailsScreenView = ({
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
-          { renderLocation() }
-          { renderType() }
-          { renderDriverNote() }
+          { renderLocationAndTime() }
+          { renderDriverMessage() }
           { renderBinInfo() }
           { renderBinWeight() }
           { renderServices() }
@@ -1999,7 +1944,7 @@ JobDetailsScreenView.propTypes = {
   onCancelPhoto: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onAddress: PropTypes.func.isRequired,
-  onDriverNote: PropTypes.func.isRequired,
+  onDriverMessage: PropTypes.func.isRequired,
   onAddServices: PropTypes.func.isRequired,
   onAddWasteTypes: PropTypes.func.isRequired,
   onScanCode: PropTypes.func.isRequired,

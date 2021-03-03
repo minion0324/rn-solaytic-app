@@ -24,7 +24,7 @@ import {
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
   ADDRESS_SCREEN,
-  DRIVER_NOTE_SCREEN,
+  DRIVER_MESSAGE_SCREEN,
   ADD_SERVICES_SCREEN,
   SCAN_CODE_SCREEN,
   PREVIEW_SCREEN,
@@ -238,9 +238,9 @@ const JobDetailsScreen = ({
 
     if (
       +jobId === focusedJob.jobId &&
-      coreScreenInfo.componentName !== DRIVER_NOTE_SCREEN
+      coreScreenInfo.componentName !== DRIVER_MESSAGE_SCREEN
     ) {
-      pushScreen(componentId, DRIVER_NOTE_SCREEN);
+      pushScreen(componentId, DRIVER_MESSAGE_SCREEN);
     }
   };
 
@@ -416,8 +416,8 @@ const JobDetailsScreen = ({
     pushScreen(componentId, ADDRESS_SCREEN, { customerSiteIndex });
   };
 
-  const onDriverNote = () => {
-    pushScreen(componentId, DRIVER_NOTE_SCREEN);
+  const onDriverMessage = () => {
+    pushScreen(componentId, DRIVER_MESSAGE_SCREEN);
   };
 
   const onAddServices = () => {
@@ -481,7 +481,7 @@ const JobDetailsScreen = ({
       onCancelPhoto={onCancelPhoto}
       onFail={onFail}
       onAddress={onAddress}
-      onDriverNote={onDriverNote}
+      onDriverMessage={onDriverMessage}
       onAddServices={onAddServices}
       onAddWasteTypes={onAddWasteTypes}
       onScanCode={onScanCode}

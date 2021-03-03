@@ -8,12 +8,12 @@ import {
   FONT,
 } from 'src/constants';
 
-const DriverNoteBadge = styled.View`
+const DriverMessageBadge = styled.View`
   width: ${SIZE2}px;
   aspect-ratio: 1;
   border-radius: ${SIZE1}px;
   background-color: ${COLORS.RED1};
-  margin-left: ${SIZE1}px;
+  margin-left: ${SIZE2}px;
   margin-top: -${SIZE1}px;
 `;
 
@@ -62,7 +62,7 @@ const PhotoModalButtonsWrap = styled.View`
 `;
 
 export {
-  DriverNoteBadge,
+  DriverMessageBadge,
   BinWrap,
   BinInput,
   PhotoWrap,

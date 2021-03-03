@@ -58,12 +58,12 @@ import {
 } from './styled';
 
 const {
-  ActiveChatIcon,
+  ChatIcon,
   SendIcon,
   MessageAvatarIcon,
 } = SVGS;
 
-const DriverNoteScreen = ({
+const DriverMessageScreen = ({
   focusedJob,
   newCommentInfo,
   markMessagesAsRead,
@@ -186,9 +186,9 @@ const DriverNoteScreen = ({
         <HeaderBar
           centerIcon={
             <RowWrap>
-              <ActiveChatIcon />
+              <ChatIcon />
               <SpaceView mLeft={SIZE1} />
-              <ScreenText>Driver Chat</ScreenText>
+              <ScreenText>Driver Message</ScreenText>
             </RowWrap>
           }
           leftIcon={<Back />}
@@ -245,7 +245,7 @@ const DriverNoteScreen = ({
   );
 };
 
-DriverNoteScreen.propTypes = {
+DriverMessageScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
@@ -255,7 +255,7 @@ DriverNoteScreen.propTypes = {
   componentId: PropTypes.string.isRequired,
 };
 
-DriverNoteScreen.defaultProps = {
+DriverMessageScreen.defaultProps = {
   //
 };
 
@@ -276,4 +276,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DriverNoteScreen);
+)(DriverMessageScreen);

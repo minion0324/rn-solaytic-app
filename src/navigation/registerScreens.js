@@ -15,7 +15,7 @@ import {
   CustomModalScreen,
   UploadHistoryScreen,
   AddressScreen,
-  DriverNoteScreen,
+  DriverMessageScreen,
   ScanCodeScreen,
   AddServicesScreen,
   BluetoothPrinterScreen,
@@ -35,7 +35,7 @@ import {
   CUSTOM_MODAL_SCREEN,
   UPLOAD_HISTORY_SCREEN,
   ADDRESS_SCREEN,
-  DRIVER_NOTE_SCREEN,
+  DRIVER_MESSAGE_SCREEN,
   SCAN_CODE_SCREEN,
   ADD_SERVICES_SCREEN,
   BLUETOOTH_PRINTER_SCREEN,
@@ -71,7 +71,7 @@ export default function () {
   Navigation.registerComponent(CUSTOM_MODAL_SCREEN, () => WrappedComponent(CustomModalScreen));
   Navigation.registerComponent(UPLOAD_HISTORY_SCREEN, () => WrappedComponent(UploadHistoryScreen));
   Navigation.registerComponent(ADDRESS_SCREEN, () => WrappedComponent(AddressScreen));
-  Navigation.registerComponent(DRIVER_NOTE_SCREEN, () => WrappedComponent(DriverNoteScreen));
+  Navigation.registerComponent(DRIVER_MESSAGE_SCREEN, () => WrappedComponent(DriverMessageScreen));
   Navigation.registerComponent(SCAN_CODE_SCREEN, () => WrappedComponent(ScanCodeScreen));
   Navigation.registerComponent(ADD_SERVICES_SCREEN, () => WrappedComponent(AddServicesScreen));
   Navigation.registerComponent(BLUETOOTH_PRINTER_SCREEN, () => WrappedComponent(BluetoothPrinterScreen));
