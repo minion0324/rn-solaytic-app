@@ -23,7 +23,7 @@ import {
 } from 'src/styles/common.styles';
 
 const {
-  ChatIcon,
+  MessageIcon,
   CircleCurrencyIcon,
 } = SVGS;
 
@@ -233,7 +233,7 @@ const JobCard = ({
           <SpaceView mTop={SIZE1} />
           <RowWrap>
             <SpaceView mLeft={SIZE2} />
-            <ChatIcon />
+            <MessageIcon />
             <SpaceView mLeft={SIZE1} />
             <FlexWrap>
               <InstructionText numberOfLines={1}>

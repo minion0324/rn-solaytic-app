@@ -27,7 +27,7 @@ import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
 import BlackRightArrowIcon from 'src/assets/svgs/icon-arrow-right-black.svg';
 import DateIcon from 'src/assets/svgs/icon-date.svg';
 import TimeIcon from 'src/assets/svgs/icon-time.svg';
-import ChatIcon from 'src/assets/svgs/icon-chat.svg';
+import MessageIcon from 'src/assets/svgs/icon-message.svg';
 import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
 import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
 import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
@@ -98,7 +98,7 @@ export default {
   BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
-  ChatIcon,
+  MessageIcon,
   ActiveBinInIcon,
   DeactiveBinInIcon,
   ActiveBinOutIcon,

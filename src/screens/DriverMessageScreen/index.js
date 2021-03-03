@@ -58,7 +58,7 @@ import {
 } from './styled';
 
 const {
-  ChatIcon,
+  MessageIcon,
   SendIcon,
   MessageAvatarIcon,
 } = SVGS;
@@ -186,7 +186,7 @@ const DriverMessageScreen = ({
         <HeaderBar
           centerIcon={
             <RowWrap>
-              <ChatIcon />
+              <MessageIcon />
               <SpaceView mLeft={SIZE1} />
               <ScreenText>Driver Message</ScreenText>
             </RowWrap>
