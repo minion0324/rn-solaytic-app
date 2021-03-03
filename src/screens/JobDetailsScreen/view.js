@@ -49,7 +49,6 @@ import {
   RowWrap,
   FlexWrap,
   SpaceView,
-  CenteredWrap,
   LeftDash,
   TopDash,
   RightDash,
@@ -59,7 +58,7 @@ import {
   ScreenText,
   EmptyWrap,
   Back,
-  Printing,
+  Help,
 } from 'src/styles/header.styles';
 import {
   TitleText,
@@ -77,7 +76,7 @@ import {
 } from './styled';
 
 const {
-  BlueRightArrowIcon,
+  BlackRightArrowIcon,
   ActiveDateIcon,
   DeactiveDateIcon,
   ActiveTimeIcon,
@@ -90,7 +89,6 @@ const {
   DeactiveBinOutIcon,
   ActiveServiceIcon,
   DeactiveServiceIcon,
-  FailIcon,
   ScanCodeIcon,
   GreenActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
@@ -830,36 +828,6 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderFailJob = () => {
-    if (
-      !isInProgress ||
-      !focusedJob.isEnableFailJob
-    ) {
-      return null;
-    }
-
-    return (
-      <View>
-        <SpaceView mTop={SIZE2} />
-        <CenteredWrap>
-          <TouchableOpacity onPress={onFail}>
-            <ContentWrap
-              color={COLORS.TRANSPARENT1}
-            >
-              <RowWrap>
-                <FailIcon />
-                <SpaceView mLeft={SIZE1} />
-                <TitleText>
-                  Fail Job
-                </TitleText>
-              </RowWrap>
-            </ContentWrap>
-          </TouchableOpacity>
-        </CenteredWrap>
-      </View>
-    );
-  };
-
   const renderServices = () => {
     const selectedServices = services.filter(item => item.isSelected);
 
@@ -896,7 +864,7 @@ const JobDetailsScreenView = ({
                 isInProgress &&
                 <RowWrap>
                   <SpaceView mLeft={SIZE2} />
-                  <BlueRightArrowIcon />
+                  <BlackRightArrowIcon />
                 </RowWrap>
               }
             </RowWrap>
@@ -1109,7 +1077,7 @@ const JobDetailsScreenView = ({
           >
             <RowWrap>
               <SpaceView mLeft={SIZE2} />
-              <BlueRightArrowIcon />
+              <BlackRightArrowIcon />
             </RowWrap>
           </TouchableOpacity>
         }
@@ -1767,7 +1735,7 @@ const JobDetailsScreenView = ({
                 isInProgress &&
                 <RowWrap>
                   <SpaceView mLeft={SIZE2} />
-                  <BlueRightArrowIcon />
+                  <BlackRightArrowIcon />
                 </RowWrap>
               }
             </RowWrap>
@@ -1870,7 +1838,7 @@ const JobDetailsScreenView = ({
               jobStatus !== JOB_STATUS.COMPLETED &&
               <RowWrap>
                 <SpaceView mLeft={SIZE2} />
-                <BlueRightArrowIcon />
+                <BlackRightArrowIcon />
               </RowWrap>
             }
           </RowWrap>
@@ -1955,14 +1923,15 @@ const JobDetailsScreenView = ({
         centerIcon={renderHeaderContent()}
         leftIcon={<Back />}
         rightIcon={
-          jobStatus === JOB_STATUS.COMPLETED
-          ? <Printing /> : <EmptyWrap />
+          isInProgress &&
+          focusedJob.isEnableFailJob
+          ? <Help /> : <EmptyWrap />
         }
         onPressLeft={onBack}
         onPressRight={
-          jobStatus === JOB_STATUS.COMPLETED
-          ? () => onPrint(getBinInOutInfoIndex, getCustomerSiteIndex)
-          : null
+          isInProgress &&
+          focusedJob.isEnableFailJob
+          ? onFail : null
         }
       />
     );
@@ -1986,7 +1955,6 @@ const JobDetailsScreenView = ({
           { renderBinInfo() }
           { renderBinWeight() }
           { renderServices() }
-          { renderFailJob() }
           <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
