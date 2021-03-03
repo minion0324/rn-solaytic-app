@@ -17,16 +17,6 @@ const DriverMessageBadge = styled.View`
   margin-top: -${SIZE1}px;
 `;
 
-const BinWrap = styled.View`
-  margin-left: ${SIZE2}px;
-  margin-right: ${SIZE2}px;
-  border-width: 1px;
-  border-color: ${(props) => (
-    props.active
-    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-  )};
-`;
-
 const BinInput = styled.TextInput`
   flex: 1;
   padding: 0px;
@@ -42,6 +32,7 @@ const PhotoWrap = styled.View`
   aspect-ratio: 1;
   border-radius: ${SIZE1}px;
   background-color: ${COLORS.WHITE5};
+  overflow: hidden;
 `;
 
 const SignWrap = styled.View`
@@ -51,6 +42,7 @@ const SignWrap = styled.View`
   aspect-ratio: 1.5;
   border-radius: ${SIZE1}px;
   background-color: ${COLORS.WHITE5};
+  overflow: hidden;
 `;
 
 const PhotoModalButtonsWrap = styled.View`
@@ -63,7 +55,6 @@ const PhotoModalButtonsWrap = styled.View`
 
 export {
   DriverMessageBadge,
-  BinWrap,
   BinInput,
   PhotoWrap,
   SignWrap,

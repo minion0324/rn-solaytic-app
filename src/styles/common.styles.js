@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import Dash from 'react-native-dash';
 
@@ -111,32 +112,41 @@ const CenteredWrap = styled.View`
 const LeftDash = styled(Dash)`
   flex-direction: column;
   left: 0px;
-  top: 0px;
-  bottom: 0px;
+  top: ${props => props.dashLength || 4}px;
+  bottom: ${props => props.dashLength || 4}px;
   position: absolute;
 `;
 
 const TopDash = styled(Dash)`
-  left: 0px;
+  left: ${props => props.dashLength || 4}px;
   top: 0px;
-  right: 0px;
+  right: ${props => props.dashLength || 4}px;
   position: absolute;
 `;
 
 const RightDash = styled(Dash)`
   flex-direction: column;
-  top: 0px;
+  top: ${props => props.dashLength || 4}px;
   right: 0px;
-  bottom: 0px;
+  bottom: ${props => props.dashLength || 4}px;
   position: absolute;
 `;
 
 const BottomDash = styled(Dash)`
-  left: 0px;
-  right: 0px;
+  left: ${props => props.dashLength || 4}px;
+  right: ${props => props.dashLength || 4}px;
   bottom: 0px;
   position: absolute;
 `;
+
+const BorderDash = ({ color, ...props }) => (
+  <>
+    <LeftDash dashColor={color} {...props} />
+    <TopDash dashColor={color} {...props} />
+    <RightDash dashColor={color} {...props} />
+    <BottomDash dashColor={color} {...props} />
+  </>
+);
 
 export {
   Container,
@@ -153,8 +163,5 @@ export {
   FlexWrap,
   SpaceView,
   CenteredWrap,
-  LeftDash,
-  TopDash,
-  RightDash,
-  BottomDash,
+  BorderDash,
 };

@@ -49,10 +49,7 @@ import {
   RowWrap,
   FlexWrap,
   SpaceView,
-  LeftDash,
-  TopDash,
-  RightDash,
-  BottomDash,
+  BorderDash,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -68,7 +65,6 @@ import {
 
 import {
   DriverMessageBadge,
-  BinWrap,
   BinInput,
   PhotoWrap,
   SignWrap,
@@ -79,10 +75,8 @@ const {
   BlackRightArrowIcon,
   DateIcon,
   TimeIcon,
-  ActiveBinInIcon,
-  DeactiveBinInIcon,
-  ActiveBinOutIcon,
-  DeactiveBinOutIcon,
+  BinInIcon,
+  BinOutIcon,
   ActiveServiceIcon,
   DeactiveServiceIcon,
   ScanCodeIcon,
@@ -90,16 +84,16 @@ const {
   DeactiveCircleCheckIcon,
   ActivePhotosIcon,
   DeactivePhotosIcon,
-  PhotoAddIcon,
-  SignAddIcon,
+  ActivePhotoAddIcon,
+  DeactivePhotoAddIcon,
+  ActiveSignAddIcon,
+  DeactiveSignAddIcon,
   ActivePaymentIcon,
   DeactivePaymentIcon,
-  ActiveBinIcon,
-  DeactiveBinIcon,
+  BinIcon,
   DeletePhotoIcon,
   BackPhotoIcon,
-  ActiveBinWeightIcon,
-  DeactiveBinWeightIcon,
+  BinWeightIcon,
   DropdownArrowIcon,
 } = SVGS;
 
@@ -1128,12 +1122,20 @@ const JobDetailsScreenView = ({
                 disabled={status !== 'ACTIVE'}
               >
                 <PhotoWrap>
-                  <LeftDash dashColor={COLORS.BLUE1} />
-                  <TopDash dashColor={COLORS.BLUE1} />
-                  <RightDash dashColor={COLORS.BLUE1} />
-                  <BottomDash dashColor={COLORS.BLUE1} />
-
-                  <PhotoAddIcon />
+                  <BorderDash
+                    dashGap={5}
+                    dashLength={5}
+                    dashThickness={1}
+                    color={
+                      status === 'ACTIVE'
+                      ? COLORS.BLUE1 : COLORS.GRAY3
+                    }
+                  />
+                  {
+                    status === 'ACTIVE'
+                    ? <ActivePhotoAddIcon />
+                    : <DeactivePhotoAddIcon />
+                  }
                 </PhotoWrap>
               </TouchableOpacity>
           }
@@ -1170,12 +1172,20 @@ const JobDetailsScreenView = ({
           disabled={status !== 'ACTIVE'}
         >
           <SignWrap>
-            <LeftDash dashColor={COLORS.GREEN1} />
-            <TopDash dashColor={COLORS.GREEN1} />
-            <RightDash dashColor={COLORS.GREEN1} />
-            <BottomDash dashColor={COLORS.GREEN1} />
-
-            <SignAddIcon />
+            <BorderDash
+              dashGap={5}
+              dashLength={5}
+              dashThickness={1}
+              color={
+                status === 'ACTIVE'
+                ? COLORS.GREEN1 : COLORS.GRAY3
+              }
+            />
+            {
+              status === 'ACTIVE'
+              ? <ActiveSignAddIcon />
+              : <DeactiveSignAddIcon />
+            }
           </SignWrap>
         </TouchableOpacity>
     );
@@ -1472,98 +1482,80 @@ const JobDetailsScreenView = ({
             key={`${item.jobStepId}`}
           >
             <SpaceView mTop={SIZE2} />
-            <BinWrap
-              active={status === 'ACTIVE'}
+            <ContentWrap
+              mLeft={0.1} mRight={0.1}
             >
-              <ContentWrap
-                mLeft={0.1} mRight={0.1}
-              >
+              <RowWrap>
                 <RowWrap>
-                  <RowWrap>
-                    {
-                      (
-                        status === 'NOT_STARTED' ||
-                        status === 'ACTIVE'
-                      ) && (
-                        idx === 0
-                        ? <ActiveBinInIcon />
-                        : idx === 1
-                          ? <ActiveBinOutIcon />
-                          : <ActiveBinIcon />
-                      )
-                    }
-                    {
-                      status === 'COMPLETED' && (
-                        idx === 0
-                        ? <DeactiveBinInIcon />
-                        : idx === 1
-                          ? <DeactiveBinOutIcon />
-                          : <DeactiveBinIcon />
-                      )
-                    }
-                    <SpaceView mLeft={SIZE2} />
-                  </RowWrap>
-                  <TitleText>
-                    {
-                      idx === 0
-                      ? 'BIN IN'
-                      : idx === 1
-                        ? 'BIN OUT'
-                        : 'WASTE COLLECTION'
-                    }
-                  </TitleText>
+                  {
+                    idx === 0
+                    ? <BinInIcon />
+                    : idx === 1
+                      ? <BinOutIcon />
+                      : <BinIcon />
+                  }
+                  <SpaceView mLeft={SIZE1} />
                 </RowWrap>
-              </ContentWrap>
-              <BorderView />
-              <ContentWrap
-                mLeft={0.1} mRight={0.1}
-              >
-                {
-                  renderBinNumber({
-                    item,
-                    index,
-                    options,
-                    status,
-                  })
-                }
-                {
-                  renderBinType({
-                    item,
-                    index,
-                    idx,
-                    status,
-                  })
-                }
-                {
-                  renderWasteType({
-                    item,
-                    index,
-                    idx,
-                    options,
-                    status,
-                  })
-                }
-                {
-                  renderPhotosAndSign({
-                    item,
-                    options,
-                    status,
-                  })
-                }
-                {
-                  renderPayment({
-                    index,
-                    options,
-                    status,
-                  })
-                }
-                {
-                  renderCompleteButton({
-                    status,
-                  })
-                }
-              </ContentWrap>
-            </BinWrap>
+                <TitleText>
+                  {
+                    idx === 0
+                    ? 'BIN IN'
+                    : idx === 1
+                      ? 'BIN OUT'
+                      : 'WASTE COLLECTION'
+                  }
+                </TitleText>
+              </RowWrap>
+            </ContentWrap>
+            <BorderView />
+            <ContentWrap
+              mLeft={0.1} mRight={0.1}
+            >
+              {
+                renderBinNumber({
+                  item,
+                  index,
+                  options,
+                  status,
+                })
+              }
+              {
+                renderBinType({
+                  item,
+                  index,
+                  idx,
+                  status,
+                })
+              }
+              {
+                renderWasteType({
+                  item,
+                  index,
+                  idx,
+                  options,
+                  status,
+                })
+              }
+              {
+                renderPhotosAndSign({
+                  item,
+                  options,
+                  status,
+                })
+              }
+              {
+                renderPayment({
+                  index,
+                  options,
+                  status,
+                })
+              }
+              {
+                renderCompleteButton({
+                  status,
+                })
+              }
+            </ContentWrap>
           </View>
         );
       })
@@ -1593,104 +1585,96 @@ const JobDetailsScreenView = ({
         ref={binWeightRef}
       >
         <SpaceView mTop={SIZE2} />
-        <BinWrap
-          active={status === 'ACTIVE'}
+        <ContentWrap
+          mLeft={0.1} mRight={0.1}
         >
-          <ContentWrap
-            mLeft={0.1} mRight={0.1}
-          >
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  {
-                    status === 'COMPLETED'
-                    ? <DeactiveBinWeightIcon />
-                    : <ActiveBinWeightIcon />
-                  }
-                  <SpaceView mLeft={SIZE2} />
-                  <TitleText>Bin Weight</TitleText>
-                </RowWrap>
-              </FlexWrap>
-              {
-                status !== 'COMPLETED' &&
-                options.isRequireBinWeight &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  {
-                    binInfo[binIndex]['binWeight']
-                    ? <GreenActiveCircleCheckIcon />
-                    : <DeactiveCircleCheckIcon />
-                  }
-                </RowWrap>
-              }
-            </RowWrap>
-          </ContentWrap>
-          <BorderView />
-          <ContentWrap
-            mLeft={0.1} mRight={0.1}
-          >
-            <SpaceView mTop={SIZE2} />
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  <FlexWrap>
-                    <BinInput
-                      underlineColorAndroid={COLORS.TRANSPARENT1}
-                      autoCapitalize={'none'}
-                      autoCorrect={false}
-                      placeholder={'BIN WEIGHT'}
-                      value={`${binInfo[binIndex]['binWeight'] || ''}`}
-                      onChangeText={(text) =>
-                        onUpdateBinInfo(binIndex, { binWeight: text })
-                      }
-                      editable={
-                        status === 'ACTIVE' &&
-                        focusedJob.isAllowDriverEditOnApp
-                      }
-                      keyboardType={'numeric'}
-                    />
-                    <SpaceView mTop={SIZE1} />
-                  </FlexWrap>
-                </RowWrap>
-                <BorderView
-                  color={
-                    status === 'ACTIVE' &&
-                    focusedJob.isAllowDriverEditOnApp
-                    ? COLORS.BLUE1 : COLORS.GRAY2
-                  }
-                />
-              </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
-              <View>
-                <InfoText>tons</InfoText>
-                <SpaceView mTop={SIZE1} />
-              </View>
-            </RowWrap>
-            <SpaceView mTop={SIZE2} />
+          <RowWrap>
+            <FlexWrap>
+              <RowWrap>
+                <BinWeightIcon />
+                <SpaceView mLeft={SIZE1} />
+                <TitleText>Bin Weight</TitleText>
+              </RowWrap>
+            </FlexWrap>
+            {
+              status !== 'COMPLETED' &&
+              options.isRequireBinWeight &&
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                {
+                  binInfo[binIndex]['binWeight']
+                  ? <GreenActiveCircleCheckIcon />
+                  : <DeactiveCircleCheckIcon />
+                }
+              </RowWrap>
+            }
+          </RowWrap>
+        </ContentWrap>
+        <BorderView />
+        <ContentWrap
+          mLeft={0.1} mRight={0.1}
+        >
+          <SpaceView mTop={SIZE2} />
+          <RowWrap>
+            <FlexWrap>
+              <RowWrap>
+                <FlexWrap>
+                  <BinInput
+                    underlineColorAndroid={COLORS.TRANSPARENT1}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    placeholder={'BIN WEIGHT'}
+                    value={`${binInfo[binIndex]['binWeight'] || ''}`}
+                    onChangeText={(text) =>
+                      onUpdateBinInfo(binIndex, { binWeight: text })
+                    }
+                    editable={
+                      status === 'ACTIVE' &&
+                      focusedJob.isAllowDriverEditOnApp
+                    }
+                    keyboardType={'numeric'}
+                  />
+                  <SpaceView mTop={SIZE1} />
+                </FlexWrap>
+              </RowWrap>
+              <BorderView
+                color={
+                  status === 'ACTIVE' &&
+                  focusedJob.isAllowDriverEditOnApp
+                  ? COLORS.BLUE1 : COLORS.GRAY2
+                }
+              />
+            </FlexWrap>
+            <SpaceView mLeft={SIZE2} />
+            <View>
+              <InfoText>tons</InfoText>
+              <SpaceView mTop={SIZE1} />
+            </View>
+          </RowWrap>
+          <SpaceView mTop={SIZE2} />
 
-            {
-              renderWasteType({
-                item: binInfo[binIndex],
-                index: binIndex,
-                idx,
-                options,
-                status,
-              })
-            }
-            {
-              renderPhotosAndSign({
-                item: focusedJob.steps[stepIndex],
-                options,
-                status,
-              })
-            }
-            {
-              renderCompleteButton({
-                status,
-              })
-            }
-          </ContentWrap>
-        </BinWrap>
+          {
+            renderWasteType({
+              item: binInfo[binIndex],
+              index: binIndex,
+              idx,
+              options,
+              status,
+            })
+          }
+          {
+            renderPhotosAndSign({
+              item: focusedJob.steps[stepIndex],
+              options,
+              status,
+            })
+          }
+          {
+            renderCompleteButton({
+              status,
+            })
+          }
+        </ContentWrap>
       </View>
     );
   };

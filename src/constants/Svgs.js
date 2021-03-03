@@ -28,10 +28,8 @@ import BlackRightArrowIcon from 'src/assets/svgs/icon-arrow-right-black.svg';
 import DateIcon from 'src/assets/svgs/icon-date.svg';
 import TimeIcon from 'src/assets/svgs/icon-time.svg';
 import MessageIcon from 'src/assets/svgs/icon-message.svg';
-import ActiveBinInIcon from 'src/assets/svgs/icon-in-bin-active.svg';
-import DeactiveBinInIcon from 'src/assets/svgs/icon-in-bin-deactive.svg';
-import ActiveBinOutIcon from 'src/assets/svgs/icon-out-bin-active.svg';
-import DeactiveBinOutIcon from 'src/assets/svgs/icon-out-bin-deactive.svg';
+import BinInIcon from 'src/assets/svgs/icon-in-bin.svg';
+import BinOutIcon from 'src/assets/svgs/icon-out-bin.svg';
 import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
 import ScanCodeIcon from 'src/assets/svgs/icon-code-scan.svg';
@@ -54,16 +52,16 @@ import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import CheckIcon from 'src/assets/svgs/icon-check.svg';
 import ActivePhotosIcon from 'src/assets/svgs/icon-photos-active.svg';
 import DeactivePhotosIcon from 'src/assets/svgs/icon-photos-deactive.svg';
-import PhotoAddIcon from 'src/assets/svgs/icon-add-photo.svg';
-import SignAddIcon from 'src/assets/svgs/icon-add-sign.svg';
+import ActivePhotoAddIcon from 'src/assets/svgs/icon-add-photo-active.svg';
+import DeactivePhotoAddIcon from 'src/assets/svgs/icon-add-photo-deactive.svg';
+import ActiveSignAddIcon from 'src/assets/svgs/icon-add-sign-active.svg';
+import DeactiveSignAddIcon from 'src/assets/svgs/icon-add-sign-deactive.svg';
 import ActivePaymentIcon from 'src/assets/svgs/icon-payment-active.svg';
 import DeactivePaymentIcon from 'src/assets/svgs/icon-payment-deactive.svg';
-import ActiveBinIcon from 'src/assets/svgs/icon-bin-active.svg';
-import DeactiveBinIcon from 'src/assets/svgs/icon-bin-deactive.svg';
+import BinIcon from 'src/assets/svgs/icon-bin.svg';
 import DeletePhotoIcon from 'src/assets/svgs/icon-photo-delete.svg';
 import BackPhotoIcon from 'src/assets/svgs/icon-photo-back.svg';
-import ActiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-active.svg';
-import DeactiveBinWeightIcon from 'src/assets/svgs/icon-weight-bin-deactive.svg';
+import BinWeightIcon from 'src/assets/svgs/icon-weight-bin.svg';
 import DropdownArrowIcon from 'src/assets/svgs/icon-arrow-dropdown.svg';
 import CircleCurrencyIcon from 'src/assets/svgs/icon-currency-circle.svg';
 import CircleHelpIcon from 'src/assets/svgs/icon-help-circle.svg';
@@ -99,10 +97,8 @@ export default {
   DateIcon,
   TimeIcon,
   MessageIcon,
-  ActiveBinInIcon,
-  DeactiveBinInIcon,
-  ActiveBinOutIcon,
-  DeactiveBinOutIcon,
+  BinInIcon,
+  BinOutIcon,
   AddressIcon,
   SendIcon,
   ScanCodeIcon,
@@ -125,16 +121,16 @@ export default {
   CheckIcon,
   ActivePhotosIcon,
   DeactivePhotosIcon,
-  PhotoAddIcon,
-  SignAddIcon,
+  ActivePhotoAddIcon,
+  DeactivePhotoAddIcon,
+  ActiveSignAddIcon,
+  DeactiveSignAddIcon,
   ActivePaymentIcon,
   DeactivePaymentIcon,
-  ActiveBinIcon,
-  DeactiveBinIcon,
+  BinIcon,
   DeletePhotoIcon,
   BackPhotoIcon,
-  ActiveBinWeightIcon,
-  DeactiveBinWeightIcon,
+  BinWeightIcon,
   DropdownArrowIcon,
   CircleCurrencyIcon,
   CircleHelpIcon,
