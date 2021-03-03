@@ -21,8 +21,8 @@ const Content = styled.View`
 `;
 
 const ContentWrap = styled.View`
-  margin-left: ${props => props.mLeft || SIZE2}px;
-  margin-right: ${props => props.mRight || SIZE2}px;
+  margin-left: ${props => props.mLeft || 0}px;
+  margin-right: ${props => props.mRight || 0}px;
   padding-top: ${props => props.mTop || SIZE3}px;
   padding-horizontal: ${SIZE3}px;
   padding-bottom: ${SIZE3}px;
