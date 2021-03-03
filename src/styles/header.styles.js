@@ -13,9 +13,9 @@ const {
   SideMenuIcon,
   CalendarIcon,
   ShareIcon,
-  DeactivePrintIcon,
   CloseIcon,
   CheckIcon,
+  CircleHelpIcon,
 } = SVGS;
 
 const ScreenText = styled.Text`
@@ -56,12 +56,6 @@ const Sharing = () => (
   </EmptyWrap>
 );
 
-const Printing = () => (
-  <EmptyWrap>
-    <DeactivePrintIcon />
-  </EmptyWrap>
-);
-
 const Close = () => (
   <EmptyWrap>
     <CloseIcon />
@@ -74,6 +68,12 @@ const Check = () => (
   </EmptyWrap>
 );
 
+const Help = () => (
+  <EmptyWrap>
+    <CircleHelpIcon />
+  </EmptyWrap>
+);
+
 export {
   ScreenText,
   EmptyWrap,
@@ -81,7 +81,7 @@ export {
   SideMenu,
   Calendar,
   Sharing,
-  Printing,
   Close,
   Check,
+  Help,
 };
