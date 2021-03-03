@@ -231,9 +231,7 @@ const BinInputScreen = ({
         onPressLeft={onClose}
       />
 
-      <ContentWrap
-        mLeft={0.1} mRight={0.1}
-      >
+      <ContentWrap>
         { renderBinNumber() }
         { renderBinType() }
         { renderWasteType() }

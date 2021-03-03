@@ -236,9 +236,7 @@ const AddressScreen = ({
               {
                 !!item.siteRemarks &&
                 index === customerSiteIndex &&
-                <ContentWrap
-                  mLeft={0.5} mRight={0.5}
-                >
+                <ContentWrap>
                   <InfoText>
                     {item.siteRemarks}
                   </InfoText>

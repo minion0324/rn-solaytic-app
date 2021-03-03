@@ -14,7 +14,6 @@ import {
   SIZE2,
   SIZE4,
   FONT,
-  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -657,7 +656,9 @@ const PreviewScreen = ({
             ref={viewShotRef}
             options={{ result: 'base64' }}
           >
-            <ContentWrap>
+            <ContentWrap
+              mLeft={SIZE2} mRight={SIZE2}
+            >
               { renderLogo() }
               { renderHeaderText() }
               { renderJobInfo() }
