@@ -70,6 +70,7 @@ import {
   PhotoWrap,
   SignWrap,
   PhotoModalButtonsWrap,
+  PrintReceiptButton,
 } from './styled';
 
 const {
@@ -82,6 +83,7 @@ const {
   DeactiveScanCodeIcon,
   BlackActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
+  DeactivePrintIcon,
   ActivePhotoAddIcon,
   DeactivePhotoAddIcon,
   ActiveSignAddIcon,
@@ -1010,7 +1012,7 @@ const JobDetailsScreenView = ({
     </View>
   );
 
-  const renderServices = ({
+  const renderAdditionalServices = ({
     index,
     status,
   }) => {
@@ -1092,7 +1094,7 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderPayment = ({
+  const renderCollections = ({
     index,
     options,
     status,
@@ -1199,6 +1201,45 @@ const JobDetailsScreenView = ({
     );
   };
 
+  const renderPrintReceipt = ({
+    index,
+  }) => {
+    if (
+      stepIndexForOthers.current !== index ||
+      !(
+        jobStatus === JOB_STATUS.IN_PROGRESS ||
+        (
+          jobStatus === JOB_STATUS.STARTED &&
+          focusedJob.steps.length === 2
+        )
+      )
+    ) {
+      return null;
+    }
+
+    return (
+      <View>
+        <SpaceView
+          mTop={SIZE3} mBottom={SIZE3}
+        />
+        <CenteredWrap>
+          <PrintReceiptButton
+            color={COLORS.GRAY3}
+            onPress={() => onPrint(
+              getBinInOutInfoIndex,
+              getCustomerSiteIndex,
+            )}
+          >
+            <DeactivePrintIcon />
+            <SpaceView mLeft={SIZE1} />
+            <InfoText>PRINT RECEIPT</InfoText>
+          </PrintReceiptButton>
+        </CenteredWrap>
+        <SpaceView mTop={SIZE3} />
+      </View>
+    );
+  };
+
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
@@ -1281,16 +1322,21 @@ const JobDetailsScreenView = ({
                 })
               }
               {
-                renderServices({
+                renderAdditionalServices({
                   index,
                   status,
                 })
               }
               {
-                renderPayment({
+                renderCollections({
                   index,
                   options,
                   status,
+                })
+              }
+              {
+                renderPrintReceipt({
+                  index,
                 })
               }
             </ContentWrap>

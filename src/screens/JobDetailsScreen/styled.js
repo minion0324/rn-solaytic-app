@@ -67,6 +67,18 @@ const PhotoModalButtonsWrap = styled.View`
   padding-horizontal: ${SIZE6}px;
 `;
 
+const PrintReceiptButton = styled.TouchableOpacity`
+  height: ${SIZE6}px;
+  padding-horizontal: ${SIZE2}px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${SIZE1}px;
+  border-width: 1px;
+  border-color: ${props => props.color};
+  background-color: ${COLORS.WHITE1};
+`;
+
 export {
   DriverMessageBadge,
   BinInput,
@@ -74,4 +86,5 @@ export {
   PhotoWrap,
   SignWrap,
   PhotoModalButtonsWrap,
+  PrintReceiptButton,
 };
