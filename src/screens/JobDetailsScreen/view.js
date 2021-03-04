@@ -43,7 +43,6 @@ import {
   Container,
   Content,
   ContentWrap,
-  BorderView,
   ShadowWrap,
   FullImage,
   RowWrap,
@@ -141,7 +140,7 @@ const JobDetailsScreenView = ({
 
   const stepIndexForBinWeight = useRef(
     focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
-    ? 1
+    ? 2
     : (
       focusedJob.jobTypeName === JOB_TYPE.PULL ||
       focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
@@ -223,9 +222,7 @@ const JobDetailsScreenView = ({
         onScroll(binInfo1Ref);
         return;
       case 1:
-        if (
-          stepIndexForBinWeight.current !== 1
-        ) {
+        if (stepIndexForBinWeight.current !== 1) {
           onScroll(binInfo2Ref);
         } else if (hasBinWeight.current) {
           onScroll(binWeightRef);
