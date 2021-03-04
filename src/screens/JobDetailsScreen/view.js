@@ -80,7 +80,7 @@ const {
   ActiveServiceIcon,
   DeactiveServiceIcon,
   ScanCodeIcon,
-  GreenActiveCircleCheckIcon,
+  BlackActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   ActivePhotosIcon,
   DeactivePhotosIcon,
@@ -950,7 +950,7 @@ const JobDetailsScreenView = ({
                 <SpaceView mLeft={SIZE3} />
                 {
                   item['binNumber']
-                  ? <GreenActiveCircleCheckIcon />
+                  ? <BlackActiveCircleCheckIcon />
                   : <DeactiveCircleCheckIcon />
                 }
               </RowWrap>
@@ -1236,7 +1236,7 @@ const JobDetailsScreenView = ({
                   )) !== -1
                 )
               )
-              ? <GreenActiveCircleCheckIcon />
+              ? <BlackActiveCircleCheckIcon />
               : <DeactiveCircleCheckIcon />
             }
           </RowWrap>
@@ -1329,7 +1329,7 @@ const JobDetailsScreenView = ({
             <SpaceView mLeft={SIZE2} />
             {
               amountCollected
-              ? <GreenActiveCircleCheckIcon />
+              ? <BlackActiveCircleCheckIcon />
               : <DeactiveCircleCheckIcon />
             }
           </RowWrap>
@@ -1603,7 +1603,7 @@ const JobDetailsScreenView = ({
                 <SpaceView mLeft={SIZE2} />
                 {
                   binInfo[binIndex]['binWeight']
-                  ? <GreenActiveCircleCheckIcon />
+                  ? <BlackActiveCircleCheckIcon />
                   : <DeactiveCircleCheckIcon />
                 }
               </RowWrap>

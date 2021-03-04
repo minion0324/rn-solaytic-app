@@ -15,6 +15,7 @@ import SearchIcon from 'src/assets/svgs/icon-search.svg';
 import GreenActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-green.svg';
 import RedActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-red.svg';
 import BlueActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-blue.svg';
+import BlackActiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-active-black.svg';
 import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.svg';
 import DrawerCloseIcon from 'src/assets/svgs/icon-close-drawer.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
@@ -84,6 +85,7 @@ export default {
   GreenActiveCircleCheckIcon,
   RedActiveCircleCheckIcon,
   BlueActiveCircleCheckIcon,
+  BlackActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   DrawerCloseIcon,
   HappyIcon,
