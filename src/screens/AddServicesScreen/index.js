@@ -52,7 +52,7 @@ import {
 
 const {
   SearchIcon,
-  ActiveServiceIcon,
+  ServiceIcon,
   BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
 } = SVGS;
@@ -223,7 +223,7 @@ const AddServicesScreen = ({
         <HeaderBar
           centerIcon={
             <RowWrap>
-              <ActiveServiceIcon />
+              <ServiceIcon />
               <SpaceView mLeft={SIZE1} />
               <ScreenText>Add Services</ScreenText>
             </RowWrap>

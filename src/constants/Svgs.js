@@ -20,8 +20,7 @@ import DeactiveCircleCheckIcon from 'src/assets/svgs/icon-check-circle-deactive.
 import DrawerCloseIcon from 'src/assets/svgs/icon-close-drawer.svg';
 import HappyIcon from 'src/assets/svgs/icon-happy.svg';
 import CalendarIcon from 'src/assets/svgs/icon-calendar.svg';
-import ActiveServiceIcon from 'src/assets/svgs/icon-service-active.svg';
-import DeactiveServiceIcon from 'src/assets/svgs/icon-service-deactive.svg';
+import ServiceIcon from 'src/assets/svgs/icon-service.svg';
 import RetryIcon from 'src/assets/svgs/icon-retry.svg';
 import BlueLeftArrowIcon from 'src/assets/svgs/icon-arrow-left-blue.svg';
 import BlueRightArrowIcon from 'src/assets/svgs/icon-arrow-right-blue.svg';
@@ -63,6 +62,7 @@ import BinWeightIcon from 'src/assets/svgs/icon-weight-bin.svg';
 import DropdownArrowIcon from 'src/assets/svgs/icon-arrow-dropdown.svg';
 import CircleCurrencyIcon from 'src/assets/svgs/icon-currency-circle.svg';
 import CircleHelpIcon from 'src/assets/svgs/icon-help-circle.svg';
+import CircleAddIcon from 'src/assets/svgs/icon-add-circle.svg';
 
 export default {
   ActiveCheckIcon,
@@ -87,8 +87,7 @@ export default {
   DrawerCloseIcon,
   HappyIcon,
   CalendarIcon,
-  ActiveServiceIcon,
-  DeactiveServiceIcon,
+  ServiceIcon,
   RetryIcon,
   BlueLeftArrowIcon,
   BlueRightArrowIcon,
@@ -130,4 +129,5 @@ export default {
   DropdownArrowIcon,
   CircleCurrencyIcon,
   CircleHelpIcon,
+  CircleAddIcon,
 };

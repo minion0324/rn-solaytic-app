@@ -50,6 +50,7 @@ import {
   FlexWrap,
   SpaceView,
   BorderDash,
+  CenteredWrap,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
@@ -78,8 +79,6 @@ const {
   TimeIcon,
   BinInIcon,
   BinOutIcon,
-  ActiveServiceIcon,
-  DeactiveServiceIcon,
   ActiveScanCodeIcon,
   DeactiveScanCodeIcon,
   BlackActiveCircleCheckIcon,
@@ -93,9 +92,8 @@ const {
   BackPhotoIcon,
   BinWeightIcon,
   DropdownArrowIcon,
+  CircleAddIcon,
 } = SVGS;
-
-const STEP_STATUS_MARK = '_Next';
 
 const JobDetailsScreenView = ({
   loading,
@@ -129,91 +127,8 @@ const JobDetailsScreenView = ({
   onAddWasteTypes,
   onScanCode,
   onPrint,
-  onBinInput,
 }) => {
   const [ actionSheetData, setActionSheetData ] = useState([]);
-  const [ binInput, setBinInput ] = useState(false);
-
-  let initialStepStatus = jobStatus;
-  let initialCurrentStep;
-
-  switch (focusedJob.jobTypeName) {
-    case JOB_TYPE.PULL:
-      switch (initialStepStatus) {
-        case JOB_STATUS.ACKNOWLEDGED:
-          initialCurrentStep = 0.5;
-          break;
-        case JOB_STATUS.STARTED:
-          initialCurrentStep = 2;
-          break;
-        case JOB_STATUS.IN_PROGRESS:
-          initialCurrentStep = 3.5;
-          break;
-        case JOB_STATUS.COMPLETED:
-          initialCurrentStep = 4;
-          break;
-        default:
-          initialCurrentStep = 0;
-      }
-      break;
-
-    case JOB_TYPE.PUT:
-      switch (initialStepStatus) {
-        case JOB_STATUS.ACKNOWLEDGED:
-          initialCurrentStep = 0.5;
-          break;
-        case JOB_STATUS.STARTED:
-          initialCurrentStep = 3.5;
-          break;
-        case JOB_STATUS.COMPLETED:
-          initialCurrentStep = 4;
-          break;
-        default:
-          initialCurrentStep = 0;
-      }
-      break;
-
-    case JOB_TYPE.EXCHANGE:
-      switch (initialStepStatus) {
-        case JOB_STATUS.ACKNOWLEDGED:
-          initialCurrentStep = 0.5;
-          break;
-        case JOB_STATUS.STARTED:
-          initialCurrentStep = 1.5;
-          break;
-        case JOB_STATUS.IN_PROGRESS:
-          initialCurrentStep = 3;
-          break;
-        case JOB_STATUS.COMPLETED:
-          initialCurrentStep = 4;
-          break;
-        default:
-          initialCurrentStep = 0;
-      }
-      break;
-
-    case JOB_TYPE.ON_THE_SPOT:
-      switch (initialStepStatus) {
-        case JOB_STATUS.ACKNOWLEDGED:
-          initialCurrentStep = 0.5;
-          break;
-        case JOB_STATUS.STARTED:
-          initialCurrentStep = 2;
-          break;
-        case JOB_STATUS.IN_PROGRESS:
-          initialCurrentStep = 3.5;
-          break;
-        case JOB_STATUS.COMPLETED:
-          initialCurrentStep = 4;
-          break;
-        default:
-          initialCurrentStep = 0;
-      }
-      break;
-  };
-
-  const [ stepStatus, setStepStatus ] = useState(initialStepStatus);
-  const [ currentStep, setCurrentStep ] = useState(initialCurrentStep);
 
   const binIndexRef = useRef(null);
   const actionSheetRef = useRef(null);
@@ -224,194 +139,105 @@ const JobDetailsScreenView = ({
   const binWeightRef = useRef(null);
   const scrollRef = useRef(null);
 
-  useEffect(() => {
-    if (stepStatus !== jobStatus) {
-      setStepStatus(jobStatus);
-    }
-  }, [jobStatus]);
+  const stepIndexForBinWeight = useRef(
+    focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
+    ? 1
+    : (
+      focusedJob.jobTypeName === JOB_TYPE.PULL ||
+      focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+    ) ? 1 : -1
+  );
 
-  useEffect(() => {
-    if (binInput) {
-      onStart();
-    }
-  }, [binInput]);
+  const stepIndexForOthers = useRef(
+    focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
+    ? 1
+    : (
+      focusedJob.jobTypeName === JOB_TYPE.PULL ||
+      focusedJob.jobTypeName === JOB_TYPE.PUT ||
+      focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+    ) ? 0 : -1
+  );
 
-  useEffect(() => {
+  const hasBinWeight = useRef(
+    stepIndexForBinWeight.current === -1
+    ? false
+    : focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
+  );
+
+  const currentStepIndex = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
-        switch (stepStatus) {
+        switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            setCurrentStep(0.5);
-            return;
+            return -1;
            case JOB_STATUS.STARTED:
-            setCurrentStep(1);
-            onScroll(binInfo1Ref);
-            return;
+            return 0;
           case JOB_STATUS.IN_PROGRESS:
-            if (hasBinWeight) {
-              setCurrentStep(2);
-              onScroll(binWeightRef);
-            } else {
-              setCurrentStep(3.5);
-            }
-            return;
-          case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
-            setCurrentStep(3.5);
-            return;
+            return 1;
           case JOB_STATUS.COMPLETED:
-            setCurrentStep(4);
-            return;
-          default:
-            setCurrentStep(0);
-            return;
+            return 3;
         }
 
       case JOB_TYPE.PUT:
-        switch (stepStatus) {
+        switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            setCurrentStep(0.5);
-            return;
+            return 0;
           case JOB_STATUS.STARTED:
-            setCurrentStep(1);
-            onScroll(binInfo1Ref);
-            return;
-          case JOB_STATUS.STARTED + STEP_STATUS_MARK:
-            setCurrentStep(3.5);
-            return;
+            return 0;
           case JOB_STATUS.COMPLETED:
-            setCurrentStep(4);
-            return;
-          default:
-            setCurrentStep(0);
-            return;
+            return 3;
         }
 
       case JOB_TYPE.EXCHANGE:
-        switch (stepStatus) {
+        switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            setCurrentStep(0.5);
-            return;
-          case JOB_STATUS.ACKNOWLEDGED + STEP_STATUS_MARK:
-            setCurrentStep(1);
-            onScroll(binInfo1Ref);
-            return;
+            return 0;
           case JOB_STATUS.STARTED:
-            setCurrentStep(1.5);
-            return;
-          case JOB_STATUS.STARTED + STEP_STATUS_MARK:
-            setCurrentStep(2);
-            onScroll(binInfo2Ref);
-            return;
+            return 1;
           case JOB_STATUS.IN_PROGRESS:
-            if (hasBinWeight) {
-              setCurrentStep(3);
-              onScroll(binWeightRef);
-            } else {
-              setCurrentStep(3.5);
-            }
-            return;
-          case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
-            setCurrentStep(3.5);
-            return;
+            return 2;
           case JOB_STATUS.COMPLETED:
-            setCurrentStep(4);
-            return;
-          default:
-            setCurrentStep(0);
-            return;
+            return 3;
         }
 
       case JOB_TYPE.ON_THE_SPOT:
-        switch (stepStatus) {
+        switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            setCurrentStep(0.5);
-            return;
+            return 0;
           case JOB_STATUS.STARTED:
-            setCurrentStep(1);
-            onScroll(binInfo1Ref);
-            return;
+            return 0;
           case JOB_STATUS.IN_PROGRESS:
-            if (hasBinWeight) {
-              setCurrentStep(2);
-              onScroll(binWeightRef);
-            } else {
-              setCurrentStep(3.5);
-            }
-            return;
-          case JOB_STATUS.IN_PROGRESS + STEP_STATUS_MARK:
-            setCurrentStep(3.5);
-            return;
+            return 1;
           case JOB_STATUS.COMPLETED:
-            setCurrentStep(4);
-            return;
-          default:
-            setCurrentStep(0);
-            return;
+            return 3;
         }
+    };
+  }, [
+    jobStatus,
+    focusedJob.jobTypeName,
+  ]);
 
-      default:
-        setCurrentStep(0);
+  useEffect(() => {
+    switch (currentStepIndex) {
+      case 0:
+        onScroll(binInfo1Ref);
         return;
-    };
-  }, [
-    stepStatus,
-    focusedJob.jobTypeName,
-  ]);
-
-  const binWeightIndexes = useMemo(() => {
-    switch (focusedJob.jobTypeName) {
-      case JOB_TYPE.PULL:
-        return { stepIndex: 1, binIndex: 0 };
-
-      case JOB_TYPE.PUT:
-        return { stepIndex: -1 };
-
-      case JOB_TYPE.EXCHANGE:
-        return { stepIndex: 2, binIndex: 1 };
-
-      case JOB_TYPE.ON_THE_SPOT:
-        return { stepIndex: 1, binIndex: 0 };
-
-      default:
-        return { stepIndex: -1 };
-    };
-  }, [
-    focusedJob.jobTypeName,
-  ]);
-
-  const hasBinWeight = useMemo(() => {
-    const { stepIndex } = binWeightIndexes;
-
-    if (stepIndex === -1) {
-      return false;
+      case 1:
+        if (
+          stepIndexForBinWeight.current !== 1
+        ) {
+          onScroll(binInfo2Ref);
+        } else if (hasBinWeight.current) {
+          onScroll(binWeightRef);
+        }
+        return;
+      case 2:
+        if (hasBinWeight.current) {
+          onScroll(binWeightRef);
+        }
+        return;
     }
-
-    return focusedJob.steps[stepIndex].isRequireBinWeight;
-  }, [
-    binWeightIndexes,
-  ]);
-
-  const totalStep = useMemo(() => {
-    switch (focusedJob.jobTypeName) {
-      case JOB_TYPE.PULL:
-        return hasBinWeight ? 2 : 1;
-
-      case JOB_TYPE.PUT:
-        return hasBinWeight ? 1 : 1;
-
-      case JOB_TYPE.EXCHANGE:
-        return hasBinWeight ? 3 : 2;
-
-      case JOB_TYPE.ON_THE_SPOT:
-        return hasBinWeight ? 2 : 1;
-
-      default:
-        return hasBinWeight ? 2 : 1;
-    };
-  }, [
-    hasBinWeight,
-    focusedJob.jobTypeName,
-  ]);
+  }, [currentStepIndex]);
 
   const getBinInOutInfoIndex = useCallback(
     (index) => {
@@ -541,15 +367,15 @@ const JobDetailsScreenView = ({
 
   const getBinInfoStatus = useCallback(
     (index) => {
-      if (currentStep - index < 1) {
+      if (currentStepIndex < index) {
         return 'NOT_STARTED';
-      } else if (currentStep - index === 1) {
+      } else if (currentStepIndex === index) {
         return 'ACTIVE';
       } else {
         return 'COMPLETED';
       }
     },
-    [currentStep],
+    [currentStepIndex],
   );
 
   const onValidateStep = (stepIndex, binIndex) => {
@@ -630,74 +456,74 @@ const JobDetailsScreenView = ({
      return true;
   };
 
-  const onNextStep = () => {
-    switch (focusedJob.jobTypeName) {
-      case JOB_TYPE.PULL:
-        if (currentStep === 0.5) {
-          onStart();
-        } else if (currentStep === 1) {
-          onValidateStep(0, 0) && onPull();
-        } else if (currentStep === 2) {
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
-        } else if (currentStep === 3.5) {
-          onComplete();
-        }
-        return;
+  // const onNextStep = () => {
+  //   switch (focusedJob.jobTypeName) {
+  //     case JOB_TYPE.PULL:
+  //       if (currentStep === 0.5) {
+  //         onStart();
+  //       } else if (currentStep === 1) {
+  //         onValidateStep(0, 0) && onPull();
+  //       } else if (currentStep === 2) {
+  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
+  //       } else if (currentStep === 3.5) {
+  //         onComplete();
+  //       }
+  //       return;
 
-      case JOB_TYPE.PUT:
-        if (currentStep === 0.5) {
-          if (focusedJob.steps[0].isRequireBinNumberToEnd) {
-            onBinInput(0, () => setBinInput(true));
-          } else {
-            onStart();
-          }
-        } else if (currentStep === 1) {
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
-        } else if (currentStep === 3.5) {
-          onValidateStep(0, 0) && onComplete();
-        }
-        return;
+  //     case JOB_TYPE.PUT:
+  //       if (currentStep === 0.5) {
+  //         if (focusedJob.steps[0].isRequireBinNumberToEnd) {
+  //           onBinInput(0, () => setBinInput(true));
+  //         } else {
+  //           onStart();
+  //         }
+  //       } else if (currentStep === 1) {
+  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
+  //       } else if (currentStep === 3.5) {
+  //         onValidateStep(0, 0) && onComplete();
+  //       }
+  //       return;
 
-      case JOB_TYPE.EXCHANGE:
-        if (currentStep === 0.5) {
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
-        } else if (currentStep === 1) {
-          onValidateStep(0, 0) && onStart();
-        } else if (currentStep === 1.5) {
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
-        } else if (currentStep === 2) {
-          onValidateStep(1, 1) && onExchange();
-        } else if (currentStep === 3) {
-          const { stepIndex, binIndex } = binWeightIndexes;
-          onValidateStep(stepIndex, binIndex) &&
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
-        } else if (currentStep === 3.5) {
-          onComplete();
-        }
-        return;
+  //     case JOB_TYPE.EXCHANGE:
+  //       if (currentStep === 0.5) {
+  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
+  //       } else if (currentStep === 1) {
+  //         onValidateStep(0, 0) && onStart();
+  //       } else if (currentStep === 1.5) {
+  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
+  //       } else if (currentStep === 2) {
+  //         onValidateStep(1, 1) && onExchange();
+  //       } else if (currentStep === 3) {
+  //         const { stepIndex, binIndex } = binWeightIndexes;
+  //         onValidateStep(stepIndex, binIndex) &&
+  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
+  //       } else if (currentStep === 3.5) {
+  //         onComplete();
+  //       }
+  //       return;
 
-      case JOB_TYPE.ON_THE_SPOT:
-        if (currentStep === 0.5) {
-          if (focusedJob.steps[0].isRequireBinNumberToEnd) {
-            onBinInput(0, () => setBinInput(true));
-          } else {
-            onStart();
-          }
-        } else if (currentStep === 1) {
-          onValidateStep(0, 0) && onExchange();
-        } else if (currentStep === 2) {
-          const { stepIndex, binIndex } = binWeightIndexes;
-          onValidateStep(stepIndex, binIndex) &&
-          setStepStatus(jobStatus + STEP_STATUS_MARK);
-        } else if (currentStep === 3.5) {
-          onComplete();
-        }
-      return;
+  //     case JOB_TYPE.ON_THE_SPOT:
+  //       if (currentStep === 0.5) {
+  //         if (focusedJob.steps[0].isRequireBinNumberToEnd) {
+  //           onBinInput(0, () => setBinInput(true));
+  //         } else {
+  //           onStart();
+  //         }
+  //       } else if (currentStep === 1) {
+  //         onValidateStep(0, 0) && onExchange();
+  //       } else if (currentStep === 2) {
+  //         const { stepIndex, binIndex } = binWeightIndexes;
+  //         onValidateStep(stepIndex, binIndex) &&
+  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
+  //       } else if (currentStep === 3.5) {
+  //         onComplete();
+  //       }
+  //     return;
 
-      default:
-        return;
-    };
-  };
+  //     default:
+  //       return;
+  //   };
+  // };
 
   const onScroll = async (ref) => {
     try {
@@ -813,90 +639,6 @@ const JobDetailsScreenView = ({
           </PhotoModalButtonsWrap>
         }
       </PhotoWrap>
-    );
-  };
-
-  const renderServices = () => {
-    const selectedServices = services.filter(item => item.isSelected);
-
-    if (
-      jobStatus === JOB_STATUS.COMPLETED &&
-      selectedServices.length === 0
-    ) {
-      return null;
-    }
-
-    return (
-      <View>
-        <SpaceView mTop={SIZE2} />
-        <TouchableOpacity
-          disabled={!isInProgress}
-          onPress={onAddServices}
-        >
-          <ContentWrap>
-            <RowWrap>
-              <FlexWrap>
-                <RowWrap>
-                  {
-                    jobStatus === JOB_STATUS.COMPLETED
-                    ? <DeactiveServiceIcon />
-                    : <ActiveServiceIcon />
-                  }
-                  <SpaceView mLeft={SIZE2} />
-                  <TitleText>
-                    Add Services
-                  </TitleText>
-                </RowWrap>
-              </FlexWrap>
-              {
-                isInProgress &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <BlackRightArrowIcon />
-                </RowWrap>
-              }
-            </RowWrap>
-          </ContentWrap>
-        </TouchableOpacity>
-        {
-          selectedServices.length > 0 &&
-          <View>
-            <BorderView
-              mLeft={SIZE2} mRight={SIZE2}
-            />
-            <TouchableOpacity
-              disabled={!isInProgress}
-              onPress={onAddServices}
-            >
-              <ContentWrap>
-                {
-                  selectedServices.map((item, index) => (
-                    <View
-                      key={`${item.serviceAdditionalChargeTemplateId}`}
-                    >
-                      {
-                        index > 0 &&
-                        <SpaceView mTop={SIZE1} />
-                      }
-                      <RowWrap>
-                        <FlexWrap>
-                          <InfoText>
-                            {item.serviceAdditionalChargeName}
-                          </InfoText>
-                        </FlexWrap>
-                        <SpaceView mLeft={SIZE2} />
-                        <InfoText>
-                          {item.quantity}
-                        </InfoText>
-                      </RowWrap>
-                    </View>
-                  ))
-                }
-              </ContentWrap>
-            </TouchableOpacity>
-          </View>
-        }
-      </View>
     );
   };
 
@@ -1271,6 +1013,88 @@ const JobDetailsScreenView = ({
     </View>
   );
 
+  const renderServices = ({
+    index,
+    status,
+  }) => {
+    if (stepIndexForOthers.current !== index) {
+      return null;
+    }
+
+    const selectedServices = services.filter(item => item.isSelected);
+
+    if (
+      jobStatus === JOB_STATUS.COMPLETED &&
+      selectedServices.length === 0
+    ) {
+      return null;
+    }
+
+    const editable =
+      status === 'ACTIVE' &&
+      focusedJob.isAllowDriverEditOnApp;
+
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <TouchableOpacity
+          disabled={!editable}
+          onPress={onAddServices}
+        >
+          <RowWrap>
+            <FlexWrap>
+              <RowWrap>
+                <CircleAddIcon />
+                <SpaceView mLeft={SIZE1} />
+                <InfoText>Additional services</InfoText>
+              </RowWrap>
+            </FlexWrap>
+            {
+              editable &&
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <BlackRightArrowIcon />
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+            }
+          </RowWrap>
+        </TouchableOpacity>
+        <SpaceView mTop={SIZE2} />
+        {
+          selectedServices.length > 0 &&
+          <BinInputWrap
+            color={COLORS.TRANSPARENT1}
+          >
+            {
+              selectedServices.map((item, index) => (
+                <FlexWrap
+                  key={`${item.serviceAdditionalChargeTemplateId}`}
+                >
+                  {
+                    index > 0 &&
+                    <SpaceView mTop={SIZE1} />
+                  }
+                  <RowWrap>
+                    <FlexWrap>
+                      <InfoText>
+                        {item.serviceAdditionalChargeName}
+                      </InfoText>
+                    </FlexWrap>
+                    <SpaceView mLeft={SIZE2} />
+                    <InfoText>
+                      {item.quantity}
+                    </InfoText>
+                  </RowWrap>
+                </FlexWrap>
+              ))
+            }
+          </BinInputWrap>
+        }
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
+
   const renderPayment = ({
     index,
     options,
@@ -1378,52 +1202,6 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderCompleteButton = ({
-    status,
-  }) => (
-    !JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus) &&
-    <View>
-      <SpaceView mTop={SIZE4} />
-      <RowWrap>
-        <FlexWrap flex={1} />
-        <FlexWrap flex={2}>
-          <DefaultButton
-            color={
-              status === 'ACTIVE'
-              ? COLORS.BLUE1 : COLORS.WHITE1
-            }
-            text={
-              status === 'COMPLETED'
-              ? 'Completed' : 'Complete'
-            }
-            onPress={
-              status === 'ACTIVE'
-              ? onNextStep : null
-            }
-            loading={
-              status === 'ACTIVE'
-              ? loading : null
-            }
-            textColor={
-              status === 'NOT_STARTED'
-              ? COLORS.BLUE1
-              : status === 'ACTIVE'
-                ? COLORS.WHITE1
-                : COLORS.BLACK2
-            }
-            bRadius={SIZE4}
-            borderColor={
-              status === 'NOT_STARTED'
-              ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-            }
-          />
-        </FlexWrap>
-        <FlexWrap flex={1} />
-      </RowWrap>
-      <SpaceView mTop={SIZE4} />
-    </View>
-  );
-
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
@@ -1440,7 +1218,7 @@ const JobDetailsScreenView = ({
 
         if (
           idx !== 0 && idx !== 1 &&
-          index === binWeightIndexes.stepIndex
+          index === stepIndexForBinWeight.current
         ) {
           return null;
         }
@@ -1451,9 +1229,7 @@ const JobDetailsScreenView = ({
             key={`${item.jobStepId}`}
           >
             <SpaceView mTop={SIZE2} />
-            <ContentWrap
-              mLeft={0.1} mRight={0.1}
-            >
+            <ContentWrap>
               <RowWrap>
                 <RowWrap>
                   {
@@ -1508,14 +1284,15 @@ const JobDetailsScreenView = ({
                 })
               }
               {
-                renderPayment({
+                renderServices({
                   index,
-                  options,
                   status,
                 })
               }
               {
-                renderCompleteButton({
+                renderPayment({
+                  index,
+                  options,
                   status,
                 })
               }
@@ -1527,44 +1304,38 @@ const JobDetailsScreenView = ({
   };
 
   const renderBinWeight = () => {
-    const { stepIndex, binIndex } = binWeightIndexes;
-
-    if (stepIndex === -1) {
+    if (stepIndexForBinWeight.current === -1) {
       return null;
     }
+
+    const stepIndex = stepIndexForBinWeight.current;
+    const binIndex = stepIndex - 1;
 
     const idx = getBinInOutInfoIndex(stepIndex);
     const options = getBinInfoOptions(stepIndex);
     const status = getBinInfoStatus(stepIndex);
 
-    if (
-      !hasBinWeight ||
-      status === 'NOT_STARTED'
-    ) {
-      return null;
-    }
+    const editable =
+      status === 'ACTIVE' &&
+      focusedJob.isAllowDriverEditOnApp;
 
     return (
       <View
         ref={binWeightRef}
       >
         <SpaceView mTop={SIZE2} />
-        <ContentWrap
-          mLeft={0.1} mRight={0.1}
-        >
+        <ContentWrap>
           <RowWrap>
-            <FlexWrap>
-              <RowWrap>
-                <BinWeightIcon />
-                <SpaceView mLeft={SIZE1} />
-                <TitleText>Bin Weight</TitleText>
-              </RowWrap>
-            </FlexWrap>
+            <RowWrap>
+              <BinWeightIcon />
+              <SpaceView mLeft={SIZE1} />
+              <TitleText>Bin Weight</TitleText>
+            </RowWrap>
             {
               status !== 'COMPLETED' &&
               options.isRequireBinWeight &&
               <RowWrap>
-                <SpaceView mLeft={SIZE2} />
+                <SpaceView mLeft={SIZE1} />
                 {
                   binInfo[binIndex]['binWeight']
                   ? <BlackActiveCircleCheckIcon />
@@ -1573,50 +1344,34 @@ const JobDetailsScreenView = ({
               </RowWrap>
             }
           </RowWrap>
-        </ContentWrap>
-        <BorderView />
-        <ContentWrap
-          mLeft={0.1} mRight={0.1}
-        >
           <SpaceView mTop={SIZE2} />
           <RowWrap>
             <FlexWrap>
-              <RowWrap>
-                <FlexWrap>
-                  <BinInput
-                    underlineColorAndroid={COLORS.TRANSPARENT1}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    placeholder={'BIN WEIGHT'}
-                    value={`${binInfo[binIndex]['binWeight'] || ''}`}
-                    onChangeText={(text) =>
-                      onUpdateBinInfo(binIndex, { binWeight: text })
-                    }
-                    editable={
-                      status === 'ACTIVE' &&
-                      focusedJob.isAllowDriverEditOnApp
-                    }
-                    keyboardType={'numeric'}
-                  />
-                  <SpaceView mTop={SIZE1} />
-                </FlexWrap>
-              </RowWrap>
-              <BorderView
+              <BinInputWrap
                 color={
-                  status === 'ACTIVE' &&
-                  focusedJob.isAllowDriverEditOnApp
-                  ? COLORS.BLUE1 : COLORS.GRAY2
+                  editable
+                  ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                 }
-              />
+              >
+                <BinInput
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  value={`${binInfo[binIndex]['binWeight'] || ''}`}
+                  onChangeText={(text) =>
+                    onUpdateBinInfo(binIndex, { binWeight: text })
+                  }
+                  editable={editable}
+                  keyboardType={'numeric'}
+                />
+              </BinInputWrap>
             </FlexWrap>
             <SpaceView mLeft={SIZE2} />
-            <View>
+            <FlexWrap>
               <InfoText>tons</InfoText>
-              <SpaceView mTop={SIZE1} />
-            </View>
+            </FlexWrap>
           </RowWrap>
           <SpaceView mTop={SIZE2} />
-
           {
             renderWasteType({
               item: binInfo[binIndex],
@@ -1630,11 +1385,6 @@ const JobDetailsScreenView = ({
             renderPhotosAndSign({
               item: focusedJob.steps[stepIndex],
               options,
-              status,
-            })
-          }
-          {
-            renderCompleteButton({
               status,
             })
           }
@@ -1735,73 +1485,54 @@ const JobDetailsScreenView = ({
     );
   };
 
-  const renderHeaderContent = () => {
+  const renderFooter = () => {
     const forToday = getDate() ===
       getDate(focusedJob.jobTimeSpecific || focusedJob.jobDate);
 
+    let buttonColor, buttonText, buttonAction;
+
     if (JOB_STATUS.FOR_ACKNOWLEDGE.includes(jobStatus)) {
-      return (
-        <DefaultButton
-          color={COLORS.BLUE1}
-          text={'Acknowledge'}
-          onPress={onAcknowledge}
-          loading={loading}
-        />
-      );
-    }
-
-    if (currentStep === 0.5) {
-      return (
-        <DefaultButton
-          color={
-            forToday
-            ? COLORS.BLUE1 : COLORS.GRAY3
-          }
-          text={'Start Job'}
-          onPress={
-            forToday ? onNextStep : null
-          }
-          loading={loading}
-        />
-      );
-    }
-
-    if (
-      currentStep === 1 ||
-      currentStep === 2 ||
-      currentStep === 3
-    ) {
-      return (
-        <ScreenText>
-          {`Step ${currentStep}/${totalStep}`}
-        </ScreenText>
-      );
-    }
-
-    if (currentStep === 1.5) {
-      return (
-        <DefaultButton
-          color={COLORS.BLUE1}
-          text={'In Progress'}
-          onPress={onNextStep}
-          loading={loading}
-        />
-      );
-    }
-
-    if (currentStep === 3.5) {
-      return (
-        <DefaultButton
-          color={COLORS.GREEN1}
-          text={'Complete'}
-          onPress={onNextStep}
-          loading={loading}
-        />
-      );
+      buttonColor = COLORS.BLUE1;
+      buttonText = 'Acknowledge';
+      buttonAction = onAcknowledge;
+    } else if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
+      buttonColor = forToday ? COLORS.BLUE1 : COLORS.GRAY3;
+      buttonText = 'Start Job';
+      buttonAction = forToday ? onStart : null;
+    } else if (jobStatus === JOB_STATUS.STARTED) {
+      if (focusedJob.jobTypeName === JOB_TYPE.PULL) {
+        buttonColor = COLORS.PURPLE1;
+        buttonText = 'In Progress';
+        buttonAction = onPull;
+      } else if (focusedJob.steps.length === 3) {
+        buttonColor = COLORS.PURPLE1;
+        buttonText = 'In Progress';
+        buttonAction = onExchange;
+      } else {
+        buttonColor = COLORS.GREEN1;
+        buttonText = 'Complete Job';
+        buttonAction = onComplete;
+      }
+    } else if (jobStatus === JOB_STATUS.IN_PROGRESS) {
+      buttonColor = COLORS.GREEN1;
+      buttonText = 'Complete Job';
+      buttonAction = onComplete;
     }
 
     return (
-      <ScreenText>{jobStatus}</ScreenText>
+      !!buttonText &&
+      <ContentWrap
+        mLeft={SIZE3} mRight={SIZE3}
+      >
+        <CenteredWrap>
+          <DefaultButton
+            color={buttonColor}
+            text={buttonText}
+            onPress={buttonAction}
+            loading={loading}
+          />
+        </CenteredWrap>
+      </ContentWrap>
     );
   };
 
@@ -1809,13 +1540,12 @@ const JobDetailsScreenView = ({
     return (
       <HeaderBar
         centerIcon={
-          renderHeaderContent()
-          // <ScreenText>
-          //   {
-          //     (focusedJob.jobTemplateName || focusedJob.jobTypeName)
-          //     .toUpperCase()
-          //   }
-          // </ScreenText>
+          <ScreenText>
+            {
+              (focusedJob.jobTemplateName || focusedJob.jobTypeName)
+              .toUpperCase()
+            }
+          </ScreenText>
         }
         leftIcon={<Back />}
         rightIcon={
@@ -1849,10 +1579,13 @@ const JobDetailsScreenView = ({
           { renderDriverMessage() }
           { renderBinInfo() }
           { renderBinWeight() }
-          { renderServices() }
           <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
+
+      <ShadowWrap forUp>
+        { renderFooter() }
+      </ShadowWrap>
 
       <ActionSheet
         ref={actionSheetRef}
@@ -1899,7 +1632,6 @@ JobDetailsScreenView.propTypes = {
   onAddWasteTypes: PropTypes.func.isRequired,
   onScanCode: PropTypes.func.isRequired,
   onPrint: PropTypes.func.isRequired,
-  onBinInput: PropTypes.func.isRequired,
 };
 
 JobDetailsScreenView.defaultProps = {

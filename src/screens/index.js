@@ -14,4 +14,3 @@ export { default as AddServicesScreen } from './AddServicesScreen';
 export { default as BluetoothPrinterScreen } from './BluetoothPrinterScreen';
 export { default as PreviewScreen } from './PreviewScreen';
 export { default as AddWasteTypesScreen } from './AddWasteTypesScreen';
-export { default as BinInputScreen } from './BinInputScreen';

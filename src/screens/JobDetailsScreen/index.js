@@ -29,7 +29,6 @@ import {
   SCAN_CODE_SCREEN,
   PREVIEW_SCREEN,
   ADD_WASTE_TYPES_SCREEN,
-  BIN_INPUT_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -446,13 +445,6 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onBinInput = (binIndex, onPress) => {
-    showLightBox(BIN_INPUT_SCREEN, {
-      binIndex, binInfo, setBinInfo,
-      onPress,
-    });
-  };
-
   return (
     <JobDetailsScreenView
       loading={loading}
@@ -486,7 +478,6 @@ const JobDetailsScreen = ({
       onAddWasteTypes={onAddWasteTypes}
       onScanCode={onScanCode}
       onPrint={onPrint}
-      onBinInput={onBinInput}
     />
   );
 };
