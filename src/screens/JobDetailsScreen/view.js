@@ -84,14 +84,10 @@ const {
   DeactiveScanCodeIcon,
   BlackActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  ActivePhotosIcon,
-  DeactivePhotosIcon,
   ActivePhotoAddIcon,
   DeactivePhotoAddIcon,
   ActiveSignAddIcon,
   DeactiveSignAddIcon,
-  ActivePaymentIcon,
-  DeactivePaymentIcon,
   BinIcon,
   DeletePhotoIcon,
   BackPhotoIcon,
@@ -1046,7 +1042,6 @@ const JobDetailsScreenView = ({
           }
         >
           <FlexWrap>
-            <SpaceView mTop={SIZE1} />
             <TouchableOpacity
               disabled={!editable}
               onPress={() => onAddWasteTypes(index, idx)}
@@ -1076,7 +1071,6 @@ const JobDetailsScreenView = ({
                 }
               </RowWrap>
             </TouchableOpacity>
-            <SpaceView mTop={SIZE1} />
           </FlexWrap>
         </BinInputWrap>
         <SpaceView mTop={SIZE2} />
@@ -1197,23 +1191,13 @@ const JobDetailsScreenView = ({
       options.mustTakeSignature
     ) &&
     <View>
-      <SpaceView mTop={SIZE4} />
+      <SpaceView mTop={SIZE2} />
       <RowWrap>
-        <FlexWrap>
-          <RowWrap>
-            {
-              status === 'COMPLETED'
-              ? <DeactivePhotosIcon />
-              : <ActivePhotosIcon />
-            }
-            <SpaceView mLeft={SIZE2} />
-            <InfoText>Photos</InfoText>
-          </RowWrap>
-        </FlexWrap>
+        <LabelText>Photos & Signature</LabelText>
         {
           status !== 'COMPLETED' &&
           <RowWrap>
-            <SpaceView mLeft={SIZE2} />
+            <SpaceView mLeft={SIZE1} />
             {
               (
                 !options.numberofPhotosRequired ||
@@ -1238,7 +1222,7 @@ const JobDetailsScreenView = ({
           </RowWrap>
         }
       </RowWrap>
-      <SpaceView mTop={SIZE4} />
+      <SpaceView mTop={SIZE2} />
       <RowWrap>
         {
           !!options.numberofPhotosRequired &&
@@ -1283,7 +1267,7 @@ const JobDetailsScreenView = ({
             ))
         }
       </RowWrap>
-      <SpaceView mTop={SIZE4} />
+      <SpaceView mTop={SIZE2} />
     </View>
   );
 
@@ -1291,119 +1275,108 @@ const JobDetailsScreenView = ({
     index,
     options,
     status,
-  }) => (
-    options.isRequirePaymentCollection &&
-    <View>
-      <SpaceView mTop={SIZE4} />
-      <RowWrap>
-        <FlexWrap>
-          <RowWrap>
-            {
-              status === 'COMPLETED'
-              ? <DeactivePaymentIcon />
-              : <ActivePaymentIcon />
-            }
-            <SpaceView mLeft={SIZE2} />
-            <InfoText>
-              {
-                'Collect' +
-                (
-                  focusedJob.steps[index].amountToCollect
-                  ? `: $${focusedJob.steps[index].amountToCollect} ` +
-                    focusedJob.jobPaymentTypeList[
-                      focusedJob.steps[index].jobPaymentType
-                    ]
-                  : ''
-                )
-              }
-            </InfoText>
-          </RowWrap>
-        </FlexWrap>
-        {
-          status !== 'COMPLETED' &&
-          <RowWrap>
-            <SpaceView mLeft={SIZE2} />
-            {
-              amountCollected
-              ? <BlackActiveCircleCheckIcon />
-              : <DeactiveCircleCheckIcon />
-            }
-          </RowWrap>
-        }
-      </RowWrap>
-      <SpaceView mTop={SIZE4} />
-      <RowWrap>
-        <View>
-          <InfoText>$</InfoText>
-          <SpaceView mTop={SIZE1} />
-        </View>
-        <SpaceView mLeft={SIZE4} />
-        <FlexWrap>
-          <BinInput
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            placeholder={'Amount Collected'}
-            value={`${amountCollected || ''}`}
-            onChangeText={(text) =>
-              setAmountCollected(text)
-            }
-            editable={
-              status === 'ACTIVE' &&
-              focusedJob.isAllowDriverEditOnApp
-            }
-            keyboardType={'numeric'}
-          />
-          <SpaceView mTop={SIZE1} />
-          <BorderView
-            color={
-              status === 'ACTIVE' &&
-              focusedJob.isAllowDriverEditOnApp
-              ? COLORS.BLUE1 : COLORS.GRAY2
-            }
-          />
-        </FlexWrap>
-        <SpaceView mLeft={SIZE4} />
-        <FlexWrap>
-          <TouchableOpacity
-            onPress={onShowActionSheetForPaymentType}
-            disabled={
-              !(
-                status === 'ACTIVE' &&
-                focusedJob.isAllowDriverEditOnApp
-              )
-            }
-          >
+  }) => {
+    if (!options.isRequirePaymentCollection) {
+      return null;
+    }
+
+    const editable =
+      status === 'ACTIVE' &&
+      focusedJob.isAllowDriverEditOnApp;
+
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <LabelText>Collections</LabelText>
+          {
+            status !== 'COMPLETED' &&
             <RowWrap>
               <SpaceView mLeft={SIZE1} />
-              <FlexWrap>
-                <InfoText>
-                  {focusedJob.jobPaymentTypeList[jobPaymentType]}
-                </InfoText>
-              </FlexWrap>
               {
-                status === 'ACTIVE' &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE1} />
-                  <DropdownArrowIcon />
-                </RowWrap>
+                amountCollected
+                ? <BlackActiveCircleCheckIcon />
+                : <DeactiveCircleCheckIcon />
               }
-              <SpaceView mLeft={SIZE1} />
             </RowWrap>
-          </TouchableOpacity>
-          <SpaceView mTop={SIZE1} />
-          <BorderView
-            color={
-              status === 'ACTIVE' &&
-              focusedJob.isAllowDriverEditOnApp
-              ? COLORS.BLUE1 : COLORS.GRAY2
-            }
-          />
-        </FlexWrap>
-      </RowWrap>
-      <SpaceView mTop={SIZE4} />
-    </View>
-  );
+          }
+        </RowWrap>
+        {
+          !!focusedJob.steps[index].amountToCollect &&
+          <View>
+            <SpaceView mTop={SIZE1} />
+            <InfoText>
+              {
+                `$${focusedJob.steps[index].amountToCollect} ` +
+                focusedJob.jobPaymentTypeList[
+                  focusedJob.steps[index].jobPaymentType
+                ]
+              }
+            </InfoText>
+          </View>
+        }
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <FlexWrap flex={3}>
+            <BinInputWrap
+              color={
+                editable
+                ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+              }
+            >
+              <RowWrap>
+                <InfoText>$</InfoText>
+                <SpaceView mLeft={SIZE2} />
+                <BinInput
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  value={`${amountCollected || ''}`}
+                  onChangeText={(text) =>
+                    setAmountCollected(text)
+                  }
+                  editable={editable}
+                  keyboardType={'numeric'}
+                />
+              </RowWrap>
+            </BinInputWrap>
+          </FlexWrap>
+          <SpaceView mLeft={SIZE2} />
+          <FlexWrap flex={2}>
+            <BinInputWrap
+              color={
+                editable
+                ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+              }
+            >
+              <FlexWrap>
+                <TouchableOpacity
+                  onPress={onShowActionSheetForPaymentType}
+                  disabled={!editable}
+                >
+                  <RowWrap>
+                    <FlexWrap>
+                      <InfoText>
+                        {focusedJob.jobPaymentTypeList[jobPaymentType]}
+                      </InfoText>
+                    </FlexWrap>
+                    {
+                      status === 'ACTIVE' &&
+                      <RowWrap>
+                        <SpaceView mLeft={SIZE1} />
+                        <DropdownArrowIcon />
+                      </RowWrap>
+                    }
+                  </RowWrap>
+                </TouchableOpacity>
+              </FlexWrap>
+            </BinInputWrap>
+          </FlexWrap>
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
 
   const renderCompleteButton = ({
     status,

@@ -52,14 +52,10 @@ import DeactivePrintIcon from 'src/assets/svgs/icon-print-deactive.svg';
 import ShareIcon from 'src/assets/svgs/icon-share.svg';
 import CloseIcon from 'src/assets/svgs/icon-close.svg';
 import CheckIcon from 'src/assets/svgs/icon-check.svg';
-import ActivePhotosIcon from 'src/assets/svgs/icon-photos-active.svg';
-import DeactivePhotosIcon from 'src/assets/svgs/icon-photos-deactive.svg';
 import ActivePhotoAddIcon from 'src/assets/svgs/icon-add-photo-active.svg';
 import DeactivePhotoAddIcon from 'src/assets/svgs/icon-add-photo-deactive.svg';
 import ActiveSignAddIcon from 'src/assets/svgs/icon-add-sign-active.svg';
 import DeactiveSignAddIcon from 'src/assets/svgs/icon-add-sign-deactive.svg';
-import ActivePaymentIcon from 'src/assets/svgs/icon-payment-active.svg';
-import DeactivePaymentIcon from 'src/assets/svgs/icon-payment-deactive.svg';
 import BinIcon from 'src/assets/svgs/icon-bin.svg';
 import DeletePhotoIcon from 'src/assets/svgs/icon-photo-delete.svg';
 import BackPhotoIcon from 'src/assets/svgs/icon-photo-back.svg';
@@ -123,14 +119,10 @@ export default {
   ShareIcon,
   CloseIcon,
   CheckIcon,
-  ActivePhotosIcon,
-  DeactivePhotosIcon,
   ActivePhotoAddIcon,
   DeactivePhotoAddIcon,
   ActiveSignAddIcon,
   DeactiveSignAddIcon,
-  ActivePaymentIcon,
-  DeactivePaymentIcon,
   BinIcon,
   DeletePhotoIcon,
   BackPhotoIcon,

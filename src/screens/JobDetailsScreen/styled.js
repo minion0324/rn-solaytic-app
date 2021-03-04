@@ -5,6 +5,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE6,
+  SIZE8,
   FONT,
 } from 'src/constants';
 
@@ -26,7 +27,9 @@ const BinInput = styled.TextInput`
 `;
 
 const BinInputWrap = styled.View`
+  min-height: ${SIZE8}px;
   flex-direction: row;
+  align-items: center;
   justify-content: center;
   padding-vertical: 3px;
   padding-horizontal: ${SIZE2}px;
