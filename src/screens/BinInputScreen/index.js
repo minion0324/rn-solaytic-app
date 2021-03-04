@@ -51,7 +51,7 @@ import {
 } from './styled';
 
 const {
-  ScanCodeIcon,
+  ActiveScanCodeIcon,
   GreenActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
 } = SVGS;
@@ -131,7 +131,7 @@ const BinInputScreen = ({
         <RowWrap>
           <SpaceView mLeft={SIZE3} />
           <TouchableOpacity onPress={onScanCode}>
-            <ScanCodeIcon />
+            <ActiveScanCodeIcon />
           </TouchableOpacity>
           {
             <RowWrap>

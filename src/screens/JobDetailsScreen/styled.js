@@ -25,6 +25,17 @@ const BinInput = styled.TextInput`
   color: ${COLORS.BLACK2};
 `;
 
+const BinInputWrap = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  padding-vertical: 3px;
+  padding-horizontal: ${SIZE2}px;
+  border-radius: ${SIZE1}px;
+  border-width: 1px;
+  border-color: ${props => props.color};
+  background-color: ${COLORS.WHITE5};
+`;
+
 const PhotoWrap = styled.View`
   width: 100%;
   align-items: center;
@@ -56,6 +67,7 @@ const PhotoModalButtonsWrap = styled.View`
 export {
   DriverMessageBadge,
   BinInput,
+  BinInputWrap,
   PhotoWrap,
   SignWrap,
   PhotoModalButtonsWrap,

@@ -33,7 +33,8 @@ import BinInIcon from 'src/assets/svgs/icon-in-bin.svg';
 import BinOutIcon from 'src/assets/svgs/icon-out-bin.svg';
 import AddressIcon from 'src/assets/svgs/icon-address.svg';
 import SendIcon from 'src/assets/svgs/icon-send.svg';
-import ScanCodeIcon from 'src/assets/svgs/icon-code-scan.svg';
+import ActiveScanCodeIcon from 'src/assets/svgs/icon-code-scan-active.svg';
+import DeactiveScanCodeIcon from 'src/assets/svgs/icon-code-scan-deactive.svg';
 import Phone1Icon from 'src/assets/svgs/icon-phone1.svg';
 import Phone2Icon from 'src/assets/svgs/icon-phone2.svg';
 import MapIcon from 'src/assets/svgs/icon-map.svg';
@@ -103,7 +104,8 @@ export default {
   BinOutIcon,
   AddressIcon,
   SendIcon,
-  ScanCodeIcon,
+  ActiveScanCodeIcon,
+  DeactiveScanCodeIcon,
   Phone1Icon,
   Phone2Icon,
   MapIcon,

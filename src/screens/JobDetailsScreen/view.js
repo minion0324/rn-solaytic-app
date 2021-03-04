@@ -66,6 +66,7 @@ import {
 import {
   DriverMessageBadge,
   BinInput,
+  BinInputWrap,
   PhotoWrap,
   SignWrap,
   PhotoModalButtonsWrap,
@@ -79,7 +80,8 @@ const {
   BinOutIcon,
   ActiveServiceIcon,
   DeactiveServiceIcon,
-  ScanCodeIcon,
+  ActiveScanCodeIcon,
+  DeactiveScanCodeIcon,
   BlackActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
   ActivePhotosIcon,
@@ -907,106 +909,105 @@ const JobDetailsScreenView = ({
     index,
     options,
     status,
-  }) => (
-    <View>
-      <SpaceView mTop={SIZE2} />
-      <RowWrap>
-        <FlexWrap>
+  }) => {
+    const enabled =
+      status === 'ACTIVE' &&
+      focusedJob.isAllowDriverEditOnApp;
+
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
           <LabelText>Bin ID</LabelText>
+          {
+            options.isRequireBinNumberToEnd &&
+            <RowWrap>
+              <SpaceView mLeft={SIZE1} />
+              {
+                item['binNumber']
+                ? <BlackActiveCircleCheckIcon />
+                : <DeactiveCircleCheckIcon />
+              }
+            </RowWrap>
+          }
+        </RowWrap>
+        <SpaceView mTop={SIZE1} />
+        <BinInputWrap
+          color={
+            enabled
+            ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+          }
+        >
           <BinInput
             underlineColorAndroid={COLORS.TRANSPARENT1}
             autoCapitalize={'none'}
             autoCorrect={false}
-            placeholder={'BIN NUMBER'}
             value={`${item['binNumber'] || ''}`}
             onChangeText={(text) =>
               onUpdateBinInfo(index, { binNumber: text })
             }
-            editable={
-              status === 'ACTIVE' &&
-              focusedJob.isAllowDriverEditOnApp
-            }
+            editable={enabled}
           />
-          <SpaceView mTop={SIZE1} />
-        </FlexWrap>
-        {
-          status !== 'COMPLETED' &&
-          <RowWrap>
-            <SpaceView mLeft={SIZE3} />
-            <TouchableOpacity
-              disabled={
-                !(
-                  status === 'ACTIVE' &&
-                  focusedJob.isAllowDriverEditOnApp
-                )
-              }
-              onPress={() => onScanCode(index)}
-            >
-              <ScanCodeIcon />
-            </TouchableOpacity>
-            {
-              options.isRequireBinNumberToEnd &&
-              <RowWrap>
-                <SpaceView mLeft={SIZE3} />
+          {
+            status !== 'COMPLETED' &&
+            <RowWrap>
+              <SpaceView mLeft={SIZE3} />
+              <TouchableOpacity
+                disabled={!enabled}
+                onPress={() => onScanCode(index)}
+              >
                 {
-                  item['binNumber']
-                  ? <BlackActiveCircleCheckIcon />
-                  : <DeactiveCircleCheckIcon />
+                  enabled
+                  ? <ActiveScanCodeIcon />
+                  : <DeactiveScanCodeIcon />
                 }
-              </RowWrap>
-            }
-          </RowWrap>
-        }
-      </RowWrap>
-      <BorderView
-        color={
-          status === 'ACTIVE' &&
-          focusedJob.isAllowDriverEditOnApp
-          ? COLORS.BLUE1 : COLORS.GRAY2
-        }
-      />
-      <SpaceView mTop={SIZE2} />
-    </View>
-  );
+              </TouchableOpacity>
+            </RowWrap>
+          }
+        </BinInputWrap>
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
 
   const renderBinType = ({
     item,
     index,
     idx,
     status,
-  }) => (
-      item['binType'] &&
-      item['binType']['binTypeName'] &&
+  }) => {
+    if (
+      !item['binType'] ||
+      !item['binType']['binTypeName']
+    ) {
+      return null;
+    }
+
+    const enabled =
+      status === 'ACTIVE' &&
+      focusedJob.isAllowDriverEditOnApp &&
+      (
+        idx === 1 &&
+        focusedJob.isEditableBinTypeOut
+      );
+
+    return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap>
-            <LabelText>Bin Type</LabelText>
-            <TouchableOpacity
-              disabled={
-                !(
-                  status === 'ACTIVE' &&
-                  focusedJob.isAllowDriverEditOnApp &&
-                  (
-                    idx === 1 &&
-                    focusedJob.isEditableBinTypeOut
-                  )
-                )
-              }
-              onPress={() => onShowActionSheetForBinType(index)}
-            >
-              <InfoText>
-                {
-                  item['binType'] &&
-                  item['binType']['binTypeName']
-                }
-              </InfoText>
-            </TouchableOpacity>
-          </FlexWrap>
-        </RowWrap>
+        <LabelText>Bin Type</LabelText>
+        <SpaceView mTop={SIZE1} />
+        <TouchableOpacity
+          disabled={!enabled}
+          onPress={() => onShowActionSheetForBinType(index)}
+        >
+          <InfoText>
+            {item['binType']['binTypeName']}
+          </InfoText>
+        </TouchableOpacity>
         <SpaceView mTop={SIZE2} />
       </View>
-  );
+    );
+  };
 
   const renderWasteType = ({
     item,
@@ -1014,79 +1015,74 @@ const JobDetailsScreenView = ({
     idx,
     options,
     status,
-  }) => (
-    options.isRequireReviewWasteType &&
-    <View>
-      <SpaceView mTop={SIZE2} />
-      <RowWrap>
-        <FlexWrap>
-          <LabelText>
-            {
-              idx === 1
-              ? 'For Waste Type'
-              : 'With Waste Type'
-            }
-          </LabelText>
-          <TouchableOpacity
-            disabled={
-              !(
-                status === 'ACTIVE' &&
-                focusedJob.isAllowDriverEditOnApp &&
-                (
-                  (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
-                  (idx === 1 && focusedJob.isEditableWasteTypeOut)
-                )
-              )
-            }
-            onPress={() => onAddWasteTypes(index, idx)}
-          >
-            {
-              item['wasteTypes'].map((el, i) => (
-                <View key={el.wasteTypeId}>
+  }) => {
+    if (!options.isRequireReviewWasteType) {
+      return null;
+    }
+
+    const editable =
+      status === 'ACTIVE' &&
+      focusedJob.isAllowDriverEditOnApp &&
+      (
+        (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
+        (idx === 1 && focusedJob.isEditableWasteTypeOut)
+      );
+
+    return (
+      <View>
+        <SpaceView mTop={SIZE2} />
+        <LabelText>
+          {
+            idx === 1
+            ? 'For Waste Type'
+            : 'With Waste Type'
+          }
+        </LabelText>
+        <SpaceView mTop={SIZE1} />
+        <BinInputWrap
+          color={
+            editable
+            ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+          }
+        >
+          <FlexWrap>
+            <SpaceView mTop={SIZE1} />
+            <TouchableOpacity
+              disabled={!editable}
+              onPress={() => onAddWasteTypes(index, idx)}
+            >
+              <RowWrap>
+                <FlexWrap>
                   {
-                    i > 0 &&
-                    <SpaceView mTop={SIZE1} />
+                    item['wasteTypes'].map((el, i) => (
+                      <View key={el.wasteTypeId}>
+                        {
+                          i > 0 &&
+                          <SpaceView mTop={SIZE1} />
+                        }
+                        <InfoText>
+                          {el.wasteType.wasteTypeName || ''}
+                        </InfoText>
+                      </View>
+                    ))
                   }
-                  <InfoText>
-                    {el.wasteType.wasteTypeName || ''}
-                  </InfoText>
-                </View>
-              ))
-            }
-          </TouchableOpacity>
-        </FlexWrap>
-        {
-          status === 'ACTIVE' &&
-          focusedJob.isAllowDriverEditOnApp &&
-          (
-            (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
-            (idx === 1 && focusedJob.isEditableWasteTypeOut)
-          ) &&
-          <TouchableOpacity
-            onPress={() => onAddWasteTypes(index, idx)}
-          >
-            <RowWrap>
-              <SpaceView mLeft={SIZE2} />
-              <BlackRightArrowIcon />
-            </RowWrap>
-          </TouchableOpacity>
-        }
-      </RowWrap>
-      <SpaceView mTop={SIZE1} />
-      <BorderView
-        color={
-          status === 'ACTIVE' &&
-          focusedJob.isAllowDriverEditOnApp &&
-          (
-            (idx !== 1 && focusedJob.isEditableWasteTypeIn) ||
-            (idx === 1 && focusedJob.isEditableWasteTypeOut)
-          )
-          ? COLORS.BLUE1 : COLORS.GRAY2
-        }
-      />
-      <SpaceView mTop={SIZE2} />
-    </View>
-  );
+                </FlexWrap>
+                {
+                  editable &&
+                  <RowWrap>
+                    <SpaceView mLeft={SIZE2} />
+                    <BlackRightArrowIcon />
+                  </RowWrap>
+                }
+              </RowWrap>
+            </TouchableOpacity>
+            <SpaceView mTop={SIZE1} />
+          </FlexWrap>
+        </BinInputWrap>
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
 
   const renderPhoto = ({
     item,
@@ -1506,11 +1502,6 @@ const JobDetailsScreenView = ({
                   }
                 </TitleText>
               </RowWrap>
-            </ContentWrap>
-            <BorderView />
-            <ContentWrap
-              mLeft={0.1} mRight={0.1}
-            >
               {
                 renderBinNumber({
                   item,
@@ -1709,6 +1700,7 @@ const JobDetailsScreenView = ({
               <RowWrap>
                 <SpaceView mLeft={SIZE2} />
                 <BlackRightArrowIcon />
+                <SpaceView mLeft={SIZE2} />
               </RowWrap>
             }
           </RowWrap>
@@ -1761,6 +1753,7 @@ const JobDetailsScreenView = ({
               <RowWrap>
                 <SpaceView mLeft={SIZE2} />
                 <BlackRightArrowIcon />
+                <SpaceView mLeft={SIZE2} />
               </RowWrap>
             }
           </RowWrap>
