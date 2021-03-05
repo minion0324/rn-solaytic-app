@@ -1637,8 +1637,11 @@ const JobDetailsScreenView = ({
         centerIcon={
           <ScreenText>
             {
-              (focusedJob.jobTemplateName || focusedJob.jobTypeName)
-              .toUpperCase()
+              (
+                isCompletedJobState
+                ? `Job ${jobStatus}`
+                : focusedJob.jobTemplateName || focusedJob.jobTypeName
+              ).toUpperCase()
             }
           </ScreenText>
         }
