@@ -26,6 +26,9 @@ import {
   popScreen,
   BLUETOOTH_PRINTER_SCREEN,
 } from 'src/navigation';
+import {
+  getCustomerSiteAddress,
+} from 'src/utils';
 
 import {
   Container,
@@ -457,7 +460,11 @@ const PreviewScreen = ({
         </InfoText>
         <SpaceView mTop={SIZE2} />
         <InfoText>
-          {focusedJob.steps[index].address}
+          {
+            focusedJob.steps[index].site
+            ? getCustomerSiteAddress(focusedJob.steps[index].site)
+            : focusedJob.steps[index].address
+          }
         </InfoText>
         <SpaceView mTop={SIZE2} />
         <SpaceView mTop={SIZE4} />

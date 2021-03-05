@@ -85,12 +85,6 @@ const AddressScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
-    let address = item.address;
-
-    if (index === customerSiteIndex) {
-      address = getCustomerSiteAddress(item.site);
-    }
-
     return (
       <View>
         <SpaceView mTop={SIZE2} />
@@ -115,7 +109,12 @@ const AddressScreen = ({
                 </View>
               }
               <TitleText>
-                {address}
+                {
+                  item.site &&
+                  index === customerSiteIndex
+                  ? getCustomerSiteAddress(item.site)
+                  : item.address
+                }
               </TitleText>
               {
                 isDisabled
