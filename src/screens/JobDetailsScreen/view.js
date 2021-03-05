@@ -1441,7 +1441,7 @@ const JobDetailsScreenView = ({
               <InfoText numberOfLines={2}>
                 {
                   focusedJob.messages.length > 0
-                  ? focusedJob.messages[0].messages
+                  ? focusedJob.messages[0].message
                   : ' --- '
                 }
               </InfoText>
