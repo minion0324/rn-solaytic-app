@@ -10,6 +10,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE20,
   FONT,
   JOB_STATUS,
   JOB_TYPE,
@@ -26,6 +27,10 @@ const {
   MessageIcon,
   CircleCurrencyIcon,
 } = SVGS;
+
+const Container = styled.View`
+  min-height: ${SIZE20}px;
+`;
 
 const StatusText = styled.Text`
   font-size: ${FONT(12)}px;
@@ -146,7 +151,7 @@ const JobCard = ({
   }, [jobTypeName]);
 
   return (
-    <View>
+    <Container>
       <View>
         <SpaceView mTop={SIZE2} />
         <RowWrap>
@@ -245,7 +250,7 @@ const JobCard = ({
           <SpaceView mTop={SIZE2} />
         </View>
       }
-    </View>
+    </Container>
   );
 };
 
