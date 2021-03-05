@@ -1464,33 +1464,45 @@ const JobDetailsScreenView = ({
             }
           </RowWrap>
           <SpaceView mTop={SIZE2} />
-          <RowWrap>
-            <FlexWrap>
-              <BinInputWrap
-                color={
-                  editable
-                  ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-                }
-                effect={!isCompletedJobState}
-              >
-                <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  value={`${binInfo[binIndex]['binWeight'] || ''}`}
-                  onChangeText={(text) =>
-                    onUpdateBinInfo(binIndex, { binWeight: text })
-                  }
-                  editable={editable}
-                  keyboardType={'numeric'}
-                />
-              </BinInputWrap>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-            <FlexWrap>
-              <InfoText>tons</InfoText>
-            </FlexWrap>
-          </RowWrap>
+          {
+            isCompletedJobState
+            ? <RowWrap>
+                <FlexWrap>
+                  <LabelText>Nett weight</LabelText>
+                  <SpaceView mTop={SIZE1} />
+                  <InfoText>
+                    {binInfo[binIndex]['binWeight'] + ' tons'}
+                  </InfoText>
+                </FlexWrap>
+              </RowWrap>
+            : <RowWrap>
+                <FlexWrap>
+                  <BinInputWrap
+                    color={
+                      editable
+                      ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                    }
+                    effect={!isCompletedJobState}
+                  >
+                    <BinInput
+                      underlineColorAndroid={COLORS.TRANSPARENT1}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      value={`${binInfo[binIndex]['binWeight'] || ''}`}
+                      onChangeText={(text) =>
+                        onUpdateBinInfo(binIndex, { binWeight: text })
+                      }
+                      editable={editable}
+                      keyboardType={'numeric'}
+                    />
+                  </BinInputWrap>
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+                <FlexWrap>
+                  <InfoText>tons</InfoText>
+                </FlexWrap>
+              </RowWrap>
+          }
           <SpaceView mTop={SIZE2} />
           {
             renderWasteType({
