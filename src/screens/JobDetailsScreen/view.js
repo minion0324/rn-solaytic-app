@@ -1560,9 +1560,11 @@ const JobDetailsScreenView = ({
         <DefaultButton
           color={buttonColor}
           text={buttonText}
-          onPress={() => {
-            buttonAction && onValidate(buttonAction);
-          }}
+          onPress={
+            buttonAction
+            ? () => onValidate(buttonAction)
+            : null
+          }
           loading={loading}
           mTop={-SIZE1} mBottom={-SIZE1}
         />
