@@ -10,6 +10,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE8,
   SIZE20,
   FONT,
   JOB_STATUS,
@@ -41,7 +42,7 @@ const StatusText = styled.Text`
 `;
 
 const InfoWrap = styled.View`
-  height: 100%;
+  height: ${SIZE8}px;
   align-items: center;
   justify-content: center;
   border-right-width: 1px;
