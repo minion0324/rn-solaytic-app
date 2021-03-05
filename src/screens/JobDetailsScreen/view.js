@@ -83,6 +83,7 @@ const {
   DeactiveScanCodeIcon,
   BlackActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
+  ActivePrintIcon,
   DeactivePrintIcon,
   ActivePhotoAddIcon,
   DeactivePhotoAddIcon,
@@ -166,6 +167,37 @@ const JobDetailsScreenView = ({
     ? false
     : focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
   );
+
+  const isCompletedJobState = useMemo(() => {
+    if (
+      jobStatus === JOB_STATUS.COMPLETED ||
+      jobStatus === JOB_STATUS.FAILED
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [
+    jobStatus,
+    focusedJob.jobTypeName,
+  ]);
+
+  const isForCompleteJobState = useMemo(() => {
+    if (
+      jobStatus === JOB_STATUS.IN_PROGRESS ||
+      (
+        jobStatus === JOB_STATUS.STARTED &&
+        focusedJob.jobTypeName === JOB_TYPE.PUT
+      )
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [
+    jobStatus,
+    focusedJob.jobTypeName,
+  ]);
 
   const currentStepIndex = useMemo(() => {
     switch (focusedJob.jobTypeName) {
@@ -1209,11 +1241,7 @@ const JobDetailsScreenView = ({
     if (
       stepIndexForOthers.current !== index ||
       !(
-        jobStatus === JOB_STATUS.IN_PROGRESS ||
-        (
-          jobStatus === JOB_STATUS.STARTED &&
-          focusedJob.jobTypeName === JOB_TYPE.PUT
-        )
+        isForCompleteJobState || isCompletedJobState
       )
     ) {
       return null;
@@ -1226,15 +1254,29 @@ const JobDetailsScreenView = ({
         />
         <CenteredWrap>
           <PrintReceiptButton
-            color={COLORS.GRAY3}
+            color={
+              isCompletedJobState
+              ? COLORS.BLUE1 : COLORS.BLACK2
+            }
             onPress={() => onPrint(
               getBinInOutInfoIndex,
               getCustomerSiteIndex,
             )}
           >
-            <DeactivePrintIcon />
+            {
+              isCompletedJobState
+              ? <ActivePrintIcon />
+              : <DeactivePrintIcon />
+            }
             <SpaceView mLeft={SIZE1} />
-            <InfoText>PRINT RECEIPT</InfoText>
+            <InfoText
+              color={
+                isCompletedJobState
+                ? COLORS.BLUE1 : COLORS.BLACK2
+              }
+            >
+              PRINT RECEIPT
+            </InfoText>
           </PrintReceiptButton>
         </CenteredWrap>
         <SpaceView mTop={SIZE3} />
