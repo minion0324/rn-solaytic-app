@@ -1173,79 +1173,95 @@ const JobDetailsScreenView = ({
           }
         </RowWrap>
         {
-          !!focusedJob.steps[index].amountToCollect &&
-          <View>
-            <SpaceView mTop={SIZE1} />
-            <InfoText>
-              {
-                `$${focusedJob.steps[index].amountToCollect} ` +
-                focusedJob.jobPaymentTypeList[
-                  focusedJob.steps[index].jobPaymentType
-                ]
-              }
-            </InfoText>
-          </View>
+          isCompletedJobState
+          ? !!amountCollected &&
+            <View>
+              <SpaceView mTop={SIZE1} />
+              <InfoText>
+                {
+                  `$${amountCollected} ` +
+                  focusedJob.jobPaymentTypeList[
+                    focusedJob.steps[index].jobPaymentType
+                  ]
+                }
+              </InfoText>
+            </View>
+          : !!focusedJob.steps[index].amountToCollect &&
+            <View>
+              <SpaceView mTop={SIZE1} />
+              <InfoText>
+                {
+                  `$${focusedJob.steps[index].amountToCollect} ` +
+                  focusedJob.jobPaymentTypeList[jobPaymentType]
+                }
+              </InfoText>
+            </View>
         }
-        <SpaceView mTop={SIZE2} />
-        <RowWrap>
-          <FlexWrap flex={3}>
-            <BinInputWrap
-              color={
-                editable
-                ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-              }
-              effect={!isCompletedJobState}
-            >
-              <RowWrap>
-                <InfoText>$</InfoText>
-                <SpaceView mLeft={SIZE2} />
-                <BinInput
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  value={`${amountCollected || ''}`}
-                  onChangeText={(text) =>
-                    setAmountCollected(text)
+        {
+          !isCompletedJobState &&
+          <View>
+            <SpaceView mTop={SIZE2} />
+            <RowWrap>
+              <FlexWrap flex={3}>
+                <BinInputWrap
+                  color={
+                    editable
+                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                   }
-                  editable={editable}
-                  keyboardType={'numeric'}
-                />
-              </RowWrap>
-            </BinInputWrap>
-          </FlexWrap>
-          <SpaceView mLeft={SIZE2} />
-          <FlexWrap flex={2}>
-            <BinInputWrap
-              color={
-                editable
-                ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-              }
-              effect={!isCompletedJobState}
-            >
-              <FlexWrap>
-                <TouchableOpacity
-                  onPress={onShowActionSheetForPaymentType}
-                  disabled={!editable}
+                  effect={!isCompletedJobState}
                 >
                   <RowWrap>
-                    <FlexWrap>
-                      <InfoText>
-                        {focusedJob.jobPaymentTypeList[jobPaymentType]}
-                      </InfoText>
-                    </FlexWrap>
-                    {
-                      status === 'ACTIVE' &&
-                      <RowWrap>
-                        <SpaceView mLeft={SIZE1} />
-                        <DropdownArrowIcon />
-                      </RowWrap>
-                    }
+                    <InfoText>$</InfoText>
+                    <SpaceView mLeft={SIZE2} />
+                    <BinInput
+                      underlineColorAndroid={COLORS.TRANSPARENT1}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      value={`${amountCollected || ''}`}
+                      onChangeText={(text) =>
+                        setAmountCollected(text)
+                      }
+                      editable={editable}
+                      keyboardType={'numeric'}
+                    />
                   </RowWrap>
-                </TouchableOpacity>
+                </BinInputWrap>
               </FlexWrap>
-            </BinInputWrap>
-          </FlexWrap>
-        </RowWrap>
+              <SpaceView mLeft={SIZE2} />
+              <FlexWrap flex={2}>
+                <BinInputWrap
+                  color={
+                    editable
+                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                  }
+                  effect={!isCompletedJobState}
+                >
+                  <FlexWrap>
+                    <TouchableOpacity
+                      onPress={onShowActionSheetForPaymentType}
+                      disabled={!editable}
+                    >
+                      <RowWrap>
+                        <FlexWrap>
+                          <InfoText>
+                            {focusedJob.jobPaymentTypeList[jobPaymentType]}
+                          </InfoText>
+                        </FlexWrap>
+                        {
+                          status === 'ACTIVE' &&
+                          <RowWrap>
+                            <SpaceView mLeft={SIZE1} />
+                            <DropdownArrowIcon />
+                          </RowWrap>
+                        }
+                      </RowWrap>
+                    </TouchableOpacity>
+                  </FlexWrap>
+                </BinInputWrap>
+              </FlexWrap>
+            </RowWrap>
+          </View>
+        }
         <SpaceView mTop={SIZE2} />
       </View>
     );
