@@ -168,6 +168,25 @@ const JobDetailsScreenView = ({
     : focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
   );
 
+  const jobDateList = useRef(
+    focusedJob.jobTypeName === JOB_TYPE.PULL ||
+    focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+    ? [
+        [
+          { label: 'Started', field: 'startedDate' },
+          { label: 'In Progress', field: 'inProgressDate' },
+        ],
+        [{ label: 'Completed', field: 'completedDate' }],
+      ]
+    : focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
+      ? [
+          [{ label: 'Started', field: 'startedDate' }],
+          [{ label: 'In Progress', field: 'inProgressDate' }],
+          [{ label: 'Completed', field: 'completedDate' }],
+        ]
+      : null
+  );
+
   const isCompletedJobState = useMemo(() => {
     if (
       jobStatus === JOB_STATUS.COMPLETED ||
@@ -688,55 +707,83 @@ const JobDetailsScreenView = ({
       <View>
         <SpaceView mTop={SIZE2} />
         <RowWrap>
-          <LabelText>Bin ID</LabelText>
           {
-            status !== 'COMPLETED' &&
-            options.isRequireBinNumberToEnd &&
-            <RowWrap>
-              <SpaceView mLeft={SIZE1} />
-              {
-                item['binNumber']
-                ? <BlackActiveCircleCheckIcon />
-                : <DeactiveCircleCheckIcon />
-              }
-            </RowWrap>
+            !isCompletedJobState
+            ? <FlexWrap>
+                <RowWrap>
+                  <LabelText>Bin ID</LabelText>
+                  {
+                    status !== 'COMPLETED' &&
+                    options.isRequireBinNumberToEnd &&
+                    <RowWrap>
+                      <SpaceView mLeft={SIZE1} />
+                      {
+                        item['binNumber']
+                        ? <BlackActiveCircleCheckIcon />
+                        : <DeactiveCircleCheckIcon />
+                      }
+                    </RowWrap>
+                  }
+                </RowWrap>
+                <SpaceView mTop={SIZE1} />
+                <BinInputWrap
+                  color={
+                    enabled
+                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                  }
+                  effect={!isCompletedJobState}
+                >
+                  <BinInput
+                    underlineColorAndroid={COLORS.TRANSPARENT1}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    value={`${item['binNumber'] || ''}`}
+                    onChangeText={(text) =>
+                      onUpdateBinInfo(index, { binNumber: text })
+                    }
+                    editable={enabled}
+                  />
+                  {
+                    status !== 'COMPLETED' &&
+                    <RowWrap>
+                      <SpaceView mLeft={SIZE3} />
+                      <TouchableOpacity
+                        disabled={!enabled}
+                        onPress={() => onScanCode(index)}
+                      >
+                        {
+                          enabled
+                          ? <ActiveScanCodeIcon />
+                          : <DeactiveScanCodeIcon />
+                        }
+                      </TouchableOpacity>
+                    </RowWrap>
+                  }
+                </BinInputWrap>
+              </FlexWrap>
+            : [
+                <FlexWrap key={'Bin-Id'}>
+                  <LabelText>Bin ID</LabelText>
+                  <SpaceView mTop={SIZE1} />
+                  <InfoText>
+                    {item['binNumber'] || ' --- '}
+                  </InfoText>
+                </FlexWrap>,
+
+                jobDateList.current &&
+                jobDateList.current[index].length !== 0 &&
+                jobDateList.current[index].map((el) => (
+                  <FlexWrap key={el.label}>
+                    <LabelText>{el.label}</LabelText>
+                    <SpaceView mTop={SIZE1} />
+                    <InfoText>
+                      {moment(focusedJob[el.filed]).format('hh:mm A')}
+                    </InfoText>
+                  </FlexWrap>
+                ))
+              ]
           }
         </RowWrap>
-        <SpaceView mTop={SIZE1} />
-        <BinInputWrap
-          color={
-            enabled
-            ? COLORS.BLUE1 : COLORS.TRANSPARENT1
-          }
-          effect={!isCompletedJobState}
-        >
-          <BinInput
-            underlineColorAndroid={COLORS.TRANSPARENT1}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            value={`${item['binNumber'] || ''}`}
-            onChangeText={(text) =>
-              onUpdateBinInfo(index, { binNumber: text })
-            }
-            editable={enabled}
-          />
-          {
-            status !== 'COMPLETED' &&
-            <RowWrap>
-              <SpaceView mLeft={SIZE3} />
-              <TouchableOpacity
-                disabled={!enabled}
-                onPress={() => onScanCode(index)}
-              >
-                {
-                  enabled
-                  ? <ActiveScanCodeIcon />
-                  : <DeactiveScanCodeIcon />
-                }
-              </TouchableOpacity>
-            </RowWrap>
-          }
-        </BinInputWrap>
         <SpaceView mTop={SIZE2} />
       </View>
     );
@@ -1474,6 +1521,19 @@ const JobDetailsScreenView = ({
                     {binInfo[binIndex]['binWeight'] + ' tons'}
                   </InfoText>
                 </FlexWrap>
+                {
+                  jobDateList.current &&
+                  jobDateList.current[stepIndex].length !== 0 &&
+                  jobDateList.current[stepIndex].map((el) => (
+                    <FlexWrap key={el.label}>
+                      <LabelText>{el.label}</LabelText>
+                      <SpaceView mTop={SIZE1} />
+                      <InfoText>
+                        {moment(focusedJob[el.filed]).format('hh:mm A')}
+                      </InfoText>
+                    </FlexWrap>
+                  ))
+                }
               </RowWrap>
             : <RowWrap>
                 <FlexWrap>
