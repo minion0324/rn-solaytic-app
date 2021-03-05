@@ -11,6 +11,7 @@ import {
   SIZE1,
   SIZE2,
   SIZE8,
+  SIZE6,
   SIZE20,
   FONT,
   JOB_STATUS,
@@ -30,7 +31,7 @@ const {
 } = SVGS;
 
 const Container = styled.View`
-  min-height: ${SIZE20}px;
+  height: ${props => props.height}px;
 `;
 
 const StatusText = styled.Text`
@@ -152,7 +153,12 @@ const JobCard = ({
   }, [jobTypeName]);
 
   return (
-    <Container>
+    <Container
+      height={
+        instructionToDrivers
+        ? SIZE20 + SIZE6 : SIZE20
+      }
+    >
       <View>
         <SpaceView mTop={SIZE2} />
         <RowWrap>
