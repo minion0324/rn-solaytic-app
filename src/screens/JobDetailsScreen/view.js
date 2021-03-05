@@ -1072,28 +1072,39 @@ const JobDetailsScreenView = ({
     return (
       <View>
         <SpaceView mTop={SIZE2} />
-        <TouchableOpacity
-          disabled={!editable}
-          onPress={onAddServices}
-        >
-          <RowWrap>
-            <FlexWrap>
+        {
+          isCompletedJobState
+          ? <RowWrap>
+              <FlexWrap>
+                <LabelText>
+                  Additional services
+                </LabelText>
+              </FlexWrap>
+              <LabelText>Qty</LabelText>
+            </RowWrap>
+          : <TouchableOpacity
+              disabled={!editable}
+              onPress={onAddServices}
+            >
               <RowWrap>
-                <CircleAddIcon />
-                <SpaceView mLeft={SIZE1} />
-                <InfoText>Additional services</InfoText>
+                <FlexWrap>
+                  <RowWrap>
+                    <CircleAddIcon />
+                    <SpaceView mLeft={SIZE1} />
+                    <InfoText>Additional services</InfoText>
+                  </RowWrap>
+                </FlexWrap>
+                {
+                  editable &&
+                  <RowWrap>
+                    <SpaceView mLeft={SIZE2} />
+                    <BlackRightArrowIcon />
+                    <SpaceView mLeft={SIZE2} />
+                  </RowWrap>
+                }
               </RowWrap>
-            </FlexWrap>
-            {
-              editable &&
-              <RowWrap>
-                <SpaceView mLeft={SIZE2} />
-                <BlackRightArrowIcon />
-                <SpaceView mLeft={SIZE2} />
-              </RowWrap>
-            }
-          </RowWrap>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        }
         <SpaceView mTop={SIZE2} />
         {
           selectedServices.length > 0 &&
