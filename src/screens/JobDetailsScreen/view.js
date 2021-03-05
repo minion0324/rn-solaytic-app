@@ -96,6 +96,8 @@ const {
   CircleAddIcon,
 } = SVGS;
 
+const SPECIAL = 'SPECIAL';
+
 const JobDetailsScreenView = ({
   loading,
   photos,
@@ -184,7 +186,7 @@ const JobDetailsScreenView = ({
       case JOB_TYPE.PUT:
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            return 0;
+            return SPECIAL;
           case JOB_STATUS.STARTED:
             return 0;
           case JOB_STATUS.COMPLETED:
@@ -210,7 +212,7 @@ const JobDetailsScreenView = ({
       case JOB_TYPE.ON_THE_SPOT:
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
-            return 0;
+            return SPECIAL;
           case JOB_STATUS.STARTED:
             return 0;
           case JOB_STATUS.IN_PROGRESS:
@@ -237,27 +239,36 @@ const JobDetailsScreenView = ({
       return { hard: '', easy: '' };
     }
 
-    const stepIndex = currentStepIndex;
+    const stepIndex = currentStepIndex === SPECIAL
+      ? 0 : currentStepIndex;
     const binIndex = stepIndex === stepIndexForBinWeight.current
       ? stepIndex - 1 : stepIndex;
 
     const { jobStepId } = focusedJob.steps[stepIndex];
 
-    const options = pick(
-      focusedJob.steps[stepIndex],
-      [
-        'isRequireBinNumberToEnd',
-        'isRequireBinNumberToStart',
-        'isRequireBinType',
-        'isRequireBinWeight',
-        'isRequirePaymentCollection',
-        'isRequireReviewWasteType',
-        'mustTakePhoto',
-        'mustTakeSignature',
-        'numberofPhotosRequired',
-        'requireStatusToEnd',
-      ],
-    );
+    const options = currentStepIndex === SPECIAL
+      ? pick(
+          focusedJob.steps[stepIndex],
+          [
+            'isRequireBinNumberToEnd',
+            'isRequireBinNumberToStart',
+          ],
+        )
+      : pick(
+          focusedJob.steps[stepIndex],
+          [
+            'isRequireBinNumberToEnd',
+            'isRequireBinNumberToStart',
+            'isRequireBinType',
+            'isRequireBinWeight',
+            'isRequirePaymentCollection',
+            'isRequireReviewWasteType',
+            'mustTakePhoto',
+            'mustTakeSignature',
+            'numberofPhotosRequired',
+            'requireStatusToEnd',
+          ],
+        );
 
     if (
       options.isRequireBinNumberToEnd &&
@@ -342,6 +353,7 @@ const JobDetailsScreenView = ({
 
   useEffect(() => {
     switch (currentStepIndex) {
+      case SPECIAL:
       case 0:
         onScroll(binInfo1Ref);
         return;
@@ -488,7 +500,9 @@ const JobDetailsScreenView = ({
 
   const getBinInfoStatus = useCallback(
     (index) => {
-      if (currentStepIndex < index) {
+      if (currentStepIndex === SPECIAL) {
+        return SPECIAL;
+      } else if (currentStepIndex < index) {
         return 'NOT_STARTED';
       } else if (currentStepIndex === index) {
         return 'ACTIVE';
@@ -632,7 +646,10 @@ const JobDetailsScreenView = ({
     status,
   }) => {
     const enabled =
-      status === 'ACTIVE' &&
+      (
+        status === 'ACTIVE' ||
+        (index === 0 && status === SPECIAL)
+      ) &&
       focusedJob.isAllowDriverEditOnApp;
 
     return (
