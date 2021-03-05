@@ -177,6 +177,8 @@ const JobDetailsScreenView = ({
             return 1;
           case JOB_STATUS.COMPLETED:
             return 3;
+          default:
+            return -1;
         }
 
       case JOB_TYPE.PUT:
@@ -187,6 +189,8 @@ const JobDetailsScreenView = ({
             return 0;
           case JOB_STATUS.COMPLETED:
             return 3;
+          default:
+            return -1;
         }
 
       case JOB_TYPE.EXCHANGE:
@@ -199,6 +203,8 @@ const JobDetailsScreenView = ({
             return 2;
           case JOB_STATUS.COMPLETED:
             return 3;
+          default:
+            return -1;
         }
 
       case JOB_TYPE.ON_THE_SPOT:
@@ -211,11 +217,127 @@ const JobDetailsScreenView = ({
             return 1;
           case JOB_STATUS.COMPLETED:
             return 3;
+          default:
+            return -1;
         }
+
+      default:
+        return -1;
     };
   }, [
     jobStatus,
     focusedJob.jobTypeName,
+  ]);
+
+  const validationCurrentStep = useMemo(() => {
+    if (
+      currentStepIndex === -1 ||
+      currentStepIndex === 3
+    ) {
+      return { hard: '', easy: '' };
+    }
+
+    const stepIndex = currentStepIndex;
+    const binIndex = stepIndex === stepIndexForBinWeight.current
+      ? stepIndex - 1 : stepIndex;
+
+    const { jobStepId } = focusedJob.steps[stepIndex];
+
+    const options = pick(
+      focusedJob.steps[stepIndex],
+      [
+        'isRequireBinNumberToEnd',
+        'isRequireBinNumberToStart',
+        'isRequireBinType',
+        'isRequireBinWeight',
+        'isRequirePaymentCollection',
+        'isRequireReviewWasteType',
+        'mustTakePhoto',
+        'mustTakeSignature',
+        'numberofPhotosRequired',
+        'requireStatusToEnd',
+      ],
+    );
+
+    if (
+      options.isRequireBinNumberToEnd &&
+      !binInfo[binIndex]['binNumber']
+    ) {
+      const text = 'Please insert bin number';
+      return { hard: text, easy: text };
+    }
+
+    if (
+      options.isRequireBinType &&
+      !(
+        binInfo[binIndex]['binType'] &&
+        binInfo[binIndex]['binType']['binTypeName']
+      )
+    ) {
+      const text = 'Please insert bin type';
+      return { hard: text, easy: text };
+    }
+
+    if (
+      options.isRequireBinWeight &&
+      !binInfo[binIndex]['binWeight']
+    ) {
+      const text = 'Please insert bin weight';
+      return { hard: text, easy: text };
+    }
+
+    if (
+      binInfo[binIndex]['binWeight'] &&
+      binInfo[binIndex]['binWeight'] > 99.999
+    ) {
+      const text = 'The max value for bin weight is 99.999';
+      return { hard: text, easy: '' };
+    }
+
+    if (
+      options.isRequireReviewWasteType &&
+      !binInfo[binIndex]['wasteTypes'].length
+    ) {
+      const text = 'Please insert waste type(s)';
+      return { hard: text, easy: text };
+    }
+
+    if (
+      options.numberofPhotosRequired &&
+      photos.filter((photo) => (
+        photo.jobStepId === jobStepId
+      )).length !== options.numberofPhotosRequired
+    ) {
+      const text = `Please include ${options.numberofPhotosRequired} photo(s)`;
+      return { hard: text, easy: text };
+    }
+
+    if (
+      options.mustTakeSignature &&
+      signs.findIndex((sign) => (
+        sign.jobStepId === jobStepId
+      )) === -1
+    ) {
+      const text = 'Please include signature';
+      return { hard: text, easy: text };
+    }
+
+    if (
+      options.isRequirePaymentCollection &&
+      !amountCollected
+    ) {
+      const text = 'Please insert collect payment';
+      return { hard: text, easy: text };
+    }
+
+    return { hard: '', easy: '' };
+  }, [
+    binInfo,
+    photos,
+    signs,
+    amountCollected,
+
+    currentStepIndex,
   ]);
 
   useEffect(() => {
@@ -377,152 +499,14 @@ const JobDetailsScreenView = ({
     [currentStepIndex],
   );
 
-  const onValidateStep = (stepIndex, binIndex) => {
-    const { jobStepId } = focusedJob.steps[stepIndex];
-    const options = getBinInfoOptions(stepIndex);
-
-     if (
-       options.isRequireBinNumberToEnd &&
-       !binInfo[binIndex]['binNumber']
-     ) {
-      Alert.alert('Warning', 'Please insert bin number');
+  const onValidate = (action) => {
+     if (validationCurrentStep.hard) {
+      Alert.alert('Warning', validationCurrentStep.hard);
       return false;
      }
 
-     if (
-      options.isRequireBinType &&
-      !(
-        binInfo[binIndex]['binType'] &&
-        binInfo[binIndex]['binType']['binTypeName']
-      )
-     ) {
-      Alert.alert('Warning', 'Please insert bin type');
-      return false;
-     }
-
-     if (
-      options.isRequireBinWeight &&
-      !binInfo[binIndex]['binWeight']
-     ) {
-      Alert.alert('Warning', 'Please insert bin weight');
-      return false;
-     }
-
-     if (
-      binInfo[binIndex]['binWeight'] &&
-      binInfo[binIndex]['binWeight'] > 99.999
-     ) {
-      Alert.alert('Warning', 'The max value for bin weight is 99.999');
-      return false;
-     }
-
-     if (
-      options.isRequireReviewWasteType &&
-      !binInfo[binIndex]['wasteTypes'].length
-     ) {
-      Alert.alert('Warning', 'Please insert waste type(s)');
-      return false;
-     }
-
-     if (
-      options.numberofPhotosRequired &&
-      photos.filter((photo) => (
-        photo.jobStepId === jobStepId
-      )).length !== options.numberofPhotosRequired
-     ) {
-      Alert.alert('Warning', `Please include ${options.numberofPhotosRequired} photo(s)`);
-      return false;
-     }
-
-     if (
-      options.mustTakeSignature &&
-      signs.findIndex((sign) => (
-        sign.jobStepId === jobStepId
-      )) === -1
-     ) {
-      Alert.alert('Warning', 'Please include signature');
-      return false;
-     }
-
-     if (
-      options.isRequirePaymentCollection &&
-      !amountCollected
-     ) {
-      Alert.alert('Warning', 'Please insert collect payment');
-      return false;
-     }
-
-     return true;
+     action();
   };
-
-  // const onNextStep = () => {
-  //   switch (focusedJob.jobTypeName) {
-  //     case JOB_TYPE.PULL:
-  //       if (currentStep === 0.5) {
-  //         onStart();
-  //       } else if (currentStep === 1) {
-  //         onValidateStep(0, 0) && onPull();
-  //       } else if (currentStep === 2) {
-  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
-  //       } else if (currentStep === 3.5) {
-  //         onComplete();
-  //       }
-  //       return;
-
-  //     case JOB_TYPE.PUT:
-  //       if (currentStep === 0.5) {
-  //         if (focusedJob.steps[0].isRequireBinNumberToEnd) {
-  //           onBinInput(0, () => setBinInput(true));
-  //         } else {
-  //           onStart();
-  //         }
-  //       } else if (currentStep === 1) {
-  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
-  //       } else if (currentStep === 3.5) {
-  //         onValidateStep(0, 0) && onComplete();
-  //       }
-  //       return;
-
-  //     case JOB_TYPE.EXCHANGE:
-  //       if (currentStep === 0.5) {
-  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
-  //       } else if (currentStep === 1) {
-  //         onValidateStep(0, 0) && onStart();
-  //       } else if (currentStep === 1.5) {
-  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
-  //       } else if (currentStep === 2) {
-  //         onValidateStep(1, 1) && onExchange();
-  //       } else if (currentStep === 3) {
-  //         const { stepIndex, binIndex } = binWeightIndexes;
-  //         onValidateStep(stepIndex, binIndex) &&
-  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
-  //       } else if (currentStep === 3.5) {
-  //         onComplete();
-  //       }
-  //       return;
-
-  //     case JOB_TYPE.ON_THE_SPOT:
-  //       if (currentStep === 0.5) {
-  //         if (focusedJob.steps[0].isRequireBinNumberToEnd) {
-  //           onBinInput(0, () => setBinInput(true));
-  //         } else {
-  //           onStart();
-  //         }
-  //       } else if (currentStep === 1) {
-  //         onValidateStep(0, 0) && onExchange();
-  //       } else if (currentStep === 2) {
-  //         const { stepIndex, binIndex } = binWeightIndexes;
-  //         onValidateStep(stepIndex, binIndex) &&
-  //         setStepStatus(jobStatus + STEP_STATUS_MARK);
-  //       } else if (currentStep === 3.5) {
-  //         onComplete();
-  //       }
-  //     return;
-
-  //     default:
-  //       return;
-  //   };
-  // };
 
   const onScroll = async (ref) => {
     try {
@@ -1562,19 +1546,25 @@ const JobDetailsScreenView = ({
       buttonAction = onComplete;
     }
 
+    if (validationCurrentStep.easy) {
+      buttonAction = null;
+      buttonColor = buttonColor + 'A0';
+    }
+
     return (
       !!buttonText &&
       <ContentWrap
         mLeft={SIZE3} mRight={SIZE3}
       >
-        <CenteredWrap>
-          <DefaultButton
-            color={buttonColor}
-            text={buttonText}
-            onPress={buttonAction}
-            loading={loading}
-          />
-        </CenteredWrap>
+        <DefaultButton
+          color={buttonColor}
+          text={buttonText}
+          onPress={() => {
+            buttonAction && onValidate(buttonAction);
+          }}
+          loading={loading}
+          mTop={-SIZE1} mBottom={-SIZE1}
+        />
       </ContentWrap>
     );
   };
