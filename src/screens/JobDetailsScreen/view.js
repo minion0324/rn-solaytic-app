@@ -1195,7 +1195,7 @@ const JobDetailsScreenView = ({
         jobStatus === JOB_STATUS.IN_PROGRESS ||
         (
           jobStatus === JOB_STATUS.STARTED &&
-          focusedJob.steps.length === 2
+          focusedJob.jobTypeName === JOB_TYPE.PUT
         )
       )
     ) {
