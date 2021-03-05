@@ -23,6 +23,7 @@ import {
 } from 'src/redux';
 import {
   openUrl,
+  getCustomerSiteAddress,
 } from 'src/utils';
 
 import {
@@ -86,53 +87,8 @@ const AddressScreen = ({
   const renderItem = ({ item, index }) => {
     let address = item.address;
 
-    if (
-      item.site &&
-      index === customerSiteIndex
-    ) {
-      const {
-        siteName, blockNo, street, unitNo, postalCode,
-      } = item.site;
-
-      if (siteName) {
-        address = siteName;
-      }
-
-      if (blockNo || street || unitNo || postalCode) {
-        address += ' (';
-      }
-
-      if (blockNo) {
-        address += `Block ${blockNo}`;
-
-        if (street || unitNo || postalCode) {
-          address += ', ';
-        }
-      }
-
-      if (street) {
-        address += street;
-
-        if (unitNo || postalCode) {
-          address += ', ';
-        }
-      }
-
-      if (unitNo) {
-        address += `Unit No. ${unitNo}`;
-
-        if (postalCode) {
-          address += ', ';
-        }
-      }
-
-      if (postalCode) {
-        address += `Post Code ${postalCode}`;
-      }
-
-      if (blockNo || street || unitNo || postalCode) {
-        address += ')';
-      }
+    if (index === customerSiteIndex) {
+      address = getCustomerSiteAddress(item.site);
     }
 
     return (
@@ -149,6 +105,15 @@ const AddressScreen = ({
               </LocationIcon>
             </IconWrap>
             <FlexWrap>
+              {
+                index === customerSiteIndex &&
+                <View>
+                  <TitleText>
+                    {focusedJob.customer.customerName}
+                  </TitleText>
+                  <SpaceView mTop={SIZE1} />
+                </View>
+              }
               <TitleText>
                 {address}
               </TitleText>
