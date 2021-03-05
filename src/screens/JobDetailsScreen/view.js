@@ -641,6 +641,7 @@ const JobDetailsScreenView = ({
         <RowWrap>
           <LabelText>Bin ID</LabelText>
           {
+            status !== 'COMPLETED' &&
             options.isRequireBinNumberToEnd &&
             <RowWrap>
               <SpaceView mLeft={SIZE1} />
