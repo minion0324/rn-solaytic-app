@@ -27,16 +27,24 @@ const BinInput = styled.TextInput`
 `;
 
 const BinInputWrap = styled.View`
-  min-height: ${SIZE8}px;
+  min-height: ${(props) => (
+    props.effect ? SIZE8 : 0
+  )}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding-vertical: 3px;
-  padding-horizontal: ${SIZE2}px;
+  padding-vertical: ${(props) => (
+    props.effect ? 3 : 0
+  )}px;
+  padding-horizontal: ${(props) => (
+    props.effect ? SIZE2 : 0
+  )}px;
   border-radius: ${SIZE1}px;
   border-width: 1px;
   border-color: ${props => props.color};
-  background-color: ${COLORS.WHITE5};
+  background-color: ${(props) => (
+    props.effect ? COLORS.WHITE5 : COLORS.WHITE1
+  )};
 `;
 
 const PhotoWrap = styled.View`

@@ -708,6 +708,7 @@ const JobDetailsScreenView = ({
             enabled
             ? COLORS.BLUE1 : COLORS.TRANSPARENT1
           }
+          effect={!isCompletedJobState}
         >
           <BinInput
             underlineColorAndroid={COLORS.TRANSPARENT1}
@@ -815,6 +816,7 @@ const JobDetailsScreenView = ({
             editable
             ? COLORS.BLUE1 : COLORS.TRANSPARENT1
           }
+          effect={!isCompletedJobState}
         >
           <FlexWrap>
             <TouchableOpacity
@@ -1097,6 +1099,7 @@ const JobDetailsScreenView = ({
           selectedServices.length > 0 &&
           <BinInputWrap
             color={COLORS.TRANSPARENT1}
+            effect={!isCompletedJobState}
           >
             {
               selectedServices.map((item, index) => (
@@ -1180,6 +1183,7 @@ const JobDetailsScreenView = ({
                 editable
                 ? COLORS.BLUE1 : COLORS.TRANSPARENT1
               }
+              effect={!isCompletedJobState}
             >
               <RowWrap>
                 <InfoText>$</InfoText>
@@ -1205,6 +1209,7 @@ const JobDetailsScreenView = ({
                 editable
                 ? COLORS.BLUE1 : COLORS.TRANSPARENT1
               }
+              effect={!isCompletedJobState}
             >
               <FlexWrap>
                 <TouchableOpacity
@@ -1439,6 +1444,7 @@ const JobDetailsScreenView = ({
                   editable
                   ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                 }
+                effect={!isCompletedJobState}
               >
                 <BinInput
                   underlineColorAndroid={COLORS.TRANSPARENT1}
