@@ -760,11 +760,12 @@ const JobDetailsScreenView = ({
                 jobDateList.current &&
                 jobDateList.current[index].length !== 0 &&
                 jobDateList.current[index].map((el) => (
+                  !!focusedJob[el.field] &&
                   <FlexWrap key={el.label}>
                     <LabelText>{el.label}</LabelText>
                     <SpaceView mTop={SIZE1} />
                     <InfoText>
-                      {moment(focusedJob[el.filed]).format('hh:mm A')}
+                      {moment(focusedJob[el.field]).format('hh:mm A')}
                     </InfoText>
                   </FlexWrap>
                 ))
@@ -1513,11 +1514,12 @@ const JobDetailsScreenView = ({
                   jobDateList.current &&
                   jobDateList.current[stepIndex].length !== 0 &&
                   jobDateList.current[stepIndex].map((el) => (
+                    !!focusedJob[el.field] &&
                     <FlexWrap key={el.label}>
                       <LabelText>{el.label}</LabelText>
                       <SpaceView mTop={SIZE1} />
                       <InfoText>
-                        {moment(focusedJob[el.filed]).format('hh:mm A')}
+                        {moment(focusedJob[el.field]).format('hh:mm A')}
                       </InfoText>
                     </FlexWrap>
                   ))
