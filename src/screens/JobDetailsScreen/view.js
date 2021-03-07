@@ -37,7 +37,11 @@ import {
   dismissLightBox,
   CUSTOM_MODAL_SCREEN,
 } from 'src/navigation';
-import { getDate, delay } from 'src/utils';
+import {
+  getDate,
+  delay,
+  getCustomerSiteAddress,
+} from 'src/utils';
 
 import {
   Container,
@@ -1640,7 +1644,11 @@ const JobDetailsScreenView = ({
           <RowWrap>
             <FlexWrap>
               <InfoText numberOfLines={1}>
-                {steps[index].address}
+                {
+                  steps[index].site
+                  ? getCustomerSiteAddress(steps[index].site)
+                  : steps[index].address
+                }
               </InfoText>
               <SpaceView mTop={SIZE1} />
               <RowWrap>
