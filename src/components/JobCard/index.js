@@ -17,6 +17,9 @@ import {
   JOB_STATUS,
   JOB_TYPE,
 } from 'src/constants';
+import {
+  getCustomerSiteAddress,
+} from 'src/utils';
 
 import {
   BorderView,
@@ -120,28 +123,38 @@ const JobCard = ({
   }, [statusName]);
 
   const location = useMemo(() => {
+    let customerSiteStep = null;
+
     const index = steps.findIndex(item => item.customerSiteId);
     if (index !== -1) {
-      return steps[index].address;
+      customerSiteStep = steps[index];
+    } else {
+      switch (jobTypeName) {
+        case JOB_TYPE.PULL:
+          customerSiteStep = steps[0] || steps[1];
+          break;
+
+        case JOB_TYPE.PUT:
+        case JOB_TYPE.EXCHANGE:
+        case JOB_TYPE.ON_THE_SPOT:
+          customerSiteStep = steps[1] || steps[0];
+          break;
+
+        case JOB_TYPE.OUT:
+        case JOB_TYPE.SHIFT:
+        case JOB_TYPE.THROW_AT_CUSTOMER:
+          customerSiteStep = steps[2] || steps[1] || steps[0];
+          break;
+
+        default:
+          customerSiteStep = steps[2] || steps[1] || steps[0];
+          break;
+      };
     }
 
-    switch (jobTypeName) {
-      case JOB_TYPE.PULL:
-        return steps[0].address || steps[1].address;
-
-      case JOB_TYPE.PUT:
-      case JOB_TYPE.EXCHANGE:
-      case JOB_TYPE.ON_THE_SPOT:
-        return steps[1].address || steps[0].address;
-
-      case JOB_TYPE.OUT:
-      case JOB_TYPE.SHIFT:
-      case JOB_TYPE.THROW_AT_CUSTOMER:
-        return steps[2].address || steps[1].address || steps[0].address;
-
-      default:
-        return steps[2].address || steps[1].address || steps[0].address;
-    };
+    return customerSiteStep.site
+      ? getCustomerSiteAddress(customerSiteStep.site)
+      : customerSiteStep.address;
   }, [jobTypeName]);
 
   const binIndex = useMemo(() => {
