@@ -205,23 +205,6 @@ const JobDetailsScreenView = ({
     focusedJob.jobTypeName,
   ]);
 
-  const isForCompleteJobState = useMemo(() => {
-    if (
-      jobStatus === JOB_STATUS.IN_PROGRESS ||
-      (
-        jobStatus === JOB_STATUS.STARTED &&
-        focusedJob.jobTypeName === JOB_TYPE.PUT
-      )
-    ) {
-      return true;
-    }
-
-    return false;
-  }, [
-    jobStatus,
-    focusedJob.jobTypeName,
-  ]);
-
   const currentStepIndex = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
@@ -1324,7 +1307,8 @@ const JobDetailsScreenView = ({
     if (
       stepIndexForOthers.current !== index ||
       !(
-        isForCompleteJobState || isCompletedJobState
+        isCompletedJobState ||
+        jobStatus === JOB_STATUS.IN_PROGRESS
       )
     ) {
       return null;
