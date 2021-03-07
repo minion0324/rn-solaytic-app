@@ -62,7 +62,7 @@ import {
 
 const { HappyIcon } = SVGS;
 
-const tabs = ['All', 'Open', 'Closed'];
+const tabs = ['Open', 'Closed'];
 
 const JobsScreen = ({
   allJobs,
@@ -87,7 +87,7 @@ const JobsScreen = ({
   const [ reloading, setReloading ] = useState(false);
   const [ refreshing, setRefreshing ] = useState(false);
 
-  const [ tabIndex, setTabIndex ] = useState(1);
+  const [ tabIndex, setTabIndex ] = useState(0);
 
   useEffect(() => {
     getJobDates({});
@@ -218,10 +218,6 @@ const JobsScreen = ({
 
   const getFilteredJobs = () => {
     if (tabIndex === 0) {
-      return allJobs;
-    }
-
-    if (tabIndex === 1) {
       return allJobs.filter((job) => (
         job.statusName === JOB_STATUS.ASSIGNED ||
         job.statusName === JOB_STATUS.ACKNOWLEDGED ||
@@ -230,7 +226,7 @@ const JobsScreen = ({
       ));
     }
 
-    if (tabIndex === 2) {
+    if (tabIndex === 1) {
       return allJobs.filter((job) => (
         job.statusName === JOB_STATUS.COMPLETED ||
         job.statusName === JOB_STATUS.FAILED ||
