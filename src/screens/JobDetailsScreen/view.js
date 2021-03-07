@@ -1721,7 +1721,7 @@ const JobDetailsScreenView = ({
 
     if (validationCurrentStep.easy) {
       buttonAction = null;
-      buttonColor = buttonColor + 'A0';
+      buttonColor = buttonColor + '4C'; // opacity: 30%
     }
 
     return (
