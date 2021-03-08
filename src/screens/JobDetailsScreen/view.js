@@ -685,14 +685,14 @@ const JobDetailsScreenView = ({
       focusedJob.isAllowDriverEditOnApp;
 
     return (
-      <View>
+      <View
+        ref={ref => binIdRefs.current[index] = ref}
+      >
         <SpaceView mTop={SIZE2} />
         <RowWrap>
           {
             !isCompletedJobState
-            ? <FlexWrap
-                ref={ref => binIdRefs.current[index] = ref}
-              >
+            ? <FlexWrap>
                 <RowWrap>
                   <LabelText>Bin ID</LabelText>
                   {
