@@ -17,9 +17,6 @@ import {
   JOB_STATUS,
   JOB_TYPE,
 } from 'src/constants';
-import {
-  getCustomerSiteAddress,
-} from 'src/utils';
 
 import {
   BorderView,
@@ -152,9 +149,7 @@ const JobCard = ({
       };
     }
 
-    return customerSiteStep.site
-      ? getCustomerSiteAddress(customerSiteStep.site)
-      : customerSiteStep.address;
+    return customerSiteStep.fullAddress || customerSiteStep.address;
   }, [jobTypeName]);
 
   const binIndex = useMemo(() => {
