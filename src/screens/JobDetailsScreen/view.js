@@ -10,7 +10,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  UIManager,
   findNodeHandle,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -143,6 +142,12 @@ const JobDetailsScreenView = ({
   const actionSheetKey = useRef(null);
 
   const binInfoRefs = useRef({});
+  const binIdRefs = useRef({});
+  const binTypeRefs = useRef({});
+  const wasteTypeRefs = useRef({});
+  const photosAndSignatureRefs = useRef({});
+  const paymentCollectionRefs = useRef({});
+
   const scrollRef = useRef(null);
 
   const stepIndexForBinWeight = useRef(
@@ -162,12 +167,6 @@ const JobDetailsScreenView = ({
       focusedJob.jobTypeName === JOB_TYPE.PUT ||
       focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
     ) ? 0 : -1
-  );
-
-  const hasBinWeight = useRef(
-    stepIndexForBinWeight.current === -1
-    ? false
-    : focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
   );
 
   const jobDateList = useRef(
@@ -272,7 +271,7 @@ const JobDetailsScreenView = ({
       currentStepIndex === -1 ||
       currentStepIndex === 3
     ) {
-      return { hard: '', easy: '' };
+      return { hard: '', easy: '', ref: null };
     }
 
     const stepIndex = currentStepIndex === SPECIAL
@@ -311,7 +310,7 @@ const JobDetailsScreenView = ({
       !binInfo[binIndex]['binNumber']
     ) {
       const text = 'Please insert bin number';
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: binIdRefs.current[stepIndex] };
     }
 
     if (
@@ -322,7 +321,7 @@ const JobDetailsScreenView = ({
       )
     ) {
       const text = 'Please insert bin type';
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: binTypeRefs.current[stepIndex] };
     }
 
     if (
@@ -330,7 +329,7 @@ const JobDetailsScreenView = ({
       !binInfo[binIndex]['binWeight']
     ) {
       const text = 'Please insert bin weight';
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: binInfoRefs.current[stepIndexForBinWeight.current] };
     }
 
     if (
@@ -338,7 +337,7 @@ const JobDetailsScreenView = ({
       binInfo[binIndex]['binWeight'] > 99.999
     ) {
       const text = 'The max value for bin weight is 99.999';
-      return { hard: text, easy: '' };
+      return { hard: text, easy: '', ref: null };
     }
 
     if (
@@ -346,7 +345,7 @@ const JobDetailsScreenView = ({
       !binInfo[binIndex]['wasteTypes'].length
     ) {
       const text = 'Please insert waste type(s)';
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: wasteTypeRefs.current[stepIndex] };
     }
 
     if (
@@ -356,7 +355,7 @@ const JobDetailsScreenView = ({
       )).length !== options.numberofPhotosRequired
     ) {
       const text = `Please include ${options.numberofPhotosRequired} photo(s)`;
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: photosAndSignatureRefs.current[stepIndex] };
     }
 
     if (
@@ -366,7 +365,7 @@ const JobDetailsScreenView = ({
       )) === -1
     ) {
       const text = 'Please include signature';
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: photosAndSignatureRefs.current[stepIndex] };
     }
 
     if (
@@ -374,10 +373,10 @@ const JobDetailsScreenView = ({
       !amountCollected
     ) {
       const text = 'Please insert collect payment';
-      return { hard: text, easy: text };
+      return { hard: text, easy: text, ref: paymentCollectionRefs.current[stepIndex] };
     }
 
-    return { hard: '', easy: '' };
+    return { hard: '', easy: '', ref: null };
   }, [
     binInfo,
     photos,
@@ -560,9 +559,8 @@ const JobDetailsScreenView = ({
 
       await delay(100);
 
-      UIManager.measureLayoutRelativeToParent(
-        findNodeHandle(ref),
-        () => {},
+      ref.measureLayout(
+        findNodeHandle(scrollRef.current),
         (x, y) => {
           scrollRef.current.scrollTo({ x: 0, y: y });
         },
@@ -692,7 +690,9 @@ const JobDetailsScreenView = ({
         <RowWrap>
           {
             !isCompletedJobState
-            ? <FlexWrap>
+            ? <FlexWrap
+                ref={ref => binIdRefs.current[index] = ref}
+              >
                 <RowWrap>
                   <LabelText>Bin ID</LabelText>
                   {
@@ -795,7 +795,9 @@ const JobDetailsScreenView = ({
       );
 
     return (
-      <View>
+      <View
+        ref={ref => binTypeRefs.current[index] = ref}
+      >
         <SpaceView mTop={SIZE2} />
         <LabelText>Bin Type</LabelText>
         <SpaceView mTop={SIZE1} />
@@ -818,6 +820,8 @@ const JobDetailsScreenView = ({
     idx,
     options,
     status,
+
+    stepIndex = null,
   }) => {
     if (!options.isRequireReviewWasteType) {
       return null;
@@ -832,7 +836,9 @@ const JobDetailsScreenView = ({
       );
 
     return (
-      <View>
+      <View
+        ref={ref => wasteTypeRefs.current[stepIndex || index] = ref}
+      >
         <SpaceView mTop={SIZE2} />
         <LabelText>
           {
@@ -991,6 +997,7 @@ const JobDetailsScreenView = ({
 
   const renderPhotosAndSign = ({
     item,
+    index,
     options,
     status,
   }) => (
@@ -998,7 +1005,9 @@ const JobDetailsScreenView = ({
       options.numberofPhotosRequired ||
       options.mustTakeSignature
     ) &&
-    <View>
+    <View
+      ref={ref => photosAndSignatureRefs.current[index] = ref}
+    >
       <SpaceView mTop={SIZE2} />
       <RowWrap>
         <LabelText>Photos & Signature</LabelText>
@@ -1187,7 +1196,9 @@ const JobDetailsScreenView = ({
       focusedJob.isAllowDriverEditOnApp;
 
     return (
-      <View>
+      <View
+        ref={ref => paymentCollectionRefs.current[index] = ref}
+      >
         <SpaceView mTop={SIZE2} />
         <RowWrap>
           <LabelText>Collections</LabelText>
@@ -1425,6 +1436,7 @@ const JobDetailsScreenView = ({
               {
                 renderPhotosAndSign({
                   item,
+                  index,
                   options,
                   status,
                 })
@@ -1557,11 +1569,14 @@ const JobDetailsScreenView = ({
               idx,
               options,
               status,
+
+              stepIndex,
             })
           }
           {
             renderPhotosAndSign({
               item: focusedJob.steps[stepIndex],
+              index: stepIndex,
               options,
               status,
             })
@@ -1680,29 +1695,29 @@ const JobDetailsScreenView = ({
     } else if (jobStatus === JOB_STATUS.ACKNOWLEDGED) {
       buttonColor = forToday ? COLORS.BLUE1 : COLORS.GRAY3;
       buttonText = 'Start Job';
-      buttonAction = forToday ? onStart : null;
+      buttonAction = forToday ? () => onValidate(onStart) : null;
     } else if (jobStatus === JOB_STATUS.STARTED) {
       if (focusedJob.jobTypeName === JOB_TYPE.PULL) {
         buttonColor = COLORS.PURPLE1;
         buttonText = 'In Progress';
-        buttonAction = onPull;
+        buttonAction = () => onValidate(onPull);
       } else if (focusedJob.steps.length === 3) {
         buttonColor = COLORS.PURPLE1;
         buttonText = 'In Progress';
-        buttonAction = onExchange;
+        buttonAction = () => onValidate(onExchange);
       } else {
         buttonColor = COLORS.GREEN1;
         buttonText = 'Complete Job';
-        buttonAction = onComplete;
+        buttonAction = () => onValidate(onComplete);
       }
     } else if (jobStatus === JOB_STATUS.IN_PROGRESS) {
       buttonColor = COLORS.GREEN1;
       buttonText = 'Complete Job';
-      buttonAction = onComplete;
+      buttonAction = () => onValidate(onComplete);
     }
 
     if (validationCurrentStep.easy) {
-      buttonAction = null;
+      buttonAction = () => onScroll(validationCurrentStep.ref);
       buttonColor = buttonColor + '4C'; // opacity: 30%
     }
 
@@ -1714,11 +1729,7 @@ const JobDetailsScreenView = ({
         <DefaultButton
           color={buttonColor}
           text={buttonText}
-          onPress={
-            buttonAction
-            ? () => onValidate(buttonAction)
-            : null
-          }
+          onPress={buttonAction}
           loading={loading}
           mTop={-SIZE1} mBottom={-SIZE1}
         />
