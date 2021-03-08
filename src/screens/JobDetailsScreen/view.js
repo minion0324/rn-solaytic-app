@@ -142,9 +142,7 @@ const JobDetailsScreenView = ({
   const actionSheetRef = useRef(null);
   const actionSheetKey = useRef(null);
 
-  const binInfo1Ref = useRef(null);
-  const binInfo2Ref = useRef(null);
-  const binWeightRef = useRef(null);
+  const binInfoRefs = useRef({});
   const scrollRef = useRef(null);
 
   const stepIndexForBinWeight = useRef(
@@ -393,19 +391,13 @@ const JobDetailsScreenView = ({
     switch (currentStepIndex) {
       case SPECIAL:
       case 0:
-        onScroll(binInfo1Ref);
+        onScroll(binInfoRefs.current[0]);
         return;
       case 1:
-        if (stepIndexForBinWeight.current !== 1) {
-          onScroll(binInfo2Ref);
-        } else if (hasBinWeight.current) {
-          onScroll(binWeightRef);
-        }
+        onScroll(binInfoRefs.current[1]);
         return;
       case 2:
-        if (hasBinWeight.current) {
-          onScroll(binWeightRef);
-        }
+        onScroll(binInfoRefs.current[2]);
         return;
     }
   }, [currentStepIndex]);
@@ -562,10 +554,14 @@ const JobDetailsScreenView = ({
 
   const onScroll = async (ref) => {
     try {
+      if (!ref) {
+        return;
+      }
+
       await delay(100);
 
       UIManager.measureLayoutRelativeToParent(
-        findNodeHandle(ref.current),
+        findNodeHandle(ref),
         () => {},
         (x, y) => {
           scrollRef.current.scrollTo({ x: 0, y: y });
@@ -1375,7 +1371,7 @@ const JobDetailsScreenView = ({
 
         return (
           <View
-            ref={index === 0 ? binInfo1Ref : binInfo2Ref}
+            ref={ref => binInfoRefs.current[index] = ref}
             key={`${item.jobStepId}`}
           >
             <SpaceView mTop={SIZE2} />
@@ -1476,7 +1472,7 @@ const JobDetailsScreenView = ({
 
     return (
       <View
-        ref={binWeightRef}
+        ref={ref => binInfoRefs.current[stepIndex] = ref}
       >
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
