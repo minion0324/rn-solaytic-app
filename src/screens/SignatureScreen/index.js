@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useRef, useState } from 'react';
 import { Alert, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import Signature from 'react-native-signature-canvas';
@@ -49,28 +44,29 @@ const SignatureScreen = ({
   setSigns,
   componentId,
 }) => {
-  const [ name, setName ] = useState('');
-  const [ contact, setContact ] = useState('');
-
+  const indexOfSign = useRef(
+    signs.findIndex((sign) => (
+      sign.jobStepId === jobStepId
+    ))
+  );
+  const initialData = useRef(
+    indexOfSign.current !== -1 &&
+    signs[indexOfSign.current].data
+    ? 'data:image/png;base64,' + signs[indexOfSign.current].data
+    : ''
+  );
   const signatureRef = useRef(null);
 
-  useEffect(() => {
-    if (indexOfSign !== -1) {
-      setName(signs[indexOfSign].signedUserName);
-      setContact(signs[indexOfSign].signedUserContact);
-    }
-  }, []);
-
-  const indexOfSign = useMemo(() => {
-    const index = signs.findIndex((sign) => (
-      sign.jobStepId === jobStepId
-    ));
-
-    return index;
-  }, [
-    jobStepId,
-    signs,
-  ]);
+  const [ name, setName ] = useState(
+    indexOfSign.current !== -1
+    ? signs[indexOfSign.current].signedUserName
+    : ''
+  );
+  const [ contact, setContact ] = useState(
+    indexOfSign.current !== -1
+    ? signs[indexOfSign.current].signedUserContact
+    : ''
+  );
 
   const onClose = async () => {
     Keyboard.dismiss();
@@ -81,8 +77,8 @@ const SignatureScreen = ({
   const onCloseWithClear = () => {
     const newSigns = signs.slice(0);
 
-    if (indexOfSign !== -1) {
-      newSigns.splice(indexOfSign, 1);
+    if (indexOfSign.current !== -1) {
+      newSigns.splice(indexOfSign.current, 1);
     }
     setSigns(newSigns);
 
@@ -115,10 +111,10 @@ const SignatureScreen = ({
       };
       const newSigns = signs.slice(0);
 
-      if (indexOfSign === -1) {
+      if (indexOfSign.current === -1) {
         newSigns.push(newSign);
       } else {
-        newSigns.splice(indexOfSign, 1, newSign);
+        newSigns.splice(indexOfSign.current, 1, newSign);
       }
       setSigns(newSigns);
 
@@ -147,6 +143,7 @@ const SignatureScreen = ({
           ref={signatureRef}
           onOK={onSign}
           webStyle={webStyle}
+          dataURL={initialData.current}
         />
       </SignatureWrap>
       <InfoWrap>
