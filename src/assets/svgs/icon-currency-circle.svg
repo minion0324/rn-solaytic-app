@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="Group_17422" data-name="Group 17422" transform="translate(-114 -117)">
+    <g id="Ellipse_1527" data-name="Ellipse 1527" transform="translate(114 117)" fill="#fff" stroke="#7f7f7f" stroke-width="1">
+      <circle cx="11" cy="11" r="11" stroke="none"/>
+      <circle cx="11" cy="11" r="10.5" fill="none"/>
+    </g>
+    <path id="Icon_metro-money" data-name="Icon metro-money" d="M9.854,9.212C8.233,8.79,7.712,8.358,7.712,7.68c0-.778.718-1.325,1.928-1.325,1.271,0,1.742.607,1.785,1.5H13a2.843,2.843,0,0,0-2.292-2.721V3.57H8.569V5.113a2.787,2.787,0,0,0-2.5,2.578c0,1.65,1.367,2.471,3.356,2.949,1.789.428,2.142,1.053,2.142,1.725,0,.489-.346,1.275-1.928,1.275-1.471,0-2.053-.661-2.128-1.5H5.938a3,3,0,0,0,2.631,2.735v1.55h2.142V14.889c1.389-.268,2.5-1.071,2.5-2.539C13.211,10.329,11.475,9.637,9.854,9.212Z" transform="translate(115.063 118.43)" fill="#7f7f7f"/>
+  </g>
+</svg>

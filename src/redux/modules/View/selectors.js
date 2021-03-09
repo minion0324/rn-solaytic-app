@@ -65,6 +65,27 @@ const getJobDates = createSelector(
   },
 );
 
+const getWasteTypes = createSelector(
+  getViewStore,
+  (view) => {
+    return view.wasteTypes || [];
+  },
+);
+
+const getCountOfWasteTypes = createSelector(
+  getWasteTypes,
+  (wasteTypes) => {
+    return wasteTypes.length;
+  },
+);
+
+const getPageOfWasteTypes = createSelector(
+  getCountOfWasteTypes,
+  (countOfWasteTypes) => {
+    return Math.floor(countOfWasteTypes / 10 + 1);
+  },
+);
+
 export default {
   getCoreScreenInfo,
   getDriverNotes,
@@ -75,4 +96,7 @@ export default {
   getNewCommentInfo,
   getBinNumbers,
   getJobDates,
+  getWasteTypes,
+  getCountOfWasteTypes,
+  getPageOfWasteTypes,
 };

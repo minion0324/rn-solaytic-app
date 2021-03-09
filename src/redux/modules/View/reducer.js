@@ -11,6 +11,8 @@ import {
   SET_NEW_COMMENT_INFO,
   GET_BIN_NUMBERS_SUCCESS,
   GET_JOB_DATES_SUCCESS,
+  GET_WASTE_TYPES_SUCCESS,
+  GET_WASTE_TYPES_BY_PAGE_SUCCESS,
 } from './actions';
 
 const DEFAULT = {
@@ -28,6 +30,7 @@ const viewPersistConfig = {
     'newCommentInfo',
     'binNumbers',
     'jobDates',
+    'wasteTypes',
   ],
 };
 
@@ -60,6 +63,12 @@ function View(state = DEFAULT, action = {}) {
         break;
       case GET_JOB_DATES_SUCCESS:
         draft.jobDates = payload.data;
+        break;
+      case GET_WASTE_TYPES_SUCCESS:
+        draft.wasteTypes = payload.data;
+        break;
+      case GET_WASTE_TYPES_BY_PAGE_SUCCESS:
+        draft.wasteTypes.concat(payload.data);
         break;
     }
   });

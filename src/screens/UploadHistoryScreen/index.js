@@ -213,13 +213,21 @@ const UploadHistoryScreen = ({
         value: { fetchData },
       } = await getCacheItemById(BACKGROUND_FETCH_KEY, item.id);
 
-      const [ jobIds, binInfo, services, amountCollected,  attempt ] = fetchData;
+      const [
+        jobIds,
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+        attempt,
+      ] = fetchData;
 
       completeJobs({
         jobIds,
         binInfo,
         services,
         amountCollected,
+        jobPaymentType,
         attempt,
         success: () => onRetrySuccess(item, index),
         failure: () => onRetryFailure(item, index),
@@ -314,8 +322,8 @@ const UploadHistoryScreen = ({
           <SearchIcon />
         </SearchIconWrap>
         <SearchInput
-          placeholder={'Search ...'}
-          placeholderTextColor={COLORS.BLACK2}
+          placeholder={'Search'}
+          placeholderTextColor={COLORS.GRAY3}
           underlineColorAndroid={COLORS.TRANSPARENT1}
           returnKeyType={'go'}
           onSubmitEditing={onSearch}

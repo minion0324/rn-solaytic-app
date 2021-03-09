@@ -12,6 +12,10 @@ export const GET_BIN_NUMBERS = 'VIEW/GET_BIN_NUMBERS';
 export const GET_BIN_NUMBERS_SUCCESS = 'VIEW/GET_BIN_NUMBERS_SUCCESS';
 export const GET_JOB_DATES = 'VIEW/GET_JOB_DATES';
 export const GET_JOB_DATES_SUCCESS = 'VIEW/GET_JOB_DATES_SUCCESS';
+export const GET_WASTE_TYPES = 'VIEW/GET_WASTE_TYPES';
+export const GET_WASTE_TYPES_SUCCESS = 'VIEW/GET_WASTE_TYPES_SUCCESS';
+export const GET_WASTE_TYPES_BY_PAGE = 'VIEW/GET_WASTE_TYPES_BY_PAGE';
+export const GET_WASTE_TYPES_BY_PAGE_SUCCESS = 'VIEW/GET_WASTE_TYPES_BY_PAGE_SUCCESS';
 
 export const actionCreators = {
   setCoreScreenInfo: createAction(SET_CORE_SCREEN_INFO),
@@ -26,4 +30,8 @@ export const actionCreators = {
   getBinNumbersSuccess: createAction(GET_BIN_NUMBERS_SUCCESS),
   getJobDates: createAction(GET_JOB_DATES),
   getJobDatesSuccess: createAction(GET_JOB_DATES_SUCCESS),
+  getWasteTypes: createAction(GET_WASTE_TYPES),
+  getWasteTypesSuccess: createAction(GET_WASTE_TYPES_SUCCESS),
+  getWasteTypesByPage: createAction(GET_WASTE_TYPES_BY_PAGE),
+  getWasteTypesByPageSuccess: createAction(GET_WASTE_TYPES_BY_PAGE_SUCCESS),
 };

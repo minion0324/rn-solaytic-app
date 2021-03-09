@@ -1,4 +1,6 @@
+import React from 'react';
 import styled from 'styled-components';
+import Dash from 'react-native-dash';
 
 import {
   COLORS,
@@ -20,18 +22,20 @@ const Content = styled.View`
 `;
 
 const ContentWrap = styled.View`
-  margin-horizontal: ${SIZE1}px;
+  margin-left: ${props => props.mLeft || 0}px;
+  margin-right: ${props => props.mRight || 0}px;
   padding-top: ${props => props.mTop || SIZE3}px;
   padding-horizontal: ${SIZE3}px;
   padding-bottom: ${SIZE3}px;
   background-color: ${props => props.color || COLORS.WHITE1};
 `;
 
-const WrapBorder = styled.View`
-  margin-horizontal: ${SIZE1}px;
+const BorderView = styled.View`
+  margin-left: ${props => props.mLeft || 0}px;
+  margin-right: ${props => props.mRight || 0}px;
   height: 0px;
   border-top-width: 1px;
-  border-color: ${COLORS.GRAY2};
+  border-color: ${props => props.color || COLORS.GRAY2};
 `;
 
 const ShadowWrap = styled.View`
@@ -99,11 +103,56 @@ const SpaceView = styled.View`
   margin-bottom: ${props => props.mBottom || 0}px;
 `;
 
+const CenteredWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LeftDash = styled(Dash)`
+  flex-direction: column;
+  left: 0px;
+  top: ${props => props.dashLength || 4}px;
+  bottom: ${props => props.dashLength || 4}px;
+  position: absolute;
+`;
+
+const TopDash = styled(Dash)`
+  left: ${props => props.dashLength || 4}px;
+  top: 0px;
+  right: ${props => props.dashLength || 4}px;
+  position: absolute;
+`;
+
+const RightDash = styled(Dash)`
+  flex-direction: column;
+  top: ${props => props.dashLength || 4}px;
+  right: 0px;
+  bottom: ${props => props.dashLength || 4}px;
+  position: absolute;
+`;
+
+const BottomDash = styled(Dash)`
+  left: ${props => props.dashLength || 4}px;
+  right: ${props => props.dashLength || 4}px;
+  bottom: 0px;
+  position: absolute;
+`;
+
+const BorderDash = ({ color, ...props }) => (
+  <>
+    <LeftDash dashColor={color} {...props} />
+    <TopDash dashColor={color} {...props} />
+    <RightDash dashColor={color} {...props} />
+    <BottomDash dashColor={color} {...props} />
+  </>
+);
+
 export {
   Container,
   Content,
   ContentWrap,
-  WrapBorder,
+  BorderView,
   ShadowWrap,
   LoadingWrap,
   FullImage,
@@ -113,4 +162,6 @@ export {
   RowWrap,
   FlexWrap,
   SpaceView,
+  CenteredWrap,
+  BorderDash,
 };

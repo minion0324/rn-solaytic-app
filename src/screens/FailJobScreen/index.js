@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Keyboard, ActivityIndicator } from 'react-native';
+import { Alert, Keyboard, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Toast from 'react-native-simple-toast';
@@ -7,7 +7,7 @@ import Toast from 'react-native-simple-toast';
 import {
   SVGS,
   COLORS,
-  SIZE1,
+  SIZE2,
   SIZE10,
   JOB_STATUS,
   COMPLETE_JOBS_KEY,
@@ -44,13 +44,12 @@ import {
   SearchBarWrap,
   SearchIconWrap,
   SearchInput,
-  RowWrap,
   SpaceView,
 } from 'src/styles/common.styles';
 import {
   ScreenText,
-  EmptyWrap,
-  Back,
+  Close,
+  Check,
 } from 'src/styles/header.styles';
 import {
   ModalWrap,
@@ -66,8 +65,9 @@ import {
 } from './styled';
 
 const {
-  FailIcon,
   SearchIcon,
+  RedActiveCircleCheckIcon,
+  DeactiveCircleCheckIcon,
 } = SVGS;
 
 const FailJobScreen = ({
@@ -105,16 +105,6 @@ const FailJobScreen = ({
     }, 1500);
   }, [searchText]);
 
-  useEffect(() => {
-    if (selectedIndex !== -1) {
-      showLightBox(CUSTOM_MODAL_SCREEN, {
-        width: '80%',
-        offsetFromCenter: SIZE10,
-        getContent: renderAlertModal,
-      });
-    }
-  }, [selectedIndex]);
-
   const checkIsInBackgroundMode = async () => {
     try {
       const { jobId } = focusedJob;
@@ -130,9 +120,22 @@ const FailJobScreen = ({
     }
   };
 
-  const onBack = () => {
+  const onClose = () => {
     Keyboard.dismiss();
     popScreen(componentId);
+  };
+
+  const onCheck = () => {
+    if (selectedIndex === -1) {
+      Alert.alert('Warning', 'Please select 1 reason.');
+      return;
+    }
+
+    showLightBox(CUSTOM_MODAL_SCREEN, {
+      width: '80%',
+      offsetFromCenter: SIZE10,
+      getContent: renderAlertModal,
+    });
   };
 
   const onFailJobSuccess = async () => {
@@ -241,7 +244,11 @@ const FailJobScreen = ({
               onFailJob();
             }}
           >
-            <AlertButtonText color={COLORS.RED1}>Proceed</AlertButtonText>
+            <AlertButtonText
+              color={COLORS.RED1}
+            >
+              Proceed
+            </AlertButtonText>
           </AlertButton>
         </AlertButtonRow>
       </ModalWrap>
@@ -253,15 +260,17 @@ const FailJobScreen = ({
       <ItemWrap
         deactivated
         onPress={() => setSelectedIndex(index)}
-        mLeft={SIZE1} mTop={SIZE1 / 2}
-        mRight={SIZE1} mBottom={SIZE1 / 2}
+        mLeft={SIZE2} mTop={0.5}
+        mRight={SIZE2} mBottom={0.5}
       >
-        <DriverNoteItem
-          activated={index === selectedIndex}
-        >
-          <DriverNoteText
-            activated={index === selectedIndex}
-          >
+        <DriverNoteItem>
+          {
+            index === selectedIndex
+            ? <RedActiveCircleCheckIcon />
+            : <DeactiveCircleCheckIcon />
+          }
+          <SpaceView mLeft={SIZE2} />
+          <DriverNoteText>
             {item.note}
           </DriverNoteText>
         </DriverNoteItem>
@@ -274,15 +283,12 @@ const FailJobScreen = ({
       <ShadowWrap>
         <HeaderBar
           centerIcon={
-            <RowWrap>
-              <FailIcon />
-              <SpaceView mLeft={SIZE1} />
-              <ScreenText>Fail Job</ScreenText>
-            </RowWrap>
+            <ScreenText>Fail Job Reason</ScreenText>
           }
-          leftIcon={<Back />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
+          leftIcon={<Close />}
+          rightIcon={<Check />}
+          onPressLeft={onClose}
+          onPressRight={onCheck}
         />
       </ShadowWrap>
 
@@ -291,8 +297,8 @@ const FailJobScreen = ({
           <SearchIcon />
         </SearchIconWrap>
         <SearchInput
-          placeholder={'Search ...'}
-          placeholderTextColor={COLORS.BLACK2}
+          placeholder={'Search'}
+          placeholderTextColor={COLORS.GRAY3}
           underlineColorAndroid={COLORS.TRANSPARENT1}
           returnKeyType={'go'}
           onSubmitEditing={onSearch}
