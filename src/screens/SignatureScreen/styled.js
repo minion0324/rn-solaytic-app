@@ -7,6 +7,7 @@ import {
   SIZE3,
   SIZE6,
   FONT,
+  SIGNATURE_WRAP_RATIO,
 } from 'src/constants';
 
 const InfoWrap = styled.View`
@@ -33,7 +34,7 @@ const ContactWrap = styled.View`
 
 const SignatureWrap = styled.View`
   width: 100%;
-  aspect-ratio: 1.2;
+  aspect-ratio: ${SIGNATURE_WRAP_RATIO};
   padding-vertical: ${SIZE1}px;
   padding-horizontal: ${SIZE3}px;
 `;
