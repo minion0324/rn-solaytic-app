@@ -70,6 +70,7 @@ import {
   DriverMessageBadge,
   BinInput,
   BinInputWrap,
+  ServicesWrap,
   PhotoWrap,
   SignWrap,
   PhotoModalButtonsWrap,
@@ -1148,8 +1149,7 @@ const JobDetailsScreenView = ({
         <SpaceView mTop={SIZE2} />
         {
           selectedServices.length > 0 &&
-          <BinInputWrap
-            color={COLORS.TRANSPARENT1}
+          <ServicesWrap
             effect={!isCompletedJobState}
           >
             {
@@ -1175,7 +1175,7 @@ const JobDetailsScreenView = ({
                 </FlexWrap>
               ))
             }
-          </BinInputWrap>
+          </ServicesWrap>
         }
         <SpaceView mTop={SIZE2} />
       </View>
