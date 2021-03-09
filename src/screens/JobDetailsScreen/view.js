@@ -1515,7 +1515,11 @@ const JobDetailsScreenView = ({
                   <LabelText>Nett weight</LabelText>
                   <SpaceView mTop={SIZE1} />
                   <InfoText>
-                    {binInfo[binIndex]['binWeight'] + ' tons'}
+                    {
+                      binInfo[binIndex]['binWeight']
+                      ? binInfo[binIndex]['binWeight'] + ' tons'
+                      : ' --- '
+                    }
                   </InfoText>
                 </FlexWrap>
                 {
