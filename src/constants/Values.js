@@ -74,6 +74,8 @@ const JOB_DETAILS_KEY = '@job_details';
 
 const JOB_DETAILS_LIMIT = 20;
 
+const SIGNATURE_WRAP_RATIO = 1.2;
+
 //
 const API_BASE_URL =
   'https://staging-tms-dispatch.logisfleet.com/';
@@ -111,5 +113,6 @@ export {
   BACKGROUND_FETCH_KEY,
   JOB_DETAILS_KEY,
   JOB_DETAILS_LIMIT,
+  SIGNATURE_WRAP_RATIO,
   API_BASE_URL,
 };
