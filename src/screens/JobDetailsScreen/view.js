@@ -1222,9 +1222,7 @@ const JobDetailsScreenView = ({
               <InfoText>
                 {
                   `$${amountCollected} ` +
-                  focusedJob.jobPaymentTypeList[
-                    focusedJob.steps[index].jobPaymentType
-                  ]
+                  focusedJob.jobPaymentTypeList[jobPaymentType]
                 }
               </InfoText>
             </View>
@@ -1234,7 +1232,9 @@ const JobDetailsScreenView = ({
               <InfoText>
                 {
                   `$${focusedJob.steps[index].amountToCollect} ` +
-                  focusedJob.jobPaymentTypeList[jobPaymentType]
+                  focusedJob.jobPaymentTypeList[
+                    focusedJob.steps[index].jobPaymentType
+                  ]
                 }
               </InfoText>
             </View>
