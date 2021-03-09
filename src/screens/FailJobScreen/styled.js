@@ -9,19 +9,16 @@ import {
 
 const DriverNoteItem = styled.View`
   height: ${SIZE12}px;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
   padding-horizontal: ${SIZE3}px;
-  background-color: ${(props) => (
-    props.activated ? COLORS.RED1 : COLORS.WHITE1
-  )};
+  background-color: ${COLORS.WHITE1};
 `;
 
 const DriverNoteText = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 500;
-  color: ${(props) => (
-    props.activated ? COLORS.WHITE1 : COLORS.BLACK2
-  )};
+  color: ${COLORS.BLACK2};
 `;
 
 export {

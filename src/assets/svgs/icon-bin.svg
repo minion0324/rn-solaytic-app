@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="15.002" height="20.5" viewBox="0 0 15.002 20.5">
+  <g id="Group_17072" data-name="Group 17072" transform="translate(0 20.5) rotate(-90)">
+    <path id="Icon_awesome-sign-out-alt" data-name="Icon awesome-sign-out-alt" d="M7.5.469V2.031a.47.47,0,0,1-.469.469H3.75A1.249,1.249,0,0,0,2.5,3.75v7.5A1.249,1.249,0,0,0,3.75,12.5H7.031a.47.47,0,0,1,.469.469v1.562A.47.47,0,0,1,7.031,15H3.75A3.751,3.751,0,0,1,0,11.25V3.75A3.751,3.751,0,0,1,3.75,0H7.031A.47.47,0,0,1,7.5.469Z" transform="translate(0 0.002)" fill="#7f7f7f"/>
+    <path id="Icon_awesome-sign-out-alt-2" data-name="Icon awesome-sign-out-alt" d="M.272,6.838,6.835.275a.939.939,0,0,1,1.6.664v3.75h5.313a.935.935,0,0,1,.938.937v3.75a.935.935,0,0,1-.937.937H8.437v3.75a.94.94,0,0,1-1.6.664L.272,8.166A.945.945,0,0,1,.272,6.838Z" transform="translate(5.813 0)" fill="#7f7f7f"/>
+  </g>
+</svg>

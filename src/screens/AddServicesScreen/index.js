@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Keyboard, ActivityIndicator } from 'react-native';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
+import {
+  Keyboard,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { useNavigationComponentDidDisappear } from 'react-native-navigation-hooks';
 
 import {
   HeaderBar,
@@ -32,24 +39,22 @@ import {
 } from 'src/styles/common.styles';
 import {
   ScreenText,
-  EmptyWrap,
-  Back,
+  Close,
+  Check,
 } from 'src/styles/header.styles';
 
 import {
   ServiceItem,
   ServiceText,
-  IconButton,
+  ServiceInput,
   QuantityWrap,
 } from './styled';
 
 const {
   SearchIcon,
   ServiceIcon,
-  ActiveCircleCheckIcon,
+  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
-  AddCircleIcon,
-  RemoveCircleIcon,
 } = SVGS;
 
 const AddServicesScreen = ({
@@ -81,10 +86,6 @@ const AddServicesScreen = ({
     }, 1500);
   }, [searchText, originServices]);
 
-  useNavigationComponentDidDisappear(() => {
-    setServices(originServices);
-  });
-
   const getSearchedServices = (newServices) => {
     if (!searchText) {
       setSearchedServices(newServices || originServices);
@@ -106,8 +107,20 @@ const AddServicesScreen = ({
     setSearchedServices(searched);
   };
 
-  const onBack = () => {
+  const onClose = () => {
+    Keyboard.dismiss();
     popScreen(componentId);
+  };
+
+  const onCheck = () => {
+    const newServices = originServices.map((item) => (
+      item.isSelected &&
+      (!item.quantity || item.quantity === '0')
+      ? { ...item, isSelected: false }
+      : item
+    ));
+    setServices(newServices);
+    onClose();
   };
 
   const onSearch = () => {
@@ -129,28 +142,48 @@ const AddServicesScreen = ({
   };
 
   const renderItem = ({ item, index }) => {
+    if (
+      !item.isSelected &&
+      index < originServices.length
+    ) {
+      return null;
+    }
+
+    if (
+      item.isSelected &&
+      index >= originServices.length
+    ) {
+      return null;
+    }
+
     if (item.notShow) {
       return null;
     }
+
+    const idx = index < originServices.length
+      ? index : index - originServices.length;
 
     return (
       <ItemWrap
         deactivated
         onPress={() => {
-          onUpdateOriginService(index, {
+          onUpdateOriginService(idx, {
             ...item,
             isSelected: !item.isSelected,
+            quantity:
+              (!item.quantity || item.quantity === '0')
+              ? '1' : item.quantity,
           });
         }}
-        mLeft={SIZE1} mTop={0.5}
-        mRight={SIZE1} mBottom={0.5}
+        mLeft={SIZE2} mTop={0.5}
+        mRight={SIZE2} mBottom={0.5}
       >
         <ServiceItem>
-          <FlexWrap flex={2}>
+          <FlexWrap>
             <RowWrap>
               {
                 item.isSelected
-                ? <ActiveCircleCheckIcon />
+                ? <BlueActiveCircleCheckIcon />
                 : <DeactiveCircleCheckIcon />
               }
               <SpaceView mLeft={SIZE2} />
@@ -159,38 +192,26 @@ const AddServicesScreen = ({
               </ServiceText>
             </RowWrap>
           </FlexWrap>
-          {
-            item.isSelected &&
-            <FlexWrap flex={1}>
-              <RowWrap>
-                <IconButton
-                  onPress={() => {
-                    onUpdateOriginService(index, {
+          <TouchableWithoutFeedback>
+            <QuantityWrap>
+              {
+                item.isSelected &&
+                <ServiceInput
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  value={`${item.quantity}`}
+                  onChangeText={(text) =>
+                    onUpdateOriginService(idx, {
                       ...item,
-                      quantity: +(item.quantity || 1) + 1,
-                    });
-                  }}
-                >
-                  <AddCircleIcon />
-                </IconButton>
-                <QuantityWrap>
-                  <ServiceText>
-                    {item.quantity || 1}
-                  </ServiceText>
-                </QuantityWrap>
-                <IconButton
-                  onPress={() => {
-                    onUpdateOriginService(index, {
-                      ...item,
-                      quantity: +(item.quantity || 1) - 1,
-                    });
-                  }}
-                >
-                  <RemoveCircleIcon />
-                </IconButton>
-              </RowWrap>
-            </FlexWrap>
-          }
+                      quantity: text,
+                    })
+                  }
+                  keyboardType={'numeric'}
+                />
+              }
+            </QuantityWrap>
+          </TouchableWithoutFeedback>
         </ServiceItem>
       </ItemWrap>
     );
@@ -207,9 +228,10 @@ const AddServicesScreen = ({
               <ScreenText>Add Services</ScreenText>
             </RowWrap>
           }
-          leftIcon={<Back />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
+          leftIcon={<Close />}
+          rightIcon={<Check />}
+          onPressLeft={onClose}
+          onPressRight={onCheck}
         />
       </ShadowWrap>
 
@@ -218,8 +240,8 @@ const AddServicesScreen = ({
           <SearchIcon />
         </SearchIconWrap>
         <SearchInput
-          placeholder={'Search ...'}
-          placeholderTextColor={COLORS.BLACK2}
+          placeholder={'Search'}
+          placeholderTextColor={COLORS.GRAY3}
           underlineColorAndroid={COLORS.TRANSPARENT1}
           returnKeyType={'go'}
           onSubmitEditing={onSearch}
@@ -232,8 +254,13 @@ const AddServicesScreen = ({
 
       <Content>
         <ListWrap
-          data={searchedServices}
-          keyExtractor={(item) => `${item.serviceAdditionalChargeTemplateId}`}
+          data={
+            originServices.concat(searchedServices)
+          }
+          keyExtractor={(item, index) => (
+            `${item.serviceAdditionalChargeTemplateId}` +
+            `${index < originServices.length ? '_origin' : ''}`
+          )}
           renderItem={renderItem}
         />
 

@@ -24,6 +24,7 @@ const fetchCompleteJobs = async (
   binInfo,
   services,
   amountCollected,
+  jobPaymentType,
   attempt
 ) => {
   try {
@@ -40,7 +41,12 @@ const fetchCompleteJobs = async (
           'Authorization': token,
         },
         body: JSON.stringify({
-          jobIds, stepBinUpdate, pricings, amountCollected, attempt,
+          jobIds,
+          stepBinUpdate,
+          pricings,
+          amountCollected,
+          jobPaymentType,
+          attempt,
         }),
       }
     );

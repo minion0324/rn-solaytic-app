@@ -83,7 +83,7 @@ const getJobStatus = createSelector(
   },
 );
 
-const getPhotosAndSign = createSelector(
+const getPhotosAndSigns = createSelector(
   getFocusedJob,
   (focusedJob) => {
     try {
@@ -91,19 +91,22 @@ const getPhotosAndSign = createSelector(
 
       return {
         photos: lastAttempt.jobPhotos.map((item) => {
-          return { uri: item.photoUrl };
+          return {
+            jobStepId: item.jobStepId,
+            uri: item.photoUrl,
+          };
         }),
-        sign: { uri: lastAttempt.signatureUrl },
-        signedUserName: lastAttempt.signedUserName,
-        signedUserContact: lastAttempt.signedUserContact,
+        signs: lastAttempt.jobSignatures.map((item) => {
+          return {
+            jobStepId: item.jobStepId,
+            uri: item.jobSignatureUrl,
+            signedUserName: item.jobSignedUserName,
+            signedUserContact: item.jobSignedUserContact,
+          }
+        }),
       };
     } catch (error) {
-      return {
-        photos: [],
-        sign: { uri: null },
-        signedUserName: '',
-        signedUserContact: '',
-      };
+      return { photos: [], signs: [] };
     }
   },
 );
@@ -131,6 +134,6 @@ export default {
   getFocusedJob,
   getFocusedJobId,
   getJobStatus,
-  getPhotosAndSign,
+  getPhotosAndSigns,
   getJobReceiptSetting,
 };

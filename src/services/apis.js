@@ -28,6 +28,7 @@ function apiSetFCMToken(
   deviceId,
   deviceManufacturer,
   deviceModel,
+  appVersion,
 ) {
   return apiCall('api/mobile/driver/authenticate-token', 'post', {
     data: {
@@ -36,6 +37,7 @@ function apiSetFCMToken(
       deviceId,
       deviceManufacturer,
       deviceModel,
+      appVersion,
     },
   });
 }
@@ -74,46 +76,81 @@ function apiAcknowledgeJobs(jobIds) {
   });
 };
 
-function apiStartJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+function apiStartJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  jobPaymentType,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/start', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
+      attempt,
     },
   });
 };
 
-function apiPullJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+function apiPullJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  jobPaymentType,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/pull', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
+      attempt,
     },
   });
 };
 
-function apiExchangeJobs(jobIds, stepBinUpdate, pricings, amountCollected) {
+function apiExchangeJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  jobPaymentType,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/exchange', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
+      attempt,
     },
   });
 };
 
-function apiCompleteJobs(jobIds, stepBinUpdate, pricings, amountCollected, attempt) {
+function apiCompleteJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  jobPaymentType,
+  attempt,
+) {
   return apiCall('api/mobile/driver/jobs/Complete', 'post', {
     data: {
       jobIds,
       stepBinUpdate,
       pricings,
       amountCollected,
+      jobPaymentType,
       attempt,
     },
   });
@@ -167,15 +204,6 @@ function apiAddMessage(jobId, message) {
   });
 };
 
-function apiUpdateAmountCollected(jobIds, attempt) {
-  return apiCall('api/mobile/driver/jobs/update-amount-collected', 'post', {
-    data: {
-      jobIds,
-      attempt,
-    },
-  });
-};
-
 function apiGetBinNumbers(
   searchQuery,
   currentPage = 1,
@@ -200,6 +228,24 @@ function apiGetJobDates(
   });
 };
 
+function apiGetWasteTypes(
+  searchQuery = '',
+  currentPage = 1,
+  pageSize = 10,
+  sortColumn = '',
+  sortDir = 'asc',
+) {
+  return apiCall('api/mobile/driver/wastetype', 'get', {
+    params: {
+      searchQuery,
+      currentPage,
+      pageSize,
+      sortColumn,
+      sortDir,
+    },
+  });
+};
+
 export {
   apiLogin,
   apiAuthToken,
@@ -215,7 +261,7 @@ export {
   apiGetJobById,
   apiMarkMessagesAsRead,
   apiAddMessage,
-  apiUpdateAmountCollected,
   apiGetBinNumbers,
   apiGetJobDates,
+  apiGetWasteTypes,
 };

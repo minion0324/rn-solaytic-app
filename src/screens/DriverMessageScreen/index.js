@@ -58,12 +58,12 @@ import {
 } from './styled';
 
 const {
-  ChatIcon,
+  MessageIcon,
   SendIcon,
   MessageAvatarIcon,
 } = SVGS;
 
-const DriverNoteScreen = ({
+const DriverMessageScreen = ({
   focusedJob,
   newCommentInfo,
   markMessagesAsRead,
@@ -186,9 +186,9 @@ const DriverNoteScreen = ({
         <HeaderBar
           centerIcon={
             <RowWrap>
-              <ChatIcon />
+              <MessageIcon />
               <SpaceView mLeft={SIZE1} />
-              <ScreenText>Driver Note</ScreenText>
+              <ScreenText>Driver Message</ScreenText>
             </RowWrap>
           }
           leftIcon={<Back />}
@@ -198,10 +198,12 @@ const DriverNoteScreen = ({
       </ShadowWrap>
 
       <Content>
-        <ContentWrap color={COLORS.WHITE2}>
+        <ContentWrap
+          color={COLORS.WHITE2}
+          mLeft={SIZE1} mRight={SIZE1}
+        >
           <FlatList
             ref={listRef}
-            bounces={false}
             data={focusedJob.messages}
             keyExtractor={(item) => `${item.jobMessageId}`}
             showsVerticalScrollIndicator={false}
@@ -216,7 +218,9 @@ const DriverNoteScreen = ({
         }
       >
         <ShadowWrap forUp>
-          <ContentWrap>
+          <ContentWrap
+            mLeft={SIZE1} mRight={SIZE1}
+          >
             <RowWrap>
               <CommentInput
                 placeholder={'Type a message'}
@@ -240,7 +244,7 @@ const DriverNoteScreen = ({
   );
 };
 
-DriverNoteScreen.propTypes = {
+DriverMessageScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
   markMessagesAsRead: PropTypes.func.isRequired,
@@ -250,7 +254,7 @@ DriverNoteScreen.propTypes = {
   componentId: PropTypes.string.isRequired,
 };
 
-DriverNoteScreen.defaultProps = {
+DriverMessageScreen.defaultProps = {
   //
 };
 
@@ -271,4 +275,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DriverNoteScreen);
+)(DriverMessageScreen);
