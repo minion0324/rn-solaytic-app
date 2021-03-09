@@ -52,7 +52,7 @@ import {
 } from 'src/styles/text.styles';
 
 import {
-  HalfWrap,
+  SignatureWrap,
   LogoImageWrap,
 } from './styled';
 
@@ -154,9 +154,9 @@ const PreviewScreen = ({
         {
           getReceiptSettingVariable('ShowSignature') === 'True' &&
           <View>
-            <HalfWrap>
+            <SignatureWrap>
               <FullImage source={{ uri: sign.uri }} />
-            </HalfWrap>
+            </SignatureWrap>
             <BorderView />
           </View>
         }
