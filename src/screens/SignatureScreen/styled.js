@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import {
   COLORS,
+  WIDTH,
   SIZE1,
   SIZE2,
   SIZE3,
@@ -9,6 +10,9 @@ import {
   FONT,
   SIGNATURE_WRAP_RATIO,
 } from 'src/constants';
+
+const SIGNATURE_PAD_WIDTH = WIDTH * 0.9 - SIZE3 * 2;
+const SIGNATURE_PAD_HEIGHT = SIGNATURE_PAD_WIDTH / SIGNATURE_WRAP_RATIO;
 
 const InfoWrap = styled.View`
   align-items: center;
@@ -33,12 +37,10 @@ const ContactWrap = styled.View`
 `;
 
 const SignatureWrap = styled.View`
-  width: 100%;
-  aspect-ratio: ${
-    SIGNATURE_WRAP_RATIO - 0.1
-  };
-  padding-vertical: ${SIZE1}px;
-  padding-horizontal: ${SIZE3}px;
+  width: ${SIGNATURE_PAD_WIDTH}px;
+  aspect-ratio: ${SIGNATURE_WRAP_RATIO};
+  margin-vertical: ${SIZE1}px;
+  margin-horizontal: ${SIZE3}px;
 `;
 
 const Input = styled.TextInput`
@@ -51,7 +53,8 @@ const Input = styled.TextInput`
 const webStyle = `
   .m-signature-pad {
     box-shadow: none;
-    aspect-ratio: ${SIGNATURE_WRAP_RATIO};
+    width: ${SIGNATURE_PAD_WIDTH}px;
+    height: ${SIGNATURE_PAD_HEIGHT}px;
     border-color: ${COLORS.TRANSPARENT1};
   }
   .m-signature-pad--body {
@@ -70,7 +73,7 @@ const webStyle = `
   }
   .m-signature-pad--footer .button.clear {
     position: absolute;
-    right: 0px;
+    right: 10px;
     background-color: ${COLORS.TRANSPARENT1};
     color: ${COLORS.BLUE1};
   }
