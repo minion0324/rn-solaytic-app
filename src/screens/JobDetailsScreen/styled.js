@@ -47,6 +47,17 @@ const BinInputWrap = styled.View`
   )};
 `;
 
+const ServicesWrap = styled.View`
+  padding-vertical: ${SIZE2}px;
+  padding-horizontal: ${(props) => (
+    props.effect ? SIZE2 : 0
+  )}px;
+  border-radius: ${SIZE1}px;
+  background-color: ${(props) => (
+    props.effect ? COLORS.WHITE5 : COLORS.WHITE1
+  )};
+`;
+
 const PhotoWrap = styled.View`
   width: 100%;
   align-items: center;
@@ -91,6 +102,7 @@ export {
   DriverMessageBadge,
   BinInput,
   BinInputWrap,
+  ServicesWrap,
   PhotoWrap,
   SignWrap,
   PhotoModalButtonsWrap,
