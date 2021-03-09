@@ -1780,7 +1780,6 @@ const JobDetailsScreenView = ({
       <Content>
         <ScrollView
           ref={scrollRef}
-          bounces={false}
           showsVerticalScrollIndicator={false}
         >
           { renderLocationAndTime() }

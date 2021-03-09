@@ -204,7 +204,6 @@ const DriverMessageScreen = ({
         >
           <FlatList
             ref={listRef}
-            bounces={false}
             data={focusedJob.messages}
             keyExtractor={(item) => `${item.jobMessageId}`}
             showsVerticalScrollIndicator={false}

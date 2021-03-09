@@ -316,7 +316,6 @@ const BluetoothPrinterScreen = ({
           pairedDevices.length > 0
           ? <ListWrap>
               <FlatList
-                bounces={false}
                 data={pairedDevices}
                 keyExtractor={item => item.address}
                 renderItem={renderItem}
@@ -340,7 +339,6 @@ const BluetoothPrinterScreen = ({
           foundDevices.length > 0
           ? <ListWrap>
               <FlatList
-                bounces={false}
                 data={foundDevices}
                 keyExtractor={item => item.address}
                 renderItem={renderItem}

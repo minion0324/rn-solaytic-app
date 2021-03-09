@@ -241,7 +241,6 @@ const AddressScreen = ({
 
       <Content>
         <FlatList
-          bounces={false}
           data={focusedJob.steps}
           keyExtractor={(item) => `${item.jobStepId}`}
           showsVerticalScrollIndicator={false}

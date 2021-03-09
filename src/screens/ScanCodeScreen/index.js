@@ -168,7 +168,6 @@ const ScanCodeScreen = ({
 
       <Content>
         <ScrollView
-          bounces={false}
           showsVerticalScrollIndicator={false}
         >
           <SpaceView mTop={SIZE2} />

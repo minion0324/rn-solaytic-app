@@ -654,7 +654,6 @@ const PreviewScreen = ({
       </ShadowWrap>
 
       <ScrollView
-        bounces={false}
         showsVerticalScrollIndicator={false}
       >
         <Content>
