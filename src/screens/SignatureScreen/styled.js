@@ -34,7 +34,9 @@ const ContactWrap = styled.View`
 
 const SignatureWrap = styled.View`
   width: 100%;
-  aspect-ratio: ${SIGNATURE_WRAP_RATIO};
+  aspect-ratio: ${
+    SIGNATURE_WRAP_RATIO - 0.1
+  };
   padding-vertical: ${SIZE1}px;
   padding-horizontal: ${SIZE3}px;
 `;
@@ -49,6 +51,7 @@ const Input = styled.TextInput`
 const webStyle = `
   .m-signature-pad {
     box-shadow: none;
+    aspect-ratio: ${SIGNATURE_WRAP_RATIO};
     border-color: ${COLORS.TRANSPARENT1};
   }
   .m-signature-pad--body {
@@ -56,9 +59,8 @@ const webStyle = `
     border: 1px solid ${COLORS.GRAY3};
   }
   .m-signature-pad--footer {
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    bottom: 30px;
+    height: auto;
   }
   .m-signature-pad--footer .button.save {
     display: none;
@@ -67,8 +69,8 @@ const webStyle = `
     display: none;
   }
   .m-signature-pad--footer .button.clear {
+    position: absolute;
     right: 0px;
-    left: auto;
     background-color: ${COLORS.TRANSPARENT1};
     color: ${COLORS.BLUE1};
   }
