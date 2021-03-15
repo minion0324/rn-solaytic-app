@@ -23,8 +23,13 @@ const ServiceText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
-const IconButton = styled.TouchableOpacity`
-  padding: ${SIZE1}px;
+const ServiceInput = styled.TextInput`
+  flex: 1;
+  padding: 0px;
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  color: ${COLORS.BLACK2};
+  text-align: center;
 `;
 
 const QuantityWrap = styled.View`
@@ -34,12 +39,11 @@ const QuantityWrap = styled.View`
   justify-content: center;
   background-color: ${COLORS.WHITE3};
   border-radius: ${SIZE1}px;
-  margin-horizontal: ${SIZE1}px;
 `;
 
 export {
   ServiceItem,
   ServiceText,
-  IconButton,
+  ServiceInput,
   QuantityWrap,
 };

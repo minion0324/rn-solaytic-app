@@ -8,6 +8,7 @@ import {
   useNavigationComponentDidAppear,
   useNavigationComponentDidDisappear,
 } from 'react-native-navigation-hooks';
+import { pick } from 'lodash';
 
 import {
   JOB_STATUS,
@@ -23,10 +24,11 @@ import {
   SIGNATURE_SCREEN,
   FAIL_JOB_SCREEN,
   ADDRESS_SCREEN,
-  DRIVER_NOTE_SCREEN,
+  DRIVER_MESSAGE_SCREEN,
   ADD_SERVICES_SCREEN,
-  BIN_INFO_SCREEN,
+  SCAN_CODE_SCREEN,
   PREVIEW_SCREEN,
+  ADD_WASTE_TYPES_SCREEN,
 } from 'src/navigation';
 import {
   Jobs,
@@ -45,7 +47,7 @@ import JobDetailsScreenView from './view';
 const JobDetailsScreen = ({
   focusedJob,
   jobStatus,
-  photosAndSign,
+  photosAndSigns,
   newCommentInfo,
   coreScreenInfo,
   acknowledgeJobs,
@@ -53,7 +55,6 @@ const JobDetailsScreen = ({
   pullJobs,
   exchangeJobs,
   completeJobs,
-  updateAmountCollected,
   setCoreScreenInfo,
   setIsRequiredUpdateTab,
   getJobDates,
@@ -63,24 +64,23 @@ const JobDetailsScreen = ({
 
   const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
 
-  const [ photos, setPhotos ] = useState(photosAndSign.photos);
-  const [ sign, setSign ] = useState(photosAndSign.sign);
-
-  const [ signedUserName, setSignedUserName ] = useState(photosAndSign.signedUserName);
-  const [ signedUserContact, setSignedUserContact ] = useState(photosAndSign.signedUserContact);
+  const [ photos, setPhotos ] = useState([]);
+  const [ signs, setSigns ] = useState([]);
 
   const [ binInfo, setBinInfo ] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.binInfo
     ? focusedJob.appExtraData.binInfo
-    : [0, 1].map((index) => {
-        const {
-          jobStepId, wasteType, binType, binNumber, binWeight,
-        } = focusedJob.steps[index];
-
-        return {
-          jobStepId, wasteType, binType, binNumber, binWeight,
-        };
-      })
+    : [0, 1].map((index) => pick(
+        focusedJob.steps[index],
+        [
+          'jobStepId',
+          'wasteType',
+          'binType',
+          'binNumber',
+          'binWeight',
+          'wasteTypes',
+        ],
+      ))
   );
 
   const [ services, setServices ] = useState(
@@ -88,16 +88,14 @@ const JobDetailsScreen = ({
     ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
-  const [ cashIndex, setCashIndex ] = useState(
-    !focusedJob.isEnabledCashCollection
-    ? -1
-    : (focusedJob.appExtraData && focusedJob.appExtraData.amountCollected)
-      ? focusedJob.appExtraData.amountCollected === focusedJob.amountToCollect
-        ? 0 : 1
-      : focusedJob.collectedAmount
-        ? focusedJob.collectedAmount === focusedJob.amountToCollect
-          ? 0 : 1
-        : -1
+  const [ amountCollected, setAmountCollected ] = useState(
+    focusedJob.appExtraData && focusedJob.appExtraData.amountCollected
+    ? focusedJob.appExtraData.amountCollected : focusedJob.collectedAmount
+  );
+
+  const [ jobPaymentType, setJobPaymentType ] = useState(
+    focusedJob.appExtraData && focusedJob.appExtraData.jobPaymentType
+    ? focusedJob.appExtraData.jobPaymentType : focusedJob.jobPaymentType || 0
   );
 
   const isInProgress = useMemo(() => {
@@ -109,9 +107,13 @@ const JobDetailsScreen = ({
   }, [jobStatus]);
 
   useEffect(() => {
-    getSavedPhotosAndSign();
+    getSavedPhotosAndSigns();
     checkIsInBackgroundMode();
   }, []);
+
+  useEffect(() => {
+    getPhotosAndSigns();
+  }, [photosAndSigns]);
 
   useEffect(() => {
     onNewCommentInfo();
@@ -166,30 +168,40 @@ const JobDetailsScreen = ({
     }
   };
 
-  const getSavedPhotosAndSign = async () => {
+  const getPhotosAndSigns = () => {
+    const {
+      photos: newPhotos,
+      signs: newSigns,
+    } = photosAndSigns;
+
+    if (photos.length <= newPhotos.length) {
+      setPhotos(newPhotos);
+    }
+
+    if (signs.length <= newSigns.length) {
+      setSigns(newSigns);
+    }
+  };
+
+  const getSavedPhotosAndSigns = async () => {
     try {
       const {
         value: { appExtraData },
       } = await getCacheItemById(JOB_DETAILS_KEY, { jobId: focusedJob.jobId });
 
       const {
-        photosAndSign: {
+        photosAndSigns: {
           photos: savedPhotos,
-          sign: savedSign,
-          signedUserName: savedSignedUserName,
-          signedUserContact: savedSignedUserContact,
+          signs: savedSigns,
         }
       } = appExtraData;
 
-      if (photos.length <= 0 && savedPhotos.length > 0) {
+      if (photos.length < savedPhotos.length) {
         setPhotos(savedPhotos);
       }
 
-      if (!sign.uri && savedSign.uri) {
-        setSign(savedSign);
-
-        setSignedUserName(savedSignedUserName);
-        setSignedUserContact(savedSignedUserContact);
+      if (signs.length < savedSigns.length) {
+        setSigns(savedSigns);
       }
     } catch (error) {
       //
@@ -202,11 +214,9 @@ const JobDetailsScreen = ({
         ...focusedJob,
         appExtraData: {
           ...(focusedJob.appExtraData || {}),
-          photosAndSign: {
+          photosAndSigns: {
             photos,
-            sign,
-            signedUserName,
-            signedUserContact,
+            signs,
           },
         },
       };
@@ -227,9 +237,9 @@ const JobDetailsScreen = ({
 
     if (
       +jobId === focusedJob.jobId &&
-      coreScreenInfo.componentName !== DRIVER_NOTE_SCREEN
+      coreScreenInfo.componentName !== DRIVER_MESSAGE_SCREEN
     ) {
-      pushScreen(componentId, DRIVER_NOTE_SCREEN);
+      pushScreen(componentId, DRIVER_MESSAGE_SCREEN);
     }
   };
 
@@ -254,15 +264,14 @@ const JobDetailsScreen = ({
   const onStart = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     startJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
+      photos,
+      signs,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -271,15 +280,14 @@ const JobDetailsScreen = ({
   const onPull = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     pullJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
+      photos,
+      signs,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -288,36 +296,20 @@ const JobDetailsScreen = ({
   const onExchange = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     exchangeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
+      photos,
+      signs,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
   };
 
   const onComplete = () => {
-    if (focusedJob.mustTakePhoto && photos.length === 0) {
-      Alert.alert('Warning', 'Please upload photos.');
-      return;
-    }
-
-    if (focusedJob.mustTakeSignature && !(sign && sign.uri)) {
-      Alert.alert('Warning', 'Please upload signature.');
-      return;
-    }
-
-    if (focusedJob.isEnabledCashCollection && cashIndex === -1) {
-      Alert.alert('Warning', 'Please select payments.');
-      return;
-    }
-
     if (isInBackgroundMode) {
       Alert.alert(
         'Warning',
@@ -365,25 +357,20 @@ const JobDetailsScreen = ({
   const onCompleteJobs = () => {
     setLoading(true);
 
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     completeJobs({
       jobIds: `${focusedJob.jobId}`,
       binInfo,
       services,
       amountCollected,
+      jobPaymentType,
       photos,
-      sign,
-      signedUserName,
-      signedUserContact,
+      signs,
       success: onCompleteJobsSuccess,
       failure: () => setLoading(false),
     });
   };
 
-  const onPhoto = () => {
+  const onPhoto = (jobStepId) => {
     const options = {
       title: 'Select Your Photo',
       storageOptions: {
@@ -399,53 +386,25 @@ const JobDetailsScreen = ({
         //
       } else {
         const { uri, data } = response;
-        setPhotos([ ...photos, { uri, data } ]);
+        setPhotos([ ...photos, { jobStepId, uri, data } ]);
       }
     });
   };
 
-  const onSign = () => {
+  const onSign = (jobStepId) => {
     showLightBox(SIGNATURE_SCREEN, {
-      setSign,
-      signedUserName,
-      setSignedUserName,
-      signedUserContact,
-      setSignedUserContact,
+      jobStepId,
+      signs,
+      setSigns,
     });
   };
 
-  const onCancelPhoto = (index) => {
-    const newPhotos = photos.slice(0);
-    newPhotos.splice(index, 1);
+  const onCancelPhoto = (selectedPhoto) => {
+    const newPhotos = photos.filter((photo) => (
+      photo.uri !== selectedPhoto.uri
+    ));
 
     setPhotos(newPhotos);
-  };
-
-  const onCancelSign = () => {
-    setSign(photosAndSign.sign);
-
-    setSignedUserName(photosAndSign.signedUserName);
-    setSignedUserContact(photosAndSign.signedUserContact);
-  };
-
-  const onUpdateAmountCollected = (amount) => {
-    if (!onAlertNotProgress()) {
-      return;
-    }
-
-    updateAmountCollected({
-      jobIds: `${focusedJob.jobId}`,
-      amountCollected: +amount,
-    });
-  };
-
-  const onAlertNotProgress = () => {
-    if (!isInProgress) {
-      Alert.alert('Warning', 'This job is not in progress now.');
-      return false;
-    }
-
-    return true;
   };
 
   const onFail = () => {
@@ -456,28 +415,32 @@ const JobDetailsScreen = ({
     pushScreen(componentId, ADDRESS_SCREEN, { customerSiteIndex });
   };
 
-  const onDriverNote = () => {
-    pushScreen(componentId, DRIVER_NOTE_SCREEN);
+  const onDriverMessage = () => {
+    pushScreen(componentId, DRIVER_MESSAGE_SCREEN);
   };
 
   const onAddServices = () => {
-    pushScreen(componentId, ADD_SERVICES_SCREEN, { services, setServices });
+    pushScreen(componentId, ADD_SERVICES_SCREEN, {
+      services, setServices,
+    });
   };
 
-  const onBinInfo = (binIndex, binInOutInfoIndex) => {
-    pushScreen(componentId, BIN_INFO_SCREEN, {
-      binInfo, setBinInfo, binIndex, binInOutInfoIndex,
+  const onAddWasteTypes = (binIndex, binInOutIndex) => {
+    pushScreen(componentId, ADD_WASTE_TYPES_SCREEN, {
+      binIndex, binInOutIndex, binInfo, setBinInfo,
+    });
+  };
+
+  const onScanCode = (binIndex) => {
+    pushScreen(componentId, SCAN_CODE_SCREEN, {
+      binIndex, binInfo, setBinInfo,
     });
   };
 
   const onPrint = (getBinInOutInfoIndex, getCustomerSiteIndex) => {
-    const amountCollected =
-      (cashIndex === 0 && focusedJob.amountToCollect) ||
-      (cashIndex === 1 && focusedJob.collectedAmount) || 0;
-
     pushScreen(componentId, PREVIEW_SCREEN, {
-      sign, signedUserName, signedUserContact,
-      binInfo, services, amountCollected,
+      signs,
+      binInfo, services, amountCollected, jobPaymentType,
       getBinInOutInfoIndex, getCustomerSiteIndex,
     });
   };
@@ -486,14 +449,15 @@ const JobDetailsScreen = ({
     <JobDetailsScreenView
       loading={loading}
       photos={photos}
-      sign={sign}
-      signedUserName={signedUserName}
-      signedUserContact={signedUserContact}
+      signs={signs}
       binInfo={binInfo}
+      setBinInfo={setBinInfo}
       jobStatus={jobStatus}
       services={services}
-      cashIndex={cashIndex}
-      setCashIndex={setCashIndex}
+      amountCollected={amountCollected}
+      setAmountCollected={setAmountCollected}
+      jobPaymentType={jobPaymentType}
+      setJobPaymentType={setJobPaymentType}
       isInProgress={isInProgress}
 
       focusedJob={focusedJob}
@@ -507,14 +471,12 @@ const JobDetailsScreen = ({
       onPhoto={onPhoto}
       onSign={onSign}
       onCancelPhoto={onCancelPhoto}
-      onCancelSign={onCancelSign}
-      onUpdateAmountCollected={onUpdateAmountCollected}
-      onAlertNotProgress={onAlertNotProgress}
       onFail={onFail}
       onAddress={onAddress}
-      onDriverNote={onDriverNote}
+      onDriverMessage={onDriverMessage}
       onAddServices={onAddServices}
-      onBinInfo={onBinInfo}
+      onAddWasteTypes={onAddWasteTypes}
+      onScanCode={onScanCode}
       onPrint={onPrint}
     />
   );
@@ -523,7 +485,7 @@ const JobDetailsScreen = ({
 JobDetailsScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   jobStatus: PropTypes.string.isRequired,
-  photosAndSign: PropTypes.object.isRequired,
+  photosAndSigns: PropTypes.object.isRequired,
   newCommentInfo: PropTypes.object.isRequired,
   coreScreenInfo: PropTypes.object.isRequired,
   acknowledgeJobs: PropTypes.func.isRequired,
@@ -531,7 +493,6 @@ JobDetailsScreen.propTypes = {
   pullJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
-  updateAmountCollected: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
   setIsRequiredUpdateTab: PropTypes.func.isRequired,
   getJobDates: PropTypes.func.isRequired,
@@ -546,7 +507,7 @@ const mapStateToProps = (state) => {
   return {
     focusedJob: Jobs.selectors.getFocusedJob(state),
     jobStatus: Jobs.selectors.getJobStatus(state),
-    photosAndSign: Jobs.selectors.getPhotosAndSign(state),
+    photosAndSigns: Jobs.selectors.getPhotosAndSigns(state),
     newCommentInfo: ViewStore.selectors.getNewCommentInfo(state),
     coreScreenInfo: ViewStore.selectors.getCoreScreenInfo(state),
   };
@@ -558,7 +519,6 @@ const mapDispatchToProps = {
   pullJobs: Jobs.actionCreators.pullJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
-  updateAmountCollected: Jobs.actionCreators.updateAmountCollected,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,
   setIsRequiredUpdateTab: ViewStore.actionCreators.setIsRequiredUpdateTab,
   getJobDates: ViewStore.actionCreators.getJobDates,

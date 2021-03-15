@@ -91,6 +91,7 @@ export function* asyncSetFCMToken({ payload }) {
     const deviceId = yield call(DeviceInfo.syncUniqueId);
     const deviceManufacturer = yield call(DeviceInfo.getManufacturer);
     const deviceModel = DeviceInfo.getDeviceId();
+    const appVersion = DeviceInfo.getVersion();
 
     const { data } = yield call(apiSetFCMToken,
       deviceToken,
@@ -98,6 +99,7 @@ export function* asyncSetFCMToken({ payload }) {
       deviceId,
       deviceManufacturer,
       deviceModel,
+      appVersion,
     );
 
     yield put(actionCreators.setFCMTokenSuccess(data));

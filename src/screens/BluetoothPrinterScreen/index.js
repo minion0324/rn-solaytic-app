@@ -5,6 +5,7 @@ import {
   NativeEventEmitter,
   DeviceEventEmitter,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
@@ -30,7 +31,7 @@ import {
 
 import {
   ContentWrap,
-  WrapBorder,
+  BorderView,
   RowWrap,
   FlexWrap,
   SpaceView,
@@ -39,8 +40,12 @@ import {
   InfoText,
 } from 'src/styles/text.styles';
 
+import {
+  ListWrap,
+} from './styled';
+
 const {
-  ActiveCircleCheckIcon,
+  BlueActiveCircleCheckIcon,
   DeactiveCircleCheckIcon,
 } = SVGS;
 
@@ -49,6 +54,7 @@ const BluetoothPrinterScreen = ({
   componentId,
 }) => {
   const [ loading, setLoading ] = useState(false);
+  const [ connecting, setConnecting ] = useState(false);
 
   const [ connectedDevice, setConnectedDevice ] = useState({});
 
@@ -68,6 +74,12 @@ const BluetoothPrinterScreen = ({
       destroyBluetooth();
     };
   }, []);
+
+  useEffect(() => {
+    if (!loading && connecting) {
+      setLoading(connecting);
+    }
+  }, [loading]);
 
   const onBack = () => {
     if (loading) {
@@ -236,31 +248,33 @@ const BluetoothPrinterScreen = ({
   const onPressItem = async (item) => {
     try {
       setLoading(true);
+      setConnecting(true);
 
       await BluetoothManager.connect(item.address);
 
       setConnectedDevice(item);
 
+      setConnecting(false);
       setLoading(false);
     } catch (error) {
+      setConnecting(false);
       setLoading(false);
+
       Alert.alert('Warning', error.message || 'Something went wrong.');
     }
   };
 
-  const renderItem = (item) => {
+  const renderItem = ({ item }) => {
     return (
-      <View key={item.address}>
+      <View>
         <SpaceView mTop={SIZE1} />
         <TouchableOpacity
-          key={item.address}
           onPress={() => onPressItem(item)}
-          disabled={loading}
         >
           <RowWrap>
             {
               item.address === connectedDevice.address
-              ? <ActiveCircleCheckIcon />
+              ? <BlueActiveCircleCheckIcon />
               : <DeactiveCircleCheckIcon />
             }
             <SpaceView mLeft={SIZE2} />
@@ -296,11 +310,18 @@ const BluetoothPrinterScreen = ({
           </TouchableOpacity>
         </RowWrap>
       </ContentWrap>
-      <WrapBorder />
+      <BorderView />
       <ContentWrap>
         {
           pairedDevices.length > 0
-          ? pairedDevices.map(renderItem)
+          ? <ListWrap>
+              <FlatList
+                data={pairedDevices}
+                keyExtractor={item => item.address}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+              />
+            </ListWrap>
           : <InfoText color={COLORS.RED1}>No Device</InfoText>
         }
       </ContentWrap>
@@ -312,16 +333,23 @@ const BluetoothPrinterScreen = ({
           </InfoText>
         </RowWrap>
       </ContentWrap>
-      <WrapBorder />
+      <BorderView />
       <ContentWrap>
         {
           foundDevices.length > 0
-          ? foundDevices.map(renderItem)
+          ? <ListWrap>
+              <FlatList
+                data={foundDevices}
+                keyExtractor={item => item.address}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+              />
+            </ListWrap>
           : <InfoText color={COLORS.RED1}>No Device</InfoText>
         }
       </ContentWrap>
       <SpaceView mTop={SIZE2} />
-      <WrapBorder />
+      <BorderView />
       <ContentWrap>
         <DefaultButton
           color={

@@ -5332,6 +5332,13 @@ react-native-camera@^3.40.0:
   dependencies:
     prop-types "^15.6.2"
 
+react-native-dash@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/react-native-dash/-/react-native-dash-0.0.11.tgz#cf1b0108e4660217cf0300b872231a5cadb9c4a8"
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-measureme "0.0.2"
+
 react-native-device-info@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.0.1.tgz#23a038ab39a9fe3ea8963feb366361ee7c03a2a1"
@@ -5360,6 +5367,10 @@ react-native-map-link@^2.7.17:
   dependencies:
     prop-types "^15.7.2"
     react-native-modal "^10.0.0"
+
+react-native-measureme@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.2.tgz#7f54eeb0813d461ef6c49d921e42e253d649c47a"
 
 react-native-modal@^10.0.0:
   version "10.0.0"
@@ -5401,11 +5412,9 @@ react-native-share@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-4.0.1.tgz#8e4025461c60e5cc59d6dc5dc7ab052fd542c1c5"
 
-react-native-signature-canvas@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-2.7.0.tgz#5d93d46c222fd86ba4fd7d947a91407a3605d367"
-  dependencies:
-    react-native-webview "^10.3.2"
+react-native-signature-canvas@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-3.6.0.tgz#f5567154223342b2e530cb0cf74af9f496a31817"
 
 react-native-simple-toast@^1.1.2:
   version "1.1.2"
@@ -5439,9 +5448,9 @@ react-native-view-shot@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.1.2.tgz#8c8e84c67a4bc8b603e697dbbd59dbc9b4f84825"
 
-react-native-webview@^10.3.2:
-  version "10.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-10.3.2.tgz#c634946152099c95d521a3abc71065d1d642e192"
+react-native-webview@^11.2.3:
+  version "11.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.2.3.tgz#1b82685ab60645d4161f2e25e98286493cdffa5d"
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"

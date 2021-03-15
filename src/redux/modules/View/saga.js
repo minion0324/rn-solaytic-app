@@ -6,6 +6,7 @@ import {
   apiGetDriverNotes,
   apiGetBinNumbers,
   apiGetJobDates,
+  apiGetWasteTypes,
 } from 'src/services';
 import {
   onError,
@@ -16,6 +17,8 @@ import {
   GET_DRIVER_NOTES_BY_PAGE,
   GET_BIN_NUMBERS,
   GET_JOB_DATES,
+  GET_WASTE_TYPES,
+  GET_WASTE_TYPES_BY_PAGE,
   actionCreators,
 } from './actions';
 
@@ -110,6 +113,51 @@ export function* watchGetJobDates() {
   }
 }
 
+export function* asyncGetWasteTypes({ payload }) {
+  const {
+    search, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetWasteTypes, search);
+    yield put(actionCreators.getWasteTypesSuccess(data));
+
+    success && success();
+  } catch (error) {
+    yield onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchGetWasteTypes() {
+  while (true) {
+    const action = yield take(GET_WASTE_TYPES);
+    yield* asyncGetWasteTypes(action);
+  }
+}
+
+export function* asyncGetWasteTypesByPage({ payload }) {
+  const {
+    search, page, success, failure,
+  } = payload;
+
+  try {
+    const { data } = yield call(apiGetWasteTypes, search, page);
+    yield put(actionCreators.getWasteTypesByPageSuccess(data));
+
+    success && success();
+  } catch (error) {
+    failure && failure();
+  }
+}
+
+export function* watchGetWasteTypesByPage() {
+  while (true) {
+    const action = yield take(GET_WASTE_TYPES_BY_PAGE);
+    yield* asyncGetWasteTypesByPage(action);
+  }
+}
+
 export function* fetchData() {
   try {
     const res = yield all([
@@ -138,5 +186,7 @@ export default function* () {
     fork(watchGetDriverNotesByPage),
     fork(watchGetBinNumbers),
     fork(watchGetJobDates),
+    fork(watchGetWasteTypes),
+    fork(watchGetWasteTypesByPage),
   ]);
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 
 import {
   dismissDrawer,
@@ -41,7 +42,10 @@ import {
   LogoutText,
 } from './styled';
 
-const { AvatarIcon, CloseIcon } = SVGS;
+const {
+  AvatarIcon,
+  DrawerCloseIcon,
+} = SVGS;
 
 const DrawerScreen = ({
   driverName,
@@ -83,7 +87,7 @@ const DrawerScreen = ({
               <UserName>{driverName}</UserName>
             </Profile>
             <TouchableOpacity onPress={closeDrawer}>
-              <CloseIcon />
+              <DrawerCloseIcon />
             </TouchableOpacity>
           </ProfileWrap>
 
@@ -110,7 +114,9 @@ const DrawerScreen = ({
           </ItemWrap>
 
           <VersionWrap>
-            <VersionText>v 2.3.11</VersionText>
+            <VersionText>
+              {`v ${DeviceInfo.getVersion()}`}
+            </VersionText>
           </VersionWrap>
         </MainWrap>
         <LogoutButton onPress={onLogout}>

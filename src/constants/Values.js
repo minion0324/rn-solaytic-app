@@ -61,7 +61,7 @@ const JOB_TYPE = {
   PULL: 'Pull',
   PUT: 'Put',
   EXCHANGE: 'Exchange',
-  ON_THE_SPOT: 'OnTheSpot',
+  ON_THE_SPOT: 'On The Spot',
   OUT: 'Out',
   SHIFT: 'Shift',
   THROW_AT_CUSTOMER: 'ThrowAtCustomer',
@@ -73,6 +73,8 @@ const BACKGROUND_FETCH_KEY = '@background_fetch';
 const JOB_DETAILS_KEY = '@job_details';
 
 const JOB_DETAILS_LIMIT = 20;
+
+const SIGNATURE_WRAP_RATIO = 1.2;
 
 //
 const API_BASE_URL =
@@ -111,5 +113,6 @@ export {
   BACKGROUND_FETCH_KEY,
   JOB_DETAILS_KEY,
   JOB_DETAILS_LIMIT,
+  SIGNATURE_WRAP_RATIO,
   API_BASE_URL,
 };

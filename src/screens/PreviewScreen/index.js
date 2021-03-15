@@ -14,7 +14,6 @@ import {
   SIZE2,
   SIZE4,
   FONT,
-  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -27,11 +26,15 @@ import {
   popScreen,
   BLUETOOTH_PRINTER_SCREEN,
 } from 'src/navigation';
+import {
+  getCustomerSiteAddress,
+} from 'src/utils';
 
 import {
   Container,
+  Content,
   ContentWrap,
-  WrapBorder,
+  BorderView,
   ShadowWrap,
   FullImage,
   RowWrap,
@@ -49,23 +52,22 @@ import {
 } from 'src/styles/text.styles';
 
 import {
-  HalfWrap,
+  SignatureWrap,
   LogoImageWrap,
 } from './styled';
 
 const {
-  PrintIcon,
+  ActivePrintIcon,
 } = SVGS;
 
 const PreviewScreen = ({
   focusedJob,
   jobReceiptSetting,
-  sign,
-  signedUserName,
-  signedUserContact,
+  signs,
   binInfo,
-  // services,
+  services,
   amountCollected,
+  jobPaymentType,
   getBinInOutInfoIndex,
   getCustomerSiteIndex,
   componentId,
@@ -140,7 +142,9 @@ const PreviewScreen = ({
   };
 
   const renderJobProof = () => {
-    if (!sign.uri) {
+    const sign = signs[signs.length - 1];
+
+    if (!sign || !sign.uri) {
       return null;
     }
 
@@ -150,10 +154,10 @@ const PreviewScreen = ({
         {
           getReceiptSettingVariable('ShowSignature') === 'True' &&
           <View>
-            <HalfWrap>
+            <SignatureWrap>
               <FullImage source={{ uri: sign.uri }} />
-            </HalfWrap>
-            <WrapBorder />
+            </SignatureWrap>
+            <BorderView />
           </View>
         }
         {
@@ -163,12 +167,12 @@ const PreviewScreen = ({
             <RowWrap>
               <FlexWrap flex={4}>
                 <InfoText>
-                  Site Contact:
+                  Site Contact
                 </InfoText>
               </FlexWrap>
               <FlexWrap flex={6}>
-                <InfoText>
-                  {signedUserName}
+                <InfoText align={'right'}>
+                  {sign.signedUserName}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -181,12 +185,12 @@ const PreviewScreen = ({
             <RowWrap>
               <FlexWrap flex={4}>
                 <InfoText>
-                  Telephone:
+                  Contact Number
                 </InfoText>
               </FlexWrap>
               <FlexWrap flex={6}>
-                <InfoText>
-                  {signedUserContact}
+                <InfoText align={'right'}>
+                  {sign.signedUserContact}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -197,59 +201,66 @@ const PreviewScreen = ({
     );
   };
 
-  // const renderServices = () => {
-  //   const selectedServices = services.filter(item => item.isSelected);
-  //   if (selectedServices.length === 0) {
-  //     return null;
-  //   }
+  const renderServices = () => {
+    const selectedServices = services.filter(item => item.isSelected);
 
-  //   return (
-  //     <View>
-  //       <SpaceView mTop={SIZE4} />
-  //       <InfoText>
-  //         ADDITIONAL SERVICE
-  //       </InfoText>
-  //       <SpaceView mTop={SIZE2} />
-  //       <RowWrap>
-  //         <FlexWrap flex={4}>
-  //           <InfoText>
-  //             ITEM
-  //           </InfoText>
-  //         </FlexWrap>
-  //         <FlexWrap flex={6}>
-  //           <InfoText align={'right'}>
-  //             QTY
-  //           </InfoText>
-  //         </FlexWrap>
-  //       </RowWrap>
-  //       {
-  //         selectedServices.map((item) => (
-  //           <View
-  //             key={`${item.serviceAdditionalChargeTemplateId}`}
-  //           >
-  //             <SpaceView mTop={SIZE2} />
-  //             <RowWrap>
-  //               <FlexWrap flex={4}>
-  //                 <InfoText>
-  //                   {item.serviceAdditionalChargeName}
-  //                 </InfoText>
-  //               </FlexWrap>
-  //               <FlexWrap flex={6}>
-  //                 <InfoText align={'right'}>
-  //                   {item.quantity || 1}
-  //                 </InfoText>
-  //               </FlexWrap>
-  //             </RowWrap>
-  //           </View>
-  //         ))
-  //       }
-  //       <SpaceView mTop={SIZE2} />
-  //     </View>
-  //   );
-  // };
+    if (
+      selectedServices.length === 0 ||
+      getReceiptSettingVariable('ShowAdditionalService') !== 'True'
+    ) {
+      return null;
+    }
+
+    return (
+      <View>
+        <SpaceView mTop={SIZE4} />
+        <InfoText>
+          Additional Services
+        </InfoText>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <FlexWrap flex={4}>
+            <InfoText>
+              ITEM
+            </InfoText>
+          </FlexWrap>
+          <FlexWrap flex={6}>
+            <InfoText align={'right'}>
+              QTY
+            </InfoText>
+          </FlexWrap>
+        </RowWrap>
+        {
+          selectedServices.map((item) => (
+            <View
+              key={`${item.serviceAdditionalChargeTemplateId}`}
+            >
+              <SpaceView mTop={SIZE2} />
+              <RowWrap>
+                <FlexWrap flex={4}>
+                  <InfoText>
+                    {item.serviceAdditionalChargeName}
+                  </InfoText>
+                </FlexWrap>
+                <FlexWrap flex={6}>
+                  <InfoText align={'right'}>
+                    {item.quantity}
+                  </InfoText>
+                </FlexWrap>
+              </RowWrap>
+            </View>
+          ))
+        }
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
 
   const renderPayment = () => {
-    if (!focusedJob.isEnabledCashCollection) {
+    if (
+      !amountCollected ||
+      !focusedJob.isEnabledCashCollection
+    ) {
       return null;
     }
 
@@ -267,7 +278,7 @@ const PreviewScreen = ({
               </FlexWrap>
               <FlexWrap flex={6}>
                 <InfoText align={'right'}>
-                  Cash
+                  {focusedJob.jobPaymentTypeList[jobPaymentType]}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -381,10 +392,6 @@ const PreviewScreen = ({
             }
             {
               (
-                idx === 0 ||
-                focusedJob.jobTypeName !== JOB_TYPE.EXCHANGE
-              ) &&
-              (
                 (idx === 0 && getReceiptSettingVariable('ShowWasteTypeCollected') === 'True') ||
                 (idx === 1 && getReceiptSettingVariable('ShowPlannedWasteType') === 'True') ||
                 (idx !== 0 && idx !== 1)
@@ -397,24 +404,34 @@ const PreviewScreen = ({
                       {
                         (
                           idx === 0
-                          ? getReceiptSettingVariable('LabelWaste_Type_Collected') || 'Waste Type'
+                          ? getReceiptSettingVariable('LabelWaste_Type_Collected') || 'With Waste Type'
                           : ''
                         ) +
                         (
                           idx === 1
-                          ? getReceiptSettingVariable('LabelPlanned_Waste_Type') || 'Planned Waste Type'
+                          ? getReceiptSettingVariable('LabelPlanned_Waste_Type') || 'For Waste Type'
                           : ''
                         ) +
                         (
-                          idx !== 0 && idx !== 1 ? 'Waste Type' : ''
+                          idx !== 0 && idx !== 1 ? 'With Waste Type' : ''
                         )
                       }
                     </InfoText>
                   </FlexWrap>
                   <FlexWrap flex={6}>
-                    <InfoText align={'right'}>
-                      {item['wasteType'] && item['wasteType']['wasteTypeName']}
-                    </InfoText>
+                    {
+                      item['wasteTypes'].map((el, i) => (
+                        <View key={el.wasteTypeId}>
+                          {
+                            i > 0 &&
+                            <SpaceView mTop={SIZE1} />
+                          }
+                          <InfoText align={'right'}>
+                            {el.wasteType.wasteTypeName || ''}
+                          </InfoText>
+                        </View>
+                      ))
+                    }
                   </FlexWrap>
                 </RowWrap>
               </View>
@@ -443,7 +460,11 @@ const PreviewScreen = ({
         </InfoText>
         <SpaceView mTop={SIZE2} />
         <InfoText>
-          {focusedJob.steps[index].address}
+          {
+            focusedJob.steps[index].site
+            ? getCustomerSiteAddress(focusedJob.steps[index].site)
+            : focusedJob.steps[index].address
+          }
         </InfoText>
         <SpaceView mTop={SIZE2} />
         <SpaceView mTop={SIZE4} />
@@ -608,7 +629,7 @@ const PreviewScreen = ({
         centerIcon={
           <TouchableOpacity onPress={onPrint}>
             <RowWrap>
-              <PrintIcon />
+              <ActivePrintIcon />
               <SpaceView mLeft={SIZE1} />
               <ScreenText
                 color={COLORS.BLUE1}
@@ -633,30 +654,31 @@ const PreviewScreen = ({
       </ShadowWrap>
 
       <ScrollView
-        bounces={false}
         showsVerticalScrollIndicator={false}
       >
-        <ViewShot
-          ref={viewShotRef}
-          options={{ result: 'base64' }}
-        >
-          <ContentWrap>
-            <SpaceView mTop={SIZE2} />
+        <Content>
+          <SpaceView mTop={SIZE2} />
+          <ViewShot
+            ref={viewShotRef}
+            options={{ result: 'base64' }}
+          >
+            <ContentWrap
+              mLeft={SIZE2} mRight={SIZE2}
+            >
+              { renderLogo() }
+              { renderHeaderText() }
+              { renderJobInfo() }
+              { renderBinInfo() }
+              { renderPayment() }
+              { renderServices() }
+              { renderJobProof() }
+              { renderDisclaimerText() }
 
-            { renderLogo() }
-            { renderHeaderText() }
-            { renderJobInfo() }
-            { renderBinInfo() }
-            { renderPayment() }
-            {
-              // renderServices()
-            }
-            { renderJobProof() }
-            { renderDisclaimerText() }
-
-            <SpaceView mTop={SIZE4 * 4} />
-          </ContentWrap>
-        </ViewShot>
+              <SpaceView mTop={SIZE4 * 4} />
+            </ContentWrap>
+          </ViewShot>
+          <SpaceView mTop={SIZE4} />
+        </Content>
       </ScrollView>
     </Container>
   );
@@ -665,21 +687,20 @@ const PreviewScreen = ({
 PreviewScreen.propTypes = {
   focusedJob: PropTypes.object.isRequired,
   jobReceiptSetting: PropTypes.array.isRequired,
-  sign: PropTypes.object,
-  signedUserName: PropTypes.string,
-  signedUserContact: PropTypes.string,
+  signs: PropTypes.array.isRequired,
   binInfo: PropTypes.array.isRequired,
-  // services: PropTypes.array.isRequired,
-  amountCollected: PropTypes.number.isRequired,
+  services: PropTypes.array.isRequired,
+  amountCollected: PropTypes.oneOfType([
+    PropTypes.string, PropTypes.number,
+  ]),
+  jobPaymentType: PropTypes.number.isRequired,
   getBinInOutInfoIndex: PropTypes.func.isRequired,
   getCustomerSiteIndex: PropTypes.func.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 
 PreviewScreen.defaultProps = {
-  sign: null,
-  signedUserName: '',
-  signedUserContact: '',
+  amountCollected: '',
 };
 
 const mapStateToProps = (state) => {

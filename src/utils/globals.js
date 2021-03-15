@@ -44,7 +44,12 @@ function getEndDate(date, key, format) {
 function getUpdatedBinInfo(binInfo) {
   return [0, 1].map((index) => {
     const {
-      jobStepId, wasteType, binType, binNumber, binWeight,
+      jobStepId,
+      wasteType,
+      binType,
+      binNumber,
+      binWeight,
+      wasteTypes,
     } = binInfo[index];
 
     return {
@@ -53,6 +58,7 @@ function getUpdatedBinInfo(binInfo) {
       binTypeId: binType && binType.binTypeId,
       binNumber: binNumber,
       binWeight: binWeight,
+      wasteTypes: wasteTypes,
     }
   });
 };
@@ -70,6 +76,61 @@ function getUpdatedServices(services) {
   }, []);
 };
 
+//
+function getCustomerSiteAddress(customerSite) {
+  if (!customerSite) {
+    return '';
+  }
+
+  let address = ''
+
+  const {
+    siteName, blockNo, street, unitNo, postalCode,
+  } = customerSite;
+
+  if (siteName) {
+    address = siteName;
+  }
+
+  if (blockNo || street || unitNo || postalCode) {
+    address += ' (';
+  }
+
+  if (blockNo) {
+    address += `Block ${blockNo}`;
+
+    if (street || unitNo || postalCode) {
+      address += ', ';
+    }
+  }
+
+  if (street) {
+    address += street;
+
+    if (unitNo || postalCode) {
+      address += ', ';
+    }
+  }
+
+  if (unitNo) {
+    address += `Unit No. ${unitNo}`;
+
+    if (postalCode) {
+      address += ', ';
+    }
+  }
+
+  if (postalCode) {
+    address += `Post Code ${postalCode}`;
+  }
+
+  if (blockNo || street || unitNo || postalCode) {
+    address += ')';
+  }
+
+  return address;
+};
+
 export {
   openUrl,
   delay,
@@ -80,4 +141,6 @@ export {
 
   getUpdatedBinInfo,
   getUpdatedServices,
+
+  getCustomerSiteAddress,
 };
