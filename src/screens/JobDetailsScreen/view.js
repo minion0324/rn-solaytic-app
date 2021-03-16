@@ -1478,6 +1478,10 @@ const JobDetailsScreenView = ({
     const options = getBinInfoOptions(stepIndex);
     const status = getBinInfoStatus(stepIndex);
 
+    if (!options.isRequireBinWeight) {
+      return null;
+    }
+
     const editable =
       status === 'ACTIVE' &&
       focusedJob.isAllowDriverEditOnApp;
