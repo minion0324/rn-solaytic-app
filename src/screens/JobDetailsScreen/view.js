@@ -1003,8 +1003,8 @@ const JobDetailsScreenView = ({
     status,
   }) => (
     (
-      options.numberofPhotosRequired ||
-      options.mustTakeSignature
+      options.mustTakePhoto !== 0 ||
+      options.mustTakeSignature !== 0
     ) &&
     <View
       ref={ref => photosAndSignatureRefs.current[index] = ref}
@@ -1018,17 +1018,17 @@ const JobDetailsScreenView = ({
             <SpaceView mLeft={SIZE1} />
             {
               (
-                !options.numberofPhotosRequired ||
+                options.mustTakePhoto !== 1 ||
                 (
-                  options.numberofPhotosRequired &&
+                  options.mustTakePhoto === 1 &&
                   photos.filter((photo) => (
                     photo.jobStepId === item.jobStepId
                   )).length === options.numberofPhotosRequired
                 )
               ) && (
-                !options.mustTakeSignature ||
+                options.mustTakeSignature !== 1 ||
                 (
-                  options.mustTakeSignature &&
+                  options.mustTakeSignature === 1 &&
                   signs.findIndex((sign) => (
                     sign.jobStepId === item.jobStepId
                   )) !== -1
@@ -1043,7 +1043,7 @@ const JobDetailsScreenView = ({
       <SpaceView mTop={SIZE2} />
       <RowWrap>
         {
-          !!options.numberofPhotosRequired &&
+          options.mustTakePhoto !== 0 &&
           Array(options.numberofPhotosRequired)
             .fill(0)
             .map((empty, index) => (
@@ -1058,7 +1058,7 @@ const JobDetailsScreenView = ({
         {
           <FlexWrap flex={3}>
             {
-              options.mustTakeSignature &&
+              options.mustTakeSignature !== 0 &&
               renderSign({
                 item,
                 status,
@@ -1067,7 +1067,6 @@ const JobDetailsScreenView = ({
           </FlexWrap>
         }
         {
-          (options.numberofPhotosRequired || 0) < 2 &&
           Array(2 - (options.numberofPhotosRequired || 0))
             .fill(0)
             .map((empty, index) => (
