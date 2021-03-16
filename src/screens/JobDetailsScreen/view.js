@@ -350,7 +350,7 @@ const JobDetailsScreenView = ({
     }
 
     if (
-      options.numberofPhotosRequired &&
+      options.mustTakePhoto === 1 &&
       photos.filter((photo) => (
         photo.jobStepId === jobStepId
       )).length !== options.numberofPhotosRequired
@@ -360,7 +360,7 @@ const JobDetailsScreenView = ({
     }
 
     if (
-      options.mustTakeSignature &&
+      options.mustTakeSignature === 1 &&
       signs.findIndex((sign) => (
         sign.jobStepId === jobStepId
       )) === -1
