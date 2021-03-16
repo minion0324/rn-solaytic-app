@@ -48,6 +48,7 @@ const BinInputWrap = styled.View`
 `;
 
 const ServicesWrap = styled.View`
+  min-height: ${SIZE8}px;
   padding-vertical: ${SIZE2}px;
   padding-horizontal: ${(props) => (
     props.effect ? SIZE2 : 0
