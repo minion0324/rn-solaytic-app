@@ -1648,6 +1648,10 @@ const JobDetailsScreenView = ({
           <RowWrap>
             <FlexWrap>
               <InfoText numberOfLines={1}>
+                {focusedJob.customer.customerName}
+              </InfoText>
+              <SpaceView mTop={SIZE1} />
+              <InfoText numberOfLines={1}>
                 {
                   steps[index].site
                   ? getCustomerSiteAddress(steps[index].site)
