@@ -1723,9 +1723,12 @@ const JobDetailsScreenView = ({
       buttonAction = () => onValidate(onComplete);
     }
 
-    if (validationCurrentStep.easy) {
-      buttonAction = () => onScroll(validationCurrentStep.ref);
+    if (
+      buttonAction &&
+      validationCurrentStep.easy
+    ) {
       buttonColor = buttonColor + '4C'; // opacity: 30%
+      buttonAction = () => onScroll(validationCurrentStep.ref);
     }
 
     return (
