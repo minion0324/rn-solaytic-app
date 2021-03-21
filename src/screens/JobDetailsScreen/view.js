@@ -267,6 +267,24 @@ const JobDetailsScreenView = ({
     focusedJob.jobTypeName,
   ]);
 
+  const getJobStepPhotos = useCallback(
+    (jobStepId) => {
+      return photos.filter((photo) => (
+        photo.jobStepId === jobStepId
+      ));
+    },
+    [photos],
+  );
+
+  const getJobStepSigns = useCallback(
+    (jobStepId) => {
+      return signs.filter((sign) => (
+        sign.jobStepId === jobStepId
+      ));
+    },
+    [signs],
+  );
+
   const validationCurrentStep = useMemo(() => {
     if (
       currentStepIndex === -1 ||
@@ -537,24 +555,6 @@ const JobDetailsScreenView = ({
       }
     },
     [currentStepIndex],
-  );
-
-  const getJobStepPhotos = useCallback(
-    (jobStepId) => {
-      return photos.filter((photo) => (
-        photo.jobStepId === jobStepId
-      ));
-    },
-    [photos],
-  );
-
-  const getJobStepSigns = useCallback(
-    (jobStepId) => {
-      return signs.filter((sign) => (
-        sign.jobStepId === jobStepId
-      ));
-    },
-    [signs],
   );
 
   const onValidate = (action) => {
