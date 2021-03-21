@@ -351,9 +351,7 @@ const JobDetailsScreenView = ({
 
     if (
       options.mustTakePhoto === 1 &&
-      photos.filter((photo) => (
-        photo.jobStepId === jobStepId
-      )).length !== options.numberofPhotosRequired
+      getJobStepPhotos(jobStepId).length !== options.numberofPhotosRequired
     ) {
       const text = `Please include ${options.numberofPhotosRequired} photo(s)`;
       return { hard: text, easy: text, ref: photosAndSignatureRefs.current[stepIndex] };
@@ -361,9 +359,7 @@ const JobDetailsScreenView = ({
 
     if (
       options.mustTakeSignature === 1 &&
-      signs.findIndex((sign) => (
-        sign.jobStepId === jobStepId
-      )) === -1
+      getJobStepSigns(jobStepId).length !== 1
     ) {
       const text = 'Please include signature';
       return { hard: text, easy: text, ref: photosAndSignatureRefs.current[stepIndex] };
@@ -541,6 +537,24 @@ const JobDetailsScreenView = ({
       }
     },
     [currentStepIndex],
+  );
+
+  const getJobStepPhotos = useCallback(
+    (jobStepId) => {
+      return photos.filter((photo) => (
+        photo.jobStepId === jobStepId
+      ));
+    },
+    [photos],
+  );
+
+  const getJobStepSigns = useCallback(
+    (jobStepId) => {
+      return signs.filter((sign) => (
+        sign.jobStepId === jobStepId
+      ));
+    },
+    [signs],
   );
 
   const onValidate = (action) => {
@@ -899,9 +913,7 @@ const JobDetailsScreenView = ({
 
     photoIndex: index,
   }) => {
-    const data = photos.filter((photo) => (
-      photo.jobStepId === item.jobStepId
-    ));
+    const data = getJobStepPhotos(item.jobStepId)[index];
 
     return (
       [
@@ -910,15 +922,15 @@ const JobDetailsScreenView = ({
           flex={2}
         >
           {
-            data[index]
+            data
             ? <TouchableOpacity
                 onPress={() => onShowPhotoModal(
-                  data[index],
+                  data,
                   status === 'ACTIVE',
                 )}
               >
                 <PhotoWrap>
-                  <FullImage source={{ uri: data[index].uri }} />
+                  <FullImage source={{ uri: data.uri }} />
                 </PhotoWrap>
 
               </TouchableOpacity>
@@ -958,18 +970,16 @@ const JobDetailsScreenView = ({
     item,
     status,
   }) => {
-    const index = signs.findIndex((sign) => (
-      sign.jobStepId === item.jobStepId
-    ));
+    const data = getJobStepSigns(item.jobStepId)[0];
 
     return (
-      index !== -1
+      data
       ? <TouchableOpacity
           onPress={() => onSign(item.jobStepId)}
           disabled={status !== 'ACTIVE'}
         >
           <SignWrap>
-            <FullImage source={{ uri: signs[index].uri }} />
+            <FullImage source={{ uri: data.uri }} />
           </SignWrap>
         </TouchableOpacity>
       : <TouchableOpacity
@@ -1001,92 +1011,99 @@ const JobDetailsScreenView = ({
     index,
     options,
     status,
-  }) => (
-    (
-      options.mustTakePhoto !== 0 ||
-      options.mustTakeSignature !== 0
-    ) &&
-    <View
-      ref={ref => photosAndSignatureRefs.current[index] = ref}
-    >
-      <SpaceView mTop={SIZE2} />
-      <RowWrap>
-        <LabelText>Photos & Signature</LabelText>
-        {
-          status !== 'COMPLETED' &&
-          <RowWrap>
-            <SpaceView mLeft={SIZE1} />
-            {
-              (
-                options.mustTakePhoto !== 1 ||
-                (
-                  options.mustTakePhoto === 1 &&
-                  photos.filter((photo) => (
-                    photo.jobStepId === item.jobStepId
-                  )).length === options.numberofPhotosRequired
-                )
-              ) && (
-                options.mustTakeSignature !== 1 ||
-                (
-                  options.mustTakeSignature === 1 &&
-                  signs.findIndex((sign) => (
-                    sign.jobStepId === item.jobStepId
-                  )) !== -1
-                )
-              )
-              ? <BlackActiveCircleCheckIcon />
-              : <DeactiveCircleCheckIcon />
-            }
-          </RowWrap>
-        }
-      </RowWrap>
-      <SpaceView mTop={SIZE2} />
-      <RowWrap>
-        {
-          options.mustTakePhoto !== 0 &&
-          Array(options.numberofPhotosRequired)
-            .fill(0)
-            .map((empty, index) => (
-              renderPhoto({
-                item,
-                status,
+  }) => {
+    const numberOfPhotos = isCompletedJobState
+      ? getJobStepPhotos(item.jobStepId).length
+      : options.mustTakePhoto === 0
+        ? 0 : options.numberofPhotosRequired;
 
-                photoIndex: index,
-              })
-            ))
-        }
-        {
-          <FlexWrap flex={3}>
-            {
-              options.mustTakeSignature !== 0 &&
-              renderSign({
-                item,
-                status,
-              })
-            }
-          </FlexWrap>
-        }
-        {
-          Array(2 - (options.numberofPhotosRequired || 0))
-            .fill(0)
-            .map((empty, index) => (
-              [
-                <SpaceView
-                  key={`${index}-Empty-SpaceView`}
-                  mLeft={SIZE2}
-                />
-                ,
-                <FlexWrap
-                  key={`${index}-Empty-FlexWrap`}
-                  flex={2}
-                />
-              ]
-            ))
-        }
-      </RowWrap>
-      <SpaceView mTop={SIZE2} />
-    </View>
-  );
+    const numberOfSigns = isCompletedJobState
+      ? getJobStepSigns(item.jobStepId).length
+      : options.mustTakeSignature === 0 ? 0 : 1;
+
+    if (numberOfPhotos === 0 && numberOfSigns === 0) {
+      return null;
+    }
+
+    return (
+      <View
+        ref={ref => photosAndSignatureRefs.current[index] = ref}
+      >
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <LabelText>Photos & Signature</LabelText>
+          {
+            status !== 'COMPLETED' &&
+            <RowWrap>
+              <SpaceView mLeft={SIZE1} />
+              {
+                (
+                  options.mustTakePhoto !== 1 ||
+                  (
+                    options.mustTakePhoto === 1 &&
+                    getJobStepPhotos(item.jobStepId)
+                      .length === options.numberofPhotosRequired
+                  )
+                ) && (
+                  options.mustTakeSignature !== 1 ||
+                  (
+                    options.mustTakeSignature === 1 &&
+                    getJobStepSigns(item.jobStepId).length === 1
+                  )
+                )
+                ? <BlackActiveCircleCheckIcon />
+                : <DeactiveCircleCheckIcon />
+              }
+            </RowWrap>
+          }
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          {
+            Array(numberOfPhotos)
+              .fill(0)
+              .map((empty, index) => (
+                renderPhoto({
+                  item,
+                  status,
+
+                  photoIndex: index,
+                })
+              ))
+          }
+          {
+            <FlexWrap flex={3}>
+              {
+                numberOfSigns !== 0 &&
+                renderSign({
+                  item,
+                  status,
+                })
+              }
+            </FlexWrap>
+          }
+          {
+            Array(2 - numberOfPhotos)
+              .fill(0)
+              .map((empty, index) => (
+                [
+                  <SpaceView
+                    key={`${index}-Empty-SpaceView`}
+                    mLeft={SIZE2}
+                  />
+                  ,
+                  <FlexWrap
+                    key={`${index}-Empty-FlexWrap`}
+                    flex={2}
+                  />
+                ]
+              ))
+          }
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
 
   const renderAdditionalServices = ({
     index,
