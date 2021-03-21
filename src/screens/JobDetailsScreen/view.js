@@ -267,21 +267,40 @@ const JobDetailsScreenView = ({
     focusedJob.jobTypeName,
   ]);
 
+  const getBinInfoOptions = useCallback(
+    (index) => pick(
+      focusedJob.steps[index],
+      [
+        'isRequireBinNumberToEnd',
+        'isRequireBinNumberToStart',
+        'isRequireBinType',
+        'isRequireBinWeight',
+        'isRequirePaymentCollection',
+        'isRequireReviewWasteType',
+        'mustTakePhoto',
+        'mustTakeSignature',
+        'numberofPhotosRequired',
+        'requireStatusToEnd',
+      ],
+    ),
+    [focusedJob.steps],
+  );
+
   const getJobStepPhotos = useCallback(
-    (jobStepId) => {
-      return photos.filter((photo) => (
+    (jobStepId) => (
+      photos.filter((photo) => (
         photo.jobStepId === jobStepId
-      ));
-    },
+      ))
+    ),
     [photos],
   );
 
   const getJobStepSigns = useCallback(
-    (jobStepId) => {
-      return signs.filter((sign) => (
+    (jobStepId) => (
+      signs.filter((sign) => (
         sign.jobStepId === jobStepId
-      ));
-    },
+      ))
+    ),
     [signs],
   );
 
@@ -308,21 +327,7 @@ const JobDetailsScreenView = ({
             'isRequireBinNumberToStart',
           ],
         )
-      : pick(
-          focusedJob.steps[stepIndex],
-          [
-            'isRequireBinNumberToEnd',
-            'isRequireBinNumberToStart',
-            'isRequireBinType',
-            'isRequireBinWeight',
-            'isRequirePaymentCollection',
-            'isRequireReviewWasteType',
-            'mustTakePhoto',
-            'mustTakeSignature',
-            'numberofPhotosRequired',
-            'requireStatusToEnd',
-          ],
-        );
+      : getBinInfoOptions(stepIndex);
 
     if (
       options.isRequireBinNumberToEnd &&
@@ -397,7 +402,7 @@ const JobDetailsScreenView = ({
     photos,
     signs,
     amountCollected,
-
+    focusedJob.steps,
     currentStepIndex,
   ]);
 
@@ -521,25 +526,6 @@ const JobDetailsScreenView = ({
       focusedJob.steps,
       focusedJob.jobTypeName,
     ],
-  );
-
-  const getBinInfoOptions = useCallback(
-    (index) => pick(
-      focusedJob.steps[index],
-      [
-        'isRequireBinNumberToEnd',
-        'isRequireBinNumberToStart',
-        'isRequireBinType',
-        'isRequireBinWeight',
-        'isRequirePaymentCollection',
-        'isRequireReviewWasteType',
-        'mustTakePhoto',
-        'mustTakeSignature',
-        'numberofPhotosRequired',
-        'requireStatusToEnd',
-      ],
-    ),
-    [focusedJob.steps],
   );
 
   const getBinInfoStatus = useCallback(
