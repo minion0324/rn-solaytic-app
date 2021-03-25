@@ -1017,7 +1017,14 @@ const JobDetailsScreenView = ({
       >
         <SpaceView mTop={SIZE2} />
         <RowWrap>
-          <LabelText>Photos & Signature</LabelText>
+          <LabelText>
+            {
+              numberOfPhotos === 0
+              ? 'Signature'
+              : numberOfSigns === 0
+                ? 'Photos' : 'Photos & Signature'
+            }
+          </LabelText>
           {
             status !== 'COMPLETED' &&
             <RowWrap>
