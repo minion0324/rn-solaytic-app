@@ -123,6 +123,7 @@ const JobDetailsScreenView = ({
   onAcknowledge,
   onStart,
   onPull,
+  onShift,
   onExchange,
   onComplete,
   onPhoto,
@@ -206,6 +207,7 @@ const JobDetailsScreenView = ({
   const currentStepIndex = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
+      case JOB_TYPE.SHIFT:
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
             return -1;
@@ -220,11 +222,14 @@ const JobDetailsScreenView = ({
         }
 
       case JOB_TYPE.PUT:
+      case JOB_TYPE.ON_THE_SPOT:
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
             return SPECIAL;
           case JOB_STATUS.STARTED:
             return 0;
+          case JOB_STATUS.IN_PROGRESS:
+            return 1;
           case JOB_STATUS.COMPLETED:
             return 3;
           default:
@@ -239,20 +244,6 @@ const JobDetailsScreenView = ({
             return 1;
           case JOB_STATUS.IN_PROGRESS:
             return 2;
-          case JOB_STATUS.COMPLETED:
-            return 3;
-          default:
-            return -1;
-        }
-
-      case JOB_TYPE.ON_THE_SPOT:
-        switch (jobStatus) {
-          case JOB_STATUS.ACKNOWLEDGED:
-            return SPECIAL;
-          case JOB_STATUS.STARTED:
-            return 0;
-          case JOB_STATUS.IN_PROGRESS:
-            return 1;
           case JOB_STATUS.COMPLETED:
             return 3;
           default:
@@ -1722,6 +1713,10 @@ const JobDetailsScreenView = ({
         buttonColor = COLORS.PURPLE1;
         buttonText = 'In Progress';
         buttonAction = () => onValidate(onPull);
+      } else if (focusedJob.jobTypeName === JOB_TYPE.SHIFT) {
+        buttonColor = COLORS.PURPLE1;
+        buttonText = 'In Progress';
+        buttonAction = () => onValidate(onShift);
       } else if (focusedJob.steps.length === 3) {
         buttonColor = COLORS.PURPLE1;
         buttonText = 'In Progress';
@@ -1847,6 +1842,7 @@ JobDetailsScreenView.propTypes = {
   onAcknowledge: PropTypes.func.isRequired,
   onStart: PropTypes.func.isRequired,
   onPull: PropTypes.func.isRequired,
+  onShift: PropTypes.func.isRequired,
   onExchange: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
