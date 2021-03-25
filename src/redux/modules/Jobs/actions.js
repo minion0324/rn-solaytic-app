@@ -18,6 +18,8 @@ export const START_JOBS = 'JOBS/START_JOBS';
 export const START_JOBS_SUCCESS = 'JOBS/START_JOBS_SUCCESS';
 export const PULL_JOBS = 'JOBS/PULL_JOBS';
 export const PULL_JOBS_SUCCESS = 'JOBS/PULL_JOBS_SUCCESS';
+export const SHIFT_JOBS = 'JOBS/SHIFT_JOBS';
+export const SHIFT_JOBS_SUCCESS = 'JOBS/SHIFT_JOBS_SUCCESS';
 export const EXCHANGE_JOBS = 'JOBS/EXCHANGE_JOBS';
 export const EXCHANGE_JOBS_SUCCESS = 'JOBS/EXCHANGE_JOBS_SUCCESS';
 export const COMPLETE_JOBS = 'JOBS/COMPLETE_JOBS';
@@ -51,6 +53,8 @@ export const actionCreators = {
   startJobsSuccess: createAction(START_JOBS_SUCCESS),
   pullJobs: createAction(PULL_JOBS),
   pullJobsSuccess: createAction(PULL_JOBS_SUCCESS),
+  shiftJobs: createAction(SHIFT_JOBS),
+  shiftJobsSuccess: createAction(SHIFT_JOBS_SUCCESS),
   exchangeJobs: createAction(EXCHANGE_JOBS),
   exchangeJobsSuccess: createAction(EXCHANGE_JOBS_SUCCESS),
   completeJobs: createAction(COMPLETE_JOBS),
