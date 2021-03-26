@@ -182,11 +182,19 @@ const JobDetailsScreenView = ({
         [{ label: 'Completed', field: 'completedDate' }],
       ]
     : focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
-      ? [
-          [{ label: 'Started', field: 'startedDate' }],
-          [{ label: 'In Progress', field: 'inProgressDate' }],
-          [{ label: 'Completed', field: 'completedDate' }],
-        ]
+      ? focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
+        ? [
+            [{ label: 'Started', field: 'startedDate' }],
+            [{ label: 'In Progress', field: 'inProgressDate' }],
+            [{ label: 'Completed', field: 'completedDate' }],
+          ]
+        : [
+            [{ label: 'Started', field: 'startedDate' }],
+            [
+              { label: 'In Progress', field: 'inProgressDate' },
+              { label: 'Completed', field: 'completedDate' },
+            ],
+          ]
       : null
   );
 
