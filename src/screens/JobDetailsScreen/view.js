@@ -423,16 +423,6 @@ const JobDetailsScreenView = ({
   const getBinInOutInfoIndex = useCallback(
     (index) => {
       switch (focusedJob.jobTypeName) {
-        case JOB_TYPE.PUT:
-          if (
-            index !== 0 ||
-            jobStatus === JOB_STATUS.IN_PROGRESS
-          ) {
-            return -1;
-          }
-
-          return 1;
-
         case JOB_TYPE.PULL:
           if (index !== 0) {
             return -1;
@@ -440,32 +430,17 @@ const JobDetailsScreenView = ({
 
           return 0;
 
+        case JOB_TYPE.SHIFT:
         case JOB_TYPE.EXCHANGE:
           return index === 0 ? 1 : 0;
 
+        case JOB_TYPE.PUT:
         case JOB_TYPE.OUT:
           if (index !== 0) {
             return -1;
           }
 
           return 1;
-
-        case JOB_TYPE.SHIFT:
-          if (
-            index !== 0 ||
-            jobStatus === JOB_STATUS.IN_PROGRESS
-          ) {
-            return -1;
-          }
-
-          if (
-            jobStatus === JOB_STATUS.STARTED ||
-            jobStatus === JOB_STATUS.COMPLETED
-          ) {
-            return 0;
-          } else {
-            return 1;
-          }
 
         default:
           return -1;
