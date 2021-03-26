@@ -424,82 +424,39 @@ const JobDetailsScreenView = ({
     (index) => {
       switch (focusedJob.jobTypeName) {
         case JOB_TYPE.PULL:
-          if (index !== 0) {
-            return -1;
-          }
-
-          return 0;
+          return index === 0 ? 0 : -1;
 
         case JOB_TYPE.SHIFT:
         case JOB_TYPE.EXCHANGE:
           return index === 0 ? 1 : 0;
 
         case JOB_TYPE.PUT:
-        case JOB_TYPE.OUT:
-          if (index !== 0) {
-            return -1;
-          }
-
-          return 1;
+          return index === 0 ? 1 : -1;
 
         default:
           return -1;
       };
     },
-    [
-      jobStatus,
-      focusedJob.jobTypeName,
-    ],
+    [focusedJob.jobTypeName],
   );
 
   const getCustomerSiteIndex = useCallback(
     () => {
-      const { steps, jobTypeName } = focusedJob;
-
-      if (jobTypeName === JOB_TYPE.PULL) {
-        return 0;
-      }
-
-      if (
-        jobTypeName === JOB_TYPE.PUT ||
-        jobTypeName === JOB_TYPE.EXCHANGE ||
-        jobTypeName === JOB_TYPE.ON_THE_SPOT
-      ) {
-        return 1;
-      }
-
-      if (steps.length === 2) {
-        if (
-          jobStatus === JOB_STATUS.DISPATCHED ||
-          jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-          jobStatus === JOB_STATUS.STARTED
-        ) {
+      switch (focusedJob.jobTypeName) {
+        case JOB_TYPE.PULL:
+        case JOB_TYPE.SHIFT:
           return 0;
-        }
 
-        return 1;
-      }
-
-      if (steps.length === 3) {
-        if (
-          jobStatus === JOB_STATUS.DISPATCHED ||
-          jobStatus === JOB_STATUS.ACKNOWLEDGED
-        ) {
-          return 0;
-        }
-
-        if (jobStatus === JOB_STATUS.STARTED) {
+        case JOB_TYPE.PUT:
+        case JOB_TYPE.EXCHANGE:
+        case JOB_TYPE.ON_THE_SPOT:
           return 1;
-        }
 
-        return 2;
-      }
+        default:
+          return 0;
+      };
     },
-    [
-      jobStatus,
-      focusedJob.steps,
-      focusedJob.jobTypeName,
-    ],
+    [focusedJob.jobTypeName],
   );
 
   const getBinInfoStatus = useCallback(
