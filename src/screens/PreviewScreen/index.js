@@ -190,7 +190,7 @@ const PreviewScreen = ({
               </FlexWrap>
               <FlexWrap flex={6}>
                 <InfoText align={'right'}>
-                  {sign.signedUserContact}
+                  {sign.signedUserContact || ' --- '}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
