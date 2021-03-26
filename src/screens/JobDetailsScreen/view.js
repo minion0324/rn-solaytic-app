@@ -174,6 +174,7 @@ const JobDetailsScreenView = ({
 
   const jobDateList = useRef(
     focusedJob.jobTypeName === JOB_TYPE.PULL ||
+    focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
     focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
     ? [
         [
@@ -609,6 +610,8 @@ const JobDetailsScreenView = ({
     index,
     options,
     status,
+
+    isSpecial,
   }) => {
     const enabled =
       (
@@ -625,7 +628,8 @@ const JobDetailsScreenView = ({
         <RowWrap>
           {
             !isCompletedJobState
-            ? <FlexWrap>
+            ? !isSpecial &&
+              <FlexWrap>
                 <RowWrap>
                   <LabelText>Bin ID</LabelText>
                   {
@@ -678,6 +682,7 @@ const JobDetailsScreenView = ({
                 </BinInputWrap>
               </FlexWrap>
             : [
+                !isSpecial &&
                 <FlexWrap key={'Bin-Id'}>
                   <LabelText>Bin ID</LabelText>
                   <SpaceView mTop={SIZE1} />
@@ -1303,11 +1308,14 @@ const JobDetailsScreenView = ({
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
-        if (
-          !item.binType && !item.wasteType &&
-          focusedJob.jobTypeName !== JOB_TYPE.SHIFT
-        ) {
-          return null;
+        let isSpecial = false;
+
+        if (!item.binType && !item.wasteType) {
+          if (focusedJob.jobTypeName === JOB_TYPE.SHIFT) {
+            isSpecial = true;
+          } else {
+            return null;
+          }
         }
 
         const idx = getBinInOutInfoIndex(index);
@@ -1350,12 +1358,13 @@ const JobDetailsScreenView = ({
                 </TitleText>
               </RowWrap>
               {
-                (item.binType || item.wasteType) &&
                 renderBinNumber({
                   item,
                   index,
                   options,
                   status,
+
+                  isSpecial,
                 })
               }
               {
