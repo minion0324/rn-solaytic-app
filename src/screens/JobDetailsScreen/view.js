@@ -166,6 +166,7 @@ const JobDetailsScreenView = ({
     ? 1
     : (
       focusedJob.jobTypeName === JOB_TYPE.PULL ||
+      focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
       focusedJob.jobTypeName === JOB_TYPE.PUT ||
       focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
     ) ? 0 : -1
@@ -1303,8 +1304,8 @@ const JobDetailsScreenView = ({
     return (
       binInfo.map((item, index) => {
         if (
-          !item.binType &&
-          !item.wasteType
+          !item.binType && !item.wasteType &&
+          focusedJob.jobTypeName !== JOB_TYPE.SHIFT
         ) {
           return null;
         }
@@ -1349,6 +1350,7 @@ const JobDetailsScreenView = ({
                 </TitleText>
               </RowWrap>
               {
+                (item.binType || item.wasteType) &&
                 renderBinNumber({
                   item,
                   index,
