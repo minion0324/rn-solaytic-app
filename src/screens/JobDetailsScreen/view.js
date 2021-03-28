@@ -123,6 +123,7 @@ const JobDetailsScreenView = ({
   onAcknowledge,
   onStart,
   onPull,
+  onShift,
   onExchange,
   onComplete,
   onPhoto,
@@ -165,6 +166,7 @@ const JobDetailsScreenView = ({
     ? 1
     : (
       focusedJob.jobTypeName === JOB_TYPE.PULL ||
+      focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
       focusedJob.jobTypeName === JOB_TYPE.PUT ||
       focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
     ) ? 0 : -1
@@ -172,6 +174,7 @@ const JobDetailsScreenView = ({
 
   const jobDateList = useRef(
     focusedJob.jobTypeName === JOB_TYPE.PULL ||
+    focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
     focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
     ? [
         [
@@ -181,11 +184,19 @@ const JobDetailsScreenView = ({
         [{ label: 'Completed', field: 'completedDate' }],
       ]
     : focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
-      ? [
-          [{ label: 'Started', field: 'startedDate' }],
-          [{ label: 'In Progress', field: 'inProgressDate' }],
-          [{ label: 'Completed', field: 'completedDate' }],
-        ]
+      ? focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
+        ? [
+            [{ label: 'Started', field: 'startedDate' }],
+            [{ label: 'In Progress', field: 'inProgressDate' }],
+            [{ label: 'Completed', field: 'completedDate' }],
+          ]
+        : [
+            [{ label: 'Started', field: 'startedDate' }],
+            [
+              { label: 'In Progress', field: 'inProgressDate' },
+              { label: 'Completed', field: 'completedDate' },
+            ],
+          ]
       : null
   );
 
@@ -206,6 +217,7 @@ const JobDetailsScreenView = ({
   const currentStepIndex = useMemo(() => {
     switch (focusedJob.jobTypeName) {
       case JOB_TYPE.PULL:
+      case JOB_TYPE.SHIFT:
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
             return -1;
@@ -220,11 +232,14 @@ const JobDetailsScreenView = ({
         }
 
       case JOB_TYPE.PUT:
+      case JOB_TYPE.ON_THE_SPOT:
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
             return SPECIAL;
           case JOB_STATUS.STARTED:
             return 0;
+          case JOB_STATUS.IN_PROGRESS:
+            return 1;
           case JOB_STATUS.COMPLETED:
             return 3;
           default:
@@ -245,20 +260,6 @@ const JobDetailsScreenView = ({
             return -1;
         }
 
-      case JOB_TYPE.ON_THE_SPOT:
-        switch (jobStatus) {
-          case JOB_STATUS.ACKNOWLEDGED:
-            return SPECIAL;
-          case JOB_STATUS.STARTED:
-            return 0;
-          case JOB_STATUS.IN_PROGRESS:
-            return 1;
-          case JOB_STATUS.COMPLETED:
-            return 3;
-          default:
-            return -1;
-        }
-
       default:
         return -1;
     };
@@ -266,6 +267,43 @@ const JobDetailsScreenView = ({
     jobStatus,
     focusedJob.jobTypeName,
   ]);
+
+  const getBinInfoOptions = useCallback(
+    (index) => pick(
+      focusedJob.steps[index],
+      [
+        'isRequireBinNumberToEnd',
+        'isRequireBinNumberToStart',
+        'isRequireBinType',
+        'isRequireBinWeight',
+        'isRequirePaymentCollection',
+        'isRequireReviewWasteType',
+        'mustTakePhoto',
+        'mustTakeSignature',
+        'numberofPhotosRequired',
+        'requireStatusToEnd',
+      ],
+    ),
+    [focusedJob.steps],
+  );
+
+  const getJobStepPhotos = useCallback(
+    (jobStepId) => (
+      photos.filter((photo) => (
+        photo.jobStepId === jobStepId
+      ))
+    ),
+    [photos],
+  );
+
+  const getJobStepSigns = useCallback(
+    (jobStepId) => (
+      signs.filter((sign) => (
+        sign.jobStepId === jobStepId
+      ))
+    ),
+    [signs],
+  );
 
   const validationCurrentStep = useMemo(() => {
     if (
@@ -290,21 +328,7 @@ const JobDetailsScreenView = ({
             'isRequireBinNumberToStart',
           ],
         )
-      : pick(
-          focusedJob.steps[stepIndex],
-          [
-            'isRequireBinNumberToEnd',
-            'isRequireBinNumberToStart',
-            'isRequireBinType',
-            'isRequireBinWeight',
-            'isRequirePaymentCollection',
-            'isRequireReviewWasteType',
-            'mustTakePhoto',
-            'mustTakeSignature',
-            'numberofPhotosRequired',
-            'requireStatusToEnd',
-          ],
-        );
+      : getBinInfoOptions(stepIndex);
 
     if (
       options.isRequireBinNumberToEnd &&
@@ -350,20 +374,16 @@ const JobDetailsScreenView = ({
     }
 
     if (
-      options.numberofPhotosRequired &&
-      photos.filter((photo) => (
-        photo.jobStepId === jobStepId
-      )).length !== options.numberofPhotosRequired
+      options.mustTakePhoto === 1 &&
+      getJobStepPhotos(jobStepId).length !== options.numberofPhotosRequired
     ) {
       const text = `Please include ${options.numberofPhotosRequired} photo(s)`;
       return { hard: text, easy: text, ref: photosAndSignatureRefs.current[stepIndex] };
     }
 
     if (
-      options.mustTakeSignature &&
-      signs.findIndex((sign) => (
-        sign.jobStepId === jobStepId
-      )) === -1
+      options.mustTakeSignature === 1 &&
+      getJobStepSigns(jobStepId).length !== 1
     ) {
       const text = 'Please include signature';
       return { hard: text, easy: text, ref: photosAndSignatureRefs.current[stepIndex] };
@@ -383,7 +403,7 @@ const JobDetailsScreenView = ({
     photos,
     signs,
     amountCollected,
-
+    focusedJob.steps,
     currentStepIndex,
   ]);
 
@@ -405,127 +425,40 @@ const JobDetailsScreenView = ({
   const getBinInOutInfoIndex = useCallback(
     (index) => {
       switch (focusedJob.jobTypeName) {
-        case JOB_TYPE.PUT:
-          if (
-            index !== 0 ||
-            jobStatus === JOB_STATUS.IN_PROGRESS
-          ) {
-            return -1;
-          }
-
-          return 1;
-
         case JOB_TYPE.PULL:
-          if (index !== 0) {
-            return -1;
-          }
+          return index === 0 ? 0 : -1;
 
-          return 0;
-
+        case JOB_TYPE.SHIFT:
         case JOB_TYPE.EXCHANGE:
           return index === 0 ? 1 : 0;
 
-        case JOB_TYPE.OUT:
-          if (index !== 0) {
-            return -1;
-          }
-
-          return 1;
-
-        case JOB_TYPE.SHIFT:
-          if (
-            index !== 0 ||
-            jobStatus === JOB_STATUS.IN_PROGRESS
-          ) {
-            return -1;
-          }
-
-          if (
-            jobStatus === JOB_STATUS.STARTED ||
-            jobStatus === JOB_STATUS.COMPLETED
-          ) {
-            return 0;
-          } else {
-            return 1;
-          }
+        case JOB_TYPE.PUT:
+          return index === 0 ? 1 : -1;
 
         default:
           return -1;
       };
     },
-    [
-      jobStatus,
-      focusedJob.jobTypeName,
-    ],
+    [focusedJob.jobTypeName],
   );
 
   const getCustomerSiteIndex = useCallback(
     () => {
-      const { steps, jobTypeName } = focusedJob;
-
-      if (jobTypeName === JOB_TYPE.PULL) {
-        return 0;
-      }
-
-      if (
-        jobTypeName === JOB_TYPE.PUT ||
-        jobTypeName === JOB_TYPE.EXCHANGE ||
-        jobTypeName === JOB_TYPE.ON_THE_SPOT
-      ) {
-        return 1;
-      }
-
-      if (steps.length === 2) {
-        if (
-          jobStatus === JOB_STATUS.DISPATCHED ||
-          jobStatus === JOB_STATUS.ACKNOWLEDGED ||
-          jobStatus === JOB_STATUS.STARTED
-        ) {
+      switch (focusedJob.jobTypeName) {
+        case JOB_TYPE.PULL:
+        case JOB_TYPE.SHIFT:
           return 0;
-        }
 
-        return 1;
-      }
-
-      if (steps.length === 3) {
-        if (
-          jobStatus === JOB_STATUS.DISPATCHED ||
-          jobStatus === JOB_STATUS.ACKNOWLEDGED
-        ) {
-          return 0;
-        }
-
-        if (jobStatus === JOB_STATUS.STARTED) {
+        case JOB_TYPE.PUT:
+        case JOB_TYPE.EXCHANGE:
+        case JOB_TYPE.ON_THE_SPOT:
           return 1;
-        }
 
-        return 2;
-      }
+        default:
+          return 0;
+      };
     },
-    [
-      jobStatus,
-      focusedJob.steps,
-      focusedJob.jobTypeName,
-    ],
-  );
-
-  const getBinInfoOptions = useCallback(
-    (index) => pick(
-      focusedJob.steps[index],
-      [
-        'isRequireBinNumberToEnd',
-        'isRequireBinNumberToStart',
-        'isRequireBinType',
-        'isRequireBinWeight',
-        'isRequirePaymentCollection',
-        'isRequireReviewWasteType',
-        'mustTakePhoto',
-        'mustTakeSignature',
-        'numberofPhotosRequired',
-        'requireStatusToEnd',
-      ],
-    ),
-    [focusedJob.steps],
+    [focusedJob.jobTypeName],
   );
 
   const getBinInfoStatus = useCallback(
@@ -677,6 +610,8 @@ const JobDetailsScreenView = ({
     index,
     options,
     status,
+
+    isSpecial,
   }) => {
     const enabled =
       (
@@ -693,7 +628,8 @@ const JobDetailsScreenView = ({
         <RowWrap>
           {
             !isCompletedJobState
-            ? <FlexWrap>
+            ? !isSpecial &&
+              <FlexWrap>
                 <RowWrap>
                   <LabelText>Bin ID</LabelText>
                   {
@@ -746,6 +682,7 @@ const JobDetailsScreenView = ({
                 </BinInputWrap>
               </FlexWrap>
             : [
+                !isSpecial &&
                 <FlexWrap key={'Bin-Id'}>
                   <LabelText>Bin ID</LabelText>
                   <SpaceView mTop={SIZE1} />
@@ -899,9 +836,7 @@ const JobDetailsScreenView = ({
 
     photoIndex: index,
   }) => {
-    const data = photos.filter((photo) => (
-      photo.jobStepId === item.jobStepId
-    ));
+    const data = getJobStepPhotos(item.jobStepId)[index];
 
     return (
       [
@@ -910,15 +845,15 @@ const JobDetailsScreenView = ({
           flex={2}
         >
           {
-            data[index]
+            data
             ? <TouchableOpacity
                 onPress={() => onShowPhotoModal(
-                  data[index],
+                  data,
                   status === 'ACTIVE',
                 )}
               >
                 <PhotoWrap>
-                  <FullImage source={{ uri: data[index].uri }} />
+                  <FullImage source={{ uri: data.uri }} />
                 </PhotoWrap>
 
               </TouchableOpacity>
@@ -958,18 +893,16 @@ const JobDetailsScreenView = ({
     item,
     status,
   }) => {
-    const index = signs.findIndex((sign) => (
-      sign.jobStepId === item.jobStepId
-    ));
+    const data = getJobStepSigns(item.jobStepId)[0];
 
     return (
-      index !== -1
+      data
       ? <TouchableOpacity
           onPress={() => onSign(item.jobStepId)}
           disabled={status !== 'ACTIVE'}
         >
           <SignWrap>
-            <FullImage source={{ uri: signs[index].uri }} />
+            <FullImage source={{ uri: data.uri }} />
           </SignWrap>
         </TouchableOpacity>
       : <TouchableOpacity
@@ -1001,93 +934,106 @@ const JobDetailsScreenView = ({
     index,
     options,
     status,
-  }) => (
-    (
-      options.numberofPhotosRequired ||
-      options.mustTakeSignature
-    ) &&
-    <View
-      ref={ref => photosAndSignatureRefs.current[index] = ref}
-    >
-      <SpaceView mTop={SIZE2} />
-      <RowWrap>
-        <LabelText>Photos & Signature</LabelText>
-        {
-          status !== 'COMPLETED' &&
-          <RowWrap>
-            <SpaceView mLeft={SIZE1} />
-            {
-              (
-                !options.numberofPhotosRequired ||
-                (
-                  options.numberofPhotosRequired &&
-                  photos.filter((photo) => (
-                    photo.jobStepId === item.jobStepId
-                  )).length === options.numberofPhotosRequired
-                )
-              ) && (
-                !options.mustTakeSignature ||
-                (
-                  options.mustTakeSignature &&
-                  signs.findIndex((sign) => (
-                    sign.jobStepId === item.jobStepId
-                  )) !== -1
-                )
-              )
-              ? <BlackActiveCircleCheckIcon />
-              : <DeactiveCircleCheckIcon />
-            }
-          </RowWrap>
-        }
-      </RowWrap>
-      <SpaceView mTop={SIZE2} />
-      <RowWrap>
-        {
-          !!options.numberofPhotosRequired &&
-          Array(options.numberofPhotosRequired)
-            .fill(0)
-            .map((empty, index) => (
-              renderPhoto({
-                item,
-                status,
+  }) => {
+    const numberOfPhotos = isCompletedJobState
+      ? getJobStepPhotos(item.jobStepId).length
+      : options.mustTakePhoto === 0
+        ? 0 : options.numberofPhotosRequired;
 
-                photoIndex: index,
-              })
-            ))
-        }
-        {
-          <FlexWrap flex={3}>
+    const numberOfSigns = isCompletedJobState
+      ? getJobStepSigns(item.jobStepId).length
+      : options.mustTakeSignature === 0 ? 0 : 1;
+
+    if (numberOfPhotos === 0 && numberOfSigns === 0) {
+      return null;
+    }
+
+    return (
+      <View
+        ref={ref => photosAndSignatureRefs.current[index] = ref}
+      >
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <LabelText>
             {
-              options.mustTakeSignature &&
-              renderSign({
-                item,
-                status,
-              })
+              numberOfPhotos === 0
+              ? 'Signature'
+              : numberOfSigns === 0
+                ? 'Photos' : 'Photos & Signature'
             }
-          </FlexWrap>
-        }
-        {
-          (options.numberofPhotosRequired || 0) < 2 &&
-          Array(2 - (options.numberofPhotosRequired || 0))
-            .fill(0)
-            .map((empty, index) => (
-              [
-                <SpaceView
-                  key={`${index}-Empty-SpaceView`}
-                  mLeft={SIZE2}
-                />
-                ,
-                <FlexWrap
-                  key={`${index}-Empty-FlexWrap`}
-                  flex={2}
-                />
-              ]
-            ))
-        }
-      </RowWrap>
-      <SpaceView mTop={SIZE2} />
-    </View>
-  );
+          </LabelText>
+          {
+            status !== 'COMPLETED' &&
+            <RowWrap>
+              <SpaceView mLeft={SIZE1} />
+              {
+                (
+                  options.mustTakePhoto !== 1 ||
+                  (
+                    options.mustTakePhoto === 1 &&
+                    getJobStepPhotos(item.jobStepId)
+                      .length === options.numberofPhotosRequired
+                  )
+                ) && (
+                  options.mustTakeSignature !== 1 ||
+                  (
+                    options.mustTakeSignature === 1 &&
+                    getJobStepSigns(item.jobStepId).length === 1
+                  )
+                )
+                ? <BlackActiveCircleCheckIcon />
+                : <DeactiveCircleCheckIcon />
+              }
+            </RowWrap>
+          }
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          {
+            Array(numberOfPhotos)
+              .fill(0)
+              .map((empty, index) => (
+                renderPhoto({
+                  item,
+                  status,
+
+                  photoIndex: index,
+                })
+              ))
+          }
+          {
+            <FlexWrap flex={3}>
+              {
+                numberOfSigns !== 0 &&
+                renderSign({
+                  item,
+                  status,
+                })
+              }
+            </FlexWrap>
+          }
+          {
+            Array(2 - numberOfPhotos)
+              .fill(0)
+              .map((empty, index) => (
+                [
+                  <SpaceView
+                    key={`${index}-Empty-SpaceView`}
+                    mLeft={SIZE2}
+                  />
+                  ,
+                  <FlexWrap
+                    key={`${index}-Empty-FlexWrap`}
+                    flex={2}
+                  />
+                ]
+              ))
+          }
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+      </View>
+    );
+  };
 
   const renderAdditionalServices = ({
     index,
@@ -1362,11 +1308,14 @@ const JobDetailsScreenView = ({
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
-        if (
-          !item.binType &&
-          !item.wasteType
-        ) {
-          return null;
+        let isSpecial = false;
+
+        if (!item.binType && !item.wasteType) {
+          if (focusedJob.jobTypeName === JOB_TYPE.SHIFT) {
+            isSpecial = true;
+          } else {
+            return null;
+          }
         }
 
         const idx = getBinInOutInfoIndex(index);
@@ -1414,6 +1363,8 @@ const JobDetailsScreenView = ({
                   index,
                   options,
                   status,
+
+                  isSpecial,
                 })
               }
               {
@@ -1477,6 +1428,10 @@ const JobDetailsScreenView = ({
     const idx = getBinInOutInfoIndex(stepIndex);
     const options = getBinInfoOptions(stepIndex);
     const status = getBinInfoStatus(stepIndex);
+
+    if (!options.isRequireBinWeight) {
+      return null;
+    }
 
     const editable =
       status === 'ACTIVE' &&
@@ -1645,6 +1600,10 @@ const JobDetailsScreenView = ({
           <RowWrap>
             <FlexWrap>
               <InfoText numberOfLines={1}>
+                {focusedJob.customer.customerName}
+              </InfoText>
+              <SpaceView mTop={SIZE1} />
+              <InfoText numberOfLines={1}>
                 {
                   steps[index].site
                   ? getCustomerSiteAddress(steps[index].site)
@@ -1705,6 +1664,10 @@ const JobDetailsScreenView = ({
         buttonColor = COLORS.PURPLE1;
         buttonText = 'In Progress';
         buttonAction = () => onValidate(onPull);
+      } else if (focusedJob.jobTypeName === JOB_TYPE.SHIFT) {
+        buttonColor = COLORS.PURPLE1;
+        buttonText = 'In Progress';
+        buttonAction = () => onValidate(onShift);
       } else if (focusedJob.steps.length === 3) {
         buttonColor = COLORS.PURPLE1;
         buttonText = 'In Progress';
@@ -1720,9 +1683,12 @@ const JobDetailsScreenView = ({
       buttonAction = () => onValidate(onComplete);
     }
 
-    if (validationCurrentStep.easy) {
-      buttonAction = () => onScroll(validationCurrentStep.ref);
+    if (
+      buttonAction &&
+      validationCurrentStep.easy
+    ) {
       buttonColor = buttonColor + '4C'; // opacity: 30%
+      buttonAction = () => onScroll(validationCurrentStep.ref);
     }
 
     return (
@@ -1827,6 +1793,7 @@ JobDetailsScreenView.propTypes = {
   onAcknowledge: PropTypes.func.isRequired,
   onStart: PropTypes.func.isRequired,
   onPull: PropTypes.func.isRequired,
+  onShift: PropTypes.func.isRequired,
   onExchange: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
   onPhoto: PropTypes.func.isRequired,
