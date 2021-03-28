@@ -116,6 +116,26 @@ function apiPullJobs(
   });
 };
 
+function apiShiftJobs(
+  jobIds,
+  stepBinUpdate,
+  pricings,
+  amountCollected,
+  jobPaymentType,
+  attempt,
+) {
+  return apiCall('api/mobile/driver/jobs/shift', 'post', {
+    data: {
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+      jobPaymentType,
+      attempt,
+    },
+  });
+};
+
 function apiExchangeJobs(
   jobIds,
   stepBinUpdate,
@@ -254,6 +274,7 @@ export {
   apiAcknowledgeJobs,
   apiStartJobs,
   apiPullJobs,
+  apiShiftJobs,
   apiExchangeJobs,
   apiCompleteJobs,
   apiGetDriverNotes,

@@ -53,6 +53,7 @@ const JobDetailsScreen = ({
   acknowledgeJobs,
   startJobs,
   pullJobs,
+  shiftJobs,
   exchangeJobs,
   completeJobs,
   setCoreScreenInfo,
@@ -293,6 +294,22 @@ const JobDetailsScreen = ({
     });
   };
 
+  const onShift = () => {
+    setLoading(true);
+
+    shiftJobs({
+      jobIds: `${focusedJob.jobId}`,
+      binInfo,
+      services,
+      amountCollected,
+      jobPaymentType,
+      photos,
+      signs,
+      success: () => setLoading(false),
+      failure: () => setLoading(false),
+    });
+  };
+
   const onExchange = () => {
     setLoading(true);
 
@@ -466,6 +483,7 @@ const JobDetailsScreen = ({
       onAcknowledge={onAcknowledge}
       onStart={onStart}
       onPull={onPull}
+      onShift={onShift}
       onExchange={onExchange}
       onComplete={onComplete}
       onPhoto={onPhoto}
@@ -491,6 +509,7 @@ JobDetailsScreen.propTypes = {
   acknowledgeJobs: PropTypes.func.isRequired,
   startJobs: PropTypes.func.isRequired,
   pullJobs: PropTypes.func.isRequired,
+  shiftJobs: PropTypes.func.isRequired,
   exchangeJobs: PropTypes.func.isRequired,
   completeJobs: PropTypes.func.isRequired,
   setCoreScreenInfo: PropTypes.func.isRequired,
@@ -517,6 +536,7 @@ const mapDispatchToProps = {
   acknowledgeJobs: Jobs.actionCreators.acknowledgeJobs,
   startJobs: Jobs.actionCreators.startJobs,
   pullJobs: Jobs.actionCreators.pullJobs,
+  shiftJobs: Jobs.actionCreators.shiftJobs,
   exchangeJobs: Jobs.actionCreators.exchangeJobs,
   completeJobs: Jobs.actionCreators.completeJobs,
   setCoreScreenInfo: ViewStore.actionCreators.setCoreScreenInfo,

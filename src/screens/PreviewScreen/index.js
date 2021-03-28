@@ -14,6 +14,7 @@ import {
   SIZE2,
   SIZE4,
   FONT,
+  JOB_TYPE,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -190,7 +191,7 @@ const PreviewScreen = ({
               </FlexWrap>
               <FlexWrap flex={6}>
                 <InfoText align={'right'}>
-                  {sign.signedUserContact}
+                  {sign.signedUserContact || ' --- '}
                 </InfoText>
               </FlexWrap>
             </RowWrap>
@@ -312,7 +313,8 @@ const PreviewScreen = ({
   const renderBinInfo = () => {
     return (
       binInfo.map((item, index) => {
-        const idx = getBinInOutInfoIndex(index);
+        const idx = focusedJob.jobTypeName === JOB_TYPE.SHIFT
+          ? 0 : getBinInOutInfoIndex(index);
 
         return (
           (item.wasteType || item.binType) &&

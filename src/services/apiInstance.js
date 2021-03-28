@@ -9,6 +9,7 @@ const apiInstance = axios.create({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
+    'x-api-version': '3.1',
   },
   timeout: 12000,
 });

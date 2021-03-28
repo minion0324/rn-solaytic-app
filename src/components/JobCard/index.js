@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -11,15 +10,13 @@ import {
   SIZE1,
   SIZE2,
   SIZE8,
-  SIZE6,
-  SIZE20,
+  SIZE12,
   FONT,
   JOB_STATUS,
   JOB_TYPE,
 } from 'src/constants';
 
 import {
-  BorderView,
   RowWrap,
   FlexWrap,
   SpaceView,
@@ -31,7 +28,26 @@ const {
 } = SVGS;
 
 const Container = styled.View`
-  height: ${props => props.height}px;
+
+`;
+
+const FirstSection = styled.View`
+  height: ${SIZE12}px;
+  justify-content: center;
+  border-bottom-width: 1px;
+  border-color: ${COLORS.GRAY2};
+`;
+
+const SecondSection = styled.View`
+  height: ${SIZE8}px;
+  justify-content: center;
+`;
+
+const ThirdSection = styled.View`
+  height: ${SIZE8}px;
+  justify-content: center;
+  border-top-width: 1px;
+  border-color: ${COLORS.GRAY2};
 `;
 
 const StatusText = styled.Text`
@@ -161,13 +177,8 @@ const JobCard = ({
   }, [jobTypeName]);
 
   return (
-    <Container
-      height={
-        instructionToDrivers
-        ? SIZE20 + SIZE6 : SIZE20
-      }
-    >
-      <View>
+    <Container>
+      <FirstSection>
         <SpaceView mTop={SIZE2} />
         <RowWrap>
           <FlexWrap>
@@ -206,8 +217,6 @@ const JobCard = ({
           }
           <SpaceView mLeft={SIZE2} />
         </RowWrap>
-      </View>
-      <View>
         <SpaceView mTop={SIZE1} />
         <RowWrap>
           <SpaceView mLeft={SIZE2} />
@@ -219,9 +228,8 @@ const JobCard = ({
           <SpaceView mLeft={SIZE2} />
         </RowWrap>
         <SpaceView mTop={SIZE1} />
-      </View>
-      <BorderView />
-      <FlexWrap>
+      </FirstSection>
+      <SecondSection>
         <RowWrap>
           <FlexWrap flex={3}>
             <InfoWrap hasBorder>
@@ -245,11 +253,10 @@ const JobCard = ({
             </InfoWrap>
           </FlexWrap>
         </RowWrap>
-      </FlexWrap>
+      </SecondSection>
       {
         !!instructionToDrivers &&
-        <View>
-          <BorderView />
+        <ThirdSection>
           <SpaceView mTop={SIZE1} />
           <RowWrap>
             <SpaceView mLeft={SIZE2} />
@@ -263,7 +270,7 @@ const JobCard = ({
             <SpaceView mLeft={SIZE2} />
           </RowWrap>
           <SpaceView mTop={SIZE2} />
-        </View>
+        </ThirdSection>
       }
     </Container>
   );

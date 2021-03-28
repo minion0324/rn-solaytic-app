@@ -91,8 +91,8 @@ const SignatureScreen = ({
 
   const onSign = async (signature) => {
     try {
-      if (!name || !contact) {
-        Alert.alert('Warning', 'Please type signed user name & contact.');
+      if (!name) {
+        Alert.alert('Warning', 'Please type signed user name.');
         return;
       }
 

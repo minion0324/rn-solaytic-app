@@ -18,6 +18,7 @@ import {
   apiAcknowledgeJobs,
   apiStartJobs,
   apiPullJobs,
+  apiShiftJobs,
   apiExchangeJobs,
   apiCompleteJobs,
   apiFailJobs,
@@ -45,6 +46,7 @@ import {
   ACKNOWLEDGE_JOBS,
   START_JOBS,
   PULL_JOBS,
+  SHIFT_JOBS,
   EXCHANGE_JOBS,
   COMPLETE_JOBS,
   FAIL_JOBS,
@@ -664,6 +666,154 @@ export function* watchPullJobs() {
   }
 }
 
+
+export function* asyncShiftJobs({ payload }) {
+  const {
+    jobIds,
+    binInfo,
+    services,
+    amountCollected,
+    jobPaymentType,
+    photos,
+    signs,
+    success,
+    failure,
+  } = payload;
+
+  try {
+    const stepBinUpdate = getUpdatedBinInfo(binInfo);
+    const pricings = getUpdatedServices(services);
+
+    const focusedJob = yield select(Jobs.selectors.getFocusedJob);
+
+    const lastJobStep = focusedJob.steps[focusedJob.steps.length - 1];
+
+    const attempt = {
+      jobStepId: lastJobStep.jobStepId,
+      customerName: focusedJob.customer.customerName,
+      amountCollected,
+      jobPaymentType,
+      siteName: lastJobStep.siteName,
+      address: lastJobStep.address,
+      wasteTypes: stepBinUpdate[0].wasteTypes
+        .concat(stepBinUpdate[1].wasteTypes),
+      wasteTypeId: stepBinUpdate[0].wasteTypeId,
+      binTypeId: stepBinUpdate[0].binTypeId,
+      binNumber: stepBinUpdate[0].binNumber,
+      binWeight: stepBinUpdate[0].binWeight,
+      wasteType2Id: stepBinUpdate[1].wasteTypeId,
+      binType2Id: stepBinUpdate[1].binTypeId,
+      binNumber2: stepBinUpdate[1].binNumber,
+      binWeight2: stepBinUpdate[1].binWeight,
+      submittedLat: lastJobStep.latitude,
+      submittedLng: lastJobStep.longitude,
+      submittedLocation: '', //
+      driverName: '', //
+      vehicleName: '', //
+      remarks: focusedJob.remarks,
+      jobPhotos: photos.map((photo) => {
+        if (!photo.data) {
+          return {
+            jobStepId: photo.jobStepId,
+            photoUrl: photo.uri,
+          };
+        }
+
+        return {
+          jobStepId: photo.jobStepId,
+          base64Image: photo.data,
+          fileName: (photo.uri || '').split('/').pop(),
+          photoCaption: '', //
+        }
+      }),
+      jobSignatures: signs.map((sign) => {
+        if (!sign.data) {
+          return {
+            jobStepId: sign.jobStepId,
+            jobSignatureUrl: sign.uri,
+            jobSignedUserName: sign.signedUserName,
+            jobSignedUserContact: sign.signedUserContact,
+          };
+        }
+
+        return {
+          jobStepId: sign.jobStepId,
+          jobSignatureFileName: (sign.uri || '').split('/').pop(),
+          base64Signature: sign.data,
+          jobSignedUserName: sign.signedUserName,
+          jobSignedUserContact: sign.signedUserContact,
+        };
+      }),
+    };
+
+    const { data } = yield call(apiShiftJobs,
+      jobIds,
+      stepBinUpdate,
+      pricings,
+      amountCollected,
+      jobPaymentType,
+      attempt,
+    );
+
+    const successJobIds = data.successJobs.map(item => item.jobId);
+
+    const focusedJobId = yield select(Jobs.selectors.getFocusedJobId);
+
+    const allJobs = yield select(Jobs.selectors.getAllJobs);
+
+    const result = successJobIds.reduce((res, id) => {
+      const index = res.newJobs.findIndex(item => item.jobId === id);
+
+      if (index !== -1) {
+        res.newJobs.splice(index, 1, {
+          ...res.newJobs[index],
+          statusName: JOB_STATUS.IN_PROGRESS,
+        });
+      }
+
+      return res;
+    }, {
+      newJobs: allJobs.slice(0),
+    });
+
+    yield put(actionCreators.shiftJobsSuccess({
+      ...result,
+      statusName:
+        successJobIds.includes(focusedJobId) && JOB_STATUS.IN_PROGRESS,
+      appExtraData: {
+        binInfo,
+        services,
+        amountCollected,
+        jobPaymentType,
+      },
+    }));
+
+    try {
+      const { data } = yield call(apiGetJobById, focusedJobId);
+
+      //
+      let steps = data.steps.slice(0);
+      steps = sortBy(steps, 'stepOrder');
+
+      yield put(actionCreators.getJobByIdSuccess({ ...data, steps }));
+    } catch (err) {
+      //
+    }
+
+    success && success();
+  } catch (error) {
+    yield onError(error);
+    failure && failure();
+  }
+}
+
+export function* watchShiftJobs() {
+  while (true) {
+    const action = yield take(SHIFT_JOBS);
+    yield* asyncShiftJobs(action);
+  }
+}
+
 export function* asyncExchangeJobs({ payload }) {
   const {
     jobIds,
@@ -1166,6 +1316,7 @@ export default function* () {
     fork(watchAcknowledgeJobs),
     fork(watchStartJobs),
     fork(watchPullJobs),
+    fork(watchShiftJobs),
     fork(watchExchangeJobs),
     fork(watchCompleteJobs),
     fork(watchFailJobs),
