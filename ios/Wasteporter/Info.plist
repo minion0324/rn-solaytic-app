@@ -26,11 +26,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-  <key>bugsnag</key>
-  <dict>
-    <key>apiKey</key>
-    <string>2407e5ee3e22b127051d61223752fd27</string>
-  </dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>comgooglemaps</string>
@@ -99,5 +94,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>2407e5ee3e22b127051d61223752fd27</string>
+	</dict>
 </dict>
 </plist>
