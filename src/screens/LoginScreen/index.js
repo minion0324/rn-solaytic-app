@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -62,11 +64,11 @@ const LoginScreen = ({
   const inputUserName = useRef(null);
   const inputPassword = useRef(null);
 
-  const [ loading, setLoading ] = useState(false);
-  const [ userName, setUserName ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const [ rememberCheck, setRememberCheck ] = useState(false);
-  const [ visibility, setVisibility ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberCheck, setRememberCheck] = useState(false);
+  const [visibility, setVisibility] = useState(false);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -146,91 +148,95 @@ const LoginScreen = ({
   };
 
   return (
-    <Container>
-      <Content>
-        <LogoWrap>
-          <Logo
-            resizeMode={'contain'}
-            source={
-              appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
-            }
-          />
-        </LogoWrap>
-
-        <FormWrap>
-          <InputRow>
-            <LeftWrap>
-              <UserIcon />
-            </LeftWrap>
-            <InputWrap>
-              <Input
-                ref={inputUserName}
-                placeholder={'Username'}
-                underlineColorAndroid={COLORS.TRANSPARENT1}
-                returnKeyType={'next'}
-                onSubmitEditing={() => inputPassword.current.focus()}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                onChangeText={text => onChangeUserName(text)}
-                value={userName}
-              />
-              <RightWrap />
-            </InputWrap>
-          </InputRow>
-
-          <InputRow>
-            <LeftWrap>
-              <LockIcon />
-            </LeftWrap>
-            <InputWrap>
-              <Input
-                ref={inputPassword}
-                placeholder={'Password'}
-                secureTextEntry={!visibility}
-                underlineColorAndroid={COLORS.TRANSPARENT1}
-                returnKeyType={'go'}
-                onSubmitEditing={onLogin}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                onChangeText={text => onChangePassword(text)}
-                value={password}
-              />
-              <RightWrap
-                onPress={() => setVisibility(!visibility)}
-              >
-                {
-                  visibility
-                  ? <VisibilityOnIcon />
-                  : <VisibilityOffIcon />
-                }
-              </RightWrap>
-            </InputWrap>
-          </InputRow>
-
-          <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
-            {
-              rememberCheck
-              ? <ActiveCheckIcon />
-              : <DeactiveCheckIcon />
-            }
-            <RememberText>Remember me</RememberText>
-          </RememberWrap>
-
-          <ButtonWrap>
-            <DefaultButton
-              onPress={onLogin}
-              text={'Sign in'}
-              color={COLORS.BLUE1}
-              loading={loading}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      flex={1}>
+      <Container>
+        <Content>
+          <LogoWrap>
+            <Logo
+              resizeMode={'contain'}
+              source={
+                appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+              }
             />
-          </ButtonWrap>
-        </FormWrap>
+          </LogoWrap>
 
-        <PoweredByText>
-          Powered by wasteporter.com
-        </PoweredByText>
-      </Content>
-    </Container>
+          <FormWrap>
+            <InputRow>
+              <LeftWrap>
+                <UserIcon />
+              </LeftWrap>
+              <InputWrap>
+                <Input
+                  ref={inputUserName}
+                  placeholder={'Username'}
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  returnKeyType={'next'}
+                  onSubmitEditing={() => inputPassword.current.focus()}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  onChangeText={text => onChangeUserName(text)}
+                  value={userName}
+                />
+                <RightWrap />
+              </InputWrap>
+            </InputRow>
+
+            <InputRow>
+              <LeftWrap>
+                <LockIcon />
+              </LeftWrap>
+              <InputWrap>
+                <Input
+                  ref={inputPassword}
+                  placeholder={'Password'}
+                  secureTextEntry={!visibility}
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  returnKeyType={'go'}
+                  onSubmitEditing={onLogin}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  onChangeText={text => onChangePassword(text)}
+                  value={password}
+                />
+                <RightWrap
+                  onPress={() => setVisibility(!visibility)}
+                >
+                  {
+                    visibility
+                      ? <VisibilityOnIcon />
+                      : <VisibilityOffIcon />
+                  }
+                </RightWrap>
+              </InputWrap>
+            </InputRow>
+
+            <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
+              {
+                rememberCheck
+                  ? <ActiveCheckIcon />
+                  : <DeactiveCheckIcon />
+              }
+              <RememberText>Remember me</RememberText>
+            </RememberWrap>
+
+            <ButtonWrap>
+              <DefaultButton
+                onPress={onLogin}
+                text={'Sign in'}
+                color={COLORS.BLUE1}
+                loading={loading}
+              />
+            </ButtonWrap>
+          </FormWrap>
+
+          <PoweredByText>
+            Powered by wasteporter.com
+          </PoweredByText>
+        </Content>
+      </Container>
+    </KeyboardAvoidingView>
   );
 };
 
