@@ -88,13 +88,13 @@ function getCustomerSiteAddress(customerSite) {
     siteName, blockNo, street, unitNo, postalCode,
   } = customerSite;
 
-  if (siteName) {
-    address = siteName;
-  }
+  // if (siteName) {
+  //   address = siteName;
+  // }
 
-  if (blockNo || street || unitNo || postalCode) {
-    address += ' (';
-  }
+  // if (blockNo || street || unitNo || postalCode) {
+  //   address += ' (';
+  // }
 
   if (blockNo) {
     address += `Block ${blockNo}`;
@@ -124,9 +124,9 @@ function getCustomerSiteAddress(customerSite) {
     address += `Post Code ${postalCode}`;
   }
 
-  if (blockNo || street || unitNo || postalCode) {
-    address += ')';
-  }
+  // if (blockNo || street || unitNo || postalCode) {
+  //   address += ')';
+  // }
 
   return address;
 };

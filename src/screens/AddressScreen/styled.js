@@ -9,7 +9,10 @@ import {
   SIZE3,
   SIZE4,
   SIZE8,
+  HEIGHT,
+  FONT,
 } from 'src/constants';
+import { SIZE10 } from '../../constants';
 
 const LocationWrap = styled.View`
   flex-direction: row;
@@ -35,7 +38,7 @@ const LocationIcon = styled.View`
   justify-content: center;
   border-radius: ${SIZE2}px;
   border-width: 2px;
-  border-color: ${COLORS.BLACK2};
+  border-color: ${props => props.color || COLORS.BLACK2};
   background-color: ${COLORS.WHITE1};
 `;
 
@@ -46,6 +49,47 @@ const LocationLine = styled(Dash)`
   left: ${SIZE8 - 1}px;
   position: absolute;
   opacity: 0.2;
+`;
+
+const MapBackButton = styled.TouchableOpacity`
+  position: absolute;
+  top: ${SIZE8}px;
+  left: ${SIZE4}px;
+  width: ${SIZE10}px;
+  height: ${SIZE10}px;
+  border-radius: ${SIZE10}px;
+  align-items: center;
+  justify-content: center;
+  background: ${COLORS.WHITE1};
+  elevation: 8;
+  box-shadow: 0px 2px;
+  shadow-color: ${COLORS.BLACK1};
+  shadow-opacity: 0.4;
+  shadow-radius: 4px;
+`;
+
+const NavigationView = styled.View`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: ${HEIGHT/2}px;
+  background: ${COLORS.WHITE1};
+  elevation: 2;
+  box-shadow: 0px 2px;
+  shadow-color: ${COLORS.BLACK1};
+  shadow-opacity: 0.4;
+  border-radius: ${SIZE2}px;
+`;
+
+const DefaultButtonWrap = styled.View`
+  margin-horizontal: ${SIZE4}px;
+`;
+
+const AddressText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 500;
+  color: ${COLORS.GRAY3};
 `;
 
 const Location1Line = () => (
@@ -87,4 +131,8 @@ export {
   Location1Line,
   Location2Line,
   Location3Line,
+  MapBackButton,
+  NavigationView,
+  DefaultButtonWrap,
+  AddressText
 };

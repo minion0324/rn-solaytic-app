@@ -85,7 +85,9 @@ target 'Wasteporter' do
     inherit! :complete
     # Pods for testing
   end
-
+  
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
   use_native_modules!
 
   # Enables Flipper.

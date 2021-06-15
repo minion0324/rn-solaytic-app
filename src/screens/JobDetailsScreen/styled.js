@@ -4,6 +4,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE4,
   SIZE6,
   SIZE8,
   FONT,
@@ -99,6 +100,30 @@ const PrintReceiptButton = styled.TouchableOpacity`
   background-color: ${COLORS.WHITE1};
 `;
 
+const LocationText = styled.Text`
+  font-size: ${FONT(12)}px;
+  color: ${COLORS.BLACK2};
+`;
+
+const ReplyButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+`;
+
+const NotifyNumWarp = styled.View`
+  position: absolute;
+  background-color: ${COLORS.RED1};
+  border-radius: ${SIZE4}px;
+  right: 0px;
+  padding-horizontal: 4px;
+`;
+
+const NotifyNumWarpText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 500;
+  color: ${COLORS.WHITE1};
+`;
+
 export {
   DriverMessageBadge,
   BinInput,
@@ -108,4 +133,8 @@ export {
   SignWrap,
   PhotoModalButtonsWrap,
   PrintReceiptButton,
+  LocationText,
+  ReplyButton,
+  NotifyNumWarp,
+  NotifyNumWarpText
 };

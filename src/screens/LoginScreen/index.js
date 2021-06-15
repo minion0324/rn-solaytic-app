@@ -4,6 +4,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -148,95 +149,97 @@ const LoginScreen = ({
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      flex={1}>
-      <Container>
-        <Content>
-          <LogoWrap>
-            <Logo
-              resizeMode={'contain'}
-              source={
-                appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
-              }
-            />
-          </LogoWrap>
-
-          <FormWrap>
-            <InputRow>
-              <LeftWrap>
-                <UserIcon />
-              </LeftWrap>
-              <InputWrap>
-                <Input
-                  ref={inputUserName}
-                  placeholder={'Username'}
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  returnKeyType={'next'}
-                  onSubmitEditing={() => inputPassword.current.focus()}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  onChangeText={text => onChangeUserName(text)}
-                  value={userName}
-                />
-                <RightWrap />
-              </InputWrap>
-            </InputRow>
-
-            <InputRow>
-              <LeftWrap>
-                <LockIcon />
-              </LeftWrap>
-              <InputWrap>
-                <Input
-                  ref={inputPassword}
-                  placeholder={'Password'}
-                  secureTextEntry={!visibility}
-                  underlineColorAndroid={COLORS.TRANSPARENT1}
-                  returnKeyType={'go'}
-                  onSubmitEditing={onLogin}
-                  autoCapitalize={'none'}
-                  autoCorrect={false}
-                  onChangeText={text => onChangePassword(text)}
-                  value={password}
-                />
-                <RightWrap
-                  onPress={() => setVisibility(!visibility)}
-                >
-                  {
-                    visibility
-                      ? <VisibilityOnIcon />
-                      : <VisibilityOffIcon />
-                  }
-                </RightWrap>
-              </InputWrap>
-            </InputRow>
-
-            <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
-              {
-                rememberCheck
-                  ? <ActiveCheckIcon />
-                  : <DeactiveCheckIcon />
-              }
-              <RememberText>Remember me</RememberText>
-            </RememberWrap>
-
-            <ButtonWrap>
-              <DefaultButton
-                onPress={onLogin}
-                text={'Sign in'}
-                color={COLORS.BLUE1}
-                loading={loading}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        flex={1}>
+        <Container>
+          <Content>
+            <LogoWrap>
+              <Logo
+                resizeMode={'contain'}
+                source={
+                  appLogo ? { uri: appLogo } : IMAGES.APP_LOGO
+                }
               />
-            </ButtonWrap>
-          </FormWrap>
+            </LogoWrap>
 
-          <PoweredByText>
-            Powered by wasteporter.com
-          </PoweredByText>
-        </Content>
-      </Container>
-    </KeyboardAvoidingView>
+            <FormWrap>
+              <InputRow>
+                <LeftWrap>
+                  <UserIcon />
+                </LeftWrap>
+                <InputWrap>
+                  <Input
+                    ref={inputUserName}
+                    placeholder={'Username'}
+                    underlineColorAndroid={COLORS.TRANSPARENT1}
+                    returnKeyType={'next'}
+                    onSubmitEditing={() => inputPassword.current.focus()}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    onChangeText={text => onChangeUserName(text)}
+                    value={userName}
+                  />
+                  <RightWrap />
+                </InputWrap>
+              </InputRow>
+
+              <InputRow>
+                <LeftWrap>
+                  <LockIcon />
+                </LeftWrap>
+                <InputWrap>
+                  <Input
+                    ref={inputPassword}
+                    placeholder={'Password'}
+                    secureTextEntry={!visibility}
+                    underlineColorAndroid={COLORS.TRANSPARENT1}
+                    returnKeyType={'go'}
+                    onSubmitEditing={onLogin}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    onChangeText={text => onChangePassword(text)}
+                    value={password}
+                  />
+                  <RightWrap
+                    onPress={() => setVisibility(!visibility)}
+                  >
+                    {
+                      visibility
+                        ? <VisibilityOnIcon />
+                        : <VisibilityOffIcon />
+                    }
+                  </RightWrap>
+                </InputWrap>
+              </InputRow>
+
+              <RememberWrap onPress={() => setRememberCheck(!rememberCheck)}>
+                {
+                  rememberCheck
+                    ? <ActiveCheckIcon />
+                    : <DeactiveCheckIcon />
+                }
+                <RememberText>Remember me</RememberText>
+              </RememberWrap>
+
+              <ButtonWrap>
+                <DefaultButton
+                  onPress={onLogin}
+                  text={'Sign in'}
+                  color={COLORS.BLUE1}
+                  loading={loading}
+                />
+              </ButtonWrap>
+            </FormWrap>
+
+            <PoweredByText>
+              Powered by wasteporter.com
+            </PoweredByText>
+          </Content>
+        </Container>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 

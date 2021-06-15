@@ -5,6 +5,7 @@ import {
   Alert,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -23,6 +24,7 @@ import {
   PLATFORM,
   SIZE1,
   SIZE2,
+  SIZE3,
 } from 'src/constants';
 import {
   Jobs,
@@ -72,7 +74,7 @@ const DriverMessageScreen = ({
   setCoreScreenInfo,
   componentId,
 }) => {
-  const [ newComment, setNewComment ] = useState('');
+  const [newComment, setNewComment] = useState('');
 
   const listRef = useRef(null);
 
@@ -137,7 +139,7 @@ const DriverMessageScreen = ({
       jobId: focusedJob.jobId,
       message: newComment,
       success: onNewCommentSuccess,
-      failure: () => {},
+      failure: () => { },
     });
   };
 
@@ -181,66 +183,70 @@ const DriverMessageScreen = ({
   };
 
   return (
-    <Container>
-      <ShadowWrap>
-        <HeaderBar
-          centerIcon={
-            <RowWrap>
-              <MessageIcon />
-              <SpaceView mLeft={SIZE1} />
-              <ScreenText>Driver Message</ScreenText>
-            </RowWrap>
-          }
-          leftIcon={<Back />}
-          rightIcon={<EmptyWrap />}
-          onPressLeft={onBack}
-        />
-      </ShadowWrap>
-
-      <Content>
-        <ContentWrap
-          color={COLORS.WHITE2}
-          mLeft={SIZE1} mRight={SIZE1}
-        >
-          <FlatList
-            ref={listRef}
-            data={focusedJob.messages}
-            keyExtractor={(item) => `${item.jobMessageId}`}
-            showsVerticalScrollIndicator={false}
-            renderItem={renderCommentItem}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <Container>
+        <ShadowWrap>
+          <HeaderBar
+            centerIcon={
+              <RowWrap>
+                <MessageIcon />
+                <SpaceView mLeft={SIZE1} />
+                <ScreenText>Driver Message</ScreenText>
+              </RowWrap>
+            }
+            leftIcon={<Back />}
+            rightIcon={<EmptyWrap />}
+            onPressLeft={onBack}
           />
-        </ContentWrap>
-      </Content>
+        </ShadowWrap>
 
-      <KeyboardAvoidingView
-        behavior={
-          PLATFORM === 'ios' ? 'padding' : 'height'
-        }
-      >
-        <ShadowWrap forUp>
+        <Content>
           <ContentWrap
+            color={COLORS.WHITE2}
             mLeft={SIZE1} mRight={SIZE1}
           >
-            <RowWrap>
-              <CommentInput
-                placeholder={'Type a message'}
-                underlineColorAndroid={COLORS.TRANSPARENT1}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                onChangeText={text => setNewComment(text)}
-                value={newComment}
-                returnKeyType={'go'}
-                onSubmitEditing={onNewComment}
-              />
-              <SpaceView mLeft={SIZE2} />
-              <TouchableOpacity onPress={onNewComment}>
-                <SendIcon />
-              </TouchableOpacity>
-            </RowWrap>
+            <FlatList
+              ref={listRef}
+              data={focusedJob.messages}
+              keyExtractor={(item) => `${item.jobMessageId}`}
+              showsVerticalScrollIndicator={false}
+              renderItem={renderCommentItem}
+            />
           </ContentWrap>
-        </ShadowWrap>
-      </KeyboardAvoidingView>
-    </Container>
+        </Content>
+
+        <KeyboardAvoidingView
+          behavior={
+            PLATFORM === 'ios' ? 'padding' : 'height'
+          }
+        >
+          <ShadowWrap forUp>
+            <ContentWrap
+              mLeft={SIZE1} mRight={SIZE1}
+            >
+              <RowWrap>
+                <CommentInput
+                  placeholder={'Type a message'}
+                  underlineColorAndroid={COLORS.TRANSPARENT1}
+                  autoCapitalize={'none'}
+                  autoCorrect={false}
+                  autoFocus={true}
+                  onChangeText={text => setNewComment(text)}
+                  value={newComment}
+                  returnKeyType={'go'}
+                  onSubmitEditing={onNewComment}
+                />
+                <SpaceView mLeft={SIZE2} />
+                <TouchableOpacity onPress={onNewComment}>
+                  <SendIcon />
+                </TouchableOpacity>
+              </RowWrap>
+              <SpaceView mBottom={SIZE3} />
+            </ContentWrap>
+          </ShadowWrap>
+        </KeyboardAvoidingView>
+      </Container>
+    </TouchableWithoutFeedback>
   );
 };
 

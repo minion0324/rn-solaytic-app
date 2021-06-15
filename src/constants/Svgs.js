@@ -63,6 +63,8 @@ import DropdownArrowIcon from 'src/assets/svgs/icon-arrow-dropdown.svg';
 import CircleCurrencyIcon from 'src/assets/svgs/icon-currency-circle.svg';
 import CircleHelpIcon from 'src/assets/svgs/icon-help-circle.svg';
 import CircleAddIcon from 'src/assets/svgs/icon-add-circle.svg';
+import ReplyIcon from 'src/assets/svgs/icon-reply.svg';
+import MapMarkerIcon from 'src/assets/svgs/icon-map-marker.svg';
 
 export default {
   ActiveCheckIcon,
@@ -130,4 +132,6 @@ export default {
   CircleCurrencyIcon,
   CircleHelpIcon,
   CircleAddIcon,
+  ReplyIcon,
+  MapMarkerIcon
 };

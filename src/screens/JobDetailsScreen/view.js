@@ -52,6 +52,7 @@ import {
   FlexWrap,
   SpaceView,
   BorderDash,
+  BorderView,
   CenteredWrap,
 } from 'src/styles/common.styles';
 import {
@@ -75,6 +76,10 @@ import {
   SignWrap,
   PhotoModalButtonsWrap,
   PrintReceiptButton,
+  LocationText,
+  ReplyButton,
+  NotifyNumWarp,
+  NotifyNumWarpText
 } from './styled';
 
 const {
@@ -99,6 +104,7 @@ const {
   BinWeightIcon,
   DropdownArrowIcon,
   CircleAddIcon,
+  ReplyIcon
 } = SVGS;
 
 const SPECIAL = 'SPECIAL';
@@ -137,7 +143,7 @@ const JobDetailsScreenView = ({
   onScanCode,
   onPrint,
 }) => {
-  const [ actionSheetData, setActionSheetData ] = useState([]);
+  const [actionSheetData, setActionSheetData] = useState([]);
 
   const binIndexRef = useRef(null);
   const actionSheetRef = useRef(null);
@@ -154,50 +160,50 @@ const JobDetailsScreenView = ({
 
   const stepIndexForBinWeight = useRef(
     focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
-    ? 2
-    : (
-      focusedJob.jobTypeName === JOB_TYPE.PULL ||
-      focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
-    ) ? 1 : -1
+      ? 2
+      : (
+        focusedJob.jobTypeName === JOB_TYPE.PULL ||
+        focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+      ) ? 1 : -1
   );
 
   const stepIndexForOthers = useRef(
     focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
-    ? 1
-    : (
-      focusedJob.jobTypeName === JOB_TYPE.PULL ||
-      focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
-      focusedJob.jobTypeName === JOB_TYPE.PUT ||
-      focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
-    ) ? 0 : -1
+      ? 1
+      : (
+        focusedJob.jobTypeName === JOB_TYPE.PULL ||
+        focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
+        focusedJob.jobTypeName === JOB_TYPE.PUT ||
+        focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+      ) ? 0 : -1
   );
 
   const jobDateList = useRef(
     focusedJob.jobTypeName === JOB_TYPE.PULL ||
-    focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
-    focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
-    ? [
+      focusedJob.jobTypeName === JOB_TYPE.SHIFT ||
+      focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+      ? [
         [
           { label: 'Started', field: 'startedDate' },
           { label: 'In Progress', field: 'inProgressDate' },
         ],
         [{ label: 'Completed', field: 'completedDate' }],
       ]
-    : focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
-      ? focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
-        ? [
+      : focusedJob.jobTypeName === JOB_TYPE.EXCHANGE
+        ? focusedJob.steps[stepIndexForBinWeight.current].isRequireBinWeight
+          ? [
             [{ label: 'Started', field: 'startedDate' }],
             [{ label: 'In Progress', field: 'inProgressDate' }],
             [{ label: 'Completed', field: 'completedDate' }],
           ]
-        : [
+          : [
             [{ label: 'Started', field: 'startedDate' }],
             [
               { label: 'In Progress', field: 'inProgressDate' },
               { label: 'Completed', field: 'completedDate' },
             ],
           ]
-      : null
+        : null
   );
 
   const isCompletedJobState = useMemo(() => {
@@ -221,7 +227,7 @@ const JobDetailsScreenView = ({
         switch (jobStatus) {
           case JOB_STATUS.ACKNOWLEDGED:
             return -1;
-           case JOB_STATUS.STARTED:
+          case JOB_STATUS.STARTED:
             return 0;
           case JOB_STATUS.IN_PROGRESS:
             return 1;
@@ -322,12 +328,12 @@ const JobDetailsScreenView = ({
 
     const options = currentStepIndex === SPECIAL
       ? pick(
-          focusedJob.steps[stepIndex],
-          [
-            'isRequireBinNumberToEnd',
-            'isRequireBinNumberToStart',
-          ],
-        )
+        focusedJob.steps[stepIndex],
+        [
+          'isRequireBinNumberToEnd',
+          'isRequireBinNumberToStart',
+        ],
+      )
       : getBinInfoOptions(stepIndex);
 
     if (
@@ -477,12 +483,12 @@ const JobDetailsScreenView = ({
   );
 
   const onValidate = (action) => {
-     if (validationCurrentStep.hard) {
+    if (validationCurrentStep.hard) {
       Alert.alert('Warning', validationCurrentStep.hard);
       return false;
-     }
+    }
 
-     action();
+    action();
   };
 
   const onScroll = async (ref) => {
@@ -628,7 +634,7 @@ const JobDetailsScreenView = ({
         <RowWrap>
           {
             !isCompletedJobState
-            ? !isSpecial &&
+              ? !isSpecial &&
               <FlexWrap>
                 <RowWrap>
                   <LabelText>Bin ID</LabelText>
@@ -639,8 +645,8 @@ const JobDetailsScreenView = ({
                       <SpaceView mLeft={SIZE1} />
                       {
                         item['binNumber']
-                        ? <BlackActiveCircleCheckIcon />
-                        : <DeactiveCircleCheckIcon />
+                          ? <BlackActiveCircleCheckIcon />
+                          : <DeactiveCircleCheckIcon />
                       }
                     </RowWrap>
                   }
@@ -649,7 +655,7 @@ const JobDetailsScreenView = ({
                 <BinInputWrap
                   color={
                     enabled
-                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                      ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                   }
                   effect={!isCompletedJobState}
                 >
@@ -673,15 +679,15 @@ const JobDetailsScreenView = ({
                       >
                         {
                           enabled
-                          ? <ActiveScanCodeIcon />
-                          : <DeactiveScanCodeIcon />
+                            ? <ActiveScanCodeIcon />
+                            : <DeactiveScanCodeIcon />
                         }
                       </TouchableOpacity>
                     </RowWrap>
                   }
                 </BinInputWrap>
               </FlexWrap>
-            : [
+              : [
                 !isSpecial &&
                 <FlexWrap key={'Bin-Id'}>
                   <LabelText>Bin ID</LabelText>
@@ -781,15 +787,15 @@ const JobDetailsScreenView = ({
         <LabelText>
           {
             idx === 1
-            ? 'For Waste Type'
-            : 'With Waste Type'
+              ? 'For Waste Type'
+              : 'With Waste Type'
           }
         </LabelText>
         <SpaceView mTop={SIZE1} />
         <BinInputWrap
           color={
             editable
-            ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+              ? COLORS.BLUE1 : COLORS.TRANSPARENT1
           }
           effect={!isCompletedJobState}
         >
@@ -846,7 +852,7 @@ const JobDetailsScreenView = ({
         >
           {
             data
-            ? <TouchableOpacity
+              ? <TouchableOpacity
                 onPress={() => onShowPhotoModal(
                   data,
                   status === 'ACTIVE',
@@ -857,7 +863,7 @@ const JobDetailsScreenView = ({
                 </PhotoWrap>
 
               </TouchableOpacity>
-            : <TouchableOpacity
+              : <TouchableOpacity
                 onPress={() => onPhoto(item.jobStepId)}
                 disabled={status !== 'ACTIVE'}
               >
@@ -868,13 +874,13 @@ const JobDetailsScreenView = ({
                     dashThickness={1}
                     color={
                       status === 'ACTIVE'
-                      ? COLORS.BLUE1 : COLORS.GRAY3
+                        ? COLORS.BLUE1 : COLORS.GRAY3
                     }
                   />
                   {
                     status === 'ACTIVE'
-                    ? <ActivePhotoAddIcon />
-                    : <DeactivePhotoAddIcon />
+                      ? <ActivePhotoAddIcon />
+                      : <DeactivePhotoAddIcon />
                   }
                 </PhotoWrap>
               </TouchableOpacity>
@@ -897,7 +903,7 @@ const JobDetailsScreenView = ({
 
     return (
       data
-      ? <TouchableOpacity
+        ? <TouchableOpacity
           onPress={() => onSign(item.jobStepId)}
           disabled={status !== 'ACTIVE'}
         >
@@ -905,7 +911,7 @@ const JobDetailsScreenView = ({
             <FullImage source={{ uri: data.uri }} />
           </SignWrap>
         </TouchableOpacity>
-      : <TouchableOpacity
+        : <TouchableOpacity
           onPress={() => onSign(item.jobStepId)}
           disabled={status !== 'ACTIVE'}
         >
@@ -916,13 +922,13 @@ const JobDetailsScreenView = ({
               dashThickness={1}
               color={
                 status === 'ACTIVE'
-                ? COLORS.GREEN1 : COLORS.GRAY3
+                  ? COLORS.GREEN1 : COLORS.GRAY3
               }
             />
             {
               status === 'ACTIVE'
-              ? <ActiveSignAddIcon />
-              : <DeactiveSignAddIcon />
+                ? <ActiveSignAddIcon />
+                : <DeactiveSignAddIcon />
             }
           </SignWrap>
         </TouchableOpacity>
@@ -957,9 +963,9 @@ const JobDetailsScreenView = ({
           <LabelText>
             {
               numberOfPhotos === 0
-              ? 'Signature'
-              : numberOfSigns === 0
-                ? 'Photos' : 'Photos & Signature'
+                ? 'Signature'
+                : numberOfSigns === 0
+                  ? 'Photos' : 'Photos & Signature'
             }
           </LabelText>
           {
@@ -975,14 +981,14 @@ const JobDetailsScreenView = ({
                       .length === options.numberofPhotosRequired
                   )
                 ) && (
-                  options.mustTakeSignature !== 1 ||
-                  (
-                    options.mustTakeSignature === 1 &&
-                    getJobStepSigns(item.jobStepId).length === 1
+                    options.mustTakeSignature !== 1 ||
+                    (
+                      options.mustTakeSignature === 1 &&
+                      getJobStepSigns(item.jobStepId).length === 1
+                    )
                   )
-                )
-                ? <BlackActiveCircleCheckIcon />
-                : <DeactiveCircleCheckIcon />
+                  ? <BlackActiveCircleCheckIcon />
+                  : <DeactiveCircleCheckIcon />
               }
             </RowWrap>
           }
@@ -1061,7 +1067,7 @@ const JobDetailsScreenView = ({
         <SpaceView mTop={SIZE2} />
         {
           isCompletedJobState
-          ? <RowWrap>
+            ? <RowWrap>
               <FlexWrap>
                 <LabelText>
                   Additional services
@@ -1069,7 +1075,7 @@ const JobDetailsScreenView = ({
               </FlexWrap>
               <LabelText>Qty</LabelText>
             </RowWrap>
-          : <TouchableOpacity
+            : <TouchableOpacity
               disabled={!editable}
               onPress={onAddServices}
             >
@@ -1154,15 +1160,15 @@ const JobDetailsScreenView = ({
               <SpaceView mLeft={SIZE1} />
               {
                 amountCollected
-                ? <BlackActiveCircleCheckIcon />
-                : <DeactiveCircleCheckIcon />
+                  ? <BlackActiveCircleCheckIcon />
+                  : <DeactiveCircleCheckIcon />
               }
             </RowWrap>
           }
         </RowWrap>
         {
           isCompletedJobState
-          ? !!amountCollected &&
+            ? !!amountCollected &&
             <View>
               <SpaceView mTop={SIZE1} />
               <InfoText>
@@ -1172,14 +1178,14 @@ const JobDetailsScreenView = ({
                 }
               </InfoText>
             </View>
-          : !!focusedJob.steps[index].amountToCollect &&
+            : !!focusedJob.steps[index].amountToCollect &&
             <View>
               <SpaceView mTop={SIZE1} />
               <InfoText>
                 {
                   `$${focusedJob.steps[index].amountToCollect} ` +
                   focusedJob.jobPaymentTypeList[
-                    focusedJob.steps[index].jobPaymentType
+                  focusedJob.steps[index].jobPaymentType
                   ]
                 }
               </InfoText>
@@ -1194,7 +1200,7 @@ const JobDetailsScreenView = ({
                 <BinInputWrap
                   color={
                     editable
-                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                      ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                   }
                   effect={!isCompletedJobState}
                 >
@@ -1220,7 +1226,7 @@ const JobDetailsScreenView = ({
                 <BinInputWrap
                   color={
                     editable
-                    ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                      ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                   }
                   effect={!isCompletedJobState}
                 >
@@ -1277,7 +1283,7 @@ const JobDetailsScreenView = ({
           <PrintReceiptButton
             color={
               isCompletedJobState
-              ? COLORS.BLUE1 : COLORS.BLACK2
+                ? COLORS.BLUE1 : COLORS.BLACK2
             }
             onPress={() => onPrint(
               getBinInOutInfoIndex,
@@ -1286,14 +1292,14 @@ const JobDetailsScreenView = ({
           >
             {
               isCompletedJobState
-              ? <ActivePrintIcon />
-              : <DeactivePrintIcon />
+                ? <ActivePrintIcon />
+                : <DeactivePrintIcon />
             }
             <SpaceView mLeft={SIZE1} />
             <InfoText
               color={
                 isCompletedJobState
-                ? COLORS.BLUE1 : COLORS.BLACK2
+                  ? COLORS.BLUE1 : COLORS.BLACK2
               }
             >
               PRINT RECEIPT
@@ -1340,20 +1346,20 @@ const JobDetailsScreenView = ({
                 <RowWrap>
                   {
                     idx === 0
-                    ? <BinInIcon />
-                    : idx === 1
-                      ? <BinOutIcon />
-                      : <BinIcon />
+                      ? <BinInIcon />
+                      : idx === 1
+                        ? <BinOutIcon />
+                        : <BinIcon />
                   }
                   <SpaceView mLeft={SIZE1} />
                 </RowWrap>
                 <TitleText>
                   {
                     idx === 0
-                    ? 'BIN IN'
-                    : idx === 1
-                      ? 'BIN OUT'
-                      : 'WASTE COLLECTION'
+                      ? 'BIN IN'
+                      : idx === 1
+                        ? 'BIN OUT'
+                        : 'WASTE COLLECTION'
                   }
                 </TitleText>
               </RowWrap>
@@ -1456,8 +1462,8 @@ const JobDetailsScreenView = ({
                 <SpaceView mLeft={SIZE1} />
                 {
                   binInfo[binIndex]['binWeight']
-                  ? <BlackActiveCircleCheckIcon />
-                  : <DeactiveCircleCheckIcon />
+                    ? <BlackActiveCircleCheckIcon />
+                    : <DeactiveCircleCheckIcon />
                 }
               </RowWrap>
             }
@@ -1465,15 +1471,15 @@ const JobDetailsScreenView = ({
           <SpaceView mTop={SIZE2} />
           {
             isCompletedJobState
-            ? <RowWrap>
+              ? <RowWrap>
                 <FlexWrap>
                   <LabelText>Nett weight</LabelText>
                   <SpaceView mTop={SIZE1} />
                   <InfoText>
                     {
                       binInfo[binIndex]['binWeight']
-                      ? binInfo[binIndex]['binWeight'] + ' tons'
-                      : ' --- '
+                        ? binInfo[binIndex]['binWeight'] + ' tons'
+                        : ' --- '
                     }
                   </InfoText>
                 </FlexWrap>
@@ -1492,12 +1498,12 @@ const JobDetailsScreenView = ({
                   ))
                 }
               </RowWrap>
-            : <RowWrap>
+              : <RowWrap>
                 <FlexWrap>
                   <BinInputWrap
                     color={
                       editable
-                      ? COLORS.BLUE1 : COLORS.TRANSPARENT1
+                        ? COLORS.BLUE1 : COLORS.TRANSPARENT1
                     }
                     effect={!isCompletedJobState}
                   >
@@ -1546,41 +1552,75 @@ const JobDetailsScreenView = ({
   };
 
   const renderDriverMessage = () => {
+    const index = getCustomerSiteIndex();
+    const siteRemarks = focusedJob.steps[index].siteRemarks;
     return (
-      <ContentWrap mTop={SIZE1}>
-        <RowWrap>
-          <LabelText>Driver Message</LabelText>
-          {
-            focusedJob.haveUnreadMessage &&
-            <DriverMessageBadge />
-          }
-        </RowWrap>
+      <View flex={1}>
         <SpaceView mTop={SIZE2} />
-        <TouchableOpacity
-          onPress={onDriverMessage}
-          disabled={jobStatus === JOB_STATUS.COMPLETED}
-        >
+        <ContentWrap>
+          <RowWrap>
+            <LabelText>Site Instruction</LabelText>
+            {
+              focusedJob.haveUnreadMessage &&
+              <DriverMessageBadge />
+            }
+          </RowWrap>
+          <SpaceView mTop={SIZE2} />
           <RowWrap>
             <FlexWrap>
               <InfoText numberOfLines={2}>
                 {
-                  focusedJob.messages.length > 0
-                  ? focusedJob.messages[0].message
-                  : ' --- '
+                  siteRemarks ? siteRemarks
+                    : ' --- '
                 }
               </InfoText>
+              {
+                focusedJob.noOfNewMessages &&
+                <NotifyNumWarp>
+                  <NotifyNumWarpText>
+                    {focusedJob.noOfNewMessages}
+                  </NotifyNumWarpText>
+                </NotifyNumWarp>
+              }
             </FlexWrap>
-            {
-              jobStatus !== JOB_STATUS.COMPLETED &&
-              <RowWrap>
-                <SpaceView mLeft={SIZE2} />
-                <BlackRightArrowIcon />
-                <SpaceView mLeft={SIZE2} />
-              </RowWrap>
-            }
           </RowWrap>
-        </TouchableOpacity>
-      </ContentWrap>
+          <SpaceView mTop={SIZE2} />
+          <BorderView />
+          <SpaceView mTop={SIZE2} />
+          <RowWrap>
+            <FlexWrap>
+              <TouchableOpacity
+                onPress={onDriverMessage}>
+                <InfoText numberOfLines={2}>
+                  {
+                    focusedJob.messages.length > 0
+                      ? focusedJob.messages[0].message
+                      : ' --- '
+                  }
+                </InfoText>
+                </TouchableOpacity>
+              {
+                focusedJob.noOfNewMessages &&
+                <NotifyNumWarp>
+                  <NotifyNumWarpText>
+                    {focusedJob.noOfNewMessages}
+                  </NotifyNumWarpText>
+                </NotifyNumWarp>
+              }
+            </FlexWrap>
+          </RowWrap>
+          <SpaceView mTop={SIZE2} />
+          {
+            jobStatus !== JOB_STATUS.COMPLETED &&
+            <ReplyButton
+              onPress={onDriverMessage}
+              disabled={jobStatus === JOB_STATUS.COMPLETED}>
+              <ReplyIcon />
+              <SpaceView mBottom={SIZE2} />
+            </ReplyButton>
+          }
+        </ContentWrap>
+      </View>
     );
   };
 
@@ -1591,56 +1631,57 @@ const JobDetailsScreenView = ({
 
     return (
       <ContentWrap mTop={SIZE4}>
-        <LabelText>Location & Time</LabelText>
         <SpaceView mTop={SIZE2} />
         <TouchableOpacity
           onPress={() => onAddress(index)}
           disabled={jobStatus === JOB_STATUS.COMPLETED}
         >
-          <RowWrap>
-            <FlexWrap>
-              <InfoText numberOfLines={1}>
-                {focusedJob.customer.customerName}
-              </InfoText>
-              <SpaceView mTop={SIZE1} />
-              <InfoText numberOfLines={1}>
+          <FlexWrap>
+            <RowWrap>
+              <DateIcon />
+              <SpaceView mLeft={SIZE1} />
+              <LabelText>
+                {
+                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                    .format('DD-MMM (ddd)')
+                }
+              </LabelText>
+              <SpaceView mLeft={SIZE2} />
+              <TimeIcon />
+              <SpaceView mLeft={SIZE1} />
+              <LabelText>
+                {
+                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                    .format('hh:mm A')
+                }
+              </LabelText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+            <InfoText numberOfLines={1}>
+              {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
+            </InfoText>
+            <SpaceView mTop={SIZE2} />
+
+            <RowWrap>
+              <LocationText numberOfLines={2}>
                 {
                   steps[index].site
-                  ? getCustomerSiteAddress(steps[index].site)
-                  : steps[index].address
+                    ? getCustomerSiteAddress(steps[index].site)
+                    : steps[index].address
                 }
-              </InfoText>
-              <SpaceView mTop={SIZE1} />
-              <RowWrap>
-                <DateIcon />
-                <SpaceView mLeft={SIZE1} />
-                <LabelText>
-                  {
-                    moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                      .format('DD-MMM (ddd)')
-                  }
-                </LabelText>
-                <SpaceView mLeft={SIZE2} />
-                <TimeIcon />
-                <SpaceView mLeft={SIZE1} />
-                <LabelText>
-                  {
-                    moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                      .format('hh:mm A')
-                  }
-                </LabelText>
-              </RowWrap>
-            </FlexWrap>
-            {
-              jobStatus !== JOB_STATUS.COMPLETED &&
-              <RowWrap>
-                <SpaceView mLeft={SIZE2} />
-                <BlackRightArrowIcon />
-                <SpaceView mLeft={SIZE2} />
-              </RowWrap>
-            }
-          </RowWrap>
+              </LocationText>
+              {
+                jobStatus !== JOB_STATUS.COMPLETED &&
+                <RowWrap>
+                  <SpaceView mLeft={SIZE2} />
+                  <BlackRightArrowIcon />
+                  <SpaceView mLeft={SIZE2} />
+                </RowWrap>
+              }
+            </RowWrap>
+          </FlexWrap>
         </TouchableOpacity>
+        <SpaceView mBottom={SIZE2} />
       </ContentWrap>
     );
   };
@@ -1701,7 +1742,7 @@ const JobDetailsScreenView = ({
           text={buttonText}
           onPress={buttonAction}
           loading={loading}
-          mTop={-SIZE1} mBottom={-SIZE1}
+          mTop={-SIZE1} mBottom={SIZE2}
         />
       </ContentWrap>
     );
@@ -1715,8 +1756,8 @@ const JobDetailsScreenView = ({
             {
               (
                 isCompletedJobState
-                ? `Job ${jobStatus}`
-                : focusedJob.jobTemplateName || focusedJob.jobTypeName
+                  ? `Job ${jobStatus}`
+                  : focusedJob.jobTemplateName || focusedJob.jobTypeName
               ).toUpperCase()
             }
           </ScreenText>
@@ -1724,14 +1765,14 @@ const JobDetailsScreenView = ({
         leftIcon={<Back />}
         rightIcon={
           isInProgress &&
-          focusedJob.isEnableFailJob
-          ? <Help /> : <EmptyWrap />
+            focusedJob.isEnableFailJob
+            ? <Help /> : <EmptyWrap />
         }
         onPressLeft={onBack}
         onPressRight={
           isInProgress &&
-          focusedJob.isEnableFailJob
-          ? onFail : null
+            focusedJob.isEnableFailJob
+            ? onFail : null
         }
       />
     );
@@ -1740,7 +1781,7 @@ const JobDetailsScreenView = ({
   return (
     <Container>
       <ShadowWrap>
-        { renderHeader() }
+        {renderHeader()}
       </ShadowWrap>
 
       <Content>
@@ -1748,22 +1789,22 @@ const JobDetailsScreenView = ({
           ref={scrollRef}
           showsVerticalScrollIndicator={false}
         >
-          { renderLocationAndTime() }
-          { renderDriverMessage() }
-          { renderBinInfo() }
-          { renderBinWeight() }
+          {renderLocationAndTime()}
+          {renderDriverMessage()}
+          {renderBinInfo()}
+          {renderBinWeight()}
           <SpaceView mTop={SIZE2} />
         </ScrollView>
       </Content>
 
       <ShadowWrap forUp>
-        { renderFooter() }
+        {renderFooter()}
       </ShadowWrap>
 
       <ActionSheet
         ref={actionSheetRef}
         title={'Please select one'}
-        options={[ ...actionSheetData, 'Cancel' ]}
+        options={[...actionSheetData, 'Cancel']}
         cancelButtonIndex={actionSheetData.length}
         onPress={onActionSheetPress}
       />

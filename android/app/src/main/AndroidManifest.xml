@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
       android:name=".MainApplication"
@@ -33,6 +35,12 @@
         android:name="com.bugsnag.android.API_KEY"
         android:value="2407e5ee3e22b127051d61223752fd27"
       />
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyDV4HRzOUAwEgdxq2O_54TjMclInBIp3JM"
+      />
+
+      <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
       <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService">
         <intent-filter>
