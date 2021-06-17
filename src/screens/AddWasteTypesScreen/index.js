@@ -197,11 +197,19 @@ const AddWasteTypesScreen = ({
       el.wasteTypeId === item.wasteTypeId
     ));
 
+    const idxOfHaveRate = wasteTypes.findIndex((el) => (
+      el.wasteTypeId === item.wasteTypeId
+    ));
+
     if (
       idx !== -1 &&
       index >= selectedWasteTypes.length
     ) {
       return null;
+    }
+
+    if (idx !== -1) {
+      item.haveRate = wasteTypes[idxOfHaveRate].haveRate;
     }
 
     return (
