@@ -17,11 +17,19 @@ const WasteTypeItem = styled.View`
 
 const WasteTypeText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 500;
+  font-weight: 700;
   color: ${COLORS.BLACK2};
+`;
+
+const WasteTypeGreyText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  font-style: italic
+  color: ${COLORS.GRAY1};
 `;
 
 export {
   WasteTypeItem,
   WasteTypeText,
+  WasteTypeGreyText
 };
