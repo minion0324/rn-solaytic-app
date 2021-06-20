@@ -40,6 +40,8 @@ import {
 
 const SignatureScreen = ({
   jobStepId,
+  contactName,
+  contactNum,
   signs,
   setSigns,
   componentId,
@@ -60,12 +62,12 @@ const SignatureScreen = ({
   const [ name, setName ] = useState(
     indexOfSign.current !== -1
     ? signs[indexOfSign.current].signedUserName
-    : ''
+    : contactName
   );
   const [ contact, setContact ] = useState(
     indexOfSign.current !== -1
     ? signs[indexOfSign.current].signedUserContact
-    : ''
+    : contactNum
   );
 
   const onClose = async () => {

@@ -64,7 +64,7 @@ const ThirdSection = styled.View`
 
 const StatusWrap = styled.View`
   border-width: 1px;
-  border-color: ${COLORS.BLUE1};
+  border-color: ${props => props.color};
   border-radius: ${SIZE8}px;
   padding-horizontal: ${SIZE2}px;
   padding-vertical: ${SIZE1}px;
@@ -241,7 +241,7 @@ const JobCard = ({
           </FlexWrap>
           {
             statusColor &&
-            <StatusWrap>
+            <StatusWrap color={statusColor}>
               <StatusText color={statusColor}>
                 {statusName}
               </StatusText>
@@ -285,61 +285,64 @@ const JobCard = ({
           </NormalText>
         </RowWrap>
       </SecondSection>
-      <ThirdSection>
-        {
-          // isRequirePaymentCollection &&
-          <RowWrap>
-            <SVGWarp>
-              <CircleCurrencyIcon />
-            </SVGWarp>
-            <InfoText numberOfLines={1}>
-              Cash -
-            </InfoText>
-            <SpaceView mLeft={SIZE1} />
-            <NormalText numberOfLines={1}>
-              ${steps[binIndex + 1].amountToCollect}
-            </NormalText>
-          </RowWrap>
-        }
-        {
-          !!instructionToDrivers &&
-          <Container>
-            <SpaceView mTop={SIZE2} />
+      {
+        (isRequirePaymentCollection || !!instructionToDrivers || siteRemarks) &&
+        <ThirdSection>
+          {
+            isRequirePaymentCollection &&
             <RowWrap>
               <SVGWarp>
-                <MessageIcon />
-                {
-                  noOfNewMessages &&
-                  <NotifyNumWarp>
-                    <NotifyNumWarpText>
-                      {noOfNewMessages}
-                    </NotifyNumWarpText>
-                  </NotifyNumWarp>
-                }
+                <CircleCurrencyIcon />
               </SVGWarp>
-              <FlexWrap>
-                <InstructionText numberOfLines={2}>
-                  {siteRemarks ? siteRemarks : '---'}
-                </InstructionText>
-              </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
+              <InfoText numberOfLines={1}>
+                Cash -
+              </InfoText>
+              <SpaceView mLeft={SIZE1} />
+              <NormalText numberOfLines={1}>
+                ${steps[binIndex + 1].amountToCollect}
+              </NormalText>
             </RowWrap>
-            <SpaceView mTop={SIZE1} />
-            <BorderView mLeft={SIZE6} />
-            <SpaceView mTop={SIZE1} />
-            <RowWrap>
-              <SVGWarp>
-              </SVGWarp>
-              <FlexWrap>
-                <InstructionText numberOfLines={2}>
-                  {instructionToDrivers}
-                </InstructionText>
-              </FlexWrap>
-              <SpaceView mLeft={SIZE2} />
-            </RowWrap>
-          </Container>
-        }
-      </ThirdSection>
+          }
+          {
+            (!!instructionToDrivers || siteRemarks) &&
+            <Container>
+              <SpaceView mTop={SIZE2} />
+              <RowWrap>
+                <SVGWarp>
+                  <MessageIcon />
+                  {
+                    noOfNewMessages !== 0 &&
+                    <NotifyNumWarp>
+                      <NotifyNumWarpText>
+                        {noOfNewMessages}
+                      </NotifyNumWarpText>
+                    </NotifyNumWarp>
+                  }
+                </SVGWarp>
+                <FlexWrap>
+                  <InstructionText numberOfLines={2}>
+                    {siteRemarks ? siteRemarks : '---'}
+                  </InstructionText>
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+              <SpaceView mTop={SIZE1} />
+              <BorderView mLeft={SIZE6} />
+              <SpaceView mTop={SIZE1} />
+              <RowWrap>
+                <SVGWarp>
+                </SVGWarp>
+                <FlexWrap>
+                  <InstructionText numberOfLines={2}>
+                    {instructionToDrivers ? instructionToDrivers : '---'}
+                  </InstructionText>
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+            </Container>
+          }
+        </ThirdSection>
+      }
     </Container>
   );
 };

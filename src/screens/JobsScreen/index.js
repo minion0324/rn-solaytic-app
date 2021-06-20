@@ -297,7 +297,6 @@ const JobsScreen = ({
   };
 
   const renderItem = ({ item }) => {
-    console.log("======item", item);
     return (
       <ItemWrap
         onPress={() => onItemPress(item)}

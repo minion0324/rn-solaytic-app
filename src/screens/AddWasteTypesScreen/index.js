@@ -69,6 +69,7 @@ const AddWasteTypesScreen = ({
   binInfo,
   setBinInfo,
   componentId,
+  getCustomerSiteIndex
 }) => {
   const [ loading, setLoading ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
@@ -78,8 +79,9 @@ const AddWasteTypesScreen = ({
   const [ selectedWasteTypes, setSelectedWasteTypes ] = useState([]);
 
   const timerId = useRef(null);
-  const customerSiteId = focusedJob.steps[0].customerSiteId;
-  const binTypeId = focusedJob.steps[0].binTypeId;
+  const index = getCustomerSiteIndex();
+  const customerSiteId = focusedJob.steps[index].customerSiteId;
+  const binTypeId = focusedJob.steps[index].binTypeId;
 
   useEffect(() => {
     setSelectedWasteTypes(
@@ -208,7 +210,7 @@ const AddWasteTypesScreen = ({
       return null;
     }
 
-    if (idx !== -1) {
+    if (idx !== -1 && wasteTypes[idxOfHaveRate]) {
       item.haveRate = wasteTypes[idxOfHaveRate].haveRate;
     }
 

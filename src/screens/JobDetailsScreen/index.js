@@ -408,9 +408,11 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onSign = (jobStepId) => {
+  const onSign = (jobStepId, contactName, contactNum) => {
     showLightBox(SIGNATURE_SCREEN, {
       jobStepId,
+      contactName,
+      contactNum,
       signs,
       setSigns,
     });
@@ -442,9 +444,9 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onAddWasteTypes = (binIndex, binInOutIndex) => {
+  const onAddWasteTypes = (binIndex, binInOutIndex, getCustomerSiteIndex) => {
     pushScreen(componentId, ADD_WASTE_TYPES_SCREEN, {
-      binIndex, binInOutIndex, binInfo, setBinInfo,
+      binIndex, binInOutIndex, binInfo, setBinInfo, getCustomerSiteIndex
     });
   };
 

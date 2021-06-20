@@ -802,7 +802,7 @@ const JobDetailsScreenView = ({
           <FlexWrap>
             <TouchableOpacity
               disabled={!editable}
-              onPress={() => onAddWasteTypes(index, idx)}
+              onPress={() => onAddWasteTypes(index, idx, getCustomerSiteIndex)}
             >
               <RowWrap>
                 <FlexWrap>
@@ -900,11 +900,14 @@ const JobDetailsScreenView = ({
     status,
   }) => {
     const data = getJobStepSigns(item.jobStepId)[0];
+    const index = getCustomerSiteIndex();
+    const contactName = focusedJob.steps[index].contactPersonOne;
+    const contactNum = focusedJob.steps[index].contactNumberOne;
 
     return (
       data
         ? <TouchableOpacity
-          onPress={() => onSign(item.jobStepId)}
+          onPress={() => onSign(item.jobStepId, contactName, contactNum)}
           disabled={status !== 'ACTIVE'}
         >
           <SignWrap>
@@ -912,7 +915,7 @@ const JobDetailsScreenView = ({
           </SignWrap>
         </TouchableOpacity>
         : <TouchableOpacity
-          onPress={() => onSign(item.jobStepId)}
+          onPress={() => onSign(item.jobStepId, contactName, contactNum)}
           disabled={status !== 'ACTIVE'}
         >
           <SignWrap>
@@ -1553,35 +1556,24 @@ const JobDetailsScreenView = ({
 
   const renderDriverMessage = () => {
     const index = getCustomerSiteIndex();
-    const siteRemarks = focusedJob.steps[index].siteRemarks;
     return (
       <View flex={1}>
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
-          <RowWrap>
-            <LabelText>Site Instruction</LabelText>
-            {
-              focusedJob.haveUnreadMessage &&
-              <DriverMessageBadge />
-            }
-          </RowWrap>
+          <LabelText>Site Instruction</LabelText>
+          {
+            focusedJob.haveUnreadMessage
+            && <DriverMessageBadge />
+          }
           <SpaceView mTop={SIZE2} />
           <RowWrap>
             <FlexWrap>
               <InfoText numberOfLines={2}>
                 {
-                  siteRemarks ? siteRemarks
+                  focusedJob.steps[index].siteRemarks ? focusedJob.steps[index].siteRemarks
                     : ' --- '
                 }
               </InfoText>
-              {
-                focusedJob.noOfNewMessages &&
-                <NotifyNumWarp>
-                  <NotifyNumWarpText>
-                    {focusedJob.noOfNewMessages}
-                  </NotifyNumWarpText>
-                </NotifyNumWarp>
-              }
             </FlexWrap>
           </RowWrap>
           <SpaceView mTop={SIZE2} />
@@ -1598,9 +1590,9 @@ const JobDetailsScreenView = ({
                       : ' --- '
                   }
                 </InfoText>
-                </TouchableOpacity>
+              </TouchableOpacity>
               {
-                focusedJob.noOfNewMessages &&
+                focusedJob.noOfNewMessages !== 0 &&
                 <NotifyNumWarp>
                   <NotifyNumWarpText>
                     {focusedJob.noOfNewMessages}
@@ -1631,55 +1623,53 @@ const JobDetailsScreenView = ({
 
     return (
       <ContentWrap mTop={SIZE4}>
-        <SpaceView mTop={SIZE2} />
         <TouchableOpacity
+          flex={1}
           onPress={() => onAddress(index)}
           disabled={jobStatus === JOB_STATUS.COMPLETED}
         >
-          <FlexWrap>
-            <RowWrap>
-              <DateIcon />
-              <SpaceView mLeft={SIZE1} />
-              <LabelText>
-                {
-                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                    .format('DD-MMM (ddd)')
-                }
-              </LabelText>
-              <SpaceView mLeft={SIZE2} />
-              <TimeIcon />
-              <SpaceView mLeft={SIZE1} />
-              <LabelText>
-                {
-                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                    .format('hh:mm A')
-                }
-              </LabelText>
-            </RowWrap>
-            <SpaceView mTop={SIZE2} />
-            <InfoText numberOfLines={1}>
-              {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
-            </InfoText>
-            <SpaceView mTop={SIZE2} />
-
-            <RowWrap>
-              <LocationText numberOfLines={2}>
-                {
-                  steps[index].site
-                    ? getCustomerSiteAddress(steps[index].site)
-                    : steps[index].address
-                }
-              </LocationText>
+          <RowWrap>
+            <DateIcon />
+            <SpaceView mLeft={SIZE1} />
+            <LabelText>
               {
-                jobStatus !== JOB_STATUS.COMPLETED &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <BlackRightArrowIcon />
-                  <SpaceView mLeft={SIZE2} />
-                </RowWrap>
+                moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                  .format('DD-MMM (ddd)')
               }
-            </RowWrap>
-          </FlexWrap>
+            </LabelText>
+            <SpaceView mLeft={SIZE2} />
+            <TimeIcon />
+            <SpaceView mLeft={SIZE1} />
+            <LabelText>
+              {
+                moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                  .format('hh:mm A')
+              }
+            </LabelText>
+          </RowWrap>
+          <SpaceView mTop={SIZE2} />
+          <InfoText numberOfLines={1}>
+            {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
+          </InfoText>
+          <SpaceView mTop={SIZE2} />
+
+          <RowWrap>
+            <LocationText numberOfLines={2}>
+              {
+                steps[index].site
+                  ? getCustomerSiteAddress(steps[index].site)
+                  : steps[index].address
+              }
+            </LocationText>
+            {
+              jobStatus !== JOB_STATUS.COMPLETED &&
+              <RowWrap>
+                <SpaceView mLeft={SIZE2} />
+                <BlackRightArrowIcon />
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+            }
+          </RowWrap>
         </TouchableOpacity>
         <SpaceView mBottom={SIZE2} />
       </ContentWrap>

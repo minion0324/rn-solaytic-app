@@ -334,13 +334,13 @@ const PreviewScreen = ({
                       {
                         (
                           idx === 0
-                          ? getReceiptSettingVariable('LabelBin_Collected') || 'Bin Collected'
-                          : ''
+                            ? getReceiptSettingVariable('LabelBin_Collected') || 'Bin Collected'
+                            : ''
                         ) +
                         (
                           idx === 1
-                          ? getReceiptSettingVariable('LabelBin_Delivered') || 'Bin Delivered'
-                          : ''
+                            ? getReceiptSettingVariable('LabelBin_Delivered') || 'Bin Delivered'
+                            : ''
                         ) +
                         (
                           idx !== 0 && idx !== 1 ? 'Bin' : ''
@@ -370,13 +370,13 @@ const PreviewScreen = ({
                       {
                         (
                           idx === 0
-                          ? getReceiptSettingVariable('LabelBin_Type_Collected') || 'Bin Type'
-                          : ''
+                            ? getReceiptSettingVariable('LabelBin_Type_Collected') || 'Bin Type'
+                            : ''
                         ) +
                         (
                           idx === 1
-                          ? getReceiptSettingVariable('LabelBin_Type_Delivered') || 'Bin Type'
-                          : ''
+                            ? getReceiptSettingVariable('LabelBin_Type_Delivered') || 'Bin Type'
+                            : ''
                         ) +
                         (
                           idx !== 0 && idx !== 1 ? 'Bin Type' : ''
@@ -406,13 +406,13 @@ const PreviewScreen = ({
                       {
                         (
                           idx === 0
-                          ? getReceiptSettingVariable('LabelWaste_Type_Collected') || 'With Waste Type'
-                          : ''
+                            ? getReceiptSettingVariable('LabelWaste_Type_Collected') || 'With Waste Type'
+                            : ''
                         ) +
                         (
                           idx === 1
-                          ? getReceiptSettingVariable('LabelPlanned_Waste_Type') || 'For Waste Type'
-                          : ''
+                            ? getReceiptSettingVariable('LabelPlanned_Waste_Type') || 'For Waste Type'
+                            : ''
                         ) +
                         (
                           idx !== 0 && idx !== 1 ? 'With Waste Type' : ''
@@ -454,6 +454,15 @@ const PreviewScreen = ({
         <TitleText>
           {`DO #: ${focusedJob.jobNumber}`}
         </TitleText>
+        {
+          getReceiptSettingVariable('ShowCustomerName') === 'True' &&
+          <>
+            <SpaceView mTop={SIZE2} />
+            <InfoText>
+              {focusedJob.customer.customerName}
+            </InfoText>
+          </>
+        }
         <SpaceView mTop={SIZE4} />
         <InfoText>
           {
@@ -464,8 +473,8 @@ const PreviewScreen = ({
         <InfoText>
           {
             focusedJob.steps[index].site
-            ? getCustomerSiteAddress(focusedJob.steps[index].site)
-            : focusedJob.steps[index].address
+              ? getCustomerSiteAddress(focusedJob.steps[index].site)
+              : focusedJob.steps[index].address
           }
         </InfoText>
         <SpaceView mTop={SIZE2} />
@@ -652,7 +661,7 @@ const PreviewScreen = ({
   return (
     <Container>
       <ShadowWrap>
-        { renderHeader() }
+        {renderHeader()}
       </ShadowWrap>
 
       <ScrollView
@@ -667,14 +676,14 @@ const PreviewScreen = ({
             <ContentWrap
               mLeft={SIZE2} mRight={SIZE2}
             >
-              { renderLogo() }
-              { renderHeaderText() }
-              { renderJobInfo() }
-              { renderBinInfo() }
-              { renderPayment() }
-              { renderServices() }
-              { renderJobProof() }
-              { renderDisclaimerText() }
+              {renderLogo()}
+              {renderHeaderText()}
+              {renderJobInfo()}
+              {renderBinInfo()}
+              {renderPayment()}
+              {renderServices()}
+              {renderJobProof()}
+              {renderDisclaimerText()}
 
               <SpaceView mTop={SIZE4 * 4} />
             </ContentWrap>

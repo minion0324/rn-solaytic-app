@@ -78,8 +78,8 @@ const SIGNATURE_WRAP_RATIO = 1.2;
 
 //
 const API_BASE_URL =
-  // 'https://staging-tms-dispatch.logisfleet.com/';
-  'https://tms-dispatch-api.wasteporter.com/';
+  'https://staging-tms-dispatch.logisfleet.com/';
+  // 'https://tms-dispatch-api.wasteporter.com/';
 
 export {
   PLATFORM,

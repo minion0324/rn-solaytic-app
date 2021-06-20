@@ -92,7 +92,9 @@ const AddressScreen = ({
   }, [jobStatus]);
 
   const [position, setPosition] = useState();
+  const [myPosition, setMyPosition] = useState();
   const [dest, setDest] = useState();
+  const [selectedIndex, setIndex] = useState(customerSiteIndex)
 
   const mapRef = useRef(null);
 
@@ -131,7 +133,7 @@ const AddressScreen = ({
     Geolocation.getCurrentPosition(
       (position) => {
         const crd = position.coords;
-        setPosition({
+        setMyPosition({
           latitude: crd.latitude,
           longitude: crd.longitude,
           latitudeDelta: 0.015,
@@ -141,14 +143,23 @@ const AddressScreen = ({
       (error) => {
         console.log(error.code)
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
-      );
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+
+    const selectedLocation = {
+      latitude: focusedJob.steps[selectedIndex].latitude,
+      longitude: focusedJob.steps[selectedIndex].longitude,
+      latitudeDelta: 0.015,
+      longitudeDelta: 0.0121
+    }
+
+    setPosition(selectedLocation);
   }
 
   const navigate = () => {
     const dest_data = {
-      latitude: focusedJob.steps[customerSiteIndex].latitude,
-      longitude: focusedJob.steps[customerSiteIndex].longitude,
+      latitude: focusedJob.steps[selectedIndex].latitude,
+      longitude: focusedJob.steps[selectedIndex].longitude,
       latitudeDelta: 0.015,
       longitudeDelta: 0.0121
     };
@@ -167,9 +178,23 @@ const AddressScreen = ({
     openUrl(`tel:${phoneNumber}`);
   };
 
+  const selectCurrentLocation = (index) => {
+    setIndex(index);
+
+    const selectedLocation = {
+      latitude: focusedJob.steps[index].latitude,
+      longitude: focusedJob.steps[index].longitude,
+      latitudeDelta: 0.015,
+      longitudeDelta: 0.0121
+    }
+
+    setPosition(selectedLocation);
+    mapRef.current.animateToRegion(selectedLocation)
+  }
+
   const renderItem = ({ item, index }) => {
     return (
-      <View>
+      <TouchableOpacity onPress={() => selectCurrentLocation(index)}>
         <SpaceView mTop={SIZE2} />
         <ContentWrap
           mLeft={SIZE1} mRight={SIZE1}
@@ -177,7 +202,7 @@ const AddressScreen = ({
           <LocationWrap>
             <IconWrap>
               {
-                index === customerSiteIndex ?
+                index === selectedIndex ?
                   <LocationIcon color={COLORS.BLUE5}>
                     <TitleText color={COLORS.BLUE5}>{index + 1}</TitleText>
                   </LocationIcon>
@@ -191,13 +216,13 @@ const AddressScreen = ({
               {
                 index === customerSiteIndex ?
                   <View>
-                    <TitleText color={COLORS.BLUE5}>
+                    <TitleText color={index === selectedIndex && COLORS.BLUE5}>
                       {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
                     </TitleText>
                     <SpaceView mTop={SIZE1} />
                   </View>
-                  : <TitleText>
-                    {item.fullAddress}
+                  : <TitleText color={index === selectedIndex && COLORS.BLUE5}>
+                    {item.siteName}
                   </TitleText>
               }
               <SpaceView mTop={SIZE1} />
@@ -221,7 +246,7 @@ const AddressScreen = ({
                 : <Location2Line />
               : <Location3Line />
         }
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -234,31 +259,36 @@ const AddressScreen = ({
 
   return (
     <View flex={1}>
-      <MapView
-        style={{ height: HEIGHT / 2 }}
-        initialRegion={position}>
-        <Marker
-          coordinate={position}>
-          <MapMarkerIcon />
-        </Marker>
-        {
-          dest &&
-          <>
-            <Marker
-              coordinate={dest}>
-              <MapMarkerIcon />
-            </Marker>
-            <MapViewDirections
-              origin={position}
-              destination={dest}
-              apikey={API_KEY}
-              strokeWidth={4}
-              strokeColor="hotpink"
-              onError={MapViewDirectionsError}
-            />
-          </>
-        }
-      </MapView>
+      {
+        position &&
+        <MapView
+          ref={mapRef}
+          style={{ height: HEIGHT / 2 }}
+          initialRegion={position}>
+          <Marker
+            coordinate={position}>
+            <MapMarkerIcon />
+          </Marker>
+          {
+            dest &&
+            <>
+              <Marker
+                coordinate={dest}>
+                <MapMarkerIcon />
+              </Marker>
+              <MapViewDirections
+                resetOnChange={true}
+                origin={myPosition}
+                destination={dest}
+                apikey={API_KEY}
+                strokeWidth={4}
+                strokeColor="hotpink"
+                onError={MapViewDirectionsError}
+              />
+            </>
+          }
+        </MapView>
+      }
       <MapBackButton onPress={onBack}>
         <BackIcon />
       </MapBackButton>
