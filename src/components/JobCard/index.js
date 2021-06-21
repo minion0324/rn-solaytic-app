@@ -300,7 +300,11 @@ const JobCard = ({
               </InfoText>
               <SpaceView mLeft={SIZE1} />
               <NormalText numberOfLines={1}>
-                ${steps[binIndex + 1].amountToCollect}
+                {
+                  (jobTypeName === JOB_TYPE.PULL) || (jobTypeName === JOB_TYPE.SHIFT)
+                    ? '$' + steps[binIndex].amountToCollect
+                    : '$' + steps[binIndex + 1].amountToCollect
+                }
               </NormalText>
             </RowWrap>
           }
