@@ -103,6 +103,7 @@ const PrintReceiptButton = styled.TouchableOpacity`
 const LocationText = styled.Text`
   font-size: ${FONT(12)}px;
   color: ${COLORS.BLACK2};
+  padding-right: ${props => props.right ? props.right : 0}px;
 `;
 
 const ReplyButton = styled.TouchableOpacity`
