@@ -1560,11 +1560,13 @@ const JobDetailsScreenView = ({
       <View flex={1}>
         <SpaceView mTop={SIZE2} />
         <ContentWrap>
-          <LabelText>Site Instruction</LabelText>
-          {
-            focusedJob.haveUnreadMessage
-            && <DriverMessageBadge />
-          }
+          <RowWrap>
+            <LabelText>Site Instruction</LabelText>
+            {
+              focusedJob.haveUnreadMessage &&
+              <DriverMessageBadge />
+            }
+          </RowWrap>
           <SpaceView mTop={SIZE2} />
           <RowWrap>
             <FlexWrap>
@@ -1654,7 +1656,7 @@ const JobDetailsScreenView = ({
           <SpaceView mTop={SIZE2} />
 
           <RowWrap>
-            <LocationText numberOfLines={2}>
+            <LocationText numberOfLines={2} right={SIZE2}>
               {
                 steps[index].site
                   ? getCustomerSiteAddress(steps[index].site)
@@ -1664,7 +1666,6 @@ const JobDetailsScreenView = ({
             {
               jobStatus !== JOB_STATUS.COMPLETED &&
               <RowWrap>
-                <SpaceView mLeft={SIZE2} />
                 <BlackRightArrowIcon />
                 <SpaceView mLeft={SIZE2} />
               </RowWrap>
