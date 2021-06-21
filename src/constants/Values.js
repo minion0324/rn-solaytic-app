@@ -10,6 +10,7 @@ const PLATFORM = Platform.OS;
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 //
+const SIZE0 = WIDTH * 0.006; // 2
 const SIZE1 = WIDTH * 0.014; // 5
 const SIZE2 = SIZE1 * 2; // 10
 const SIZE3 = SIZE1 * 3; // 15
@@ -85,6 +86,7 @@ export {
   PLATFORM,
   WIDTH,
   HEIGHT,
+  SIZE0,
   SIZE1,
   SIZE2,
   SIZE3,

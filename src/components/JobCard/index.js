@@ -7,6 +7,7 @@ import { sortBy } from 'lodash';
 import {
   SVGS,
   COLORS,
+  SIZE0,
   SIZE1,
   SIZE2,
   SIZE4,
@@ -67,7 +68,7 @@ const StatusWrap = styled.View`
   border-color: ${props => props.color};
   border-radius: ${SIZE8}px;
   padding-horizontal: ${SIZE2}px;
-  padding-vertical: ${SIZE1}px;
+  padding-vertical: ${SIZE0}px;
 `;
 
 const StatusText = styled.Text`
