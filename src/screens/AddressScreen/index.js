@@ -34,7 +34,6 @@ import {
   Jobs,
 } from 'src/redux';
 import {
-  openUrl,
   getCustomerSiteAddress,
 } from 'src/utils';
 
@@ -170,12 +169,8 @@ const AddressScreen = ({
     popScreen(componentId);
   };
 
-  const onLocation = (latitude, longitude) => {
-    showLocation({ latitude, longitude });
-  };
-
-  const onContact = (phoneNumber) => {
-    openUrl(`tel:${phoneNumber}`);
+  const onLocation = () => {
+    showLocation(position);
   };
 
   const selectCurrentLocation = (index) => {
@@ -305,7 +300,7 @@ const AddressScreen = ({
             text={'Navigate'}
             mTop={SIZE1}
             mBottom={SIZE4}
-            onPress={navigate}
+            onPress={onLocation}
           />
         </DefaultButtonWrap>
       </NavigationView>

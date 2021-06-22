@@ -40,6 +40,7 @@ import {
   getDate,
   delay,
   getCustomerSiteAddress,
+  openUrl,
 } from 'src/utils';
 
 import {
@@ -49,6 +50,7 @@ import {
   ShadowWrap,
   FullImage,
   RowWrap,
+  RowBetweenWrap,
   FlexWrap,
   SpaceView,
   BorderDash,
@@ -104,7 +106,8 @@ const {
   BinWeightIcon,
   DropdownArrowIcon,
   CircleAddIcon,
-  ReplyIcon
+  ReplyIcon,
+  PhoneIcon
 } = SVGS;
 
 const SPECIAL = 'SPECIAL';
@@ -1063,6 +1066,10 @@ const JobDetailsScreenView = ({
     index,
     status,
   }) => {
+    if (!focusedJob.isBillable) {
+      return null;
+    }
+
     if (stepIndexForOthers.current !== index) {
       return null;
     }
@@ -1196,14 +1203,14 @@ const JobDetailsScreenView = ({
                 }
               </InfoText>
             </View>
-            : !!focusedJob.steps[index].amountToCollect &&
+            : !!focusedJob.amountToCollect &&
             <View>
               <SpaceView mTop={SIZE1} />
               <InfoText>
                 {
-                  `$${focusedJob.steps[index].amountToCollect} ` +
+                  `$${focusedJob.amountToCollect} ` +
                   focusedJob.jobPaymentTypeList[
-                  focusedJob.steps[index].jobPaymentType
+                  focusedJob.jobPaymentType
                   ]
                 }
               </InfoText>
@@ -1577,10 +1584,10 @@ const JobDetailsScreenView = ({
         <ContentWrap>
           <RowWrap>
             <LabelText>Site Instruction</LabelText>
-            {
+            {/* {
               focusedJob.haveUnreadMessage &&
               <DriverMessageBadge />
-            }
+            } */}
           </RowWrap>
           <SpaceView mTop={SIZE2} />
           <RowWrap>
@@ -1596,28 +1603,26 @@ const JobDetailsScreenView = ({
           <SpaceView mTop={SIZE2} />
           <BorderView />
           <SpaceView mTop={SIZE2} />
-          <RowWrap>
-            <FlexWrap>
-              <TouchableOpacity
-                onPress={onDriverMessage}>
-                <InfoText numberOfLines={2}>
-                  {
-                    focusedJob.messages.length > 0
-                      ? focusedJob.messages[0].message
-                      : ' --- '
-                  }
-                </InfoText>
-              </TouchableOpacity>
-              {
-                focusedJob.noOfNewMessages !== 0 &&
-                <NotifyNumWarp>
-                  <NotifyNumWarpText>
-                    {focusedJob.noOfNewMessages}
-                  </NotifyNumWarpText>
-                </NotifyNumWarp>
-              }
-            </FlexWrap>
-          </RowWrap>
+          <FlexWrap >
+            <TouchableOpacity
+              onPress={onDriverMessage}>
+              <InfoText numberOfLines={2} right={SIZE4}>
+                {
+                  focusedJob.messages.length > 0
+                    ? focusedJob.messages[0].message
+                    : ' --- '
+                }
+              </InfoText>
+            </TouchableOpacity>
+            {
+              focusedJob.noOfNewMessages !== 0 &&
+              <NotifyNumWarp>
+                <NotifyNumWarpText>
+                  {focusedJob.noOfNewMessages}
+                </NotifyNumWarpText>
+              </NotifyNumWarp>
+            }
+          </FlexWrap>
           <SpaceView mTop={SIZE2} />
           {
             jobStatus !== JOB_STATUS.COMPLETED &&
@@ -1688,9 +1693,57 @@ const JobDetailsScreenView = ({
           </RowWrap>
         </TouchableOpacity>
         <SpaceView mBottom={SIZE2} />
+        {renderContacts()}
+        <SpaceView mBottom={SIZE2} />
       </ContentWrap>
     );
   };
+
+  const onContact = (phoneNumber) => {
+    openUrl(`tel:${phoneNumber}`);
+  };
+
+  const renderContacts = () => {
+    return focusedJob.steps.map((item, index) => {
+      return (
+        (!!item.contactPersonOne && !!item.contactNumberOne) ||
+        (!!item.contactPersonTwo && !!item.contactNumberTwo)
+      ) &&
+        <FlexWrap key={index} flex={5}>
+          {
+            !!item.contactPersonOne &&
+            !!item.contactNumberOne &&
+            <TouchableOpacity onPress={() => onContact(item.contactNumberOne)}>
+              <RowBetweenWrap>
+                <InfoText>
+                  {item.contactPersonOne}
+                </InfoText>
+                <RowWrap>
+                  <PhoneIcon />
+                  <SpaceView mRight={SIZE2} />
+                </RowWrap>
+              </RowBetweenWrap>
+            </TouchableOpacity>
+          }
+          <SpaceView mBottom={SIZE2} />
+          {
+            !!item.contactPersonTwo &&
+            !!item.contactNumberTwo &&
+            <TouchableOpacity onPress={() => onContact(item.contactNumberTwo)}>
+              <RowBetweenWrap>
+                <InfoText>
+                  {item.contactPersonTwo}
+                </InfoText>
+                <RowWrap>
+                  <PhoneIcon />
+                  <SpaceView mRight={SIZE2} />
+                </RowWrap>
+              </RowBetweenWrap>
+            </TouchableOpacity>
+          }
+        </FlexWrap>
+    })
+  }
 
   const renderFooter = () => {
     const forToday = getDate() ===

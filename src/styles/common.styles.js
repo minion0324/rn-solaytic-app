@@ -91,6 +91,12 @@ const RowWrap = styled.View`
   align-items: center;
 `;
 
+const RowBetweenWrap = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const FlexWrap = styled.View`
   flex: ${props => props.flex || 1};
 `;
@@ -159,6 +165,7 @@ export {
   SearchIconWrap,
   SearchInput,
   RowWrap,
+  RowBetweenWrap,
   FlexWrap,
   SpaceView,
   CenteredWrap,

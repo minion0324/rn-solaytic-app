@@ -65,6 +65,7 @@ import CircleHelpIcon from 'src/assets/svgs/icon-help-circle.svg';
 import CircleAddIcon from 'src/assets/svgs/icon-add-circle.svg';
 import ReplyIcon from 'src/assets/svgs/icon-reply.svg';
 import MapMarkerIcon from 'src/assets/svgs/icon-map-marker.svg';
+import PhoneIcon from 'src/assets/svgs/icon-phone.svg';
 
 export default {
   ActiveCheckIcon,
@@ -133,5 +134,6 @@ export default {
   CircleHelpIcon,
   CircleAddIcon,
   ReplyIcon,
-  MapMarkerIcon
+  MapMarkerIcon,
+  PhoneIcon
 };

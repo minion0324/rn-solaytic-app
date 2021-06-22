@@ -364,6 +364,7 @@ const BluetoothPrinterScreen = ({
           loading={loading}
         />
       </ContentWrap>
+      <SpaceView mTop={SIZE2} />
     </OverlayWrap>
   );
 };
