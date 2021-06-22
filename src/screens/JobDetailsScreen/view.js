@@ -275,22 +275,36 @@ const JobDetailsScreenView = ({
   ]);
 
   const getBinInfoOptions = useCallback(
-    (index) => pick(
-      focusedJob.steps[index],
-      [
-        'isRequireBinNumberToEnd',
-        'isRequireBinNumberToStart',
-        'isRequireBinType',
-        'isRequireBinWeight',
-        'isRequirePaymentCollection',
-        'isRequireReviewWasteType',
-        'mustTakePhoto',
-        'mustTakeSignature',
-        'numberofPhotosRequired',
-        'requireStatusToEnd',
-      ],
-    ),
-    [focusedJob.steps],
+    (index) => {
+      let newIndex = index;
+
+      if (
+        focusedJob.jobTypeName === JOB_TYPE.PUT ||
+        focusedJob.jobTypeName === JOB_TYPE.ON_THE_SPOT
+      ) {
+        newIndex = index + 1;
+      }
+
+      return pick(
+        focusedJob.steps[newIndex],
+        [
+          'isRequireBinNumberToEnd',
+          'isRequireBinNumberToStart',
+          'isRequireBinType',
+          'isRequireBinWeight',
+          'isRequirePaymentCollection',
+          'isRequireReviewWasteType',
+          'mustTakePhoto',
+          'mustTakeSignature',
+          'numberofPhotosRequired',
+          'requireStatusToEnd',
+        ],
+      );
+    },
+    [
+      focusedJob.steps,
+      focusedJob.jobTypeName,
+    ],
   );
 
   const getJobStepPhotos = useCallback(
@@ -410,6 +424,7 @@ const JobDetailsScreenView = ({
     signs,
     amountCollected,
     focusedJob.steps,
+    focusedJob.jobTypeName,
     currentStepIndex,
   ]);
 
