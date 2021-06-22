@@ -134,7 +134,7 @@ android {
         applicationId "com.logisfleet.wasteporter"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
+        versionCode 11
         versionName "4.0.0"
         multiDexEnabled true
 
