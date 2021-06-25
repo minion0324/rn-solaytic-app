@@ -87,7 +87,7 @@ const TimeText = styled.Text`
 
 const CustomerInfo = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 600;
+  font-weight: 700;
   color: ${COLORS.BLUE5};
 `;
 
@@ -146,7 +146,8 @@ const JobCard = ({
     jobTypeName,
     isRequirePaymentCollection,
     instructionToDrivers,
-    siteRemarks
+    siteRemarks,
+    jobPaymentTypeDisplay
   },
 }) => {
   const steps = useMemo(() => {
@@ -296,7 +297,7 @@ const JobCard = ({
                 <CircleCurrencyIcon />
               </SVGWarp>
               <InfoText numberOfLines={1}>
-                Cash -
+                {jobPaymentTypeDisplay} -
               </InfoText>
               <SpaceView mLeft={SIZE1} />
               <NormalText numberOfLines={1}>

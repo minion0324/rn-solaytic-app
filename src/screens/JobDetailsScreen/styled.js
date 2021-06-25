@@ -125,6 +125,12 @@ const NotifyNumWarpText = styled.Text`
   color: ${COLORS.WHITE1};
 `;
 
+const CustomerInfo = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700;
+  color: ${COLORS.BLACK2};
+`;
+
 export {
   DriverMessageBadge,
   BinInput,
@@ -137,5 +143,6 @@ export {
   LocationText,
   ReplyButton,
   NotifyNumWarp,
-  NotifyNumWarpText
+  NotifyNumWarpText,
+  CustomerInfo
 };

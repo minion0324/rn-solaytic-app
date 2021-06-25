@@ -116,6 +116,7 @@ const JobsScreen = ({
   }, [dateForJobs]);
 
   useEffect(() => {
+    coreScreenInfo.componentName === 'ALERT_SCREEN' && setTabIndex(0);
     pushNotifications.setNotificationHandlerForJobs(onNotification);
   }, [coreScreenInfo]);
 
@@ -297,6 +298,7 @@ const JobsScreen = ({
   };
 
   const renderItem = ({ item }) => {
+    
     return (
       <ItemWrap
         onPress={() => onItemPress(item)}

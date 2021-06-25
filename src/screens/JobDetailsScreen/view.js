@@ -81,7 +81,8 @@ import {
   LocationText,
   ReplyButton,
   NotifyNumWarp,
-  NotifyNumWarpText
+  NotifyNumWarpText,
+  CustomerInfo
 } from './styled';
 
 const {
@@ -1644,58 +1645,60 @@ const JobDetailsScreenView = ({
     const index = getCustomerSiteIndex();
 
     return (
-      <ContentWrap mTop={SIZE4}>
-        <TouchableOpacity
-          flex={1}
-          onPress={() => onAddress(index)}
-          disabled={jobStatus === JOB_STATUS.COMPLETED}
-        >
-          <RowWrap>
-            <DateIcon />
-            <SpaceView mLeft={SIZE1} />
-            <LabelText>
-              {
-                moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                  .format('DD-MMM (ddd)')
-              }
-            </LabelText>
-            <SpaceView mLeft={SIZE2} />
-            <TimeIcon />
-            <SpaceView mLeft={SIZE1} />
-            <LabelText>
-              {
-                moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
-                  .format('hh:mm A')
-              }
-            </LabelText>
-          </RowWrap>
-          <SpaceView mTop={SIZE2} />
-          <InfoText numberOfLines={1}>
-            {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
-          </InfoText>
-          <SpaceView mTop={SIZE2} />
+      <View flex={1}>
+        <ContentWrap mTop={SIZE4}>
+          <TouchableOpacity
+            flex={1}
+            onPress={() => onAddress(index)}
+            disabled={jobStatus === JOB_STATUS.COMPLETED}
+          >
+            <RowWrap>
+              <DateIcon />
+              <SpaceView mLeft={SIZE1} />
+              <LabelText>
+                {
+                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                    .format('DD-MMM (ddd)')
+                }
+              </LabelText>
+              <SpaceView mLeft={SIZE2} />
+              <TimeIcon />
+              <SpaceView mLeft={SIZE1} />
+              <LabelText>
+                {
+                  moment(focusedJob.jobTimeSpecific || focusedJob.jobDate)
+                    .format('hh:mm A')
+                }
+              </LabelText>
+            </RowWrap>
+            <SpaceView mTop={SIZE2} />
+            <CustomerInfo numberOfLines={1}>
+              {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
+            </CustomerInfo>
+            <SpaceView mTop={SIZE2} />
 
-          <RowWrap>
-            <LocationText numberOfLines={2} right={SIZE2}>
+            <RowWrap>
+              <LocationText numberOfLines={2} right={SIZE2}>
+                {
+                  steps[index].site
+                    ? getCustomerSiteAddress(steps[index].site)
+                    : steps[index].address
+                }
+              </LocationText>
               {
-                steps[index].site
-                  ? getCustomerSiteAddress(steps[index].site)
-                  : steps[index].address
+                jobStatus !== JOB_STATUS.COMPLETED &&
+                <RowWrap>
+                  <BlackRightArrowIcon />
+                  <SpaceView mLeft={SIZE2} />
+                </RowWrap>
               }
-            </LocationText>
-            {
-              jobStatus !== JOB_STATUS.COMPLETED &&
-              <RowWrap>
-                <BlackRightArrowIcon />
-                <SpaceView mLeft={SIZE2} />
-              </RowWrap>
-            }
-          </RowWrap>
-        </TouchableOpacity>
-        <SpaceView mBottom={SIZE2} />
-        {renderContacts()}
-        <SpaceView mBottom={SIZE2} />
-      </ContentWrap>
+            </RowWrap>
+          </TouchableOpacity>
+          <SpaceView mBottom={SIZE2} />
+          {renderContacts()}
+          <SpaceView mBottom={SIZE2} />
+        </ContentWrap>
+      </View>
     );
   };
 
