@@ -482,7 +482,7 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNFS (2.16.6):
+  - RNFS (2.18.0):
     - React
   - RNShare (4.0.1):
     - React-Core
@@ -778,7 +778,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNDeviceInfo: 921a809eaf9de79645a24de1c6ca90db6cb91786
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
-  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNShare: 7fb06e9dc9dab68854eb99041aaca080ca3fde10
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196

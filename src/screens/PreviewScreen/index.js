@@ -74,6 +74,9 @@ const PreviewScreen = ({
   componentId,
 }) => {
   const viewShotRef = useRef(null);
+  const signShotRef = useRef(null);
+  const logoShotRef = useRef(null);
+  const PRINT_DATA = [];
 
   const getReceiptSettingVariable = useCallback(
     (key) => {
@@ -101,11 +104,51 @@ const PreviewScreen = ({
     }
   };
 
+  const onSignShot = async () => {
+    try {
+      return await signShotRef.current.capture();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const onLogoShot = async () => {
+    try {
+      return await logoShotRef.current.capture();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   const onPrint = async () => {
     try {
-      const base64Str = await onViewShot();
+      let logobase64Str;
+      let signbase64Str;
 
-      showLightBox(BLUETOOTH_PRINTER_SCREEN, { base64Str });
+      const logo = getReceiptSettingVariable('StringCompanyLogo');
+      if (logo) {
+        logobase64Str = await onLogoShot();
+        PRINT_DATA.splice(0, 0, {
+          type: "image",
+          value: logobase64Str
+        });
+      }
+
+      if (getReceiptSettingVariable('ShowSignature') === 'True') {
+        const sign = signs[signs.length - 1];
+
+        if (!sign || !sign.uri) {
+
+        } else {
+          signbase64Str = await onSignShot();
+          PRINT_DATA.splice(PRINT_DATA.length - 5, 0, {
+            type: "image",
+            value: signbase64Str
+          });
+        }
+      }
+
+      showLightBox(BLUETOOTH_PRINTER_SCREEN, { base64Str: PRINT_DATA });
     } catch (error) {
       //
     }
@@ -131,6 +174,11 @@ const PreviewScreen = ({
       return null;
     }
 
+    PRINT_DATA.push({
+      type: 'text',
+      value: 'disclaimerText'
+    });
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
@@ -149,21 +197,58 @@ const PreviewScreen = ({
       return null;
     }
 
+    PRINT_DATA.push({
+      type: 'space'
+    });
+
+    PRINT_DATA.push({
+      type: 'dotline'
+    });
+
+    getReceiptSettingVariable('ShowSiteContact') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          'Site Contact',
+          sign.signedUserName
+        ]
+      });
+
+    getReceiptSettingVariable('ShowSiteTelephone') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          'Contact Number',
+          sign.signedUserContact || ' --- '
+        ]
+      });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
-        {
-          getReceiptSettingVariable('ShowSignature') === 'True' &&
-          <View>
-            <SignatureWrap>
-              <FullImage source={{ uri: sign.uri }} />
-            </SignatureWrap>
-            <BorderView />
-          </View>
-        }
+        <ViewShot
+          ref={signShotRef}
+          options={{ result: 'base64' }}
+        >
+          <ContentWrap>
+            {
+              getReceiptSettingVariable('ShowSignature') === 'True' &&
+              <View style={{ alignItems: 'center' }}>
+                <SignatureWrap>
+                  <FullImage source={{ uri: sign.uri }} />
+                </SignatureWrap>
+              </View>
+            }
+          </ContentWrap>
+        </ViewShot>
         {
           getReceiptSettingVariable('ShowSiteContact') === 'True' &&
           <View>
+            <BorderView />
             <SpaceView mTop={SIZE2} />
             <RowWrap>
               <FlexWrap flex={4}>
@@ -212,6 +297,11 @@ const PreviewScreen = ({
       return null;
     }
 
+    PRINT_DATA.push({
+      type: 'text',
+      value: 'Additional Services'
+    });
+
     return (
       <View>
         <SpaceView mTop={SIZE4} />
@@ -232,25 +322,35 @@ const PreviewScreen = ({
           </FlexWrap>
         </RowWrap>
         {
-          selectedServices.map((item) => (
-            <View
-              key={`${item.serviceAdditionalChargeTemplateId}`}
-            >
-              <SpaceView mTop={SIZE2} />
-              <RowWrap>
-                <FlexWrap flex={4}>
-                  <InfoText>
-                    {item.serviceAdditionalChargeName}
-                  </InfoText>
-                </FlexWrap>
-                <FlexWrap flex={6}>
-                  <InfoText align={'right'}>
-                    {item.quantity}
-                  </InfoText>
-                </FlexWrap>
-              </RowWrap>
-            </View>
-          ))
+          selectedServices.map((item) => {
+
+            PRINT_DATA.push({
+              type: 'column',
+              value: [
+                item.serviceAdditionalChargeName,
+                item.quantity.toString()
+              ]
+            });
+            return (
+              <View
+                key={`${item.serviceAdditionalChargeTemplateId}`}
+              >
+                <SpaceView mTop={SIZE2} />
+                <RowWrap>
+                  <FlexWrap flex={4}>
+                    <InfoText>
+                      {item.serviceAdditionalChargeName}
+                    </InfoText>
+                  </FlexWrap>
+                  <FlexWrap flex={6}>
+                    <InfoText align={'right'}>
+                      {item.quantity}
+                    </InfoText>
+                  </FlexWrap>
+                </RowWrap>
+              </View>
+            )
+          })
         }
         <SpaceView mTop={SIZE2} />
       </View>
@@ -264,6 +364,28 @@ const PreviewScreen = ({
     ) {
       return null;
     }
+
+    getReceiptSettingVariable('ShowPaymentType') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          getReceiptSettingVariable('LabelPayment_Type') || 'Payment',
+          focusedJob.jobPaymentTypeList[jobPaymentType]
+        ]
+      });
+
+    getReceiptSettingVariable('ShowAmountCollected') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          getReceiptSettingVariable('LabelCollected_Cash') || 'Collected',
+          `$${amountCollected}`
+        ]
+      });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
 
     return (
       <View>
@@ -315,6 +437,89 @@ const PreviewScreen = ({
       binInfo.map((item, index) => {
         const idx = focusedJob.jobTypeName === JOB_TYPE.SHIFT
           ? 0 : getBinInOutInfoIndex(index);
+
+        (item.wasteType || item.binType) &&
+          (
+            (idx === 0 && getReceiptSettingVariable('ShowBinCollected') === 'True') ||
+            (idx === 1 && getReceiptSettingVariable('ShowBinDelivered') === 'True') ||
+            (idx !== 0 && idx !== 1)
+          ) &&
+          PRINT_DATA.push({
+            type: 'column',
+            value: [
+              (
+                idx === 0
+                  ? getReceiptSettingVariable('LabelBin_Collected') || 'Bin Collected'
+                  : ''
+              ) +
+              (
+                idx === 1
+                  ? getReceiptSettingVariable('LabelBin_Delivered') || 'Bin Delivered'
+                  : ''
+              ) +
+              (
+                idx !== 0 && idx !== 1 ? 'Bin' : ''
+              ),
+              item['binNumber']
+            ]
+          });
+
+        (item.wasteType || item.binType) &&
+          (
+            (idx === 0 && getReceiptSettingVariable('ShowBinCollectedType') === 'True') ||
+            (idx === 1 && getReceiptSettingVariable('ShowBinDeliveredType') === 'True') ||
+            (idx !== 0 && idx !== 1)
+          ) &&
+          PRINT_DATA.push({
+            type: 'column',
+            value: [
+              (
+                idx === 0
+                  ? getReceiptSettingVariable('LabelBin_Type_Collected') || 'Bin Type'
+                  : ''
+              ) +
+              (
+                idx === 1
+                  ? getReceiptSettingVariable('LabelBin_Type_Delivered') || 'Bin Type'
+                  : ''
+              ) +
+              (
+                idx !== 0 && idx !== 1 ? 'Bin Type' : ''
+              ),
+              item['binType'] && item['binType']['binTypeName']
+            ]
+          });
+
+        (item.wasteType || item.binType) &&
+          (
+            (idx === 0 && getReceiptSettingVariable('ShowWasteTypeCollected') === 'True') ||
+            (idx === 1 && getReceiptSettingVariable('ShowPlannedWasteType') === 'True') ||
+            (idx !== 0 && idx !== 1)
+          ) &&
+          PRINT_DATA.push({
+            type: 'column_array',
+            value: [
+              (
+                idx === 0
+                  ? getReceiptSettingVariable('LabelWaste_Type_Collected') || 'With Waste Type'
+                  : ''
+              ) +
+              (
+                idx === 1
+                  ? getReceiptSettingVariable('LabelPlanned_Waste_Type') || 'For Waste Type'
+                  : ''
+              ) +
+              (
+                idx !== 0 && idx !== 1 ? 'With Waste Type' : ''
+              ),
+              item['wasteTypes'].map((el, i) => el.wasteType.wasteTypeName || '')
+            ]
+          });
+
+        (item.wasteType || item.binType) &&
+          PRINT_DATA.push({
+            type: 'space',
+          })
 
         return (
           (item.wasteType || item.binType) &&
@@ -447,6 +652,102 @@ const PreviewScreen = ({
 
   const renderJobInfo = () => {
     const index = getCustomerSiteIndex();
+
+    PRINT_DATA.push({
+      type: 'text',
+      value: `DO #: ${focusedJob.jobNumber}`
+    });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
+
+    getReceiptSettingVariable('ShowCustomerName') === 'True' &&
+      PRINT_DATA.push({
+        type: 'text',
+        value: focusedJob.customer.customerName
+      });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
+
+    getReceiptSettingVariable('LabelSite_Address')
+      ? PRINT_DATA.push({
+        type: 'text',
+        value: getReceiptSettingVariable('LabelSite_Address')
+      })
+      : PRINT_DATA.push({
+        type: 'text',
+        value: 'Site Address'
+      });
+
+    focusedJob.steps[index].site
+      ? PRINT_DATA.push({
+        type: 'text',
+        value: getCustomerSiteAddress(focusedJob.steps[index].site)
+      })
+      : PRINT_DATA.push({
+        type: 'text',
+        value: focusedJob.steps[index].address
+      });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
+
+    PRINT_DATA.push({
+      type: 'column',
+      value: [
+        moment(
+          focusedJob.receiptCompletedDate ||
+          focusedJob.completedDate || focusedJob.jobTimeSpecific
+        ).format('DD/MM/YYYY'),
+        moment(
+          focusedJob.receiptCompletedDate ||
+          focusedJob.completedDate || focusedJob.jobTimeSpecific
+        ).format('hh:mm A')
+      ]
+    });
+
+    focusedJob.assignedDriver &&
+      focusedJob.assignedDriver.driverName &&
+      getReceiptSettingVariable('ShowDriver') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          getReceiptSettingVariable('LabelDriver') || 'Driver',
+          focusedJob.assignedDriver.driverName
+        ]
+      });
+
+    focusedJob.assignedVehicle &&
+      focusedJob.assignedVehicle.vehicleName &&
+      getReceiptSettingVariable('ShowVehicle') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          getReceiptSettingVariable('LabelVehicle') || 'Vehicle',
+          focusedJob.assignedVehicle.vehicleName
+        ]
+      });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
+
+    getReceiptSettingVariable('ShowJobType') === 'True' &&
+      PRINT_DATA.push({
+        type: 'column',
+        value: [
+          getReceiptSettingVariable('LabelJob_Type') || 'Job Type',
+          focusedJob.jobTemplateName || focusedJob.jobTypeName
+        ]
+      });
+
+    PRINT_DATA.push({
+      type: 'space'
+    });
 
     return (
       <View>
@@ -585,7 +886,7 @@ const PreviewScreen = ({
       alignItems: 'center',
     };
 
-    const headerText = getReceiptSettingVariable('StringHeaderText');
+    let headerText = getReceiptSettingVariable('StringHeaderText');
 
     if (!headerText) {
       return null;
@@ -596,6 +897,14 @@ const PreviewScreen = ({
         /\n/g,
         `</div>\n<div style='text-align: center;'>`,
       );
+
+    headerText = headerText.replace(/<[^>]+>/g, '');
+    headerText = headerText.replace('&nbsp;', '');
+
+    PRINT_DATA.push({
+      type: "header",
+      value: headerText
+    });
 
     return (
       <View>
@@ -620,16 +929,19 @@ const PreviewScreen = ({
 
     return (
       <RowWrap>
-        <FlexWrap flex={3} />
-        <FlexWrap flex={4}>
-          <LogoImageWrap>
-            <FullImage
-              resizeMode={'contain'}
-              source={{ uri: logo }}
-            />
-          </LogoImageWrap>
-        </FlexWrap>
-        <FlexWrap flex={3} />
+        <LogoImageWrap>
+          <ViewShot
+            ref={logoShotRef}
+            options={{ result: 'base64' }}
+          >
+            <ContentWrap>
+              <FullImage
+                resizeMode={'contain'}
+                source={{ uri: logo }}
+              />
+            </ContentWrap>
+          </ViewShot>
+        </LogoImageWrap>
       </RowWrap>
     );
   };

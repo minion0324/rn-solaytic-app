@@ -922,6 +922,7 @@ const JobDetailsScreenView = ({
     const index = getCustomerSiteIndex();
     const contactName = focusedJob.steps[index].contactPersonOne;
     const contactNum = focusedJob.steps[index].contactNumberOne;
+    console.log('=======data.uri',data.uri)
 
     return (
       data
@@ -1673,7 +1674,7 @@ const JobDetailsScreenView = ({
             </RowWrap>
             <SpaceView mTop={SIZE2} />
             <CustomerInfo numberOfLines={1}>
-              {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
+              {focusedJob.customerNameDisplay}
             </CustomerInfo>
             <SpaceView mTop={SIZE2} />
 

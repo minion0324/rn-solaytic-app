@@ -53,13 +53,13 @@ const BluetoothPrinterScreen = ({
   base64Str,
   componentId,
 }) => {
-  const [ loading, setLoading ] = useState(false);
-  const [ connecting, setConnecting ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [connecting, setConnecting] = useState(false);
 
-  const [ connectedDevice, setConnectedDevice ] = useState({});
+  const [connectedDevice, setConnectedDevice] = useState({});
 
-  const [ pairedDevices, setPairedDevices ] = useState([]);
-  const [ foundDevices, setFoundDevices ] = useState([]);
+  const [pairedDevices, setPairedDevices] = useState([]);
+  const [foundDevices, setFoundDevices] = useState([]);
 
   const bluetoothListener1 = useRef(null);
   const bluetoothListener2 = useRef(null);
@@ -131,7 +131,7 @@ const BluetoothPrinterScreen = ({
   const deviceAlreadyPaired = (result) => {
     let res = [];
     try {
-      res = typeof(result.devices) === 'object'
+      res = typeof (result.devices) === 'object'
         ? result.devices : JSON.parse(result.devices);
     } catch (err) {
       //
@@ -147,7 +147,7 @@ const BluetoothPrinterScreen = ({
   const deviceFound = (result) => {
     let res = null;
     try {
-      res = typeof(result.device) === 'object'
+      res = typeof (result.device) === 'object'
         ? result.device : JSON.parse(result.device);
     } catch (err) {
       //
@@ -232,11 +232,76 @@ const BluetoothPrinterScreen = ({
     }
   };
 
+  const onPrint = async (item) => {
+    let columnWidths = [16, 16];
+    let columnArrayWidths = [12, 20];
+    switch (item.type) {
+      case 'image':
+        await BluetoothEscposPrinter.printerInit();
+        await BluetoothEscposPrinter.printPic(item.value, { width: 380, left: 0 });
+        await BluetoothEscposPrinter.printText("\n\r", {});
+        break;
+
+      case 'header':
+        await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
+        await BluetoothEscposPrinter.printText(`${item.value}\n\r`, {});
+        break;
+
+      case 'text':
+        await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
+        await BluetoothEscposPrinter.printText(`${item.value}\n\r`, {});
+        break;
+
+      case 'column':
+        if (item.value[1] > 15) columnWidths = [15, 17];
+        await BluetoothEscposPrinter.printColumn(columnWidths,
+          [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.RIGHT],
+          [item.value[0], item.value[1]], {});
+        break;
+
+      case 'column_array':
+        let str = item.value[0];
+        let space = '';
+        if (str.length > 12) {
+          const n = str.indexOf(' ');
+          for (let i = 0; i < 10 - n; i++) {
+            space = space + ' ';
+          }
+          str = str.slice(0, n + 1) + space + str.slice(n + 1);
+        }
+        await BluetoothEscposPrinter.printColumn(columnArrayWidths,
+          [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.RIGHT],
+          [str, item.value[1][0]], {});
+        if (item.value[1].length > 1) {
+          await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.RIGHT);
+          for (let i = 1; i < item.value[1].length; i++) {
+            await BluetoothEscposPrinter.printText(`${item.value[1][i]}\n\r`, {});
+          }
+        }
+        break;
+
+      case 'space':
+        await BluetoothEscposPrinter.printText("\n\r", {});
+        break;
+
+      case 'dotline':
+        await BluetoothEscposPrinter.printText("--------------------------------\n\r", {});
+        break;
+
+      default:
+        break;
+    }
+  }
+
   const onConfirm = async () => {
     try {
       setLoading(true);
 
-      await BluetoothEscposPrinter.printPic(base64Str, { width: 380, left: 2 });
+      for (let i = 0; i < base64Str.length; i++) {
+        await onPrint(base64Str[i]);
+      }
+      await BluetoothEscposPrinter.printText("\n\r", {});
+      await BluetoothEscposPrinter.printText("\n\r", {});
 
       setLoading(false);
     } catch (error) {
@@ -274,8 +339,8 @@ const BluetoothPrinterScreen = ({
           <RowWrap>
             {
               item.address === connectedDevice.address
-              ? <BlueActiveCircleCheckIcon />
-              : <DeactiveCircleCheckIcon />
+                ? <BlueActiveCircleCheckIcon />
+                : <DeactiveCircleCheckIcon />
             }
             <SpaceView mLeft={SIZE2} />
             <InfoText numberOfLines={1}>
@@ -314,7 +379,7 @@ const BluetoothPrinterScreen = ({
       <ContentWrap>
         {
           pairedDevices.length > 0
-          ? <ListWrap>
+            ? <ListWrap>
               <FlatList
                 data={pairedDevices}
                 keyExtractor={item => item.address}
@@ -322,7 +387,7 @@ const BluetoothPrinterScreen = ({
                 showsVerticalScrollIndicator={false}
               />
             </ListWrap>
-          : <InfoText color={COLORS.RED1}>No Device</InfoText>
+            : <InfoText color={COLORS.RED1}>No Device</InfoText>
         }
       </ContentWrap>
       <SpaceView mTop={SIZE2} />
@@ -337,7 +402,7 @@ const BluetoothPrinterScreen = ({
       <ContentWrap>
         {
           foundDevices.length > 0
-          ? <ListWrap>
+            ? <ListWrap>
               <FlatList
                 data={foundDevices}
                 keyExtractor={item => item.address}
@@ -345,7 +410,7 @@ const BluetoothPrinterScreen = ({
                 showsVerticalScrollIndicator={false}
               />
             </ListWrap>
-          : <InfoText color={COLORS.RED1}>No Device</InfoText>
+            : <InfoText color={COLORS.RED1}>No Device</InfoText>
         }
       </ContentWrap>
       <SpaceView mTop={SIZE2} />
@@ -354,12 +419,12 @@ const BluetoothPrinterScreen = ({
         <DefaultButton
           color={
             connectedDevice.address
-            ? COLORS.BLUE1 : COLORS.GRAY3
+              ? COLORS.BLUE1 : COLORS.GRAY3
           }
           text={'Confirm'}
           onPress={
             connectedDevice.address
-            ? onConfirm : null
+              ? onConfirm : null
           }
           loading={loading}
         />
@@ -370,7 +435,7 @@ const BluetoothPrinterScreen = ({
 };
 
 BluetoothPrinterScreen.propTypes = {
-  base64Str: PropTypes.string.isRequired,
+  base64Str: PropTypes.array.isRequired,
   componentId: PropTypes.string.isRequired,
 };
 

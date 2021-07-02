@@ -37,7 +37,6 @@ const Container = styled.View`
 `;
 
 const FirstSection = styled.View`
-  height: ${SIZE20}px;
   justify-content: center;
 `;
 
@@ -45,10 +44,6 @@ const SecondSection = styled.View`
   height: ${SIZE10}px;
   justify-content: center;
   align-items: flex-start;
-  border-width: 1px;
-  border-radius: ${SIZE1}px;
-  border-color: ${COLORS.GRAY2};
-  padding-horizontal: ${SIZE2}px;
   margin-horizontal: ${SIZE2}px;
   margin-bottom: ${SIZE2}px;
 `;
@@ -88,7 +83,7 @@ const TimeText = styled.Text`
 const CustomerInfo = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700;
-  color: ${COLORS.BLUE5};
+  color: ${props => props.color};
 `;
 
 const NormalText = styled.Text`
@@ -111,6 +106,14 @@ const InstructionText = styled.Text`
 
 const SVGWarp = styled.View`
   width: ${SIZE6}px;
+`;
+
+const WasteTypeWrap = styled.View`
+  width: 100%;
+  border-radius: ${SIZE1}px;
+  background-color: #06D6A088;
+  padding-horizontal: ${SIZE2}px;
+  padding-vertical: ${SIZE1}px;
 `;
 
 const NotifyNumWarp = styled.View`
@@ -136,6 +139,7 @@ const JobCard = ({
     customer: {
       accountCustomerId,
     },
+    customerNameDisplay,
     customerName,
     noOfNewMessages,
     steps: originSteps,
@@ -255,8 +259,8 @@ const JobCard = ({
         <RowWrap>
           <SpaceView mLeft={SIZE2} />
           <FlexWrap>
-            <CustomerInfo numberOfLines={1}>
-              {`[${accountCustomerId}] ${customerName}`}
+            <CustomerInfo numberOfLines={1} color={COLORS.BLUE5}>
+              {customerNameDisplay}
             </CustomerInfo>
           </FlexWrap>
         </RowWrap>
@@ -273,19 +277,20 @@ const JobCard = ({
         <SpaceView mTop={SIZE1} />
       </FirstSection>
       <SecondSection>
-        <InfoText numberOfLines={1}>
-          {jobTemplateName || jobTypeName}
-        </InfoText>
-        <SpaceView mTop={SIZE1} />
         <RowWrap>
-          <NormalText numberOfLines={2}>
+          <InfoText numberOfLines={1}>
+            {(jobTemplateName || jobTypeName) + ' - '}
+          </InfoText>
+          <InfoText numberOfLines={1}>
             {steps[binIndex].binTypeName || ''}
-          </NormalText>
-          <SpaceView mLeft={SIZE2} />
-          <NormalText numberOfLines={2}>
-            {steps[binIndex].wasteTypeName || ''}
-          </NormalText>
+          </InfoText>
         </RowWrap>
+        <SpaceView mTop={SIZE1} />
+        <WasteTypeWrap>
+          <CustomerInfo numberOfLines={1} color={COLORS.BLACK2}>
+            {steps[binIndex].wasteTypeName || ''}
+          </CustomerInfo>
+        </WasteTypeWrap>
       </SecondSection>
       {
         (isRequirePaymentCollection || !!instructionToDrivers || siteRemarks) &&
