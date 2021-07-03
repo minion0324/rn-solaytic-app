@@ -212,7 +212,7 @@ const AddressScreen = ({
                 index === customerSiteIndex ?
                   <View>
                     <TitleText color={index === selectedIndex && COLORS.BLUE5}>
-                      {`[${focusedJob.customer.accountCustomerId}] ${focusedJob.customer.customerName}`}
+                      {focusedJob.customerNameDisplay}
                     </TitleText>
                     <SpaceView mTop={SIZE1} />
                   </View>
