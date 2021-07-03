@@ -922,7 +922,6 @@ const JobDetailsScreenView = ({
     const index = getCustomerSiteIndex();
     const contactName = focusedJob.steps[index].contactPersonOne;
     const contactNum = focusedJob.steps[index].contactNumberOne;
-    console.log('=======data.uri',data.uri)
 
     return (
       data
