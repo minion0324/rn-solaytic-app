@@ -175,8 +175,8 @@ const PreviewScreen = ({
     }
 
     PRINT_DATA.push({
-      type: 'text',
-      value: 'disclaimerText'
+      type: 'header',
+      value: disclaimerText
     });
 
     return (
@@ -460,7 +460,7 @@ const PreviewScreen = ({
               (
                 idx !== 0 && idx !== 1 ? 'Bin' : ''
               ),
-              item['binNumber']
+              item['binNumber'] ? item['binNumber'] : ''
             ]
           });
 

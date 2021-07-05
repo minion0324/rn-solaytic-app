@@ -134,8 +134,8 @@ android {
         applicationId "com.logisfleet.wasteporter"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "4.0.3"
+        versionCode 14
+        versionName "4.0.4"
         multiDexEnabled true
 
         missingDimensionStrategy "react-native-camera", "general"
