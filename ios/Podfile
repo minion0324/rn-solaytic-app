@@ -81,6 +81,8 @@ target 'Wasteporter' do
   pod 'Firebase/Messaging', '~> 6.13.0'
   pod 'Firebase/Performance', '~> 6.13.0'
 
+  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+
   target 'WasteporterTests' do
     inherit! :complete
     # Pods for testing

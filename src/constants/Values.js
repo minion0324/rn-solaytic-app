@@ -77,6 +77,10 @@ const JOB_DETAILS_LIMIT = 20;
 
 const SIGNATURE_WRAP_RATIO = 1.2;
 
+const IMAGE_COMPRESS_QUALITY = 50;
+const MAX_IMAGE_WIDTH = 600;
+const MAX_IMAGE_HEIGHT = 800;
+
 //
 const API_BASE_URL =
   'https://staging-tms-dispatch.logisfleet.com/';
@@ -117,4 +121,7 @@ export {
   JOB_DETAILS_LIMIT,
   SIGNATURE_WRAP_RATIO,
   API_BASE_URL,
+  IMAGE_COMPRESS_QUALITY,
+  MAX_IMAGE_WIDTH,
+  MAX_IMAGE_HEIGHT,
 };
