@@ -37,6 +37,7 @@
     "react-native-image-crop-picker": "^0.36.2",
     "react-native-image-picker": "^2.3.2",
     "react-native-image-resizer": "^1.4.5",
+    "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-map-link": "^2.7.17",
     "react-native-maps": "^0.28.0",
     "react-native-maps-directions": "^1.8.0",

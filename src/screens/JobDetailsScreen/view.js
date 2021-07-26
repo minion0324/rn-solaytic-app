@@ -8,6 +8,7 @@ import React, {
 import {
   View,
   ScrollView,
+  KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
   findNodeHandle,
@@ -16,6 +17,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { pick } from 'lodash';
 import ActionSheet from 'react-native-actionsheet';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SVGS,
@@ -26,6 +28,7 @@ import {
   SIZE4,
   JOB_TYPE,
   JOB_STATUS,
+  PLATFORM,
 } from 'src/constants';
 import {
   HeaderBar,
@@ -1846,18 +1849,20 @@ const JobDetailsScreenView = ({
         {renderHeader()}
       </ShadowWrap>
 
-      <Content>
-        <ScrollView
-          ref={scrollRef}
-          showsVerticalScrollIndicator={false}
-        >
+      <KeyboardAwareScrollView
+        // ref={scrollRef}
+        showsVerticalScrollIndicator={false}
+        extraScrollHeight={-SIZE4 * 3}
+      >
+        <Content>
           {renderLocationAndTime()}
           {renderDriverMessage()}
           {renderBinInfo()}
           {renderBinWeight()}
           <SpaceView mTop={SIZE2} />
-        </ScrollView>
-      </Content>
+
+        </Content>
+      </KeyboardAwareScrollView>
 
       <ShadowWrap forUp>
         {renderFooter()}
