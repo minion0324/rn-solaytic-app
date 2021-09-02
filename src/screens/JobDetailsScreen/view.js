@@ -12,12 +12,15 @@ import {
   TouchableOpacity,
   Alert,
   findNodeHandle,
+  Platform,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { pick } from 'lodash';
 import ActionSheet from 'react-native-actionsheet';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  KeyboardAwareScrollView
+} from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SVGS,
@@ -26,6 +29,7 @@ import {
   SIZE2,
   SIZE3,
   SIZE4,
+  SIZE24,
   JOB_TYPE,
   JOB_STATUS,
   PLATFORM,
@@ -44,6 +48,7 @@ import {
   delay,
   getCustomerSiteAddress,
   openUrl,
+  numberWithCommas
 } from 'src/utils';
 
 import {
@@ -386,9 +391,9 @@ const JobDetailsScreenView = ({
 
     if (
       binInfo[binIndex]['binWeight'] &&
-      binInfo[binIndex]['binWeight'] > 99.999
+      binInfo[binIndex]['binWeight'] > focusedJob.maxBinWeight
     ) {
-      const text = 'The max value for bin weight is 99.999';
+      const text = `The max value for bin weight is ${focusedJob.maxBinWeight}`;
       return { hard: text, easy: '', ref: null };
     }
 
@@ -1472,6 +1477,7 @@ const JobDetailsScreenView = ({
       status === 'ACTIVE' &&
       focusedJob.isAllowDriverEditOnApp;
 
+
     return (
       <View
         ref={ref => binInfoRefs.current[stepIndex] = ref}
@@ -1507,7 +1513,7 @@ const JobDetailsScreenView = ({
                   <InfoText>
                     {
                       binInfo[binIndex]['binWeight']
-                        ? binInfo[binIndex]['binWeight'] + ' tons'
+                        ? binInfo[binIndex]['binWeight'] + ' ' + focusedJob.binWeightUom
                         : ' --- '
                     }
                   </InfoText>
@@ -1541,8 +1547,18 @@ const JobDetailsScreenView = ({
                       autoCapitalize={'none'}
                       autoCorrect={false}
                       value={`${binInfo[binIndex]['binWeight'] || ''}`}
-                      onChangeText={(text) =>
-                        onUpdateBinInfo(binIndex, { binWeight: text })
+                      onChangeText={(text) => {
+                        const parsedQty = Number.parseFloat(text);
+                        if (Number.isNaN(parsedQty)) {
+                          onUpdateBinInfo(binIndex, { binWeight: '' });
+                        } else if (parsedQty < parseFloat(focusedJob.maxBinWeight)) {
+                          onUpdateBinInfo(binIndex, { binWeight: text });
+                        }
+                      }}
+                      maxLength={
+                        binInfo[binIndex]['binWeight'].toString().split('.')[0] ?
+                          binInfo[binIndex]['binWeight'].toString().split('.')[0].length + 4 :
+                          focusedJob.maxBinWeight.toString().length
                       }
                       editable={editable}
                       keyboardType={'numeric'}
@@ -1551,7 +1567,7 @@ const JobDetailsScreenView = ({
                 </FlexWrap>
                 <SpaceView mLeft={SIZE2} />
                 <FlexWrap>
-                  <InfoText>tons</InfoText>
+                  <InfoText>{focusedJob.binWeightUom}</InfoText>
                 </FlexWrap>
               </RowWrap>
           }
@@ -1848,21 +1864,20 @@ const JobDetailsScreenView = ({
       <ShadowWrap>
         {renderHeader()}
       </ShadowWrap>
+      {/* <ScrollView
+        ref={scrollRef}
+        showsVerticalScrollIndicator={false}> */}
 
-      <KeyboardAwareScrollView
-        // ref={scrollRef}
-        showsVerticalScrollIndicator={false}
-        extraScrollHeight={-SIZE4 * 3}
-      >
+      <KeyboardAwareScrollView>
         <Content>
           {renderLocationAndTime()}
           {renderDriverMessage()}
           {renderBinInfo()}
           {renderBinWeight()}
           <SpaceView mTop={SIZE2} />
-
         </Content>
       </KeyboardAwareScrollView>
+      {/* </ScrollView> */}
 
       <ShadowWrap forUp>
         {renderFooter()}

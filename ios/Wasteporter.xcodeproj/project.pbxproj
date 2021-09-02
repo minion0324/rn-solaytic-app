@@ -698,7 +698,7 @@
 				);
 				INFOPLIST_FILE = Wasteporter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.0.4;
+				MARKETING_VERSION = 4.1.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -726,7 +726,7 @@
 				DEVELOPMENT_TEAM = ZT4C7EXXAE;
 				INFOPLIST_FILE = Wasteporter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.0.4;
+				MARKETING_VERSION = 4.1.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

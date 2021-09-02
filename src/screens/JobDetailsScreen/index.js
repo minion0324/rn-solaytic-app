@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Alert, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import Image1Picker from 'react-native-image-picker';
-import ImagePicker from 'react-native-image-crop-picker';
+import Image1Picker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-crop-picker';
 import ImgToBase64 from 'react-native-image-base64';
 import ActionSheet from 'react-native-actionsheet';
 import Toast from 'react-native-simple-toast';
@@ -394,30 +394,30 @@ const JobDetailsScreen = ({
   };
 
   const onPhoto = (jobStepId) => {
-    setJobStepId(jobStepId);
-    actionSheetRef.current.show();
-    // const options = {
-    //   title: 'Select Your Photo',
-    //   storageOptions: {
-    //     skipBackup: true,
-    //     cropping: true,
-    //   },
-    //   quality: 0.5,
-    // };
+    // setJobStepId(jobStepId);
+    // actionSheetRef.current.show();
+    const options = {
+      title: 'Select Your Photo',
+      storageOptions: {
+        skipBackup: true,
+        cropping: true,
+      },
+      quality: 0.5,
+    };
 
-    // Image1Picker.showImagePicker(options, (response) => {
-    //   if (response.didCancel) {
-    //     //
-    //   } else if (response.error) {
-    //     //
-    //   } else {
-    //     const { uri, data } = response;
-    //     console.log('======')
-    //     console.log(uri)
-    //     console.log(data)
-    //     setPhotos([ ...photos, { jobStepId, uri, data } ]);
-    //   }
-    // });
+    Image1Picker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        //
+      } else if (response.error) {
+        //
+      } else {
+        const { uri, data } = response;
+        console.log('======')
+        console.log(uri)
+        console.log(data)
+        setPhotos([...photos, { jobStepId, uri, data }]);
+      }
+    });
   };
 
   const onSign = (jobStepId, contactName, contactNum) => {
@@ -434,23 +434,24 @@ const JobDetailsScreen = ({
   const OPEN_GALLERY = 1;
 
   const selectActionSheet = index => {
-    let options = {
-      mediaType: 'photo',
-      forceJpg: false,
-      cropping: true,
-      width: 800,
-      height: 800
-    };
+    // let options = {
+    //   mediaType: 'photo',
+    //   forceJpg: false,
+    //   cropping: true,
+    //   width: 800,
+    //   height: 800,
+    //   hideBottomControls: true
+    // };
 
-    if (index === OPEN_CAMERA) {
-      ImagePicker.openCamera(options).then(response => {
-        setMediaData(response)
-      });
-    } else if (index === OPEN_GALLERY) {
-      ImagePicker.openPicker(options).then(response => {
-        setMediaData(response)
-      });
-    }
+    // if (index === OPEN_CAMERA) {
+    //   ImagePicker.openCamera(options).then(response => {
+    //     setMediaData(response)
+    //   });
+    // } else if (index === OPEN_GALLERY) {
+    //   ImagePicker.openPicker(options).then(response => {
+    //     setMediaData(response)
+    //   });
+    // }
   }
 
   const setMediaData = async (response) => {

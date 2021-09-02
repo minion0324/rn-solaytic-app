@@ -21,6 +21,7 @@ const DriverMessageBadge = styled.View`
 
 const BinInput = styled.TextInput`
   flex: 1;
+  height: ${SIZE8}px;
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600;
@@ -35,7 +36,7 @@ const BinInputWrap = styled.View`
   align-items: center;
   justify-content: center;
   padding-vertical: ${(props) => (
-    props.effect ? 3 : 0
+    props.effect ? 0 : 0
   )}px;
   padding-horizontal: ${(props) => (
     props.effect ? SIZE2 : 0
