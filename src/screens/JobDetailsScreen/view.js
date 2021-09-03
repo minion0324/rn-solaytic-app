@@ -1554,11 +1554,12 @@ const JobDetailsScreenView = ({
                         } else if (parsedQty < parseFloat(focusedJob.maxBinWeight)) {
                           onUpdateBinInfo(binIndex, { binWeight: text });
                         }
+                        // onUpdateBinInfo(binIndex, { binWeight: text });
                       }}
-                      maxLength={
+                      maxLength={binInfo[binIndex]['binWeight'] &&
                         binInfo[binIndex]['binWeight'].toString().split('.')[0] ?
-                          binInfo[binIndex]['binWeight'].toString().split('.')[0].length + 4 :
-                          focusedJob.maxBinWeight.toString().length
+                        binInfo[binIndex]['binWeight'].toString().split('.')[0].length + 4 :
+                        focusedJob.maxBinWeight.toString().length
                       }
                       editable={editable}
                       keyboardType={'numeric'}
