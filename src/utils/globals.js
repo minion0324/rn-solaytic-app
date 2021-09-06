@@ -42,7 +42,9 @@ function getEndDate(date, key, format) {
 
 function numberWithCommas(x) {
   if (x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      let parts = x.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join('.');
   } else {
       return '0';
   }

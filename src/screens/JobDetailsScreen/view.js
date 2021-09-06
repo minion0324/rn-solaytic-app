@@ -1512,8 +1512,8 @@ const JobDetailsScreenView = ({
                   <SpaceView mTop={SIZE1} />
                   <InfoText>
                     {
-                      binInfo[binIndex]['binWeight']
-                        ? binInfo[binIndex]['binWeight'] + ' ' + focusedJob.binWeightUom
+                      numberWithCommas(binInfo[binIndex]['binWeight'])
+                        ? numberWithCommas(binInfo[binIndex]['binWeight']) + ' ' + focusedJob.binWeightUom
                         : ' --- '
                     }
                   </InfoText>
