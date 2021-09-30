@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="62" height="17" viewBox="0 0 62 17">
+  <g id="Group_17442" data-name="Group 17442" transform="translate(-136.5 -422)">
+    <text id="Reply" transform="translate(159.5 422)" fill="#7f7f7f" font-size="12" font-weight="500"><tspan x="0" y="13">Reply</tspan></text>
+    <path id="Icon_awesome-reply" data-name="Icon awesome-reply" d="M.315,7.552,6.994,1.785A.911.911,0,0,1,8.5,2.474V5.511c6.1.07,10.928,1.291,10.928,7.068a7.757,7.757,0,0,1-3.162,5.849.676.676,0,0,1-1.065-.707c.724-2.317.694-3.917-.208-5.249-.8-1.239-3.086-1.75-6.493-1.8v3.336a.911.911,0,0,1-1.506.689L.315,8.93a.911.911,0,0,1,0-1.378Z" transform="translate(136.5 420.438)" fill="#7f7f7f"/>
+  </g>
+</svg>

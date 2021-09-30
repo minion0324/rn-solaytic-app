@@ -97,6 +97,7 @@ const AlertScreen = ({
   }, [coreScreenInfo]);
 
   useNavigationComponentDidAppear((event) => {
+    onReloading();
     const { componentName } = event;
 
     setCoreScreenInfo({

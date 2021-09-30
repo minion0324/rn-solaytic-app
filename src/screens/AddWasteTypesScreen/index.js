@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 import {
   ViewStore,
+  Jobs
 } from 'src/redux';
 import {
   HeaderBar,
@@ -49,6 +50,7 @@ import {
 import {
   WasteTypeItem,
   WasteTypeText,
+  WasteTypeGreyText
 } from './styled';
 
 const {
@@ -58,6 +60,7 @@ const {
 } = SVGS;
 
 const AddWasteTypesScreen = ({
+  focusedJob,
   wasteTypes,
   pageOfWasteTypes,
   getWasteTypes,
@@ -66,6 +69,7 @@ const AddWasteTypesScreen = ({
   binInfo,
   setBinInfo,
   componentId,
+  getCustomerSiteIndex
 }) => {
   const [ loading, setLoading ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
@@ -75,6 +79,9 @@ const AddWasteTypesScreen = ({
   const [ selectedWasteTypes, setSelectedWasteTypes ] = useState([]);
 
   const timerId = useRef(null);
+  const index = getCustomerSiteIndex();
+  const customerSiteId = focusedJob.steps[index].customerSiteId;
+  const binTypeId = focusedJob.steps[index].binTypeId;
 
   useEffect(() => {
     setSelectedWasteTypes(
@@ -119,6 +126,8 @@ const AddWasteTypesScreen = ({
     getWasteTypes({
       search: searchText,
       page: pageOfWasteTypes,
+      customerSiteId: customerSiteId,
+      binTypeId: binTypeId,
       success: () => {},
       failure: () => {},
     });
@@ -129,6 +138,8 @@ const AddWasteTypesScreen = ({
 
     getWasteTypes({
       search: searchText,
+      customerSiteId: customerSiteId,
+      binTypeId: binTypeId,
       success: () => setRefreshing(false),
       failure: () => setRefreshing(false),
     });
@@ -139,6 +150,8 @@ const AddWasteTypesScreen = ({
 
     getWasteTypes({
       search: searchText,
+      customerSiteId: customerSiteId,
+      binTypeId: binTypeId,
       success: () => setLoading(false),
       failure: () => setLoading(false),
     });
@@ -186,11 +199,19 @@ const AddWasteTypesScreen = ({
       el.wasteTypeId === item.wasteTypeId
     ));
 
+    const idxOfHaveRate = wasteTypes.findIndex((el) => (
+      el.wasteTypeId === item.wasteTypeId
+    ));
+
     if (
       idx !== -1 &&
       index >= selectedWasteTypes.length
     ) {
       return null;
+    }
+
+    if (idx !== -1 && wasteTypes[idxOfHaveRate]) {
+      item.haveRate = wasteTypes[idxOfHaveRate].haveRate;
     }
 
     return (
@@ -209,9 +230,16 @@ const AddWasteTypesScreen = ({
                 : <DeactiveCircleCheckIcon />
               }
               <SpaceView mLeft={SIZE2} />
-              <WasteTypeText numberOfLines={1}>
-                {item.wasteTypeName}
-              </WasteTypeText>
+              {
+                item.haveRate ? 
+                <WasteTypeText numberOfLines={1}>
+                  {item.wasteTypeName}
+                </WasteTypeText>
+                :
+                <WasteTypeGreyText numberOfLines={1}>
+                  {item.wasteTypeName}
+                </WasteTypeGreyText>
+              }
             </RowWrap>
           </FlexWrap>
         </WasteTypeItem>
@@ -278,6 +306,7 @@ const AddWasteTypesScreen = ({
 };
 
 AddWasteTypesScreen.propTypes = {
+  focusedJob: PropTypes.object.isRequired,
   wasteTypes: PropTypes.array.isRequired,
   pageOfWasteTypes: PropTypes.number.isRequired,
   getWasteTypes: PropTypes.func.isRequired,
@@ -294,6 +323,7 @@ AddWasteTypesScreen.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
+    focusedJob: Jobs.selectors.getFocusedJob(state),
     wasteTypes: ViewStore.selectors.getWasteTypes(state),
     pageOfWasteTypes: ViewStore.selectors.getPageOfWasteTypes(state),
   };

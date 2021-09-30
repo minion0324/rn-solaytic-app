@@ -134,9 +134,10 @@ android {
         applicationId "com.logisfleet.wasteporter"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
-        versionName "3.1.8"
+        versionCode 18
+        versionName "4.1.7"
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
 
         missingDimensionStrategy "react-native-camera", "general"
     }
@@ -200,6 +201,13 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation(project(':react-native-maps')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-mpas'
+    }
+    implementation 'com.google.android.gms:play-services-base:17.0,0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

@@ -115,11 +115,11 @@ export function* watchGetJobDates() {
 
 export function* asyncGetWasteTypes({ payload }) {
   const {
-    search, success, failure,
+    search, binTypeId, customerSiteId, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiGetWasteTypes, search);
+    const { data } = yield call(apiGetWasteTypes, search, 1, binTypeId, customerSiteId);
     yield put(actionCreators.getWasteTypesSuccess(data));
 
     success && success();
@@ -138,11 +138,11 @@ export function* watchGetWasteTypes() {
 
 export function* asyncGetWasteTypesByPage({ payload }) {
   const {
-    search, page, success, failure,
+    search, page, binTypeId, customerSiteId, success, failure,
   } = payload;
 
   try {
-    const { data } = yield call(apiGetWasteTypes, search, page);
+    const { data } = yield call(apiGetWasteTypes, search, page, binTypeId, customerSiteId);
     yield put(actionCreators.getWasteTypesByPageSuccess(data));
 
     success && success();

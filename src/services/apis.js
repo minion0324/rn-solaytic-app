@@ -251,7 +251,9 @@ function apiGetJobDates(
 function apiGetWasteTypes(
   searchQuery = '',
   currentPage = 1,
-  pageSize = 10,
+  binTypeId = '',
+  customerSiteId = '',
+  pageSize = 9999,
   sortColumn = '',
   sortDir = 'asc',
 ) {
@@ -262,6 +264,8 @@ function apiGetWasteTypes(
       pageSize,
       sortColumn,
       sortDir,
+      binTypeId,
+      customerSiteId
     },
   });
 };

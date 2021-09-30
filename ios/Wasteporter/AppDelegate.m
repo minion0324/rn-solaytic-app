@@ -11,6 +11,7 @@
 
 #import <Bugsnag/Bugsnag.h>
 #import <TSBackgroundFetch/TSBackgroundFetch.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -35,6 +36,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyDcl2jp2LbfdnczTZm1r_azsWTNcKkjvRE"];
 #if DEBUG
   InitializeFlipper(application);
 #endif

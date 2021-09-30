@@ -40,6 +40,16 @@ function getEndDate(date, key, format) {
     .format(DEFAULT_DATE_FORMAT);
 };
 
+function numberWithCommas(x) {
+  if (x) {
+      let parts = x.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join('.');
+  } else {
+      return '0';
+  }
+}
+
 //
 function getUpdatedBinInfo(binInfo) {
   return [0, 1].map((index) => {
@@ -138,6 +148,7 @@ export {
   getDate,
   getStartDate,
   getEndDate,
+  numberWithCommas,
 
   getUpdatedBinInfo,
   getUpdatedServices,

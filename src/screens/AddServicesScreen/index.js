@@ -46,6 +46,7 @@ import {
 import {
   ServiceItem,
   ServiceText,
+  ServiceGreyText,
   ServiceInput,
   QuantityWrap,
 } from './styled';
@@ -62,11 +63,11 @@ const AddServicesScreen = ({
   setServices,
   componentId,
 }) => {
-  const [ loading, setLoading ] = useState(true);
-  const [ originServices, setOriginServices ] = useState([]);
-  const [ searchedServices, setSearchedServices ] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [originServices, setOriginServices] = useState([]);
+  const [searchedServices, setSearchedServices] = useState([]);
 
-  const [ searchText, setSearchText ] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   const timerId = useRef(null);
 
@@ -115,9 +116,9 @@ const AddServicesScreen = ({
   const onCheck = () => {
     const newServices = originServices.map((item) => (
       item.isSelected &&
-      (!item.quantity || item.quantity === '0')
-      ? { ...item, isSelected: false }
-      : item
+        (!item.quantity || item.quantity === '0')
+        ? { ...item, isSelected: false }
+        : item
     ));
     setServices(newServices);
     onClose();
@@ -172,7 +173,7 @@ const AddServicesScreen = ({
             isSelected: !item.isSelected,
             quantity:
               (!item.quantity || item.quantity === '0')
-              ? '1' : item.quantity,
+                ? '1' : item.quantity,
           });
         }}
         mLeft={SIZE2} mTop={0.5}
@@ -183,13 +184,20 @@ const AddServicesScreen = ({
             <RowWrap>
               {
                 item.isSelected
-                ? <BlueActiveCircleCheckIcon />
-                : <DeactiveCircleCheckIcon />
+                  ? <BlueActiveCircleCheckIcon />
+                  : <DeactiveCircleCheckIcon />
               }
               <SpaceView mLeft={SIZE2} />
-              <ServiceText numberOfLines={1}>
-                {item.serviceAdditionalChargeName}
-              </ServiceText>
+              {
+                item.haveRate ?
+                  <ServiceText numberOfLines={1}>
+                    {item.serviceAdditionalChargeName}
+                  </ServiceText>
+                  :
+                  <ServiceGreyText numberOfLines={1}>
+                    {item.serviceAdditionalChargeName}
+                  </ServiceGreyText>
+              }
             </RowWrap>
           </FlexWrap>
           <TouchableWithoutFeedback>

@@ -7,10 +7,14 @@ import { sortBy } from 'lodash';
 import {
   SVGS,
   COLORS,
+  SIZE0,
   SIZE1,
   SIZE2,
+  SIZE4,
+  SIZE6,
   SIZE8,
-  SIZE12,
+  SIZE10,
+  SIZE20,
   FONT,
   JOB_STATUS,
   JOB_TYPE,
@@ -20,6 +24,7 @@ import {
   RowWrap,
   FlexWrap,
   SpaceView,
+  BorderView,
 } from 'src/styles/common.styles';
 
 const {
@@ -32,61 +37,64 @@ const Container = styled.View`
 `;
 
 const FirstSection = styled.View`
-  height: ${SIZE12}px;
   justify-content: center;
-  border-bottom-width: 1px;
-  border-color: ${COLORS.GRAY2};
 `;
 
 const SecondSection = styled.View`
-  height: ${SIZE8}px;
+  height: ${SIZE10}px;
   justify-content: center;
+  align-items: flex-start;
+  margin-horizontal: ${SIZE2}px;
+  margin-bottom: ${SIZE2}px;
 `;
 
 const ThirdSection = styled.View`
-  height: ${SIZE8}px;
   justify-content: center;
-  border-top-width: 1px;
+  border-width: 1px;
+  border-radius: ${SIZE1}px;
   border-color: ${COLORS.GRAY2};
+  padding: ${SIZE2}px;
+  margin-horizontal: ${SIZE2}px;
+  margin-bottom: ${SIZE2}px;
+`;
+
+const StatusWrap = styled.View`
+  border-width: 1px;
+  border-color: ${props => props.color};
+  border-radius: ${SIZE8}px;
+  padding-horizontal: ${SIZE2}px;
+  padding-vertical: ${SIZE0}px;
 `;
 
 const StatusText = styled.Text`
-  font-size: ${FONT(12)}px;
+  font-size: ${FONT(15)}px;
   font-weight: 700;
   color: ${props => props.color};
   text-align: center;
   text-transform: uppercase;
 `;
 
-const InfoWrap = styled.View`
-  height: ${SIZE8}px;
-  align-items: center;
-  justify-content: center;
-  border-right-width: 1px;
-  border-color: ${(props) => (
-    props.hasBorder
-    ? COLORS.GRAY2 : COLORS.TRANSPARENT1
-  )};
-  padding-vertical: ${SIZE1}px;
-  padding-horizontal: ${SIZE2}px;
-`;
-
 const TimeText = styled.Text`
-  font-size: ${FONT(13)}px;
-  font-weight: 500;
+  font-size: ${FONT(15)}px;
+  font-weight: 600;
   color: ${COLORS.BLACK2};
 `;
 
-const LocationText = styled.Text`
+const CustomerInfo = styled.Text`
   font-size: ${FONT(15)}px;
   font-weight: 700;
+  color: ${props => props.color};
+`;
+
+const NormalText = styled.Text`
+  font-size: ${FONT(12)}px;
   color: ${COLORS.BLACK2};
 `;
 
 const InfoText = styled.Text`
   font-size: ${FONT(12)}px;
-  font-weight: 600;
-  color: ${COLORS.GRAY3};
+  font-weight: 700;
+  color: ${COLORS.BLACK2};
   text-align: center;
 `;
 
@@ -96,11 +104,44 @@ const InstructionText = styled.Text`
   color: ${COLORS.BLACK2};
 `;
 
+const SVGWarp = styled.View`
+  width: ${SIZE6}px;
+`;
+
+const WasteTypeWrap = styled.View`
+  width: 100%;
+  border-radius: ${SIZE1}px;
+  background-color: #06D6A088;
+  padding-horizontal: ${SIZE2}px;
+  padding-vertical: ${SIZE1}px;
+`;
+
+const NotifyNumWarp = styled.View`
+  position: absolute;
+  background-color: ${COLORS.RED1};
+  border-radius: ${SIZE4}px;
+  top: 5px;
+  left: 5px;
+  padding-horizontal: 4px;
+`;
+
+const NotifyNumWarpText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 500;
+  color: ${COLORS.WHITE1};
+`;
+
 const DATE_FORMAT = 'DD (ddd)';
 const TIME_FORMAT = 'hh:mm A ';
 
 const JobCard = ({
   jobInfo: {
+    customer: {
+      accountCustomerId,
+    },
+    customerNameDisplay,
+    customerName,
+    noOfNewMessages,
     steps: originSteps,
     statusName,
     jobDate,
@@ -109,6 +150,8 @@ const JobCard = ({
     jobTypeName,
     isRequirePaymentCollection,
     instructionToDrivers,
+    siteRemarks,
+    jobPaymentTypeDisplay
   },
 }) => {
   const steps = useMemo(() => {
@@ -200,30 +243,34 @@ const JobCard = ({
                   </TimeText>
                 </RowWrap>
               }
-              {
-                isRequirePaymentCollection &&
-                <RowWrap>
-                  <SpaceView mLeft={SIZE2} />
-                  <CircleCurrencyIcon />
-                </RowWrap>
-              }
             </RowWrap>
           </FlexWrap>
           {
             statusColor &&
-            <StatusText color={statusColor}>
-              {statusName}
-            </StatusText>
+            <StatusWrap color={statusColor}>
+              <StatusText color={statusColor}>
+                {statusName}
+              </StatusText>
+            </StatusWrap>
           }
           <SpaceView mLeft={SIZE2} />
+        </RowWrap>
+        <SpaceView mTop={SIZE2} />
+        <RowWrap>
+          <SpaceView mLeft={SIZE2} />
+          <FlexWrap>
+            <CustomerInfo numberOfLines={1} color={COLORS.BLUE5}>
+              {customerNameDisplay}
+            </CustomerInfo>
+          </FlexWrap>
         </RowWrap>
         <SpaceView mTop={SIZE1} />
         <RowWrap>
           <SpaceView mLeft={SIZE2} />
           <FlexWrap>
-            <LocationText numberOfLines={1}>
+            <NormalText numberOfLines={2}>
               {location}
-            </LocationText>
+            </NormalText>
           </FlexWrap>
           <SpaceView mLeft={SIZE2} />
         </RowWrap>
@@ -231,45 +278,80 @@ const JobCard = ({
       </FirstSection>
       <SecondSection>
         <RowWrap>
-          <FlexWrap flex={3}>
-            <InfoWrap hasBorder>
-              <InfoText numberOfLines={2}>
-                {jobTemplateName || jobTypeName}
-              </InfoText>
-            </InfoWrap>
-          </FlexWrap>
-          <FlexWrap flex={2}>
-            <InfoWrap hasBorder>
-              <InfoText numberOfLines={2}>
-                {steps[binIndex].binTypeName || ''}
-              </InfoText>
-            </InfoWrap>
-          </FlexWrap>
-          <FlexWrap flex={4}>
-            <InfoWrap>
-              <InfoText numberOfLines={2}>
-                {steps[binIndex].wasteTypeName || ''}
-              </InfoText>
-            </InfoWrap>
-          </FlexWrap>
+          <InfoText numberOfLines={1}>
+            {(jobTemplateName || jobTypeName) + ' - '}
+          </InfoText>
+          <InfoText numberOfLines={1}>
+            {steps[binIndex].binTypeName || ''}
+          </InfoText>
         </RowWrap>
+        <SpaceView mTop={SIZE1} />
+        <WasteTypeWrap>
+          <CustomerInfo numberOfLines={1} color={COLORS.BLACK2}>
+            {steps[binIndex].wasteTypeName || ''}
+          </CustomerInfo>
+        </WasteTypeWrap>
       </SecondSection>
       {
-        !!instructionToDrivers &&
+        (isRequirePaymentCollection || !!instructionToDrivers || siteRemarks) &&
         <ThirdSection>
-          <SpaceView mTop={SIZE1} />
-          <RowWrap>
-            <SpaceView mLeft={SIZE2} />
-            <MessageIcon />
-            <SpaceView mLeft={SIZE1} />
-            <FlexWrap>
-              <InstructionText numberOfLines={1}>
-                {instructionToDrivers}
-              </InstructionText>
-            </FlexWrap>
-            <SpaceView mLeft={SIZE2} />
-          </RowWrap>
-          <SpaceView mTop={SIZE2} />
+          {
+            isRequirePaymentCollection &&
+            <RowWrap>
+              <SVGWarp>
+                <CircleCurrencyIcon />
+              </SVGWarp>
+              <InfoText numberOfLines={1}>
+                {jobPaymentTypeDisplay} -
+              </InfoText>
+              <SpaceView mLeft={SIZE1} />
+              <NormalText numberOfLines={1}>
+                {
+                  (jobTypeName === JOB_TYPE.PULL) || (jobTypeName === JOB_TYPE.SHIFT) || (jobTypeName === JOB_TYPE.EXCHANGE)
+                    ? '$' + steps[binIndex].amountToCollect
+                    : '$' + steps[binIndex + 1].amountToCollect
+                }
+              </NormalText>
+            </RowWrap>
+          }
+          {
+            (!!instructionToDrivers || siteRemarks) &&
+            <Container>
+              <SpaceView mTop={SIZE2} />
+              <RowWrap>
+                <SVGWarp>
+                  <MessageIcon />
+                  {
+                    noOfNewMessages !== 0 &&
+                    <NotifyNumWarp>
+                      <NotifyNumWarpText>
+                        {noOfNewMessages}
+                      </NotifyNumWarpText>
+                    </NotifyNumWarp>
+                  }
+                </SVGWarp>
+                <FlexWrap>
+                  <InstructionText numberOfLines={2}>
+                    {siteRemarks ? siteRemarks : '---'}
+                  </InstructionText>
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+              <SpaceView mTop={SIZE1} />
+              <BorderView mLeft={SIZE6} />
+              <SpaceView mTop={SIZE1} />
+              <RowWrap>
+                <SVGWarp>
+                </SVGWarp>
+                <FlexWrap>
+                  <InstructionText numberOfLines={2}>
+                    {instructionToDrivers ? instructionToDrivers : '---'}
+                  </InstructionText>
+                </FlexWrap>
+                <SpaceView mLeft={SIZE2} />
+              </RowWrap>
+            </Container>
+          }
         </ThirdSection>
       }
     </Container>
@@ -278,6 +360,7 @@ const JobCard = ({
 
 JobCard.propTypes = {
   jobInfo: PropTypes.shape({
+    customerName: PropTypes.string.isRequired,
     steps: PropTypes.array.isRequired,
     statusName: PropTypes.string.isRequired,
     jobDate: PropTypes.string.isRequired,

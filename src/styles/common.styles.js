@@ -26,7 +26,6 @@ const ContentWrap = styled.View`
   margin-right: ${props => props.mRight || 0}px;
   padding-top: ${props => props.mTop || SIZE3}px;
   padding-horizontal: ${SIZE3}px;
-  padding-bottom: ${SIZE3}px;
   background-color: ${props => props.color || COLORS.WHITE1};
 `;
 
@@ -89,6 +88,12 @@ const SearchInput = styled.TextInput`
 
 const RowWrap = styled.View`
   flex-direction: row;
+  align-items: center;
+`;
+
+const RowBetweenWrap = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -160,6 +165,7 @@ export {
   SearchIconWrap,
   SearchInput,
   RowWrap,
+  RowBetweenWrap,
   FlexWrap,
   SpaceView,
   CenteredWrap,

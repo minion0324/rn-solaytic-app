@@ -4,6 +4,7 @@ import {
   COLORS,
   SIZE1,
   SIZE2,
+  SIZE4,
   SIZE6,
   SIZE8,
   FONT,
@@ -20,6 +21,7 @@ const DriverMessageBadge = styled.View`
 
 const BinInput = styled.TextInput`
   flex: 1;
+  height: ${SIZE8}px;
   padding: 0px;
   font-size: ${FONT(15)}px;
   font-weight: 600;
@@ -34,7 +36,7 @@ const BinInputWrap = styled.View`
   align-items: center;
   justify-content: center;
   padding-vertical: ${(props) => (
-    props.effect ? 3 : 0
+    props.effect ? 0 : 0
   )}px;
   padding-horizontal: ${(props) => (
     props.effect ? SIZE2 : 0
@@ -99,6 +101,37 @@ const PrintReceiptButton = styled.TouchableOpacity`
   background-color: ${COLORS.WHITE1};
 `;
 
+const LocationText = styled.Text`
+  font-size: ${FONT(12)}px;
+  color: ${COLORS.BLACK2};
+  padding-right: ${props => props.right ? props.right : 0}px;
+`;
+
+const ReplyButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+`;
+
+const NotifyNumWarp = styled.View`
+  position: absolute;
+  background-color: ${COLORS.RED1};
+  border-radius: ${SIZE4}px;
+  right: 0px;
+  padding-horizontal: 4px;
+`;
+
+const NotifyNumWarpText = styled.Text`
+  font-size: ${FONT(12)}px;
+  font-weight: 500;
+  color: ${COLORS.WHITE1};
+`;
+
+const CustomerInfo = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 700;
+  color: ${COLORS.BLACK2};
+`;
+
 export {
   DriverMessageBadge,
   BinInput,
@@ -108,4 +141,9 @@ export {
   SignWrap,
   PhotoModalButtonsWrap,
   PrintReceiptButton,
+  LocationText,
+  ReplyButton,
+  NotifyNumWarp,
+  NotifyNumWarpText,
+  CustomerInfo
 };

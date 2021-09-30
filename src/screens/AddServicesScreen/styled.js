@@ -19,8 +19,15 @@ const ServiceItem = styled.View`
 
 const ServiceText = styled.Text`
   font-size: ${FONT(15)}px;
-  font-weight: 500;
+  font-weight: 700;
   color: ${COLORS.BLACK2};
+`;
+
+const ServiceGreyText = styled.Text`
+  font-size: ${FONT(15)}px;
+  font-weight: 500;
+  font-style: italic
+  color: ${COLORS.GRAY1};
 `;
 
 const ServiceInput = styled.TextInput`
@@ -44,6 +51,7 @@ const QuantityWrap = styled.View`
 export {
   ServiceItem,
   ServiceText,
+  ServiceGreyText,
   ServiceInput,
   QuantityWrap,
 };

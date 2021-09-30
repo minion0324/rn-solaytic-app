@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Alert } from 'react-native';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Alert, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ImagePicker from 'react-native-image-picker';
+import Image1Picker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-crop-picker';
+import ImgToBase64 from 'react-native-image-base64';
+import ActionSheet from 'react-native-actionsheet';
 import Toast from 'react-native-simple-toast';
 import {
   useNavigationComponentDidAppear,
@@ -40,6 +43,7 @@ import {
   getCacheItemById,
   getCacheIds,
   getTimestamp,
+  compressImage,
 } from 'src/utils';
 
 import JobDetailsScreenView from './view';
@@ -61,17 +65,19 @@ const JobDetailsScreen = ({
   getJobDates,
   componentId,
 }) => {
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const actionSheetRef = useRef(null);
 
-  const [ isInBackgroundMode, setIsInBackgroundMode ] = useState(false);
+  const [isInBackgroundMode, setIsInBackgroundMode] = useState(false);
 
-  const [ photos, setPhotos ] = useState([]);
-  const [ signs, setSigns ] = useState([]);
+  const [photos, setPhotos] = useState([]);
+  const [signs, setSigns] = useState([]);
+  const [jobStepId, setJobStepId] = useState();
 
-  const [ binInfo, setBinInfo ] = useState(
+  const [binInfo, setBinInfo] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.binInfo
-    ? focusedJob.appExtraData.binInfo
-    : [0, 1].map((index) => pick(
+      ? focusedJob.appExtraData.binInfo
+      : [0, 1].map((index) => pick(
         focusedJob.steps[index],
         [
           'jobStepId',
@@ -84,19 +90,19 @@ const JobDetailsScreen = ({
       ))
   );
 
-  const [ services, setServices ] = useState(
+  const [services, setServices] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.services
-    ? focusedJob.appExtraData.services : focusedJob.additionalCharges
+      ? focusedJob.appExtraData.services : focusedJob.additionalCharges
   );
 
-  const [ amountCollected, setAmountCollected ] = useState(
+  const [amountCollected, setAmountCollected] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.amountCollected
-    ? focusedJob.appExtraData.amountCollected : focusedJob.collectedAmount
+      ? focusedJob.appExtraData.amountCollected : focusedJob.collectedAmount
   );
 
-  const [ jobPaymentType, setJobPaymentType ] = useState(
+  const [jobPaymentType, setJobPaymentType] = useState(
     focusedJob.appExtraData && focusedJob.appExtraData.jobPaymentType
-    ? focusedJob.appExtraData.jobPaymentType : focusedJob.jobPaymentType || 0
+      ? focusedJob.appExtraData.jobPaymentType : focusedJob.jobPaymentType || 0
   );
 
   const isInProgress = useMemo(() => {
@@ -388,33 +394,77 @@ const JobDetailsScreen = ({
   };
 
   const onPhoto = (jobStepId) => {
+    // setJobStepId(jobStepId);
+    // actionSheetRef.current.show();
     const options = {
       title: 'Select Your Photo',
       storageOptions: {
         skipBackup: true,
+        cropping: true,
       },
       quality: 0.5,
     };
 
-    ImagePicker.showImagePicker(options, (response) => {
+    Image1Picker.showImagePicker(options, (response) => {
       if (response.didCancel) {
         //
       } else if (response.error) {
         //
       } else {
         const { uri, data } = response;
-        setPhotos([ ...photos, { jobStepId, uri, data } ]);
+        console.log('======')
+        console.log(uri)
+        console.log(data)
+        setPhotos([...photos, { jobStepId, uri, data }]);
       }
     });
   };
 
-  const onSign = (jobStepId) => {
+  const onSign = (jobStepId, contactName, contactNum) => {
     showLightBox(SIGNATURE_SCREEN, {
       jobStepId,
+      contactName,
+      contactNum,
       signs,
       setSigns,
     });
   };
+
+  const OPEN_CAMERA = 0;
+  const OPEN_GALLERY = 1;
+
+  const selectActionSheet = index => {
+    // let options = {
+    //   mediaType: 'photo',
+    //   forceJpg: false,
+    //   cropping: true,
+    //   width: 800,
+    //   height: 800,
+    //   hideBottomControls: true
+    // };
+
+    // if (index === OPEN_CAMERA) {
+    //   ImagePicker.openCamera(options).then(response => {
+    //     setMediaData(response)
+    //   });
+    // } else if (index === OPEN_GALLERY) {
+    //   ImagePicker.openPicker(options).then(response => {
+    //     setMediaData(response)
+    //   });
+    // }
+  }
+
+  const setMediaData = async (response) => {
+    // this.setState({ isLoading: true });
+    const image = {
+      filename: response.filename,
+      type: Platform.OS === 'ios' ? response.mime : response.type,
+      uri: response.path
+    };
+    const photo = await compressImage(image);
+    const data = await ImgToBase64.getBase64String(photo.uri);
+    setPhotos([...photos, { jobStepId, uri: photo.uri, data }]);
+  }
 
   const onCancelPhoto = (selectedPhoto) => {
     const newPhotos = photos.filter((photo) => (
@@ -442,9 +492,9 @@ const JobDetailsScreen = ({
     });
   };
 
-  const onAddWasteTypes = (binIndex, binInOutIndex) => {
+  const onAddWasteTypes = (binIndex, binInOutIndex, getCustomerSiteIndex) => {
     pushScreen(componentId, ADD_WASTE_TYPES_SCREEN, {
-      binIndex, binInOutIndex, binInfo, setBinInfo,
+      binIndex, binInOutIndex, binInfo, setBinInfo, getCustomerSiteIndex
     });
   };
 
@@ -463,40 +513,49 @@ const JobDetailsScreen = ({
   };
 
   return (
-    <JobDetailsScreenView
-      loading={loading}
-      photos={photos}
-      signs={signs}
-      binInfo={binInfo}
-      setBinInfo={setBinInfo}
-      jobStatus={jobStatus}
-      services={services}
-      amountCollected={amountCollected}
-      setAmountCollected={setAmountCollected}
-      jobPaymentType={jobPaymentType}
-      setJobPaymentType={setJobPaymentType}
-      isInProgress={isInProgress}
+    <>
+      <JobDetailsScreenView
+        loading={loading}
+        photos={photos}
+        signs={signs}
+        binInfo={binInfo}
+        setBinInfo={setBinInfo}
+        jobStatus={jobStatus}
+        services={services}
+        amountCollected={amountCollected}
+        setAmountCollected={setAmountCollected}
+        jobPaymentType={jobPaymentType}
+        setJobPaymentType={setJobPaymentType}
+        isInProgress={isInProgress}
 
-      focusedJob={focusedJob}
+        focusedJob={focusedJob}
 
-      onBack={onBack}
-      onAcknowledge={onAcknowledge}
-      onStart={onStart}
-      onPull={onPull}
-      onShift={onShift}
-      onExchange={onExchange}
-      onComplete={onComplete}
-      onPhoto={onPhoto}
-      onSign={onSign}
-      onCancelPhoto={onCancelPhoto}
-      onFail={onFail}
-      onAddress={onAddress}
-      onDriverMessage={onDriverMessage}
-      onAddServices={onAddServices}
-      onAddWasteTypes={onAddWasteTypes}
-      onScanCode={onScanCode}
-      onPrint={onPrint}
-    />
+        onBack={onBack}
+        onAcknowledge={onAcknowledge}
+        onStart={onStart}
+        onPull={onPull}
+        onShift={onShift}
+        onExchange={onExchange}
+        onComplete={onComplete}
+        onPhoto={onPhoto}
+        onSign={onSign}
+        onCancelPhoto={onCancelPhoto}
+        onFail={onFail}
+        onAddress={onAddress}
+        onDriverMessage={onDriverMessage}
+        onAddServices={onAddServices}
+        onAddWasteTypes={onAddWasteTypes}
+        onScanCode={onScanCode}
+        onPrint={onPrint}
+      />
+      <ActionSheet
+        ref={actionSheetRef}
+        title={'Choose Photo'}
+        options={['Take Photo...', 'Choose Photo from Gallery...', 'Cancel']}
+        cancelButtonIndex={2}
+        onPress={selectActionSheet}
+      />
+    </>
   );
 };
 
